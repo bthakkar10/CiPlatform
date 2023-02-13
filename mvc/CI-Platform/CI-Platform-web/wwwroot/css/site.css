@@ -4,14 +4,8 @@
     font-family: 'NotoSans';
 }
 
-h2, p, a, button, small, form {
+h2, small, p, a, button, small, form {
     font-family: 'NotoSans';
-}
-
-
-.right {
-    /* margin: 40% 5% 5% 10%; */
-    margin-top: 20rem;
 }
 
 .carousel-img {
@@ -19,6 +13,28 @@ h2, p, a, button, small, form {
     background-size: cover;
     height: 100vh;
     background-position: center;
+}
+
+.register-right {
+    margin-top: 1rem;
+}
+
+.reset-right, .index-right {
+    margin-top: 12rem;
+}
+
+.forget-right {
+    margin: 8rem 3rem;
+}
+
+
+form h2 {
+    text-align: center;
+}
+
+#HelpBlock {
+    text-align: center;
+    display: block;
 }
 
 form label {
@@ -38,7 +54,7 @@ form button {
     opacity: 1;
     color: #F88634;
     font-family: 'Noto Sans';
-    height: 40px;
+    height: auto;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     display: inline-block;
     font-weight: 400;
@@ -51,7 +67,7 @@ button:hover {
     transition: 0.7s;
 }
 
-form .password-lost {
+form .password-lost, .login {
     text-align: center !important;
     text-decoration: none;
     color: #414141;
@@ -70,6 +86,7 @@ form a {
 }
 
 
+
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (max-width: 992px) {
     .container-fluid {
@@ -77,14 +94,14 @@ form a {
     }
 
     .carousel-img {
-        height: 50vh;
+        height: 70vh;
     }
-}
 
+    .forget-right {
+        margin: 0rem;
+    }
 
-/* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and ( max-width: 1600px) {
-    .right {
+    .reset-right, .index-right {
         margin-top: 5rem;
     }
 }

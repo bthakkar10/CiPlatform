@@ -1,92 +1,38 @@
-﻿@{
+﻿
+@{
+      Layout = "_Layout";
     ViewData["Title"] = "Login";
 }
 
-<div class="container-fluid d-flex">
-    <!-- <div class="row"> -->
-    <div class="col-lg-8 ">
-        <div class="left">
-            <div id="carouselExampleCaptions" class="carousel slide " data-bs-ride="carousel">
-                <!-- <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                  </div> -->
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="carousel-img"></div>
-                        <!-- <img src="./images/Grow-Trees-On-the-path-to-environment-sustainability-login.png" class="d-block carousel-img" alt="..."> -->
-                        <div class="carousel-caption d-none d-md-block">
-                            <h2>image 1Sed ut perspiciatis unde omnis iste natus voluptatem.</h2>
-                            <p>image 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="carousel-img"></div>
-                        <!-- <img src="./images/Grow-Trees-On-the-path-to-environment-sustainability-login.png" class="d-block carousel-img" alt="..."> -->
-                        <div class="carousel-caption d-none d-md-block">
-                            <h2> image 2Sed ut perspiciatis unde omnis iste natus voluptatem.</h2>
-                            <p>image 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="carousel-img"></div>
-                        <!-- <img src="./images/Grow-Trees-On-the-path-to-environment-sustainability-login.png" class="d-block carousel-img" alt="..."> -->
-                        <div class="carousel-caption d-none d-md-block">
-                            <h2>image 3 Sed ut perspiciatis unde omnis iste natus voluptatem.</h2>
-                            <p> image 3 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="carousel-img"></div>
-                        <!-- <img src="./images/Grow-Trees-On-the-path-to-environment-sustainability-login.png" class="d-block carousel-img" alt="..."> -->
-                        <div class="carousel-caption d-none d-md-block">
-                            <h2>image 4 Sed ut perspiciatis unde omnis iste natus voluptatem.</h2>
-                            <p> image 4 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        </div>
-                    </div>
-                </div>
-                <a class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-                    <!-- <span class="carousel-control-prev-icon" aria-hidden="true"></span> -->
-                    <span class="visually-hidden">Previous</span>
-                </a>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-                    <!-- <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4 ">
-        <div class="right">
-            <div class="container">
-                <div class="d-flex justify-content-center align-items-center">
-                    <form>
-                        <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Email address</label>
-                            <input type="email" placeholder="evan.donohue@gmail.com" class="form-control form-control-lg w-100z" id="exampleInputEmail1">
-                        </div>
-                        <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label">Password</label>
-                            <input type="password" placeholder="**********" class="form-control form-control-lg" id="exampleInputPassword1">
-                        </div>
-                        <div class="d-grid gap-2 mx-auto p-2 ">
-                            <button type="button">Login</button>
-                        </div>
-                        <div class="d-flex p-2 justify-content-center">
-                            <a href="forget-password.html" class="password-lost">Lost your Password?</a>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <span class="password-lost"> Don't have an account? <a href="register.html">Create an account</a></span>
-                        </div>
-                        <a href="#" class=" d-flex p-5 mt-xl-5 mt-5 justify-content-center privacy">Privacy Policy</a>
 
-                    </form>
-                </div>
-            </div>
-        </div>
 
-    </div>
-    <!-- </div> -->
 
-</div>
+
+                   <div class="index-right">
+                        <div class="container">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <form>
+                                        <div class="mb-3">
+                                          <label for="exampleInputEmail1" class="form-label">Email address</label>
+                                          <input type="email" placeholder="evan.donohue@gmail.com" class="form-control form-control-lg w-100z" id="exampleInputEmail1" >
+                                        </div>
+                                        <div class="mb-3">
+                                          <label for="exampleInputPassword1" class="form-label">Password</label>
+                                          <input type="password" placeholder="**********" class="form-control form-control-lg" id="exampleInputPassword1">
+                                        </div>
+                                        <div class="d-grid gap-2 mx-auto p-2 ">
+                                            <button  type="button">Login</button>
+                                        </div>
+                                        <div class="d-flex p-2 justify-content-center">
+                                            <a asp-controller="Home" asp-action="ForgetPass" class="password-lost">Lost your Password?</a>
+                                        </div>
+                                        <div class="d-flex justify-content-center">
+                                            <span class="password-lost mb-5"> Don't have an account? <a asp-controller="Home" asp-action="Register">Create an account</a></span>
+                                        </div>
+                                        <a href="#" class=" d-flex p-5  mt-5 justify-content-center privacy">Privacy Policy</a>
+                                        
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+  

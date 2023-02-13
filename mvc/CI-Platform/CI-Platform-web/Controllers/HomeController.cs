@@ -18,10 +18,21 @@ namespace CI_Platform_web.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult ForgetPass()
         {
             return View();
         }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        public IActionResult ResetPass()
+        {
+            return View();
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
