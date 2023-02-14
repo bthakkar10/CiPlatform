@@ -7,6 +7,17 @@
 h2, small, p, a, button, small, form {
     font-family: 'NotoSans';
 }
+.carousel-caption p
+{
+    font-size:x-large;
+    text-align:left
+}
+
+.carousel-caption h1 {
+
+    text-align: left
+}
+
 
 .carousel-img {
     background-image: url("/images/Grow-Trees-On-the-path-to-environment-sustainability-login.png");
