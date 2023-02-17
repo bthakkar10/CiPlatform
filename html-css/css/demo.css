@@ -1,0 +1,144 @@
+html,
+body {
+  /* overflow-x: hidden; Prevent scroll on narrow devices */
+}
+
+a, li, button, h3{
+  font-family: 'NotoSans';
+
+
+}
+/* navbar hide on scroll down */
+.nav-up {
+    top: -80px;
+}
+.navbar{
+   transition: top 0.4s ease-in-out;
+}
+.sidebar,
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+}
+.sidebar {
+  left: -100%;
+  max-width: 300px;
+  transition: all ease 0.25s;
+  z-index: 1032;
+  /* overflow-y:auto */
+}
+.overlay {
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.50);
+  visibility: hidden;
+  z-index: 1031;
+}
+.nav-item a:nth-child(1)
+{
+    color:black;
+}
+
+.user-image{
+    width: 40px;
+    height:40px;
+}
+.dropdown-toggle::after{
+    display: none;
+}
+ .dropdown-menu.show{
+    left: auto !important;
+}
+.main-navigation.active .sidebar {
+  left: 0;
+}
+.main-navigation.active .overlay {
+  visibility: visible;
+}
+.search-form {
+  color: #333333;
+  display: flex;
+  padding: 2px;
+}
+
+.search-form input[type="search"] {
+  border: none;
+  background: transparent;
+  margin: 0;
+  padding: 7px 8px;
+  font-size: 20px;
+  color: inherit;
+  border: 1px solid transparent;
+  border-radius: inherit;
+  width: auto;
+}
+
+.search-form input[type="search"]::placeholder {
+  color: #bbb;
+}
+.search-form input[type="search"]:focus{
+  box-shadow:none;
+}
+.search-form button[type="submit"] {
+  text-indent: -999px;
+  overflow: hidden;
+  width: 40px;
+  padding: 0;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: inherit;
+  background: transparent url("./images/search.png") no-repeat center;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.search-form button[type="submit"]:hover {
+  opacity: 1;
+}
+.search-form button[type="submit"]:focus
+{
+box-shadow: 0 0 3px 0 black;
+
+outline: none;
+}
+
+.filter-list-view li:nth-child(n){
+  border-right: 1px solid #bbb;
+}
+.rounded-pill-filter{font-size: 24px ; font-weight: lighter;}
+.heading-sort button{
+  width:12rem;
+}
+
+
+@media (min-width: 992px) {
+  .sidebar {
+    position: relative;
+    top: auto;
+    bottom: auto;
+    left: auto;
+    flex-direction: column;
+    max-width: 100%;
+    transform: none;
+    transition: none;
+    z-index: auto;
+  }
+ .navbar-expand-lg .navbar-nav {
+    flex-direction: row;
+    margin-right: 20rem;
+}
+ 
+}
+.main-heading {
+  position: relative;
+  z-index: 100;
+}
+@media (max-width: 991.98px) {
+	  .navbar-nav {
+	  padding-top: 5rem;
+	  padding-left: 1.5rem;
+  }
+}
