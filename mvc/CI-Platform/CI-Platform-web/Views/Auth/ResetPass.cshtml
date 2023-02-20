@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Reset Password";
-     Layout = "_Layout";
+     Layout = "_AuthLayout";
 }
                       <div class="reset-right">
                         <div class="container">
@@ -21,7 +21,7 @@
                                             <button type="button">Change Password</button>
                                         </div>
                                         <div class="d-flex mb-5 p-4 justify-content-center">
-                                          <a asp-controller="Home" asp-action="Index" class="login">Login</a>
+                                          <a asp-controller="Auth" asp-action="Index" class="login">Login</a>
                                       </div>
                                         <a href="#" class=" d-flex p-5 mt-5 justify-content-center privacy">Privacy Policy</a>  
                                 </form>

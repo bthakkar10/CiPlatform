@@ -1,0 +1,542 @@
+﻿
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Homepage";
+}
+        <!-- search Nav bar starts here -->
+        <div class="border-navbar"></div>
+        <div class="container justify-content-between d-flex">
+            <div class="d-flex  col-auto">
+                <form class="d-flex search-form " role="search">
+                    <button type="submit">
+                        <img src="~/images/search.png"/>
+                     </button>
+                    <input type="search" placeholder="Search mission... " aria-label="Search">
+                </form>
+            </div>
+            <div class=" flex-row d-none d-lg-flex">
+                <ul class="navbar-nav filter-list-view d-flex flex-row pe-3 p-2">
+                    <li class="nav-item  dropdown">
+                        <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Country
+                            &nbsp; &nbsp; <img class="ps-5 pe-2" src="~/images/drop-down.png">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-item  dropdown">
+                        <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            City
+                            &nbsp; &nbsp; <img class="ps-5 pe-2" src="~/images/drop-down.png">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-item  dropdown">
+                        <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Theme
+                            &nbsp; &nbsp; <img class="ps-5 pe-2" src="~/images/drop-down.png">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-item  dropdown">
+                        <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Skill
+                            &nbsp; &nbsp; <img class="ps-5 pe-2" src="~/images/drop-down.png">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <button class="btn d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"
+                    aria-controls="offcanvasScrolling">
+                <img src="~/images/filter.png">
+            </button>
+            <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+                 id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasScrollingLabel"></h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <div class="  d-flex ">
+                        <ul class="navbar-nav flex-column align-items-center  d-flex">
+                            <li class="nav-item  dropdown">
+                                <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
+                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Country
+                                    &nbsp; &nbsp; <img class=" pe-2" src="~/images/drop-down.png">
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-light"
+                                    aria-labelledby="navbarDarkDropdownMenuLink">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
+                            </li>
+
+
+                            <li class="nav-item  dropdown">
+                                <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
+                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    City
+                                    &nbsp; &nbsp; <img class=" pe-2" src="~/images/drop-down.png">
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-light"
+                                    aria-labelledby="navbarDarkDropdownMenuLink">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
+                            </li>
+
+
+                            <li class="nav-item  dropdown">
+                                <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
+                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Theme
+                                    &nbsp; &nbsp; <img class="pe-2" src="~/images/drop-down.png">
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-light"
+                                    aria-labelledby="navbarDarkDropdownMenuLink">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
+                            </li>
+
+
+                            <li class="nav-item  dropdown">
+                                <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
+                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Skill
+                                    &nbsp; &nbsp; <img class=" pe-2" src="~/images/drop-down.png">
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-light"
+                                    aria-labelledby="navbarDarkDropdownMenuLink">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="border-navbar"></div>
+        <!-- search Nav bar ends here -->
+        <!-- Main content starts from here -->
+        <!-- selected filters div -->
+        <div class="container p-4 d-flex flex-row">
+            <div class="">
+                <div class=" mx-2 badge rounded-pill-filter rounded-pill bg-light text-dark">
+                    Tree Plantation
+                    &nbsp;&nbsp; <img src="~/images/cancel1.png">
+                </div>
+                <div class="badge mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
+                    Canada
+                    &nbsp;&nbsp; <img src="~/images/cancel1.png">
+                </div>
+                <div class="badge mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
+                    Montreal
+                    &nbsp;&nbsp; <img src="~/images/cancel1.png">
+                </div>
+                <div class="badge  mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
+                    Environment
+                    &nbsp;&nbsp; <img src="~/images/cancel1.png">
+                </div>
+                <div class="badge  mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
+                    Environmental Science
+                    &nbsp;&nbsp; <img src="~/images/cancel1.png">
+                </div>
+                <div class="badge  mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
+                    Anthorpology
+                    &nbsp;&nbsp; <img src="~/images/cancel1.png">
+                </div>
+            </div>
+            <a class="p-2 fw-bold  text-decoration-none text-dark">Clear All </a>
+        </div>
+        <!-- selected filters div ends here -->
+        <!-- Heading of page -->
+        <div class="container justify-content-between d-flex mt-4">
+            <h2>Explore 72 Missions</h2>
+            <div class="d-flex justify-content-start">
+                <div class="dropdown mx-4 ">
+                    <div class="dropdown-toggle h-auto" href="#" role="button" data-bs-toggle="dropdown"
+                         aria-expanded="false" style="border:1px solid black">
+                        Sort BY
+                        <img class="ps-5 pe-2" src="~/images/drop-down.png">
+                    </div>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Newest</a></li>
+                        <li><a class="dropdown-item" href="#">Oldest</a></li>
+                        <li><a class="dropdown-item" href="#">Lower Available seats</a></li>
+                    </ul>
+                </div>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <img src="~/images/grid.png">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <img src="~/images/list.png">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Heading of page -->
+        <!-- Card start -->
+        <div class="container my-5">
+            <div class=" row row-cols-1 row-cols-md-3 g-4">
+                <!-- Card starts from col -->
+                <div class="col">
+                    <div class="card  ">
+                        <div class="pill-on-img">
+                            <img src="~/images/Grow-Trees-On-the-path-to-environment-sustainability-1.png"
+                                 class="card-img-top" alt="...">
+                            <div class="location">
+                                <img src="~/images/pin1.png">
+                                Toronto
+                            </div>
+                            <div class="like-on-img">
+                                <img style="opacity: 1;" src="~/images/heart.png">
+                            </div>
+                            <div class="add-on-img">
+                                <img style="opacity: 1;" src="~/images/add1.png">
+                            </div>
+                            <div class="theme-pill rounded-pill"> Environment </div>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Grow Trees On the path to environment sustainability</h3>
+                            <p class="card-text align-items-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...</p>
+                            <div class="d-flex justify-content-between">
+                                Tree Canada
+                                <div class="stars">
+                                    <img src="~/images/selected-star.png">
+                                    <img src="~/images/selected-star.png">
+                                    <img src="~/images/selected-star.png">
+                                    <img src="~/images/star.png">
+                                    <img src="~/images/star.png">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="m-3 list-group position-relative ">
+                            <div class="time-pill rounded-pill "> From 10/01/2019 until 25/02/2019 </div>
+                            <div class="row gutter mt-4 mb-2 justify-content-around">
+                                <div class="col card-detail">
+                                    <img class="icon-detail" src="~/images/Seats-left.png" alt="seats left">
+                                    <div class="card-detail-text">
+                                        <p>10</p>
+                                        <span>Seats left</span>
+                                    </div>
+                                </div>
+                                <div class="col card-detail">
+                                    <img class="icon-detail" src="~/images/deadline.png" alt="deadline">
+                                    <div class="card-detail-text">
+                                        <p>09/01/2019 </p>
+                                        <span>Deadline</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class=" d-flex pb-3 justify-content-center">
+                            <button type="submit" class="btn card-btn">
+                                Apply
+                                <img src="~/images/right-arrow.png">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- card 1 ends here and card 2 starts -->
+                <div class="col">
+                    <div class="card  ">
+                        <div class="pill-on-img">
+                            <img src="~/images/Education-Supplies-for-Every--Pair-of-Shoes-Sold-1.png"
+                                 class="card-img-top" alt="...">
+                            <div class="location">
+                                <img src="~/images/pin1.png">
+                                Melbourne
+                            </div>
+                            <div class="like-on-img">
+                                <img style="opacity: 1;" src="~/images/heart.png">
+                            </div>
+                            <div class="add-on-img">
+                                <img style="opacity: 1;" src="~/images/add1.png">
+                            </div>
+                            <div class="theme-pill rounded-pill"> Children </div>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Education Supplies for Every Pair of Shoes Sold</h3>
+                            <p class="card-text align-items-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...</p>
+                            <div class="d-flex justify-content-between">
+                                Australian Paradise
+                                <div class="stars">
+                                    <img src="~/images/selected-star.png">
+                                    <img src="~/images/selected-star.png">
+                                    <img src="~/images/selected-star.png">
+                                    <img src="~/images/star.png">
+                                    <img src="~/images/star.png">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="m-3 list-group position-relative ">
+                            <div class="time-pill rounded-pill "> From 10/01/2019 until 25/02/2019 </div>
+                            <div class="row gutter mt-4 mb-2 justify-content-around">
+                                <div class="col card-detail">
+                                    <img class="icon-detail" src="~/images/Already-volunteered.png" alt="seats left">
+                                    <div class="card-detail-text">
+                                        <p>250</p>
+                                        <span>Already Volunteered</span>
+                                    </div>
+                                </div>
+                                <div class="col card-detail">
+                                    <img class="icon-detail" src="~/images/deadline.png" alt="deadline">
+                                    <div class="card-detail-text">
+                                        <p>09/01/2019 </p>
+                                        <span>Deadline</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class=" d-flex pb-3 justify-content-center">
+                            <button type="submit" class="btn card-btn">
+                                Apply
+                                <img src="~/images/right-arrow.png">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- card 2 ends here and card 3 starts -->
+                <div class="col">
+                    <div class="card  ">
+                        <div class="pill-on-img">
+                            <img src="~/images/Nourish-the-Children-in--African-country-1.png"
+                                 class="card-img-top" alt="...">
+                            <div class="location">
+                                <img src="~/images/pin1.png">
+                                Barcelona
+                            </div>
+                            <div class="like-on-img">
+                                <img style="opacity: 1;" src="~/images/heart.png">
+                            </div>
+                            <div class="add-on-img">
+                                <img style="opacity: 1;" src="~/images/add1.png">
+                            </div>
+                            <div class="theme-pill rounded-pill"> Environment </div>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Nourish the Children in African country</h3>
+                            <p class="card-text align-items-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...</p>
+                            <div class="d-flex justify-content-between">
+                                The Hunger
+                                <div class="stars">
+                                    <img src="~/images/selected-star.png">
+                                    <img src="~/images/selected-star.png">
+                                    <img src="~/images/selected-star.png">
+                                    <img src="~/images/star.png">
+                                    <img src="~/images/star.png">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="m-3 list-group position-relative ">
+                            <div class="time-pill rounded-pill "> Ongoing Opportunity </div>
+                            <div class="row gutter mt-4 mb-2 justify-content-around">
+                                <div class="col card-detail">
+                                    <img class="icon-detail" src="~/images/Seats-left.png" alt="seats left">
+                                    <div class="card-detail-text">
+                                        <p>10</p>
+                                        <span>Seats left</span>
+                                    </div>
+                                </div>
+                                <div class="col card-detail">
+                                    <img class="icon-detail" src="~/images/deadline.png" alt="deadline">
+                                    <div class="card-detail-text">
+                                        <p>09/01/2019 </p>
+                                        <span>Deadline</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class=" d-flex pb-3 justify-content-center">
+                            <button type="submit" class="btn card-btn">
+                                Apply
+                                <img src="~/images/right-arrow.png">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- card 3 ends here and card 4 starts -->
+                <div class="col">
+                    <div class="card  ">
+                        <div class="pill-on-img">
+                            <img src="~/images/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-1.png"
+                                 class="card-img-top" alt="...">
+                            <div class="location">
+                                <img src="~/images/pin1.png">
+                                London
+                            </div>
+                            <div class="like-on-img">
+                                <img style="opacity: 1;" src="~/images/heart.png">
+                            </div>
+                            <div class="add-on-img">
+                                <img style="opacity: 1;" src="~/images/add1.png">
+                            </div>
+                            <div class="theme-pill rounded-pill"> Environment </div>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">CSR initiative stands for Coffee and Farmer Equity</h3>
+                            <p class="card-text align-items-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...</p>
+                            <div class="d-flex justify-content-between">
+                                CSE Network
+                                <div class="stars">
+                                    <img src="~/images/selected-star.png">
+                                    <img src="~/images/selected-star.png">
+                                    <img src="~/images/selected-star.png">
+                                    <img src="~/images/star.png">
+                                    <img src="~/images/star.png">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="m-3 list-group position-relative ">
+                            <div class="time-pill rounded-pill "> Ongoing Opportunity </div>
+                            <div class="row gutter mt-4 mb-2 justify-content-around">
+                                <div class="col card-detail">
+                                    <img class="icon-detail" src="~/images/Already-volunteered.png" alt="seats left">
+                                    <div class="card-detail-text">
+                                        <p>250</p>
+                                        <span>Already Volunteered</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class=" d-flex pb-3 justify-content-center">
+                            <button type="submit" class="btn card-btn">
+                                Apply
+                                <img src="~/images/right-arrow.png">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- card 4 ends here and card 5 starts -->
+                <div class="col">
+                    <div class="card  ">
+                        <div class="pill-on-img">
+                            <img src="~/images/Animal-welfare-&-save-birds-campaign-1.png"
+                                 class="card-img-top" alt="...">
+                            <div class="location">
+                                <img src="~/images/pin1.png">
+                                Cape Town
+                            </div>
+                            <div class="like-on-img">
+                                <img style="opacity: 1;" src="~/images/heart.png">
+                            </div>
+                            <div class="add-on-img">
+                                <img style="opacity: 1;" src="~/images/add1.png">
+                            </div>
+                            <div class="theme-pill rounded-pill">Animals </div>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Animal welfare & save birds campaign </h3>
+                            <p class="card-text align-items-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...</p>
+                            <div class="d-flex justify-content-between">
+                                CSE Network
+                                <div class="stars">
+                                    <img src="~/images/selected-star.png">
+                                    <img src="~/images/selected-star.png">
+                                    <img src="~/images/selected-star.png">
+                                    <img src="~/images/star.png">
+                                    <img src="~/images/star.png">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="m-3 list-group position-relative ">
+                            <div class="time-pill rounded-pill "> Ongoing Opportunity </div>
+                            <div class="row gutter mt-4 mb-2 justify-content-around">
+                                <div class="col card-detail">
+                                    <img class="icon-detail" src="~/images/Seats-left.png" alt="seats left">
+                                    <div class="card-detail-text">
+                                        <p>10</p>
+                                        <span>Seats left</span>
+                                    </div>
+                                </div>
+                                <div class="col card-detail">
+                                    <img class="icon-detail" src="~/images/achieved.png" alt="deadline">
+                                    <div class="card-detail-text">
+                                        <div class="progress" role="progressbar" aria-label="Warning example" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
+                                            <div class="progress-bar" style="width: 80%; background-color: #F88634;"></div>
+                                        </div>
+                                        <span>8000 achieved</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class=" d-flex pb-3 justify-content-center">
+                            <button type="submit" class="btn card-btn">
+                                Apply
+                                <img src="~/images/right-arrow.png">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- card 5 ends here and card 6 starts -->
+            </div>
+        </div>
+        <!-- Card end -->
+        <!-- Pagination starts here -->
+        <nav>
+            <ul class="pagination d-flex justify-content-center flex-wrap pagination-flat pagination-success">
+                <li class="page-item"><a class="page-link" href="#" data-abc="true"><img src="~/images/left.png" /></a></li>
+                <li class="page-item active"><a class="page-link" href="#" data-abc="true">1</a></li>
+                <li class="page-item"><a class="page-link" href="#" data-abc="true">2</a></li>
+                <li class="page-item"><a class="page-link" href="#" data-abc="true">3</a></li>
+                <li class="page-item"><a class="page-link" href="#" data-abc="true">4</a></li>
+                <li class="page-item"><a class="page-link" href="#" data-abc="true"><img src="~/images/right-arrow1.png" />
+                </a></li>
+            </ul>
+        </nav>
+
+        <!-- Pagination ends here -->
+        <!-- Main content ends here -->
+
+   

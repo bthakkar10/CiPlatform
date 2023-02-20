@@ -1,5 +1,5 @@
-﻿using CI_Platform_web.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using CI_Platform_web.Models;
 using System.Diagnostics;
 
 namespace CI_Platform_web.Controllers
@@ -13,22 +13,7 @@ namespace CI_Platform_web.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult ForgetPass()
-        {
-            return View();
-        }
-
-        public IActionResult Register()
-        {
-            return View();
-        }
-
-        public IActionResult ResetPass()
+        public IActionResult HomePage()
         {
             return View();
         }

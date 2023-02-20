@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "3qSj+gP3Cwg2PeW0UvdR/H09VstBglzJQ3RAs6udIDs=",
+  "Hash": "Pj47ybbNn9dJyHFhAtBHjbrbm2ZOoo4zsQJ8capcrGw=",
   "Source": "CI-Platform-web",
   "BasePath": "_content/CI-Platform-web",
   "Mode": "Default",
@@ -51,12 +51,12 @@
       "OriginalItemSpec": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\CI-Platform-web.bundle.scp.css"
     },
     {
-      "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\css\\site.css",
+      "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\css\\AuthStyle.css",
       "SourceId": "CI-Platform-web",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\",
       "BasePath": "_content/CI-Platform-web",
-      "RelativePath": "css/site.css",
+      "RelativePath": "css/AuthStyle.css",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -65,7 +65,24 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\site.css"
+      "OriginalItemSpec": "wwwroot\\css\\AuthStyle.css"
+    },
+    {
+      "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\css\\HomePage.css",
+      "SourceId": "CI-Platform-web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\",
+      "BasePath": "_content/CI-Platform-web",
+      "RelativePath": "css/HomePage.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\HomePage.css"
     },
     {
       "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\favicon.ico",
@@ -1904,12 +1921,12 @@
       "OriginalItemSpec": "wwwroot\\images\\xlsx.png"
     },
     {
-      "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\js\\site.js",
+      "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\js\\HomePage.js",
       "SourceId": "CI-Platform-web",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\",
       "BasePath": "_content/CI-Platform-web",
-      "RelativePath": "js/site.js",
+      "RelativePath": "js/HomePage.js",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -1918,7 +1935,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\js\\site.js"
+      "OriginalItemSpec": "wwwroot\\js\\HomePage.js"
     },
     {
       "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
