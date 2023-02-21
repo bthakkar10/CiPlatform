@@ -3,6 +3,7 @@
     Layout = "_Layout";
     ViewData["Title"] = "Homepage";
 }
+        <link rel="stylesheet" href="~/css/AuthStyle.css" asp-append-version="true" />
         <!-- search Nav bar starts here -->
         <div class="border-navbar"></div>
         <div class="container justify-content-between d-flex">
@@ -180,13 +181,13 @@
                     &nbsp;&nbsp; <img src="~/images/cancel1.png">
                 </div>
             </div>
-            <a class="p-2 fw-bold  text-decoration-none text-dark">Clear All </a>
+            <a class="p-2 fw-bold text-decoration-none text-dark" href="#" id="clear-all-filter">Clear All </a>
         </div>
         <!-- selected filters div ends here -->
         <!-- Heading of page -->
         <div class="container justify-content-between d-flex mt-4">
             <h2>Explore 72 Missions</h2>
-            <div class="d-flex justify-content-start">
+            <div class="d-none d-lg-flex justify-content-start">
                 <div class="dropdown mx-4 ">
                     <div class="dropdown-toggle h-auto" href="#" role="button" data-bs-toggle="dropdown"
                          aria-expanded="false" style="border:1px solid black">
@@ -201,12 +202,12 @@
                 </div>
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
+                        <a class="nav-link active" aria-current="page" href="#" >
                             <img src="~/images/grid.png">
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
+                    <li class="nav-item" > 
+                        <a class="nav-link" asp-contoller="Home" asp-action="ListView" >
                             <img src="~/images/list.png">
                         </a>
                     </li>
@@ -214,9 +215,9 @@
             </div>
         </div>
         <!-- Heading of page -->
-        <!-- Card start -->
-        <div class="container my-5">
-            <div class=" row row-cols-1 row-cols-md-3 g-4">
+        <!-- Card start for GridView -->
+        <div class="container my-5" id="GridView">
+            <div class=" row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-sm-1   g-4">
                 <!-- Card starts from col -->
                 <div class="col">
                     <div class="card  ">
@@ -274,6 +275,7 @@
                             <button type="submit" class="btn card-btn">
                                 Apply
                                 <img src="~/images/right-arrow.png">
+                                 <img src="~/images/right-arrow2.png" />
                             </button>
                         </div>
                     </div>
@@ -522,17 +524,22 @@
                 <!-- card 5 ends here and card 6 starts -->
             </div>
         </div>
-        <!-- Card end -->
+        <!-- Card end for GridView -->
+         <!-- Card start for ListView -->
+
+         <!-- Card ends for ListView -->
         <!-- Pagination starts here -->
         <nav>
-            <ul class="pagination d-flex justify-content-center flex-wrap pagination-flat pagination-success">
-                <li class="page-item"><a class="page-link" href="#" data-abc="true"><img src="~/images/left.png" /></a></li>
-                <li class="page-item active"><a class="page-link" href="#" data-abc="true">1</a></li>
-                <li class="page-item"><a class="page-link" href="#" data-abc="true">2</a></li>
-                <li class="page-item"><a class="page-link" href="#" data-abc="true">3</a></li>
-                <li class="page-item"><a class="page-link" href="#" data-abc="true">4</a></li>
-                <li class="page-item"><a class="page-link" href="#" data-abc="true"><img src="~/images/right-arrow1.png" />
-                </a></li>
+            <ul class="pagination  d-flex justify-content-center flex-wrap pagination-flat pagination-success">
+                 <li class="page-item me-2"><a class="page-link" href="#" data-abc="true"><img src="~/images/previous.png" /></a></li>
+                <li class="page-item me-2"><a class="page-link" href="#" data-abc="true"><img src="~/images/left.png" /></a></li>
+                <li class="page-item me-2 active"><a class="page-link" href="#" data-abc="true">1</a></li>
+                <li class="page-item me-2"><a class="page-link" href="#" data-abc="true">2</a></li>
+                <li class="page-item me-2"><a class="page-link" href="#" data-abc="true">3</a></li>
+                <li class="page-item me-2"><a class="page-link" href="#" data-abc="true">4</a></li>
+                <li class="page-item me-2"><a class="page-link" href="#" data-abc="true"><img src="~/images/right-arrow1.png" /> </a></li>
+                 <li class="page-item me-2"><a class="page-link" href="#" data-abc="true"><img src="~/images/next.png" /></a></li>
+               
             </ul>
         </nav>
 

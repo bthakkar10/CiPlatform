@@ -54,6 +54,11 @@ h3 {
     width: 40px;
     height: 40px;
 }
+.icon{
+    width:1.5rem;
+    height:2rem;
+    padding-top:0.25rem
+}
 
 .dropdown-toggle::after {
     display: none;
@@ -61,6 +66,7 @@ h3 {
 
 .dropdown-menu.show {
     left: auto !important;
+    top:4rem;
 }
 
 .main-navigation.active .sidebar {
@@ -109,7 +115,7 @@ h3 {
         margin: 0;
         border: 1px solid transparent;
         border-radius: inherit;
-        background: transparent url("./images/search.png") no-repeat center;
+        background: transparent url("~/images/search.png") no-repeat center;
         cursor: pointer;
         opacity: 0.7;
     }
@@ -150,6 +156,18 @@ h3 {
     opacity: 0.5;
     padding: 0.5rem;
     background: #000000 0% 0% no-repeat;
+}
+
+.applied-pill {
+    position: absolute;
+    top: 4%;
+    color: #FFFFFF;
+    left: 0%;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius:10px;
+    border-right:none;
+    padding: 0.5rem;
+    background: green 0% 0% no-repeat;
 }
 
 .like-on-img {
@@ -244,9 +262,26 @@ h3 {
         background-color: #F88634;
         border-color: #F88634;
     }
+.card-detail-listview {
+    display: flex;
+    column-gap: 0.5rem;
+    min-height: 45px;
+}
+.card-detail-listview p {
+    font-size: 16px !important;
+    line-height: 22px;
+    margin: 0;
+    color: #757575 !important;
+    width: max-content;
+    flex-direction: column;
+}
+.footer {
+    text-decoration: none;
+    color: #757575;
+    padding-left:5rem;
+}
 
 @media screen and (max-width:767px) {
-
     .sort {
         display: none;
     }
@@ -256,7 +291,12 @@ h3 {
     }
 }
 
-
+.active > .page-link, .page-link.active {
+    z-index: 3;
+    color: var(--bs-pagination-active-color);
+    background-color: #F88634;
+    border-color: var(--bs-pagination-active-border-color);
+}
 
 @media (min-width: 992px) {
     .sidebar {

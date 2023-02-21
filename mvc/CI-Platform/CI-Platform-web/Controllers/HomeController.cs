@@ -17,6 +17,10 @@ namespace CI_Platform_web.Controllers
         {
             return View();
         }
+        public IActionResult ListView()
+        {
+            return View();
+        }
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Pj47ybbNn9dJyHFhAtBHjbrbm2ZOoo4zsQJ8capcrGw=",
+  "Hash": "RUsK5lqNLdtH6h/dUTPBMheAdDTJsu00tmL70BrE9RE=",
   "Source": "CI-Platform-web",
   "BasePath": "_content/CI-Platform-web",
   "Mode": "Default",
@@ -1921,21 +1921,21 @@
       "OriginalItemSpec": "wwwroot\\images\\xlsx.png"
     },
     {
-      "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\js\\HomePage.js",
+      "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\js\\site.js",
       "SourceId": "CI-Platform-web",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\",
       "BasePath": "_content/CI-Platform-web",
-      "RelativePath": "js/HomePage.js",
+      "RelativePath": "js/site.js",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
+      "CopyToOutputDirectory": "Always",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\js\\HomePage.js"
+      "OriginalItemSpec": "wwwroot\\js\\site.js"
     },
     {
       "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
