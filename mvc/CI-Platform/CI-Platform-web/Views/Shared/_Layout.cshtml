@@ -8,144 +8,194 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-            crossorigin="anonymous"></script>
-            <script src="~/js/HomePage.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-  
-     <link rel="stylesheet" href="~/css/HomePage.css" asp-append-version="true" />
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    @*<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>*@
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+
+    <link rel="stylesheet" href="~/css/HomePage.css" asp-append-version="true" />
+    @*<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">*@
 </head>
 
-<body >
-    <div class=" d-flex flex-column" style="height:100vh"> 
-        <div class="flex-grow-1">
+<body onload="for_grid()">
+  
+
         <header>
-     
-            <!-- Top Nav bar starts here -->
-                <nav class="navbar navbar-expand-lg navbar-dark main-navigation" id="navbar main-navigation"> 
-                    <div class="container">
-                        <button class="navbar-toggler top-nav-toggle" type="button">
+           
+                <!-- Top Nav bar starts here -->
+                <!-- Top Nav bar starts here -->
+                <nav class="navbar navbar-dark main-navigation" id="navbar">
+                    <div class="container flex-row navbar-nav ">
+                        <button class="btn d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrollingTopNav"
+                                aria-controls="offcanvasScrollingTopNav">
                             <img src="~/images/list.png">
                         </button>
-                        <a class="navbar-brand " href="index.html">
-                            <img src="~/images/logo.png">
-                        </a>
-                        <div class=" d-lg-flex flex-lg-row">
-                            <div class="overlay d-flex d-lg-none"></div>
-                            <div class="order-lg-2 d-lg-flex flex-row d-lg-flex w-100 sidebar pb-3 pb-lg-0">
-                                <ul class="navbar-nav  mb-2 mb-lg-0 p-lg-2">
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link text-dark px-3 px-lg-2 dropdown-toggle" href="#" id="dropdown"
-                                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            &nbsp;Explore
-                                            <img src="~/images/drop-down.png ">
-                                        </a>
-                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <li><a class="dropdown-item" href="#">Action</a></li>
-                                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                                            <li>
-                                                <hr class="dropdown-divider" />
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href="#">Something else here</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="nav-item ">
-                                        <a class="nav-link text-dark px-3 px-lg-2 active" aria-current="page" href="#">
-
-                                            &nbsp;Stories
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark px-3 px-lg-2" href="#">
-
-                                   
-                                            &nbsp;News
-                                        </a>
-                                    </li>
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link text-dark px-3 px-lg-2 dropdown-toggle" href="#" id="dropdown"
-                                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            &nbsp;Policy
-                                            <img src="~/images/drop-down.png ">
-                                        </a>
-                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <li><a class="dropdown-item" href="#">Action</a></li>
-                                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                                            <li>
-                                                <hr class="dropdown-divider" />
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href="#">Something else here</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-
-                                </ul>
+                        <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+                             id="offcanvasScrollingTopNav" aria-labelledby="offcanvasScrollingLabel">
+                            <div class="offcanvas-header">
+                                <h5 class="offcanvas-title" id="offcanvasScrollingLabel"></h5>
+                                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                                        aria-label="Close"></button>
                             </div>
-                            <div class=" d-flex flex-row mb-2 mb-lg-0">
-                                <a class="nav-link text-dark px-3 px-lg-2 dropdown-toggle" href="#" id="dropdown" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="~/images/bell.png" alt="user-img" class=" rounded-circle p-2" />
-                                </a>
-                                <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="#">Notifications</a></li>
-                                    <li><a class="dropdown-item" href="#"></a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="#"></a></li>
-                                </ul>
-                                <a class="nav-link text-dark px-3 px-lg-2 dropdown-toggle" href="#" id="dropdown" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="~/images/user-img.png" alt="user-img" class=" rounded-circle user-image" />
-                                    &nbsp; Evan Donohue
-                                    <img src="~/images/drop-down.png ">
-                                </a>
-                                <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="#">My Profile</a></li>
-                                    <li><a class="dropdown-item" href="#">Volunteering Timesheet</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="#">Logout</a></li>
-                                </ul>
+                            <div class="offcanvas-body">
+                                <div class=" d-flex ">
+                                    <ul class="navbar-nav flex-column align-items-center d-flex">
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
+                                               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Explore
+                                                &nbsp; &nbsp; <img class=" pe-2" src="~/images/drop-down.png">
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-light"
+                                                aria-labelledby="navbarDarkDropdownMenuLink">
+                                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
+                                               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Stories
+                                            </a>
+                                        </li>
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
+                                               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                News
+                                            </a>
+                                        </li>
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
+                                               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Policy
+                                                &nbsp; &nbsp; <img class=" pe-2" src="~/images/drop-down.png">
+                                                <ul class="dropdown-menu dropdown-menu-light"
+                                                    aria-labelledby="navbarDarkDropdownMenuLink">
+                                                    aria-labelledby="navbarDarkDropdownMenuLink">
+                                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                                </ul>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <img class="p-1" src="~/images/logo.png">
+                        <div class="d-flex d-none d-md-flex">
+                            <a class="nav-item nav-link " href="#">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="text-dark p-2">Explore</span>
+                                        <img src="~/images/drop-down.png">
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
+                                        <li><a class="dropdown-item" href="#">Action</a></li>
+                                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </a>
 
+
+                            <a class="nav-item nav-link " href="#">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="text-dark p-2">Stories</span>
+                                    </a>
+                                </li>
+                            </a>
+                            <a class="nav-item nav-link " href="#">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="text-dark p-2">News</span>
+                                    </a>
+                                </li>
+                            </a>
+                            <a class="nav-item nav-link " href="#">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="text-dark p-2">Policy</span>
+                                        <img src="~/images/drop-down.png">
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
+                                        <li><a class="dropdown-item" href="#">Action</a></li>
+                                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </a>
+                        </div>
+                        <div class="d-flex">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img class="p-2" src="~/images/bell.png">
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link ms-3 pt-2 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img class="icon rounded-circle" src="~/images/user-img.png">
+
+                                    Evan Donhoue
+                                    <img src="~/images/drop-down.png">
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
+                            </li>
+
+
+                        </div>
+                    </div>
                 </nav>
-            <!-- Top Nav bar ends here -->
-        
+                <div class="border-navbar"></div>
+                <!-- Top Nav bar ends here -->
+                <!-- Top Nav bar ends here -->
+           
         </header>
 
 
-            <main role="main" >
+            <main role="main">
                 @RenderBody()
             </main>
-            </div>
 
-    <footer class="flex-shrink-0 flex-grow-0">
-        <div class="border-navbar"></div>
-        <a href="#" class="footer">Privacy Policy</a>
-    </footer>
+       
+
+        <footer class="flex-shrink-0 flex-grow-0">
+            <div class="border-navbar"></div>
+            <a href="#" class="footer">Privacy Policy</a>
+        </footer>
+
+ 
 
 
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+    @*    <script src="js/bootstrap.bundle.js"></script>*@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
             crossorigin="anonymous"></script>
-    
-    <script src="js/bootstrap.bundle.js"></script>
-    </div>
+
 </body>
 
 </html>

@@ -1,6 +1,5 @@
-﻿
-@{
-     Layout = "_AuthLayout";
+﻿@{
+    Layout = "_AuthLayout";
     ViewData["Title"] = "Login";
 }
 
@@ -8,31 +7,30 @@
 
 
 
-                   <div class="index-right">
-                        <div class="container">
-                            <div class="d-flex justify-content-center align-items-center">
-                                <form method="post" asp-controller="Home" asp-action="HomePage">
-                                        <div class="mb-3">
-                                          <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                          <input type="email" data-val="true" data-val-required="The email is required" placeholder="evan.donohue@gmail.com" class="form-control form-control-lg w-100z" id="exampleInputEmail1" >
-                                        </div>
-                                        <div class="mb-3">
-                                          <label for="exampleInputPassword1" class="form-label">Password</label>
-                                          <input type="password" placeholder="**********" class="form-control form-control-lg" id="exampleInputPassword1">
-                                        </div>
-                                        <div class="d-grid gap-2 mx-auto p-2 ">
-                                            <button  type="submit">Login</button>
-                                        </div>
-                                        <div class="d-flex p-2 justify-content-center">
-                                            <a asp-controller="Auth" asp-action="ForgetPass" class="password-lost">Lost your Password?</a>
-                                        </div>
-                                        <div class="d-flex justify-content-center">
-                                            <span class="password-lost mb-5"> Don't have an account? <a asp-controller="Auth" asp-action="Register">Create an account</a></span>
-                                        </div>
-                                        <a href="#" class=" d-flex p-5  mt-5 justify-content-center privacy">Privacy Policy</a>
-                                        
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-  
+<div class="index-right">
+    <div class="container">
+        <div class="d-flex justify-content-center align-items-center">
+            <form method="post" asp-controller="Home" asp-action="HomePage">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                    <input type="email" data-val="true" data-val-required="The email is required" placeholder="evan.donohue@gmail.com" class="form-control form-control-lg w-100z" id="exampleInputEmail1">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input type="password" placeholder="**********" class="form-control form-control-lg" id="exampleInputPassword1">
+                </div>
+                <div class="d-grid gap-2 mx-auto p-2 ">
+                    <button type="submit">Login</button>
+                </div>
+                <div class="d-flex p-2 justify-content-center">
+                    <a asp-controller="Auth" asp-action="ForgetPass" class="password-lost">Lost your Password?</a>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <span class="password-lost mb-5"> Don't have an account? <a asp-controller="Auth" asp-action="Register">Create an account</a></span>
+                </div>
+                <a href="#" class=" d-flex p-5  mt-5 justify-content-center privacy">Privacy Policy</a>
+
+            </form>
+        </div>
+    </div>
+</div>

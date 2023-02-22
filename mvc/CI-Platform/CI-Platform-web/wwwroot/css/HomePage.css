@@ -20,6 +20,10 @@ h3 {
     transition: top 0.4s ease-in-out;
 }
 
+.navbar-nav .dropdown-menu {
+    position: absolute; 
+}
+
 .sidebar,
 .overlay {
     position: fixed;
@@ -36,7 +40,7 @@ h3 {
     /* overflow-y:auto */
 }
 
-.overlay {
+/*.overlay {
     left: 0;
     right: 0;
     height: 100%;
@@ -44,7 +48,7 @@ h3 {
     background-color: rgba(0, 0, 0, 0.50);
     visibility: hidden;
     z-index: 1031;
-}
+}*/
 
 .nav-item a:nth-child(1) {
     color: black;
@@ -232,6 +236,14 @@ h3 {
     color: #757575 !important;
 }
 
+.mission-card-detail{
+    flex-wrap:wrap;
+    justify-content:center;
+}
+.progress{
+    width:10rem;
+}
+
 .time-pill {
     width: max-content;
     position: absolute;
@@ -298,6 +310,91 @@ h3 {
     border-color: var(--bs-pagination-active-border-color);
 }
 
+
+.swiper {
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .swiper-slide img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+.swiper {
+    width: 100%;
+    height: 300px;
+}
+
+.swiper-slide {
+    background-size: cover;
+    background-position: center;
+}
+
+.mySwiper2 {
+    height: 80%;
+    width: 100%;
+}
+
+.mySwiper {
+    height: 20%;
+    box-sizing: border-box;
+    padding: 10px 0;
+}
+
+    .mySwiper .swiper-slide {
+        width: 25%;
+        height: 100%;
+        opacity: 0.4;
+    }
+
+    .mySwiper .swiper-slide-thumb-active {
+        opacity: 1;
+    }
+
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mission-detail-border {
+    border: #E8E8E8 solid 1px;
+}
+
+.capsule {
+    border: #E8E8E8 solid 1px;
+    position: absolute;
+    padding: 0.5rem 1.5rem;
+    width: max-content;
+    transform: translate(-50%,-50%);
+    left: 50%;
+    background: #FFFFFF 0% 0% no-repeat;
+    opacity: 1;
+    border-radius: 21px;
+}
+
+
+@media(max-width: 1200px) {
+    #list-view{
+        display:none !important;
+    }
+    #grid-view {
+        display: flex !important;
+    }
+}
 @media (min-width: 992px) {
     .sidebar {
         position: relative;
@@ -324,7 +421,7 @@ h3 {
 
 @media (max-width: 991.98px) {
     .navbar-nav {
-        padding-top: 5rem;
+       
         padding-left: 1.5rem;
     }
 }
