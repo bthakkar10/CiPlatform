@@ -3,10 +3,7 @@ body {
     /* overflow-x: hidden; Prevent scroll on narrow devices */
 }
 
-a,
-li,
-button,
-h3 {
+a,li,button,h3 {
     font-family: 'NotoSans';
     color: #414141;
 }
@@ -21,11 +18,11 @@ h3 {
 }
 
 .navbar-nav .dropdown-menu {
-    position: absolute; 
+    position: absolute;
 }
 
 .sidebar,
-.overlay {
+ {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -58,10 +55,11 @@ h3 {
     width: 40px;
     height: 40px;
 }
-.icon{
-    width:1.5rem;
-    height:2rem;
-    padding-top:0.25rem
+
+.icon {
+    width: 1.5rem;
+    height: 2rem;
+    margin-top: 0.25rem
 }
 
 .dropdown-toggle::after {
@@ -70,14 +68,14 @@ h3 {
 
 .dropdown-menu.show {
     left: auto !important;
-    top:4rem;
+    top: 4rem;
 }
 
 .main-navigation.active .sidebar {
     left: 0;
 }
 
-.main-navigation.active .overlay {
+.main-navigation.active {
     visibility: visible;
 }
 
@@ -168,8 +166,8 @@ h3 {
     color: #FFFFFF;
     left: 0%;
     border-top-right-radius: 10px;
-    border-bottom-right-radius:10px;
-    border-right:none;
+    border-bottom-right-radius: 10px;
+    border-right: none;
     padding: 0.5rem;
     background: green 0% 0% no-repeat;
 }
@@ -236,12 +234,13 @@ h3 {
     color: #757575 !important;
 }
 
-.mission-card-detail{
-    flex-wrap:wrap;
-    justify-content:center;
+.mission-card-detail {
+    flex-wrap: wrap;
+    justify-content: center;
 }
-.progress{
-    width:10rem;
+
+.progress {
+    width: 10rem;
 }
 
 .time-pill {
@@ -274,23 +273,27 @@ h3 {
         background-color: #F88634;
         border-color: #F88634;
     }
+
 .card-detail-listview {
     display: flex;
     column-gap: 0.5rem;
     min-height: 45px;
 }
-.card-detail-listview p {
-    font-size: 16px !important;
-    line-height: 22px;
-    margin: 0;
-    color: #757575 !important;
-    width: max-content;
-    flex-direction: column;
-}
+
+    .card-detail-listview p {
+        font-size: 16px !important;
+        line-height: 22px;
+        margin: 0;
+        color: #757575 !important;
+        width: max-content;
+        flex-direction: column;
+    }
+
+
 .footer {
     text-decoration: none;
     color: #757575;
-    padding-left:5rem;
+    padding-left: 5rem;
 }
 
 @media screen and (max-width:767px) {
@@ -303,14 +306,16 @@ h3 {
     }
 }
 
-.active > .page-link, .page-link.active {
+
+/*for pagination but not working*/
+/*.active > .page-link, .page-link.active {
     z-index: 3;
     color: var(--bs-pagination-active-color);
     background-color: #F88634;
     border-color: var(--bs-pagination-active-border-color);
-}
+}*/
 
-
+/*for swiper*/
 .swiper {
     width: 100%;
     height: 100%;
@@ -370,12 +375,13 @@ h3 {
     object-fit: cover;
 }
 
+/*swiper ends*/
+
 .mission-detail-border {
     border: #E8E8E8 solid 1px;
 }
 
-.capsule {
-    border: #E8E8E8 solid 1px;
+.capsule-transparent {
     position: absolute;
     padding: 0.5rem 1.5rem;
     width: max-content;
@@ -383,18 +389,161 @@ h3 {
     left: 50%;
     background: #FFFFFF 0% 0% no-repeat;
     opacity: 1;
+}
+
+.capsule-border {
+    border: #E8E8E8 solid 2px;
     border-radius: 21px;
 }
 
+.mission-detail-capsule {
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border: 2px solid #757575;
+    border-radius: 25px;
+    opacity: 1;
+    color: #757575;
+    opacity: 1;
+    padding: 0.5rem 2rem;
+    margin: 2rem 1rem;
+}
 
-@media(max-width: 1200px) {
-    #list-view{
-        display:none !important;
+.mission-detail-box {
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border: 1px solid #E8E8E8;
+    border-radius: 3px;
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 8rem;
+    padding-left: 0.5rem;
+}
+
+    .mission-detail-box p {
+        font-size: 13px;
+        color: #757575;
     }
+
+    .mission-detail-box span {
+        font-size: 15px;
+        color: #414141;
+    }
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: var(--bs-nav-tabs-link-active-color);
+    background-color: var(--bs-nav-tabs-link-active-bg);
+    border-bottom: 3px solid black;
+}
+
+.comments-img {
+    height: 4rem;
+    width: auto;
+}
+
+.comments-details {
+    display: flex;
+    flex-direction: column;
+    margin-left: 3rem;
+}
+
+.table-info {
+    border: 1px solid #dee2e6;
+    padding: 1.5rem;
+    margin: 2rem 0rem;
+}
+
+.table-last-row td {
+    border-bottom: none;
+}
+
+.table-last-row span {
+    color: #757575;
+    font-size: 14px;
+}
+.volunteers-images-div {
+    border: 1px solid #dee2e6;
+    padding: 0.5rem 1rem 1rem 1rem;
+}
+    .volunteers-images-div h5 {
+        margin:1rem 0rem;
+    }
+.volunteerd-images {
+    display: grid;
+    border-top: 1px solid #dee2e6;
+    grid-template-columns: repeat(3, 1fr);
+    /*  grid-auto-rows: 200px;*/
+}
+.volunteerd-img {
+    text-align-last: center;
+}
+.volunteerd-images img {
+    height: 4rem;
+    width: auto;
+    border-radius: 50%;
+    padding: 0.5rem 1rem;
+}
+
+    .volunteerd-images figcaption {
+        color: #414141;
+        font-size: 13px;
+        text-align:center;
+    }
+.story-bg-img img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    object-position: 50% 35%;
+    filter: brightness(0.4);
+}
+.story-bg-img-text {
+    position:absolute;
+    top:50%;
+    left:50%; 
+    transform:translate(-50%,-50%);
+    text-align:center;
+}
+.btn-share-story {
+    border-color: #fff;
+    color: #fff;
+    font-weight: 500;
+    background: #F8863400 0% 0% no-repeat padding-box;
+    border: 2px solid #fff;
+
+    opacity: 1;
+}
+.story-cards-pill {
+    width: fit-content;
+    position: absolute;
+    padding: 0.5rem;
+    background: #FFFFFF;
+    color: #414141;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.story-card-icon {
+    height: 3rem;
+    width: auto;
+}
+.story-card-icon-detail {
+    margin-left: 1rem;
+    margin-top: 0.25rem;
+    color: #757575;
+    font-size:14px;
+}
+
+/*.story-bg-img img{
+    background-size:cover;
+}*/
+@media(max-width: 1200px) {
+    #list-view {
+        display: none !important;
+    }
+
     #grid-view {
         display: flex !important;
     }
 }
+
 @media (min-width: 992px) {
     .sidebar {
         position: relative;
@@ -421,7 +570,6 @@ h3 {
 
 @media (max-width: 991.98px) {
     .navbar-nav {
-       
         padding-left: 1.5rem;
     }
 }

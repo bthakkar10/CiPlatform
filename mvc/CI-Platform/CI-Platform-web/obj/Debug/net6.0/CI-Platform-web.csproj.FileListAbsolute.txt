@@ -31,7 +31,6 @@ C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\C
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\CI-Platform-web.deps.json
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\CI-Platform-web.runtimeconfig.json
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\CI-Platform-web.dll
-C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\ref\CI-Platform-web.dll
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\CI-Platform-web.pdb
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\CI-Platform-web.csproj.AssemblyReference.cache
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\CI-Platform-web.GeneratedMSBuildEditorConfig.editorconfig
@@ -272,3 +271,9 @@ C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\C
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\CI-Platform-web.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\CI-Platform-web.csproj.CopyComplete
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\wwwroot\js\site.js
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\staticwebassets\msbuild.CI-Platform-web.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\staticwebassets\msbuild.build.CI-Platform-web.props
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.CI-Platform-web.props
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.CI-Platform-web.props
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\refint\CI-Platform-web.dll
