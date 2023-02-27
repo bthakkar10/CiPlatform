@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using CI_Platform_web.Models;
+
 using System.Diagnostics;
 
 namespace CI_Platform_web.Controllers
@@ -17,6 +17,8 @@ namespace CI_Platform_web.Controllers
         {
             return View();
         }
+
+
         public IActionResult MissionDetail()
         {
             return View();
@@ -30,7 +32,7 @@ namespace CI_Platform_web.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new Models.ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

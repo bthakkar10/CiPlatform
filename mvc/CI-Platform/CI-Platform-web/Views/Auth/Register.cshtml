@@ -2,48 +2,49 @@
     ViewData["Title"] = "Register";
     Layout = "_AuthLayout";
 }
+@model CI_Platform.Entities.DataModels.User
 
-                      <div class="register-right">
-                        <div class="container">
-                            <div class="d-flex justify-content-center align-items-center">
-                                <form class="mt-xxl-5"> 
-                                    <div class="mb-2">
-                                        <label for="exampleFirstName1" class="form-label">First Name</label>
-                                        <input type="text" placeholder="evan" class="form-control form-control-lg w-100" id="exampleFirstName1" >
-                                      </div>
-                                      <div class="mb-2">
-                                        <label for="exampleLastName1" class="form-label">Last Name</label>
-                                        <input type="text" placeholder="donohue" class="form-control form-control-lg w-100" id="exampleLastName1" >
-                                      </div>
-                                      <div class="mb-2">
-                                        <label for="exampleNumber" class="form-label">Phone Number</label>
-                                        <input type="number" placeholder="123456789" class="form-control form-control-lg w-100" id="exampleNumber" >
-                                      </div>
-                                        <div class="mb-2">
-                                          <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                          <input type="email" placeholder="evan.donohue@gmail.com" class="form-control form-control-lg w-100" id="exampleInputEmail1" >
-                                        </div>
-                                        <div class="mb-2">
-                                          <label for="exampleInputPassword1" class="form-label">Password</label>
-                                          <input type="password" placeholder="**********" class="form-control form-control-lg" id="exampleInputPassword1">
-                                        </div>
-                                        <div class="mb-2">
-                                            <label for="exampleConfirmPassword1" class="form-label">Confirm Password</label>
-                                            <input type="password" placeholder="**********" class="form-control form-control-lg" id="exampleConfirmPassword1">
-                                          </div>
-                                        <div class="d-grid gap-2 mx-auto p-2 ">
-                                            <button  type="button">Register</button>
-                                        </div>
-                                        <div class="d-flex p-2 justify-content-center">
-                                            <a asp-controller="Auth" asp-action="ForgetPass" class="password  password-lost"><b>Lost your Password?</b></a>
-                                        </div>
-                                        <div class="d-flex justify-content-center">
-                                            <span class="password"> Already Registered? <a asp-controller="Auth" asp-action="Index">Login Now</a></span>
-                                        </div>
-                                       <a href="#" class=" d-flex mt-xl-3  p-4 justify-content-center privacy">Privacy Policy</a>
-                                  
-                                </form>
-                                 
-                            </div>
-                        </div>
-                    </div>
+<div class="register-right">
+    <div class="container">
+        <div class="d-flex justify-content-center align-items-center">
+            <form method="post" class="mt-xxl-5">
+                <div class="mb-2">
+                    <label asp-for="FirstName" class="form-label">First Name</label>
+                    <input type="text" placeholder="evan" class="form-control form-control-lg w-100" id="exampleFirstName1">
+                </div>
+                <div class="mb-2">
+                    <label asp-for="LastName" class="form-label">Last Name</label>
+                    <input type="text" placeholder="donohue" class="form-control form-control-lg w-100" id="exampleLastName1">
+                </div>
+                <div class="mb-2">
+                    <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                    <input type="number" placeholder="123456789" class="form-control form-control-lg w-100" id="exampleNumber">
+                </div>
+                <div class="mb-2">
+                    <label asp-for="Email" class="form-label">Email address</label>
+                    <input type="email" placeholder="evan.donohue@gmail.com" class="form-control form-control-lg w-100" id="exampleInputEmail1">
+                </div>
+                <div class="mb-2">
+                    <label asp-for="Password" class="form-label">Password</label>
+                    <input type="password" placeholder="**********" class="form-control form-control-lg" id="exampleInputPassword1">
+                </div>
+                @*<div class="mb-2">
+                    <label for="exampleConfirmPassword1" class="form-label">Confirm Password</label>
+                    <input type="password" placeholder="**********" class="form-control form-control-lg" id="exampleConfirmPassword1">
+                </div>*@
+                <div class="d-grid gap-2 mx-auto p-2 ">
+                    <button type="submit">Register</button>
+                </div>
+                <div class="d-flex p-2 justify-content-center">
+                    <a asp-controller="Auth" asp-action="ForgetPass" class="password  password-lost"><b>Lost your Password?</b></a>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <span class="password"> Already Registered? <a asp-controller="Auth" asp-action="Index">Login Now</a></span>
+                </div>
+                <a href="#" class=" d-flex mt-xl-3  p-4 justify-content-center privacy">Privacy Policy</a>
+
+            </form>
+
+        </div>
+    </div>
+</div>

@@ -1,8 +1,13 @@
+using CI_Platform.Entities.DataModels;
+using CI_Platform.Repository.Interface;
+using CI_Platform.Repository.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddDbContext<CiDbContext>();
+//builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
