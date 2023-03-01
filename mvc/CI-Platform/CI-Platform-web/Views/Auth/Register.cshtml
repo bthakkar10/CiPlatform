@@ -3,6 +3,7 @@
     Layout = "_AuthLayout";
 }
 @model CI_Platform.Entities.DataModels.User
+@*@model CI_Platform.Entities.ViewModels.register*@
 
 <div class="register-right">
     <div class="container">
@@ -10,28 +11,30 @@
             <form method="post" class="mt-xxl-5">
                 <div class="mb-2">
                     <label asp-for="FirstName" class="form-label">First Name</label>
-                    <input type="text" placeholder="evan" class="form-control form-control-lg w-100" id="exampleFirstName1">
+                    <input asp-for="FirstName" type="text" placeholder="evan" class="form-control form-control-lg w-100" id="exampleFirstName1" required>
                 </div>
                 <div class="mb-2">
                     <label asp-for="LastName" class="form-label">Last Name</label>
-                    <input type="text" placeholder="donohue" class="form-control form-control-lg w-100" id="exampleLastName1">
+                    <input asp-for="LastName" type="text" placeholder="donohue" class="form-control form-control-lg w-100" id="exampleLastName1" required>
                 </div>
                 <div class="mb-2">
                     <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
-                    <input type="number" placeholder="123456789" class="form-control form-control-lg w-100" id="exampleNumber">
+                    <input asp-for="PhoneNumber" type="number" placeholder="123456789" class="form-control form-control-lg w-100" id="exampleNumber">
                 </div>
                 <div class="mb-2">
                     <label asp-for="Email" class="form-label">Email address</label>
-                    <input type="email" placeholder="evan.donohue@gmail.com" class="form-control form-control-lg w-100" id="exampleInputEmail1">
+                    <input asp-for="Email" type="email" placeholder="evan.donohue@gmail.com" class="form-control form-control-lg w-100" id="exampleInputEmail1">
                 </div>
                 <div class="mb-2">
-                    <label asp-for="Password" class="form-label">Password</label>
-                    <input type="password" placeholder="**********" class="form-control form-control-lg" id="exampleInputPassword1">
+                    <label asp-for="Password" name="Password" class="form-label">Password</label>
+                    <input asp-for="Password"  id="Password" type="password" placeholder="**********" class="form-control form-control-lg" onkeyup="check()">
+                    <span id="cnf-msg"></span>
                 </div>
-                @*<div class="mb-2">
-                    <label for="exampleConfirmPassword1" class="form-label">Confirm Password</label>
-                    <input type="password" placeholder="**********" class="form-control form-control-lg" id="exampleConfirmPassword1">
-                </div>*@
+                <div class="mb-2">
+                    <label for="ConfirmPassword" name="ConfirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" name="ConfirmPassword" id="ConfirmPassword" placeholder="**********" class="form-control form-control-lg" onkeyup="check()">
+                    <span id="cnf-msg"></span>
+                </div>
                 <div class="d-grid gap-2 mx-auto p-2 ">
                     <button type="submit">Register</button>
                 </div>
@@ -48,3 +51,15 @@
         </div>
     </div>
 </div>
+@*<script>
+    var check = function () {
+        if (document.getElementById('Password').value == document.getElementById('ConfirmPassword').value) {
+            document.getElementById('cnf-msg').style.display = 'none';
+        } 
+        else
+        {
+            document.getElementById('cnf-msg').style.color = 'red';
+            document.getElementById('cnf-msg').innerHTML = 'Password and Confirm Password must be same!!';
+        }
+    }
+</script>*@

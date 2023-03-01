@@ -1,42 +1,31 @@
 ﻿using CI_Platform.Entities;
 using CI_Platform.Entities.DataModels;
+using CI_Platform.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Net.Mail;
+using System.Net;
+using CI_Platform.Entities.ViewModels;
+using CI_Platform.Repository.Repository;
 
 namespace CI_Platform_web.Controllers
 {
     public class AuthController : Controller
     {
-        //private readonly ILogger<AuthController> _logger;
-        private readonly CiDbContext _db;
+        private readonly ILogger<AuthController> _logger;
+        private readonly IUserRepository _dbUserRepository;
+        private readonly IEmailGeneration _emailGeneration;
 
-        //public AuthController(ILogger<AuthController> logger)
-        //{
-        //    _logger = logger;
-        //}
 
-        public AuthController(CiDbContext db)
+        public AuthController(ILogger<AuthController> logger, IUserRepository dbUserRepository, IEmailGeneration emailGeneration)
         {
-            _db = db;
-        
+            _logger = logger;
+            _dbUserRepository = dbUserRepository;
+            _emailGeneration= emailGeneration;
         }
+
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult ForgetPass()
-        {
-            return View();
-        }
-
-        public IActionResult Register()
-        {
-            return View();
-        }
-
-        public IActionResult ResetPass()
         {
             return View();
         }
@@ -47,28 +36,122 @@ namespace CI_Platform_web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var obj2 = _db.Users.Where(a => a.Email.Equals(obj.Email) && a.Password.Equals(obj.Password))
-                    .FirstOrDefault();
-                if (obj2 != null)
+                var cursor = _dbUserRepository.GetUserEmail(obj.Email);
+                if (cursor == null)
                 {
+                    TempData["error"] = "User does not exist.Please register first";
+                    return View("Register");
+                }
+                else
+                {
+                    if(cursor.Password == obj.Password)
+                    {
+                        TempData["success"] = "Login Successful!!";
+                        return RedirectToAction("HomePage", "Home");
 
-                    return RedirectToAction("Home", "HomePage");
+                    }
+                    else
+                    {
+                        TempData["error"] = "Password is Incorrect. Please try again";
+                        return View(obj);
+                    }
+                     
                 }
             }
             return View(obj);
         }
+
+
+
+        public IActionResult ForgetPass()
+        {
+            return View();
+        }
+
+        //POST
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Register(User obj)
+        public IActionResult ForgetPass(ForgotPasswordValidation obj)
         {
             if (ModelState.IsValid)
             {
-                _db.Users.Add(obj);
-                _db.SaveChanges();
-                return RedirectToAction("Index", "Auth");
+                var user = _dbUserRepository.GetUserEmail(obj.Email);
+                if (user == null)
+                {
+                    TempData["error"] = "User does not exists!!";
+                    return View(obj);
+                }
+                else
+                {
+                    _emailGeneration.GenerateEmail(obj);
+                    TempData["success"] = "Link sent successfully!! Please check your email";
+
+                }
             }
             return View(obj);
         }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Register(User obj, IFormCollection form)
+        {
+            if (ModelState.IsValid)
+            {
+                var UserEmail = _dbUserRepository.GetUserEmail(obj.Email);
+                if (UserEmail == null)
+                {
+                    if (form["ConfirmPassword"] == obj.Password)
+                    {
+                        _dbUserRepository.Add(obj);
+                        _dbUserRepository.Save();
+                        TempData["success"] = "Registeration successful!!";
+                        return RedirectToAction("HomePage", "Home");
+                    }
+                    else
+                    {
+                        TempData["error"] = "Password does not Match!!";
+                        return View(obj);
+                    }
+                }
+                else
+                {
+                    TempData["error"] = "Email Already Exists!!";
+                    return View(obj);
+                }
+            }
+            return View(obj);
+        }
+
+        public IActionResult ResetPass()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ResetPass(ResetPasswordValidation obj, IFormCollection form)
+        {
+            if (ModelState.IsValid)
+            {
+                if (form["ConfirmPassword"] == obj.Password)
+                {
+                    _dbUserRepository.UpdatePassword(obj);
+                    TempData["success"] = "Password updated successfully!! Please login now";
+                    return View("Index");
+                }
+                else
+                {
+                    TempData["error"] = "Password does not Match!!";
+                    return View(obj);
+                }
+            }
+            return View();
+        }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

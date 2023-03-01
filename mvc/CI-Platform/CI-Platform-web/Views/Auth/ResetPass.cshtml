@@ -1,30 +1,46 @@
 ﻿@{
     ViewData["Title"] = "Reset Password";
-     Layout = "_AuthLayout";
+    Layout = "_AuthLayout";
 }
-                      <div class="reset-right">
-                        <div class="container">
-                            <div class="d-flex justify-content-center align-items-center">
-                                <form class="">
-                                      <h2>New Password</h2>
-                                      <small id="HelpBlock" class="form-text mt-3 mb-3 text-muted">Please enter a new password in the fields below.</small>
-                                        <div class="mb-3">
-                                          <label for="exampleInputPassword1" class="form-label">New Password</label>
-                                          <input type="password" placeholder="**********" class="form-control form-control-lg" id="exampleInputPassword1">
-                                        </div>
-                                        
-                                        <div class="mb-3">
-                                          <label for="exampleInputPassword1" class="form-label">Confirm New Password</label>
-                                          <input type="password" placeholder="**********" class="form-control form-control-lg" id="exampleInputPassword2">
-                                        </div>
-                                        <div class="d-grid gap-2 mx-auto p-2 ">
-                                            <button type="button">Change Password</button>
-                                        </div>
-                                        <div class="d-flex mb-5 p-4 justify-content-center">
-                                          <a asp-controller="Auth" asp-action="Index" class="login">Login</a>
-                                      </div>
-                                        <a href="#" class=" d-flex p-5 mt-5 justify-content-center privacy">Privacy Policy</a>  
-                                </form>
-                            </div>
-                        </div>
-                       </div>
+@model CI_Platform.Entities.ViewModels.ResetPasswordValidation
+
+<div class="reset-right">
+    <div class="container">
+        <div class="d-flex justify-content-center align-items-center">
+            <form class="" method="post">
+                <h2>New Password</h2>
+                <small id="HelpBlock" class="form-text mt-3 mb-3 text-muted">Please enter a new password in the fields below.</small>
+                <div class="mb-3">
+                    <label asp-for="Password"  class="form-label">New Password</label>
+                    <input asp-for="Password" onkeyup="check()" type="password" placeholder="**********" class="form-control form-control-lg" id="Password">
+                    
+                </div>
+
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Confirm New Password</label>
+                    <input type="password" name="ConfirmPassword" onkeyup="check()" placeholder="**********" class="form-control form-control-lg" id="ConfirmPassword">
+                    <span id="cnf-msg"></span>
+
+                </div>
+                <div class="d-grid gap-2 mx-auto p-2 ">
+                    <button type="submit">Change Password</button>
+                </div>
+                <div class="d-flex mb-5 p-4 justify-content-center">
+                    <a asp-controller="Auth" asp-action="Index" class="login">Login</a>
+                </div>
+                <a href="#" class=" d-flex p-5 mt-5 justify-content-center privacy">Privacy Policy</a>
+            </form>
+        </div>
+    </div>
+</div>
+@*<script>
+    var check = function () {
+        if (document.getElementById('Password').value == document.getElementById('ConfirmPassword').value) {
+            document.getElementById('cnf-msg').style.display = 'none';
+        }
+        else {
+            document.getElementById('cnf-msg').style.color = 'red';
+            document.getElementById('cnf-msg').innerHTML = 'Password and Confirm Password must be same!!';
+        }
+    }
+</script>*@

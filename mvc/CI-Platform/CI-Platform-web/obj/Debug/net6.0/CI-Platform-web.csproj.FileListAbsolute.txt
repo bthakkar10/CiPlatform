@@ -323,3 +323,5 @@ C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\C
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\CI_Platform.Repository.dll
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\CI_Platform.Entities.pdb
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\CI_Platform.Repository.pdb
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\WebMatrix.Data.dll
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\WebMatrix.WebData.dll

@@ -32,6 +32,7 @@ namespace CI_Platform.Repository.Repository
             throw new NotImplementedException();
         }
 
+        
         public void Add(T entity)
         {
             dbSet.Add(entity);
