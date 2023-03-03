@@ -1,148 +1,344 @@
-﻿ <!-- search Nav bar starts here -->
+﻿@model CI_Platform.Entities.ViewModels.FilterModel
+@{
+    //var CountryList = ViewBag.CountryList;
+    //var SkillList = ViewBag.SkillList;
+    //var ThemeList = ViewBag.ThemeList;
 
-        <div class="container justify-content-between d-flex">
-            <div class="d-flex  col-auto">
-                <form class="d-flex search-form " role="search">
-                    <button type="submit">
-                        <img src="~/images/search.png"/>
-                     </button>
-                    <input type="search" placeholder="Search mission... " aria-label="Search">
-                </form>
-            </div>
-            <div class=" flex-row d-none d-md-flex">
-                <ul class="navbar-nav filter-list-view d-flex flex-row pe-3 p-2">
-                    <li class="nav-item  dropdown">
-                        <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            Country
-                            &nbsp; &nbsp; <img class="ps-5 pe-2" src="~/images/drop-down.png">
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
+}
 
+<!-- search Nav bar starts here -->
 
-                    <li class="nav-item  dropdown">
-                        <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            City
-                            &nbsp; &nbsp; <img class="ps-5 pe-2" src="~/images/drop-down.png">
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-
-
-                    <li class="nav-item  dropdown">
-                        <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            Theme
-                            &nbsp; &nbsp; <img class="ps-5 pe-2" src="~/images/drop-down.png">
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-
-
-                    <li class="nav-item  dropdown">
-                        <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            Skill
-                            &nbsp; &nbsp; <img class="ps-5 pe-2" src="~/images/drop-down.png">
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <button class="btn d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"
-                    aria-controls="offcanvasScrolling">
-                <img src="~/images/filter.png">
+<div class="container justify-content-between d-flex">
+    <div class="d-flex  col-auto">
+        <form class="d-flex search-form " role="search">
+            <button type="submit">
+                <img src="~/images/search.png" />
             </button>
-            <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
-                 id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasScrollingLabel"></h5>
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                            aria-label="Close"></button>
+            <input type="search" placeholder="Search mission... " aria-label="Search">
+        </form>
+    </div>
+
+    <div class=" flex-row d-none d-md-flex">
+        <ul class="navbar-nav filter-list-view d-flex flex-row pe-3 p-2">
+            <li class="nav-item dropdown">
+                <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink "
+                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Country
+                    &nbsp; &nbsp; <img class=" pe-2" src="~/images/drop-down.png">
+                    <ul class="dropdown-menu dropdown-menu-light scrollable-menu" id="CountryList" aria-labelledby="navbarDarkDropdownMenuLink">
+                        @foreach (var obj in ViewBag.CountryList)
+                        {
+                            <li value="@obj.Value">
+                                <a class="dropdown-item" value="@obj.Value">@obj.Text</a>
+                            </li>
+                        }
+                        @* <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>*@
+                    </ul>
+                </a>
+            </li>
+
+
+            <li class="nav-item  dropdown">
+                <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    City
+                    &nbsp; &nbsp; <img class="ps-5 pe-2" src="~/images/drop-down.png">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-light scrollable-menu" id="CityList" aria-labelledby="navbarDarkDropdownMenuLink">
+                        @*<li>*@
+                            @*<a class="dropdown-item" href="#">*@
+                                @*<div class="form-check">
+                                    <input class="form-check-input" type="checkbox" />
+                                    <label class="form-check-label">
+                                        
+                                    </label>
+                                </div>*@
+                            @*</a>*@
+                        @*</li>*@
+
+                    @*<li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>*@
+                </ul>
+            </li>
+
+
+            <li class="nav-item  dropdown">
+                <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    Theme
+                    &nbsp; &nbsp; <img class="ps-5 pe-2" src="~/images/drop-down.png">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-light scrollable-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+                    @foreach (var obj in ViewBag.ThemeList)
+                    {
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" />
+                                    <label class="form-check-label">
+                                        @obj.Text
+                                    </label>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                    @* <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>*@
+                </ul>
+            </li>
+
+
+            <li class="nav-item  dropdown">
+                <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    Skill
+                    &nbsp; &nbsp; <img class="ps-5 pe-2" src="~/images/drop-down.png">
+                </a>
+                <ul class="dropdown-menu dropdown-menu-light scrollable-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+                    @foreach (var obj in ViewBag.SkillList)
+                    {
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" />
+                                    <label class="form-check-label">
+                                        @obj.Text
+                                    </label>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                    @* <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>*@
+                </ul>
+            </li>
+        </ul>
+    </div>
+    @*offcanvas starts from here*@
+
+    <button class="img-filter border-none bg-white">
+        <img src="~/images/filter.png" type="button" data-bs-toggle="offcanvas"
+             data-bs-target="#filterMenu" aria-controls="filterMenu" />
+    </button>
+
+    <div class="offcanvas offcanvas-start" id="filterMenu" aria-labelledby="filterMenu">
+        <div class="offcanvas-header flex-row-reverse">
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="accordion" id="filters">
+                <div class="accordion-item border-none">
+                    <h2 class="accordion-header" id="country">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#countriesAccordion" aria-expanded="false"
+                                aria-controls="countriesAccordion">
+                            Country
+                        </button>
+                    </h2>
+                    <div id="countriesAccordion" class="accordion-collapse collapse"
+                         aria-labelledby="country" data-bs-parent="#filters">
+                        <div class="accordion-body">
+                            <ul class="scrollable-menu" id="CountryList" style="list-style: none">
+                                @foreach (var obj in ViewBag.CountryList)
+                                {
+                                    <li value="@obj.Value" class="mb-3">
+                                        <a class="dropdown-item" value="@obj.Value">@obj.Text</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="offcanvas-body">
-                    <div class="  d-flex ">
-                        <ul class="navbar-nav flex-column align-items-center  d-flex">
-                            <li class="nav-item  dropdown">
-                                <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
-                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Country
-                                    &nbsp; &nbsp; <img class=" pe-2" src="~/images/drop-down.png">
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-light"
-                                    aria-labelledby="navbarDarkDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                </ul>
-                            </li>
-
-
-                            <li class="nav-item  dropdown">
-                                <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
-                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    City
-                                    &nbsp; &nbsp; <img class=" pe-2" src="~/images/drop-down.png">
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-light"
-                                    aria-labelledby="navbarDarkDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                </ul>
-                            </li>
-
-
-                            <li class="nav-item  dropdown">
-                                <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
-                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Theme
-                                    &nbsp; &nbsp; <img class="pe-2" src="~/images/drop-down.png">
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-light"
-                                    aria-labelledby="navbarDarkDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                </ul>
-                            </li>
-
-
-                            <li class="nav-item  dropdown">
-                                <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
-                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Skill
-                                    &nbsp; &nbsp; <img class=" pe-2" src="~/images/drop-down.png">
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-light"
-                                    aria-labelledby="navbarDarkDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                </ul>
-                            </li>
-                        </ul>
+                <div class="accordion-item border-none">
+                    <h2 class="accordion-header" id="city">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#citiesAccordion" aria-expanded="false"
+                                aria-controls="citiesAccordion" >
+                            City
+                        </button>
+                    </h2>
+                    <div id="citiesAccordion" class="accordion-collapse collapse" aria-labelledby="city"
+                         data-bs-parent="#filters">
+                        <div class="accordion-body">
+                            <ul class="scrollable-menu" id="CityListAccordian" style="list-style: none">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item border-none">
+                    <h2 class="accordion-header" id="theme">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#themesAccordion" aria-expanded="false"
+                                aria-controls="themesAccordion">
+                            Theme
+                        </button>
+                    </h2>
+                    <div id="themesAccordion" class="accordion-collapse collapse" aria-labelledby="theme"
+                         data-bs-parent="#filters">
+                        <div class="accordion-body">
+                            @foreach (var obj in ViewBag.ThemeList)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    <label class="form-check-label">
+                                        @obj.Text
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item border-none">
+                    <h2 class="accordion-header" id="skill">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#skillsAccordion" aria-expanded="false"
+                                aria-controls="skillsAccordion">
+                            Skills
+                        </button>
+                    </h2>
+                    <div id="skillsAccordion" class="accordion-collapse collapse" aria-labelledby="skill"
+                         data-bs-parent="#filters">
+                        <div class="accordion-body">
+                            @foreach (var obj in ViewBag.SkillList)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    <label class="form-check-label">
+                                        @obj.Text
+                                    </label>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="border-navbar"></div>
-        <!-- search Nav bar ends here -->
+    </div>
+
+
+
+   @* <button class="btn d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"
+            aria-controls="offcanvasScrolling">
+        <img src="~/images/filter.png">
+    </button>
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+         id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel"></h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="  d-flex ">
+                <ul class="navbar-nav flex-column align-items-center  d-flex">
+                    <li class="nav-item  dropdown">
+                        <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Country
+                            &nbsp; &nbsp; <img class=" pe-2" src="~/images/drop-down.png">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-light scrollable-menu"
+                            aria-labelledby="navbarDarkDropdownMenuLink">
+                            @foreach (var obj in ViewBag.CountryList)
+                            {
+                                <li>
+                                    <a class="dropdown-item" href="#">@obj.Text</a>
+                                </li>
+                            }
+                           
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-item  dropdown">
+                        <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            City
+                            &nbsp; &nbsp; <img class=" pe-2" src="~/images/drop-down.png">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-light scrollable-menu"
+                            aria-labelledby="navbarDarkDropdownMenuLink">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-item  dropdown">
+                        <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Theme
+                            &nbsp; &nbsp; <img class="pe-2" src="~/images/drop-down.png">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-light scrollable-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+                            @foreach (var obj in ViewBag.ThemeList)
+                            {
+                                <li>
+                                    <a class="dropdown-item" href="#">@obj.Text</a>
+                                </li>
+                            }
+                            
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-item  dropdown">
+                        <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Skill
+                            &nbsp; &nbsp; <img class=" pe-2" src="~/images/drop-down.png">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-light scrollable-menu"
+                            aria-labelledby="navbarDarkDropdownMenuLink">
+                            @foreach (var obj in ViewBag.SkillList)
+                            {
+                                <li>
+                                    <a class="dropdown-item" href="#">@obj.Text</a>
+                                </li>
+                            }
+                           
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>*@
+</div>
+<div class="border-navbar"></div>
+<div class="container p-4 d-flex flex-row">
+    <div class="">
+        <div class=" mx-2 badge rounded-pill-filter rounded-pill bg-light text-dark">
+            Tree Plantation
+            &nbsp;&nbsp; <img src="~/images/cancel1.png">
+        </div>
+        <div class="badge mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
+            Canada
+            &nbsp;&nbsp; <img src="~/images/cancel1.png">
+        </div>
+        <div class="badge mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
+            Montreal
+            &nbsp;&nbsp; <img src="~/images/cancel1.png">
+        </div>
+        <div class="badge  mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
+            Environment
+            &nbsp;&nbsp; <img src="~/images/cancel1.png">
+        </div>
+        <div class="badge  mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
+            Environmental Science
+            &nbsp;&nbsp; <img src="~/images/cancel1.png">
+        </div>
+        <div class="badge  mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
+            Anthorpology
+            &nbsp;&nbsp; <img src="~/images/cancel1.png">
+        </div>
+    </div>
+    <a class="btn close p-2 fw-bold text-decoration-none text-dark" id="clear-all-filter">Clear All </a>
+</div>
+<!-- search Nav bar ends here -->

@@ -453,6 +453,10 @@
       "PackagePath": "staticwebassets\\images\\xlsx.png"
     },
     {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\js\\Filter.js",
+      "PackagePath": "staticwebassets\\js\\Filter.js"
+    },
+    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\js\\MissionDetail.js",
       "PackagePath": "staticwebassets\\js\\MissionDetail.js"
     },

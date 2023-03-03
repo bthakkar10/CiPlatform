@@ -137,6 +137,10 @@ public partial class CiDbContext : DbContext
             entity.ToTable("city");
 
             entity.Property(e => e.CityId).HasColumnName("city_id");
+            entity.Property(e => e.CityName)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("city_name");
             entity.Property(e => e.CountryId).HasColumnName("country_id");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
@@ -333,6 +337,7 @@ public partial class CiDbContext : DbContext
             entity.Property(e => e.EndDate)
                 .HasColumnType("datetime")
                 .HasColumnName("end_date");
+            entity.Property(e => e.MissionThemeId).HasColumnName("mission_theme_id");
             entity.Property(e => e.MissionType)
                 .HasMaxLength(20)
                 .IsUnicode(false)
@@ -351,7 +356,6 @@ public partial class CiDbContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("start_date");
             entity.Property(e => e.Status).HasColumnName("status");
-            entity.Property(e => e.ThemeId).HasColumnName("theme_id");
             entity.Property(e => e.Title)
                 .HasMaxLength(128)
                 .IsUnicode(false)
@@ -370,8 +374,8 @@ public partial class CiDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__mission__country__6477ECF3");
 
-            entity.HasOne(d => d.Theme).WithMany(p => p.Missions)
-                .HasForeignKey(d => d.ThemeId)
+            entity.HasOne(d => d.MissionTheme).WithMany(p => p.Missions)
+                .HasForeignKey(d => d.MissionThemeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__mission__theme_i__628FA481");
         });
@@ -828,6 +832,8 @@ public partial class CiDbContext : DbContext
 
             entity.ToTable("user");
 
+            entity.HasIndex(e => e.Email, "_user_email_unique").IsUnique();
+
             entity.Property(e => e.UserId).HasColumnName("user_id");
             entity.Property(e => e.Avtar)
                 .HasMaxLength(2048)
@@ -870,7 +876,10 @@ public partial class CiDbContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("password");
-            entity.Property(e => e.PhoneNumber).HasColumnName("phone_number");
+            entity.Property(e => e.PhoneNumber)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("phone_number");
             entity.Property(e => e.ProfileText)
                 .HasColumnType("text")
                 .HasColumnName("profile_text");

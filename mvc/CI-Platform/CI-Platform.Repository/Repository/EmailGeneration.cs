@@ -60,11 +60,12 @@ namespace CI_Platform.Repository.Repository
             _db.Add(ResetPasswordInfo);
             _db.SaveChanges();
 
-            var fromEmail = new MailAddress("vinitraiyani12@gmail.com");
+            var fromEmail = new MailAddress("ciplatformdemo@gmail.com");
             var toEmail = new MailAddress(obj.Email);
-            var fromEmailPassword = "uaxqaoxarnflmuzr";
+            var fromEmailPassword = "pmbqpeqxflbwwyjt";
             string subject = "Reset Password";
             string body = PasswordResetLink;
+
 
         var smtp = new SmtpClient
             {

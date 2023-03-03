@@ -1,43 +1,18 @@
 ﻿@{
     Layout = "_Layout";
     ViewData["Title"] = "Homepage";
+    var MissionList = ViewBag.MissionList;
+    //DateTime StartDate = MissionList.StartDate.GetDate();
+    //var Stars = .MissionList.MissionRatings.Rating.ToInt32();
 }
-
+@model CI_Platform.Entities.DataModels.Mission
 
 <link rel="stylesheet" href="~/css/AuthStyle.css" asp-append-version="true" />
 
 <!-- Main content starts from here -->
 <!-- selected filters div -->
 <partial name="_SearchNav"></partial>
-<div class="container p-4 d-flex flex-row">
-    <div class="">
-        <div class=" mx-2 badge rounded-pill-filter rounded-pill bg-light text-dark">
-            Tree Plantation
-            &nbsp;&nbsp; <img src="~/images/cancel1.png">
-        </div>
-        <div class="badge mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
-            Canada
-            &nbsp;&nbsp; <img src="~/images/cancel1.png">
-        </div>
-        <div class="badge mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
-            Montreal
-            &nbsp;&nbsp; <img src="~/images/cancel1.png">
-        </div>
-        <div class="badge  mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
-            Environment
-            &nbsp;&nbsp; <img src="~/images/cancel1.png">
-        </div>
-        <div class="badge  mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
-            Environmental Science
-            &nbsp;&nbsp; <img src="~/images/cancel1.png">
-        </div>
-        <div class="badge  mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
-            Anthorpology
-            &nbsp;&nbsp; <img src="~/images/cancel1.png">
-        </div>
-    </div>
-    <a class="btn close p-2 fw-bold text-decoration-none text-dark" id="clear-all-filter">Clear All </a>
-</div>
+
 <!-- selected filters div ends here -->
 <!-- Heading of page -->
 <div class="container justify-content-between d-flex mt-4">
@@ -62,17 +37,17 @@
             <img src="~/images/list.png" alt="">
         </button>
         @*<ul class="nav nav-tabs">
-            <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#" >
-            <img src="~/images/grid.png">
-            </a>
-            </li>
-            <li class="nav-item" >
-            <a class="nav-link" asp-contoller="Home" asp-action="ListView" >
-            <img src="~/images/list.png">
-            </a>
-            </li>
-            </ul>*@
+        <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="#" >
+        <img src="~/images/grid.png">
+        </a>
+        </li>
+        <li class="nav-item" >
+        <a class="nav-link" asp-contoller="Home" asp-action="ListView" >
+        <img src="~/images/list.png">
+        </a>
+        </li>
+        </ul>*@
     </div>
 </div>
 <!-- Heading of page -->
@@ -80,6 +55,8 @@
 <div class="container my-5" id="grid-view">
     <div class=" row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-sm-1   g-4">
         <!-- Card starts from col -->
+        @foreach (var obj in MissionList)
+        {
         <div class="col">
             <div class="card  ">
                 <div class="pill-on-img">
@@ -87,7 +64,7 @@
                          class="card-img-top" alt="...">
                     <div class="location">
                         <img src="~/images/pin1.png">
-                        Toronto
+                        @obj.City.CityName
                     </div>
                     <div class="like-on-img">
                         <img style="opacity: 1;" src="~/images/heart.png">
@@ -95,25 +72,34 @@
                     <div class="add-on-img">
                         <img style="opacity: 1;" src="~/images/add1.png">
                     </div>
-                    <div class="theme-pill rounded-pill"> Environment </div>
+                    <div class="theme-pill rounded-pill"> @obj.MissionTheme.Title </div>
                 </div>
                 <div class="card-body">
-                    <h3 class="card-title">Grow Trees On the path to environment sustainability</h3>
-                    <p class="card-text align-items-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...</p>
+                    <h3 class="card-title">@obj.Title</h3>
+                    <p class="card-text align-items-center">@obj.ShortDescription</p>
                     <div class="d-flex justify-content-between">
-                        Tree Canada
+                        @obj.OrganizationName
                         <div class="stars">
-                            <img src="~/images/selected-star.png">
+                            @*<img src="~/images/selected-star.png">
                             <img src="~/images/selected-star.png">
                             <img src="~/images/selected-star.png">
                             <img src="~/images/star.png">
-                            <img src="~/images/star.png">
+                            <img src="~/images/star.png">*@
+                               @* @obj.MissionRatings.MissionRatingId*@
+                               @* @foreach (var i in @obj.MissionRatings.Rating)
+                                {
+                                    <img src="~/images/selected-star.png">
+                                }*@
+                                @*@foreach (var i in @obj.cnt)
+                                {
+                                    <img src="~/images/star.png">
+                                }*@
                         </div>
                     </div>
                 </div>
 
                 <div class="m-3 list-group position-relative ">
-                    <div class="time-pill rounded-pill "> From 10/01/2019 until 25/02/2019 </div>
+                        <div class="time-pill rounded-pill "> From @obj.StartDate.ToShortDateString() until @obj.EndDate.ToShortDateString() </div>
                     <div class="row gutter mt-4 mb-2 justify-content-around">
                         <div class="col card-detail">
                             <img class="icon-detail my-2" src="~/images/Seats-left.png" alt="seats left">
@@ -141,8 +127,10 @@
                 </div>
             </div>
         </div>
+        }
+
         <!-- card 1 ends here and card 2 starts -->
-        <div class="col">
+        @*<div class="col">
             <div class="card  ">
                 <div class="pill-on-img">
                     <img src="~/images/Education-Supplies-for-Every--Pair-of-Shoes-Sold-1.png"
@@ -201,9 +189,9 @@
                     </button>
                 </div>
             </div>
-        </div>
+        </div>*@
         <!-- card 2 ends here and card 3 starts -->
-        <div class="col">
+       @* <div class="col">
             <div class="card  ">
                 <div class="pill-on-img">
                     <img src="~/images/Nourish-the-Children-in--African-country-1.png"
@@ -262,9 +250,9 @@
                     </button>
                 </div>
             </div>
-        </div>
+        </div>*@
         <!-- card 3 ends here and card 4 starts -->
-        <div class="col">
+       @* <div class="col">
             <div class="card  ">
                 <div class="pill-on-img">
                     <img src="~/images/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-1.png"
@@ -312,16 +300,17 @@
 
                 <div class=" d-flex pb-3 justify-content-center">
                     @*<button  type="submit" class="btn card-btn">*@
-                        <a class="btn card-btn" asp-controller="Home" asp-action="MissionDetail">Apply
-                            <img src="~/images/right-arrow.png">
-                        </a>
-                        
+                   @* <a class="btn card-btn" asp-controller="Home" asp-action="MissionDetail">
+                        Apply
+                        <img src="~/images/right-arrow.png">
+                    </a>*@
+
                     @*</button>*@
-                </div>
+               @* </div>
             </div>
-        </div>
+        </div>*@
         <!-- card 4 ends here and card 5 starts -->
-        <div class="col">
+       @* <div class="col">
             <div class="card  ">
                 <div class="pill-on-img">
                     <img src="~/images/Animal-welfare-&-save-birds-campaign-1.png"
@@ -383,7 +372,7 @@
                     </button>
                 </div>
             </div>
-        </div>
+        </div>*@
         <!-- card 5 ends here and card 6 starts -->
     </div>
 </div>
@@ -501,3 +490,30 @@
 
 <!-- Pagination ends here -->
 <!-- Main content ends here -->
+
+<script>
+    arr = new Set([]);
+    function isCheckedById(id) {
+
+        checkbox = document.getElementById(id);
+        console.log(id);
+        var k = document.getElementById("filter-items");
+        if (event.target.checked) {
+            arr.add(event.target.value);
+            console.log(arr);
+        }
+        else {
+            arr.delete(event.target.value);
+        }
+        console.log(arr);
+        var temp = "";
+        for (const item of arr) {
+            console.log("hello");
+            temp += `<span class="rounded-pill alert border-dark px-2 py-0 m-2">
+    ${item}
+    <button type="button" class="btn-close" value="${item}" aria-label="Close" data-bs-dismiss="alert"></button>
+    </span>`;
+        }
+        k.innerHTML = temp;
+    }
+</script>

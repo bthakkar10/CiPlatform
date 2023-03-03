@@ -32,11 +32,11 @@ namespace CI_Platform_web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(User obj)
+        public IActionResult Index(string Email, string Password)
         {
             if (ModelState.IsValid)
             {
-                var cursor = _dbUserRepository.GetUserEmail(obj.Email);
+                var cursor = _dbUserRepository.GetUserEmail(Email);
                 if (cursor == null)
                 {
                     TempData["error"] = "User does not exist.Please register first";
@@ -44,21 +44,25 @@ namespace CI_Platform_web.Controllers
                 }
                 else
                 {
-                    if(cursor.Password == obj.Password)
+                    if(cursor.Password == Password)
                     {
                         TempData["success"] = "Login Successful!!";
+                        HttpContext.Session.SetString("SEmail", Email);
+                        HttpContext.Session.SetString("Username", cursor.FirstName + " " + cursor.LastName);
                         return RedirectToAction("HomePage", "Home");
 
                     }
                     else
                     {
                         TempData["error"] = "Password is Incorrect. Please try again";
-                        return View(obj);
+                        return View();
                     }
                      
                 }
             }
-            return View(obj);
+            TempData["error"] = "invalid model state";
+
+            return View();
         }
 
 
@@ -149,6 +153,11 @@ namespace CI_Platform_web.Controllers
                 }
             }
             return View();
+        }
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("Username");
+            return RedirectToAction("Index");
         }
 
 
