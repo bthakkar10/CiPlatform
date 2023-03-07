@@ -14,7 +14,6 @@ namespace CI_Platform.Entities.ViewModels
 
         public long CityId { get; set; }
 
-
         public string? CityName { get; set; } = null!;
 
         public long SkillId { get; set; }
@@ -24,9 +23,6 @@ namespace CI_Platform.Entities.ViewModels
         public long MissionThemeId { get; set; }
 
         public string? Title { get; set; } = null!; 
-
-
-
 
     }
 }

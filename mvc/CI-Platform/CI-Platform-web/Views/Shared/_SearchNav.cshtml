@@ -1,21 +1,25 @@
-﻿@model CI_Platform.Entities.ViewModels.FilterModel
+﻿@*@model CI_Platform.Entities.ViewModels.FilterModel*@
 @{
     //var CountryList = ViewBag.CountryList;
     //var SkillList = ViewBag.SkillList;
     //var ThemeList = ViewBag.ThemeList;
 
 }
+@model CI_Platform.Entities.ViewModels.MissionListModel
+
 
 <!-- search Nav bar starts here -->
 
 <div class="container justify-content-between d-flex">
     <div class="d-flex  col-auto">
-        <form class="d-flex search-form " role="search">
+        @*<form class="d-flex search-form " role="search">
             <button type="submit">
                 <img src="~/images/search.png" />
             </button>
             <input type="search" placeholder="Search mission... " aria-label="Search">
-        </form>
+        </form>*@
+        <input style="width:18rem" type="text" class="form-control border-none" placeholder="Search mission..." aria-label="Search"
+               aria-describedby="seacrhIcon" id="search" onkeyup="search()">
     </div>
 
     <div class=" flex-row d-none d-md-flex">
@@ -26,41 +30,26 @@
                     Country
                     &nbsp; &nbsp; <img class=" pe-2" src="~/images/drop-down.png">
                     <ul class="dropdown-menu dropdown-menu-light scrollable-menu" id="CountryList" aria-labelledby="navbarDarkDropdownMenuLink">
-                        @foreach (var obj in ViewBag.CountryList)
+                        @foreach (var obj in Model.Country)
                         {
-                            <li value="@obj.Value">
-                                <a class="dropdown-item" value="@obj.Value">@obj.Text</a>
+                            <li value="@obj.CountryId">
+                                <a class="dropdown-item" value="@obj.CountryId">@obj.Name</a>
                             </li>
                         }
-                        @* <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>*@
+                        
                     </ul>
                 </a>
             </li>
 
 
-            <li class="nav-item  dropdown">
+            <li class="nav-item dropdown">
                 <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
                    data-bs-toggle="dropdown" aria-expanded="false">
                     City
                     &nbsp; &nbsp; <img class="ps-5 pe-2" src="~/images/drop-down.png">
                 </a>
-                <ul class="dropdown-menu dropdown-menu-light scrollable-menu" id="CityList" aria-labelledby="navbarDarkDropdownMenuLink">
-                        @*<li>*@
-                            @*<a class="dropdown-item" href="#">*@
-                                @*<div class="form-check">
-                                    <input class="form-check-input" type="checkbox" />
-                                    <label class="form-check-label">
-                                        
-                                    </label>
-                                </div>*@
-                            @*</a>*@
-                        @*</li>*@
-
-                    @*<li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>*@
+                <ul class="dropdown-menu dropdown-menu-light scrollable-menu CardsFilter " id="CityList" aria-labelledby="navbarDarkDropdownMenuLink">
+                        
                 </ul>
             </li>
 
@@ -71,23 +60,21 @@
                     Theme
                     &nbsp; &nbsp; <img class="ps-5 pe-2" src="~/images/drop-down.png">
                 </a>
-                <ul class="dropdown-menu dropdown-menu-light scrollable-menu" aria-labelledby="navbarDarkDropdownMenuLink">
-                    @foreach (var obj in ViewBag.ThemeList)
+                <ul class="dropdown-menu dropdown-menu-light scrollable-menu CardsFilter" aria-labelledby="navbarDarkDropdownMenuLink" id="ThemeList">
+                    @foreach (var obj in Model.Theme)
                     {
                         <li>
                             <a class="dropdown-item" href="#">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" />
                                     <label class="form-check-label">
-                                        @obj.Text
+                                        @obj.Title
                                     </label>
                                 </div>
                             </a>
                         </li>
                     }
-                    @* <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>*@
+                
                 </ul>
             </li>
 
@@ -98,15 +85,15 @@
                     Skill
                     &nbsp; &nbsp; <img class="ps-5 pe-2" src="~/images/drop-down.png">
                 </a>
-                <ul class="dropdown-menu dropdown-menu-light scrollable-menu" aria-labelledby="navbarDarkDropdownMenuLink">
-                    @foreach (var obj in ViewBag.SkillList)
+                <ul class="dropdown-menu dropdown-menu-light scrollable-menu CardsFilter" aria-labelledby="navbarDarkDropdownMenuLink">
+                    @foreach (var obj in Model.Skill)
                     {
                         <li>
                             <a class="dropdown-item" href="#">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" />
                                     <label class="form-check-label">
-                                        @obj.Text
+                                        @obj.SkillName
                                     </label>
                                 </div>
                             </a>
@@ -145,10 +132,10 @@
                          aria-labelledby="country" data-bs-parent="#filters">
                         <div class="accordion-body">
                             <ul class="scrollable-menu" id="CountryList" style="list-style: none">
-                                @foreach (var obj in ViewBag.CountryList)
+                                @foreach (var obj in Model.Country)
                                 {
-                                    <li value="@obj.Value" class="mb-3">
-                                        <a class="dropdown-item" value="@obj.Value">@obj.Text</a>
+                                    <li value="@obj.CountryId" class="mb-3">
+                                        <a class="dropdown-item" value="@obj.CountryId">@obj.Name</a>
                                     </li>
                                 }
                             </ul>
@@ -182,15 +169,17 @@
                     <div id="themesAccordion" class="accordion-collapse collapse" aria-labelledby="theme"
                          data-bs-parent="#filters">
                         <div class="accordion-body">
-                            @foreach (var obj in ViewBag.ThemeList)
+                            @foreach (var obj in Model.Theme)
                             {
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="">
                                     <label class="form-check-label">
-                                        @obj.Text
+                                        @obj.Title
                                     </label>
                                 </div>
                             }
+
+                           
                         </div>
                     </div>
                 </div>
@@ -205,12 +194,12 @@
                     <div id="skillsAccordion" class="accordion-collapse collapse" aria-labelledby="skill"
                          data-bs-parent="#filters">
                         <div class="accordion-body">
-                            @foreach (var obj in ViewBag.SkillList)
+                            @foreach (var obj in Model.Skill)
                             {
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="">
                                     <label class="form-check-label">
-                                        @obj.Text
+                                        @obj.SkillName
                                     </label>
                                 </div>
                             }
@@ -313,32 +302,45 @@
 </div>
 <div class="border-navbar"></div>
 <div class="container p-4 d-flex flex-row">
-    <div class="">
-        <div class=" mx-2 badge rounded-pill-filter rounded-pill bg-light text-dark">
-            Tree Plantation
-            &nbsp;&nbsp; <img src="~/images/cancel1.png">
-        </div>
-        <div class="badge mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
-            Canada
-            &nbsp;&nbsp; <img src="~/images/cancel1.png">
-        </div>
-        <div class="badge mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
-            Montreal
-            &nbsp;&nbsp; <img src="~/images/cancel1.png">
-        </div>
-        <div class="badge  mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
-            Environment
-            &nbsp;&nbsp; <img src="~/images/cancel1.png">
-        </div>
-        <div class="badge  mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
-            Environmental Science
-            &nbsp;&nbsp; <img src="~/images/cancel1.png">
-        </div>
-        <div class="badge  mx-2 rounded-pill-filter rounded-pill bg-light text-dark">
-            Anthorpology
-            &nbsp;&nbsp; <img src="~/images/cancel1.png">
-        </div>
+    <div class="filter-pills">
     </div>
-    <a class="btn close p-2 fw-bold text-decoration-none text-dark" id="clear-all-filter">Clear All </a>
+   
 </div>
 <!-- search Nav bar ends here -->
+
+<script>
+    //$('#car').change(function () {
+    //    var text = $('option:selected', this).text()
+    //    $('#demo ').append('<span class="alert pill">' + text + '<img src="cancel1.png" data-bs-dismiss="alert" />' + '</span>');
+    //    // $('span:last-child').append("<p>Test</p>");
+    //    $("#demo").last().append("<p>Test</p>");
+
+    //});
+    //$('#car1').change(function () {
+    //    var text = $('option:selected', this).text()
+    //    $('#demo').append('<span class="alert pill">' + text + '<img src="cancel1.png" data-bs-dismiss="alert" />' + '</span>');
+    //});
+    //$('#demo.section:empty').hide()
+
+    //$('<div id="NextElement"' + id + '>' + '</div>')
+    //    .insertAfter($('[id^="NextElement"]').last());
+
+    //$("p span").last().addClass("highlight");
+
+
+    function search() {
+        var searchString = document.getElementById("search");
+        filter = searchString.value.toUpperCase();
+        cards = document.getElementsByClassName("card-div");
+        titles = document.getElementsByClassName("card-title");
+        for (i = 0; i < cards.length; i++) {
+            a = titles[i];
+            if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                cards[i].classList.remove("d-none");
+            } else {
+                cards[i].classList.add("d-none");
+            }
+        }
+    }
+</script>
+

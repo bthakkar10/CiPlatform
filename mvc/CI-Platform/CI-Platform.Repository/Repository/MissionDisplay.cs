@@ -18,9 +18,9 @@ namespace CI_Platform.Repository.Repository
         {
             _db = db;
         }
-        public IEnumerable<Mission> DisplayMission()
+        public List<Mission> DisplayMission()
         {
-            IEnumerable<Mission> MissionList = _db.Missions.Include(m => m.City).Include(m => m.Country).Include(m => m.MissionSkills).Include(m => m.MissionTheme).Include(m => m.MissionRatings).Include(m => m.GoalMissions);
+            List<Mission> MissionList = _db.Missions.Include(m => m.City).Include(m => m.Country).Include(m => m.MissionSkills).Include(m => m.MissionTheme).Include(m => m.MissionRatings).Include(m => m.GoalMissions).Include(m => m.MissionMedia).ToList();
             return MissionList;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using CI_Platform.Entities.DataModels;
+using CI_Platform.Entities.ViewModels;
 using CI_Platform.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -21,6 +22,8 @@ namespace CI_Platform_web.Controllers
             _missionDisplay = missionDisplay;
         }
 
+
+
         public IActionResult HomePage()
         {
             if (HttpContext.Session.GetString("SEmail") != null)
@@ -31,23 +34,18 @@ namespace CI_Platform_web.Controllers
             {
                 ViewBag.Username = HttpContext.Session.GetString("Username");
             }
+            
 
-            var country = _db.Countries.ToList();
-            var countryall = new SelectList(country, "CountryId", "Name");
-            ViewBag.CountryList = countryall;
+            var vm = new MissionListModel();
 
-            var skill = _db.Skills.ToList();
-            var skillall = new SelectList(skill, "SkillId", "SkillName");
-            ViewBag.SkillList = skillall;
+            vm.Country = _db.Countries.ToList();
+            vm.Theme = _db.MissionThemes.ToList();
+            vm.Skill = _db.Skills.ToList();
+            vm.MissionList = _missionDisplay.DisplayMission();
 
-            var theme = _db.MissionThemes.ToList();
-            var themeall = new SelectList(theme, "MissionThemeId", "Title");
-            ViewBag.ThemeList = themeall;
-
-            IEnumerable<Mission> MissionList = _missionDisplay.DisplayMission();
-            ViewBag.MissionList = MissionList;
-
-            return View();
+            //var Skill = _db.Skills.ToList();
+            //var skillall = new SelectList(Skill, "SkillId", "SkillName");
+            return View(vm);
 
         }
 
