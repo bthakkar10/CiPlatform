@@ -2,14 +2,26 @@
 @*@{
     var goaltext = model.missiondetail.goalmissions.goalobjectivetext;
 }*@
-@model CI_Platform.Entities.ViewModels.MissionListModel
+
+
+
 <div class=" row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-sm-1   g-4">
     <!-- Card starts from col -->
     @foreach (var obj in Model.MissionList)
     {
-      @*  double avg_rating = obj.MissionRatings.Average(r => r.Rating); *@
+        var registered_users = obj.MissionApplications.MissionId.Count();
+        var total_seats = obj.Tota
+
+         @* double avg_rating = obj.MissionRatings.Average(r => r.Rating); *@
         <div class="col card-div">
-            <div class="card">
+            <div class="card grid-card">
+                <span class="created-date">@obj.CreatedAt </span>
+                <span class="mission-skill "> 
+                @foreach (var skill in obj.MissionSkills)
+                {
+                    <p class=" skillName" >@skill.Skill.SkillName</p>
+                }
+                </span>
                 <span class="mission-country d-none">@obj.Country.CountryId</span>
                 <span> </span>
                 <div class="pill-on-img">
@@ -69,14 +81,15 @@
                         <div class="col card-detail">
                             <img class="icon-detail my-2" src="~/images/Seats-left.png" alt="seats left">
                             <div class="card-detail-text">
-                                <p></p>
+                                 
+                                <p>  </p>
                                 <span>Seats left</span>
                             </div>
                         </div>
                         <div class="col card-detail">
                             <img class="icon-detail my-2" src="~/images/deadline.png" alt="deadline">
-                            <div class="card-detail-text">
-                                <p>@obj.StartDate.Value.AddDays(-1).ToShortDateString()</p>
+                            <div class="card-detail-text " >
+                                <p class="deadline">@obj.StartDate.Value.AddDays(-1).ToShortDateString()</p>
                                 <span>Deadline</span>
                             </div>
                         </div>

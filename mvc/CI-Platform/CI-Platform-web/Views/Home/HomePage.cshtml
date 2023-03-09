@@ -17,18 +17,21 @@
 <!-- selected filters div ends here -->
 <!-- Heading of page -->
 <div class="container justify-content-between d-flex mt-4">
-    <h2>Explore 72 Missions</h2>
+    <h2>Explore @Model.MissionList.Count Missions</h2>
     <div class="d-none d-md-flex justify-content-start">
-        <div class="dropdown mx-4 ">
+        <div class="dropdown mx-4 " >
             <div class="dropdown-toggle h-auto mt-3" href="#" role="button" data-bs-toggle="dropdown"
                  aria-expanded="false" style="border:1px solid black">
                 Sort BY
                 <img class="ps-5 pe-2" src="~/images/drop-down.png">
             </div>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Newest</a></li>
-                <li><a class="dropdown-item" href="#">Oldest</a></li>
-                <li><a class="dropdown-item" href="#">Lower Available seats</a></li>
+            <ul class="dropdown-menu" id="sortByDropdown">
+                <li><a class="dropdown-item" >Newest</a></li>
+                <li><a class="dropdown-item" >Oldest</a></li>
+                <li><a class="dropdown-item">Lowest available seats</a></li>
+                <li><a class="dropdown-item">Highest Available seats</a></li>
+                <li><a class="dropdown-item">My favourites</a></li>
+                <li><a class="dropdown-item">Registration deadline</a></li>
             </ul>
         </div>
         <button class="btn grid" type="submit" id="grid-btn" onclick="show_grid()">

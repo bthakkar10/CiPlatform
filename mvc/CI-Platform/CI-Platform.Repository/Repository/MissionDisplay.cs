@@ -27,6 +27,7 @@ namespace CI_Platform.Repository.Repository
                 .Include(m => m.MissionTheme)
                 .Include(m => m.MissionRatings)
                 .Include(m => m.GoalMissions)
+                .Include(m => m.MissionApplications)
                 .Include(m => m.MissionMedia).ToList();
             return MissionList;
         }

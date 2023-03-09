@@ -17,6 +17,8 @@ namespace CI_Platform.Entities.ViewModels
 
         public List<Skill> Skill { get; set; }
 
+        public List<MissionApplication> Application { get; set; }
+
         public List<Mission> MissionList { get; set; }
     }
 }

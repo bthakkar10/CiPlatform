@@ -142,7 +142,12 @@ function FilterMissions() {
     }).get();
     console.log(selectedThemes);
 
-    if (selectedCities.length === 0 && selectedThemes.length === 0) {
+    var selectedSkills = $('#SkillList input[type="checkbox"]:checked').map(function () {
+        return $(this).next('label').text();
+    }).get();
+    console.log(selectedSkills);
+
+    if (selectedCities.length === 0 && selectedThemes.length === 0 && selectedSkills.length === 0) {
         $('.card-div').show();
     } else {
         //console.log(selectedCities);
@@ -150,6 +155,8 @@ function FilterMissions() {
         $('.card-div').each(function () {
             var cardCity = $(this).find('.mission-city').text();
             var cardTheme = $(this).find('.mission-theme').text();
+            var cardSkill = $(this).find('.mission-skill').text();
+            console.log(cardSkill);
 
             var cityFlag = selectedCities.some(function (selectedCity) {
                 return selectedCity.trim().toUpperCase() == cardCity.trim().toUpperCase();
@@ -157,20 +164,46 @@ function FilterMissions() {
             var themeFlag = selectedThemes.some(function (selectedTheme) {
                 return selectedTheme.trim().toUpperCase() == cardTheme.trim().toUpperCase();
             });
+            var skillFlag = selectedSkills.some(function (selectedSkill) {
+                for (var i = 0; i < cardSkill.length; i++) {
+                    if (selectedSkill.trim() == cardSkill[i]) {
+                        
+                        console.log(i);
+                        return true;
+                    }
+                }
+              
+                //$(this).each(function () {
+                //    var cs = cardSkill.trim().toUpperCase();
+                //    var ss = selectedSkill.trim().toUpperCase();
+                //    /*cardSkill.trim().toUpperCase().indexOf(selectedSkill.trim().toUpperCase()) > -1;*/
+                //     return cs.indexOf(ss) > -1;
+                //});
+            });
+           
+
 
             //if (cityFlag) {
             //    $(this).show();
             //} else {
             //    $(this).hide();
             //}
-            if (selectedThemes.length === 0) {
+            if (selectedThemes.length === 0 && selectedSkills.length === 0) {
                 if (cityFlag) {
                     $(this).show();
                 } else {
                     $(this).hide();
                 }
-            } else {
+            }
+            else if (selectedSkills.length === 0) {
                 if (cityFlag && themeFlag) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            }
+            else {
+                if (skillFlag )  {
                     $(this).show();
                 } else {
                     $(this).hide();
@@ -181,25 +214,130 @@ function FilterMissions() {
 
 }
 
-//$(".dropdown #ThemeList").on('change', 'input[type="checkbox"]', function () {
-//    console.log('hello');
-//    var selectedThemes = $('input[type="checkbox"]:checked').map(function () {
-//        return $(this).next('label').text();
-//    }).get();
-//    console.log(selectedThemes);
 
-//    $('.card-div').each(function () {
-//        var cardTheme = $(this).find('.mission-theme').text();
-//        var flag = selectedThemes.some(function (selectedTheme) {
-//            return selectedTheme.trim().toUpperCase() == cardTheme.trim().toUpperCase();
-//        });
-//        if (flag) {
-//            $(this).show();
-//        } else {
-//            $(this).hide();
-//        }
-//    });
-//});
+$('#sortByDropdown li').on('click', function () {
+    selectedSortOption = $(this).find('a').text();
+
+    let gridCardsContainer = $('.grid-card').parent().parent();
+    let listCardsContainer = $('.list-card').parent();
+    var dateArray = [];
+    switch (selectedSortOption) {
+        case 'Newest':
+            let cardsDateForNewest = $('.card').find('.created-date');
+            cardsDateForNewest.each(function (j) {
+                dateArray.push($(this).text());
+            });
+            dateArray = $.unique(dateArray)
+            // Arrange array Elemeny in Ascending order
+            dateArray.sort();
+
+            // Arrange Array Element In Descending order
+            dateArray.reverse();
+            dateArray = $.unique(dateArray)
+            for (var i = 0; i < dateArray.length; i++) {
+                $('.grid-card').each(function () {
+                    if ($(this).find('.created-date').text() == dateArray[i]) {
+                        $(this).parent().appendTo($(gridCardsContainer));
+                    }
+                });
+            }
+            for (var i = 0; i < dateArray.length; i++) {
+                $('.list-card').each(function () {
+                    if ($(this).find('.created-date').text() == dateArray[i]) {
+                        $(this).parent().appendTo($(listCardsContainer));
+                    }
+                });
+            }
+            filter()
+            break;
+        case 'Oldest':
+            let cardsDateForOldest = $('.card').find('.created-date')
+            var dateArray = [];
+            cardsDateForOldest.each(function (j) {
+                dateArray.push($(this).text());
+            });
+            // Arrange array Elemeny in Ascending order
+            dateArray = $.unique(dateArray)
+            dateArray.sort(function (a, b) {
+                return new Date(a) - new Date(b);
+            });
+            console.log(dateArray)
+
+            for (var i = 0; i < dateArray.length; i++) {
+                $('.grid-card').each(function () {
+                    if ($(this).find('.created-date').text() == dateArray[i]) {
+                        console.log(true)
+
+                        $(this).parent().appendTo($(gridCardsContainer));
+                    }
+                });
+            }
+            for (var i = 0; i < dateArray.length; i++) {
+                $('.list-card').each(function () {
+                    if ($(this).find('.created-date').text() == dateArray[i]) {
+                        console.log(true)
+
+                        $(this).parent().appendTo($(listCardsContainer));
+                    }
+                });
+            }
+            filter()
+            break;
+        case 'Lowest available seats':
+
+            console.log(selectedSortOption)
+            break;
+        case 'Highest available seats':
+            console.log(selectedSortOption)
+            break;
+        case 'My favourites':
+            console.log(selectedSortOption)
+            break;
+        case 'Registration deadline':
+            let deadlines = $('.card').find('.deadline')
+            var dateArray = [];
+            deadlines.each(function (j) {
+                dateArray.push($(this).text());
+            });
+            dateArray.sort(function (a, b) {
+                var dateA = new Date(
+                    parseInt(a.substring(6)),
+                    parseInt(a.substring(3, 5)) - 1,
+                    parseInt(a.substring(0, 2))
+                );
+                var dateB = new Date(
+                    parseInt(b.substring(6)),
+                    parseInt(b.substring(3, 5)) - 1,
+                    parseInt(b.substring(0, 2))
+                );
+                return dateA - dateB;
+            });
+            //dateArray = $.unique(dateArray)
+            // Arrange array Elemeny in Ascending order
+            //dateArray.sort();
+            console.log(dateArray)
+            for (var i = 0; i < dateArray.length; i++) {
+                $('.grid-card').each(function () {
+                    if ($(this).find('.deadline').text() == dateArray[i]) {
+
+                        $(this).parent().appendTo($(gridCardsContainer));
+                    }
+                });
+            }
+            for (var i = 0; i < dateArray.length; i++) {
+                $('.list-card').each(function () {
+                    if ($(this).find('.deadline').text() == dateArray[i]) {
+                        console.log(true)
+
+                        $(this).parent().appendTo($(listCardsContainer));
+                    }
+                });
+            }
+            filter()
+            break;
+    }
+})
+
 
 
 
