@@ -1,6 +1,7 @@
 ﻿using CI_Platform.Entities.DataModels;
 using CI_Platform.Entities.ViewModels;
 using CI_Platform.Repository.Interface;
+using CI_Platform.Repository.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,13 +13,13 @@ namespace CI_Platform_web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly CiDbContext _db;
+        private readonly IFilter _filterMission;
         private readonly IMissionDisplay _missionDisplay;
 
-        public HomeController(ILogger<HomeController> logger, CiDbContext db, IMissionDisplay missionDisplay)
+        public HomeController(ILogger<HomeController> logger, IFilter filterMission, IMissionDisplay missionDisplay)
         {
             _logger = logger;
-            _db = db;   
+            _filterMission = filterMission;   
             _missionDisplay = missionDisplay;
         }
 
@@ -38,9 +39,9 @@ namespace CI_Platform_web.Controllers
 
             var vm = new MissionListModel();
 
-            vm.Country = _db.Countries.ToList();
-            vm.Theme = _db.MissionThemes.ToList();
-            vm.Skill = _db.Skills.ToList();
+            vm.Country = _filterMission.CountryList();
+            vm.Theme = _filterMission.ThemeList();
+            vm.Skill = _filterMission.SkillList();
             vm.MissionList = _missionDisplay.DisplayMission();
 
             //var Skill = _db.Skills.ToList();
@@ -53,8 +54,9 @@ namespace CI_Platform_web.Controllers
 
         public IActionResult GetCitiesByCountry(int countryId)
         {
-            var cities = _db.Cities.Where(c => c.CountryId == countryId).ToList();
-            return Json(cities);
+            var vm = new MissionListModel();
+            vm.City = _filterMission.CityList(countryId);
+            return Json(vm.City);
         }
 
         public IActionResult MissionDetail()

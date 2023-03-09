@@ -20,7 +20,14 @@ namespace CI_Platform.Repository.Repository
         }
         public List<Mission> DisplayMission()
         {
-            List<Mission> MissionList = _db.Missions.Include(m => m.City).Include(m => m.Country).Include(m => m.MissionSkills).Include(m => m.MissionTheme).Include(m => m.MissionRatings).Include(m => m.GoalMissions).Include(m => m.MissionMedia).ToList();
+            List<Mission> MissionList = _db.Missions
+                .Include(m => m.City)
+                .Include(m => m.Country)
+                .Include(m => m.MissionSkills).ThenInclude(ms => ms.Skill)
+                .Include(m => m.MissionTheme)
+                .Include(m => m.MissionRatings)
+                .Include(m => m.GoalMissions)
+                .Include(m => m.MissionMedia).ToList();
             return MissionList;
         }
     }

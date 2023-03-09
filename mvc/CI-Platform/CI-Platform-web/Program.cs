@@ -11,7 +11,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<CiDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IEmailGeneration, EmailGeneration>();
+builder.Services.AddScoped<IFilter, Filter>();
 builder.Services.AddScoped<IMissionDisplay, MissionDisplay>();
+
 builder.Services.AddSession();
 builder.Services.AddMemoryCache();
 

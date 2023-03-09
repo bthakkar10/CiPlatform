@@ -1,5 +1,4 @@
 ﻿using CI_Platform.Entities.DataModels;
-using CI_Platform.Entities.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +7,14 @@ using System.Threading.Tasks;
 
 namespace CI_Platform.Repository.Interface
 {
-    public interface IMissionDisplay
+    public interface IFilter
     {
-        public List<Mission> DisplayMission();
-       
+       public List<Country> CountryList();
+
+        public List<City> CityList(int CountryId);
+
+        public List<MissionTheme> ThemeList();
+
+        public List<Skill> SkillList();
     }
 }

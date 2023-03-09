@@ -2,16 +2,19 @@
 @*@{
     var goaltext = model.missiondetail.goalmissions.goalobjectivetext;
 }*@
+@model CI_Platform.Entities.ViewModels.MissionListModel
 <div class=" row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-sm-1   g-4">
     <!-- Card starts from col -->
     @foreach (var obj in Model.MissionList)
     {
+      @*  double avg_rating = obj.MissionRatings.Average(r => r.Rating); *@
         <div class="col card-div">
             <div class="card">
                 <span class="mission-country d-none">@obj.Country.CountryId</span>
+                <span> </span>
                 <div class="pill-on-img">
-                    @*<img*@ @*src="~/images/Grow-Trees-On-the-path-to-environment-sustainability-1.png"*@
-                    @if (obj.MissionMedia == null)
+                    <img src="~/images/Grow-Trees-On-the-path-to-environment-sustainability-1.png" class="card-img-top" alt="...">
+                    @*@if (obj.MissionMedia == null)
                     {
                         <img src="~/images/Grow-Trees-On-the-path-to-environment-sustainability-1.png" class="card-img-top" />
                     }
@@ -19,7 +22,7 @@
                     {
                         <img src="@obj.MissionMedia[0].MediaPath" class="card-img-top" />
                     }
-                    @*class="card-img-top" alt="...">*@
+                   *@
                     <div class="location">
                         <img src="~/images/pin1.png">
                         <span class="mission-city">@obj.City.CityName</span>
@@ -38,10 +41,7 @@
                     <div class="d-flex justify-content-between">
                         @obj.OrganizationName
                         <div class="stars">
-                            @* @foreach(var i in obj.MissionRatings[0].Rating)
-                        {
-                        <img src="~/images/selected-star.png"/>
-                        }*@
+                           @*@obj.MissionRatings.Rating*@
                         </div>
 
                     </div>
@@ -53,7 +53,7 @@
 
                         @if (obj.MissionType.Equals("Time"))
                         {
-                            <span>From @obj.StartDate.ToShortDateString() until @obj.EndDate.ToShortDateString()</span>
+                            <span>From @obj.StartDate.Value.ToShortDateString() until @obj.EndDate.Value.ToShortDateString()</span>
                         }
                         @* @if (obj.StartDate.AddDays(+1).ToShortDate() > DateTime.Today.ToShortDateString())
                     {
@@ -61,7 +61,7 @@
                     }*@
                         @if (obj.MissionType.Equals("Goal") && obj.GoalMissions.Count > 0)
                         {
-                            <span>@obj.GoalMissions[0].GoalObjectiveText</span>
+                            @*<span>@obj.GoalMissions</span>*@
                         }
 
                     </div>
@@ -76,7 +76,7 @@
                         <div class="col card-detail">
                             <img class="icon-detail my-2" src="~/images/deadline.png" alt="deadline">
                             <div class="card-detail-text">
-                                <p>@obj.StartDate.AddDays(-1).ToShortDateString()</p>
+                                <p>@obj.StartDate.Value.AddDays(-1).ToShortDateString()</p>
                                 <span>Deadline</span>
                             </div>
                         </div>

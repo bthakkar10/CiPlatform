@@ -3,29 +3,29 @@
 $("#CountryList li").click(function () {
     $(this).addClass('selected');
 
-    var countryId = $(this).val();
-    console.log(countryId);
+    var CountryId = $(this).val();
+    console.log(CountryId);
 
     $('.card-div').each(function () {
-        console.log("hello");
+       
         var cardCountry = $(this).find('.mission-country').text();
-        console.log(cardCountry);
+      
 
-        if (countryId == cardCountry) {
+        if (CountryId == cardCountry) {
             $(this).show();
         } else {
             $(this).hide();
         }
     });
 
-    GetCitiesByCountry(countryId);
+    GetCitiesByCountry(CountryId);
 });
 
-function GetCitiesByCountry(countryId) {
+function GetCitiesByCountry(CountryId) {
     $.ajax({
         type: "GET",
         url: "/Home/GetCitiesByCountry",
-        data: { countryId: countryId },
+        data: { CountryId: CountryId },
         success: function (data) {
             var dropdown = $("#CityList");
             dropdown.empty();
@@ -41,7 +41,7 @@ function GetCitiesByCountry(countryId) {
     $.ajax({
         type: "GET",
         url: "/Home/GetCitiesByCountry",
-        data: { countryId: countryId },
+        data: { CountryId: CountryId },
         success: function (data) {
             var dropdown = $("#CityListAccordian");
             dropdown.empty();
@@ -89,6 +89,7 @@ allDropdowns.each(function () {
                 if (filterPills.children('.pill').length === 1) {
                     filterPills.children('.closeAll').remove();
                 }
+                FilterMissions();
             });
 
             // Add "Close All" button
@@ -97,6 +98,7 @@ allDropdowns.each(function () {
                 filterPills.children('.closeAll').click(function () {
                     allDropdowns.find('input[type="checkbox"]').prop('checked', false);
                     filterPills.empty();
+                    FilterMissions();
                 });
 
                 //add the pill before the close icon
@@ -123,14 +125,12 @@ allDropdowns.each(function () {
             }
         }
 
-        //FilterMissions();
+        FilterMissions();
     });
 
 })
 
-
-$(".dropdown .CardsFilter").on('change', 'input[type="checkbox"]', function () {
-    console.log('hello');
+function FilterMissions() { 
 
     var selectedCities = $('#CityList input[type="checkbox"]:checked').map(function () {
         return $(this).next('label').text();
@@ -158,11 +158,11 @@ $(".dropdown .CardsFilter").on('change', 'input[type="checkbox"]', function () {
                 return selectedTheme.trim().toUpperCase() == cardTheme.trim().toUpperCase();
             });
 
-            if (cityFlag) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
+            //if (cityFlag) {
+            //    $(this).show();
+            //} else {
+            //    $(this).hide();
+            //}
             if (selectedThemes.length === 0) {
                 if (cityFlag) {
                     $(this).show();
@@ -178,7 +178,8 @@ $(".dropdown .CardsFilter").on('change', 'input[type="checkbox"]', function () {
             }
         });
     }
-});
+
+}
 
 //$(".dropdown #ThemeList").on('change', 'input[type="checkbox"]', function () {
 //    console.log('hello');
