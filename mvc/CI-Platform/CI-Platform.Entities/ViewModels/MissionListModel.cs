@@ -1,4 +1,5 @@
 ﻿using CI_Platform.Entities.DataModels;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,14 @@ namespace CI_Platform.Entities.ViewModels
 
         public List<MissionApplication> Application { get; set; }
 
+
+        public List<MissionRating> MissionRatings { get; set; }
+        
+
+        public List<GoalMission> goalMissions { get; set; }
+
         public List<Mission> MissionList { get; set; }
+      
+        
     }
 }

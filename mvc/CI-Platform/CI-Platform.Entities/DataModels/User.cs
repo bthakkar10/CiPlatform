@@ -27,7 +27,7 @@ public partial class User
 
     public long CityId { get; set; }
 
-    public long CountryId { get; set; } 
+    public long CountryId { get; set; }
 
     public string? ProfileText { get; set; }
 
@@ -42,7 +42,6 @@ public partial class User
     public DateTime? UpdatedAt { get; set; }
 
     public DateTime? DeletedAt { get; set; }
-
 
     public virtual City City { get; set; } = null!;
 

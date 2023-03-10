@@ -2,21 +2,25 @@
 @*@{
     var goaltext = model.missiondetail.goalmissions.goalobjectivetext;
 }*@
-
+@model CI_Platform.Entities.ViewModels.MissionListModel
 
 
 <div class=" row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-sm-1   g-4">
     <!-- Card starts from col -->
     @foreach (var obj in Model.MissionList)
     {
-        var registered_users = obj.MissionApplications.MissionId.Count();
-        var total_seats = obj.Tota
 
-         @* double avg_rating = obj.MissionRatings.Average(r => r.Rating); *@
+        double avg_rating = obj.MissionRatings.Average(r => r.Rating);
+
+
+        var registered_users = obj.MissionApplications.Count(m => m.ApprovalStatus.Contains("APPROVE"));
+        var total_seats = obj.TotalSeats - registered_users;
+       
+    
         <div class="col card-div">
             <div class="card grid-card">
-                <span class="created-date">@obj.CreatedAt </span>
-                <span class="mission-skill "> 
+                <span class="created-date d-none">@obj.CreatedAt </span>
+                <span class="mission-skill d-none"> 
                 @foreach (var skill in obj.MissionSkills)
                 {
                     <p class=" skillName" >@skill.Skill.SkillName</p>
@@ -25,7 +29,11 @@
                 <span class="mission-country d-none">@obj.Country.CountryId</span>
                 <span> </span>
                 <div class="pill-on-img">
-                    <img src="~/images/Grow-Trees-On-the-path-to-environment-sustainability-1.png" class="card-img-top" alt="...">
+                    @foreach (var img_mission in obj.MissionMedia)
+                    {
+                       
+                        <img src=@img_mission.MediaPath class="card-img-top" alt="@img_mission.MediaName">
+                    }
                     @*@if (obj.MissionMedia == null)
                     {
                         <img src="~/images/Grow-Trees-On-the-path-to-environment-sustainability-1.png" class="card-img-top" />
@@ -39,9 +47,10 @@
                         <img src="~/images/pin1.png">
                         <span class="mission-city">@obj.City.CityName</span>
                     </div>
-                    <div class="like-on-img">
+                    <button  type="submit" class="like-on-img bi-heart favourite" data-mission-id="@obj.MissionId">
+                       
                         <img style="opacity: 1;" src="~/images/heart.png">
-                    </div>
+                    </button>
                     <div class="add-on-img">
                         <img style="opacity: 1;" src="~/images/add1.png">
                     </div>
@@ -53,7 +62,15 @@
                     <div class="d-flex justify-content-between">
                         @obj.OrganizationName
                         <div class="stars">
-                           @*@obj.MissionRatings.Rating*@
+                            @for(int i=1;i<=avg_rating; i++)
+                            {
+                                <img src="~/images/selected-star.png"/>
+                            }
+                            @for(int i=5;i>avg_rating; i--)
+                            {
+                                <img src="~/images/star.png"/>
+                            }
+
                         </div>
 
                     </div>
@@ -67,13 +84,13 @@
                         {
                             <span>From @obj.StartDate.Value.ToShortDateString() until @obj.EndDate.Value.ToShortDateString()</span>
                         }
-                        @* @if (obj.StartDate.AddDays(+1).ToShortDate() > DateTime.Today.ToShortDateString())
-                    {
-                    <span>Ongoing Opprtunity</span>
-                    }*@
-                        @if (obj.MissionType.Equals("Goal") && obj.GoalMissions.Count > 0)
+
+                        else
                         {
-                            @*<span>@obj.GoalMissions</span>*@
+                            @foreach (var goal_mission in obj.GoalMissions)
+                                {
+                                       @goal_mission.GoalObjectiveText
+                                }
                         }
 
                     </div>
@@ -81,8 +98,8 @@
                         <div class="col card-detail">
                             <img class="icon-detail my-2" src="~/images/Seats-left.png" alt="seats left">
                             <div class="card-detail-text">
-                                 
-                                <p>  </p>
+
+                                <p class="seat-left">  @total_seats </p>
                                 <span>Seats left</span>
                             </div>
                         </div>
@@ -98,7 +115,7 @@
 
                 <div class=" d-flex pb-3 justify-content-center">
                     <button type="submit" class="btn card-btn">
-                        Apply
+                        Apply  &nbsp;&nbsp;&nbsp;
                         <img src="~/images/right-arrow.png">
                         <img src="~/images/right-arrow2.png" />
                     </button>

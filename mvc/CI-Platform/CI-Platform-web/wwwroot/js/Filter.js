@@ -7,9 +7,9 @@ $("#CountryList li").click(function () {
     console.log(CountryId);
 
     $('.card-div').each(function () {
-       
+
         var cardCountry = $(this).find('.mission-country').text();
-      
+
 
         if (CountryId == cardCountry) {
             $(this).show();
@@ -55,6 +55,119 @@ function GetCitiesByCountry(CountryId) {
     });
 }
 
+//$('.favourite').click(function () {
+//    var misssionId = $(this).data('mission-id');
+//    console.log(misssionId);
+
+//    $.ajax({
+//        url: '/Home/AddToFavourites',
+//        type: 'POST',
+//        data: { missionId: misssionId },
+//        success: function (result) {
+//            console.log(misssionId);
+//            var CardMissionId = $('.favourite')
+//            CardMissionId.each(function () {
+//                if ($(this).data('mission-id') === missionId) {
+//                    if ($(this).hasClass('bi-heart')) {
+//                        $(this).addClass('bi-heart-fill text-danger')
+//                        $(this).removeClass('bi-heart text-light')
+//                        console.log("added")
+//                    }
+//                }
+//            });
+            
+//        },
+//        error: function (error) {
+//            alert("An error occured. Please try later!!");
+//        }
+//    });
+//});
+
+
+
+
+$('.favourite').click(function () {
+    var button = $(this)
+    var missionId = $(this).data('mission-id');
+    console.log(missionId);
+    $.ajax({
+        url: '/Home/AddToFavourites',
+        type: 'POST',
+        data: { missionId: missionId },
+        success: function (result) {
+            // Show a success message or update the UI
+            console.log(missionId)
+            var allMissionId = $('.favourite')
+            allMissionId.each(function () {
+                if ($(this).data('mission-id') === missionId) {
+                    if ($(this).hasClass('bi-heart')) {
+                        $(this).addClass('bi-heart-fill text-danger')
+                        $(this).removeClass('bi-heart text-light')
+                        console.log("added")
+                    }
+                    else {
+                        $(this).addClass('bi-heart text-light')
+                        $(this).removeClass('bi-heart-fill text-danger')
+                        console.log("remove")
+                    }
+                }
+            })
+        },
+        error: function (error) {
+            // Show an error message or handle the error
+            console.log("error")
+
+        }
+    });
+});
+
+//function addToFavourites(missionId) {
+//    $.ajax({
+//        type: "POST",
+//        url: "/Home/AddToFavourites",
+//        data: { missionId: missionId },
+//        success: function () {
+//            alert("Added to favourites!");
+
+//        },
+//        error: function () {
+//            alert("An error occurred.");
+//        }
+//    });
+//}
+
+//add to favourites
+
+// get the button element
+/*var addButton = document.getElementByClassName("add-to-favourites-button");*/
+
+// add a click event listener to the button
+//addButton.addEventListener("click", function () {
+//});
+//    // get the data you want to insert into the database
+//    //var favouriteData = {
+//    //    userId: "1234", // replace with the actual user ID
+//    //    missionName: "My favourite mission",
+//    //    missionDescription: "This is my favourite mission entry"
+//    //};
+
+
+
+//    // make an AJAX request to the server-side API endpoint
+//    var xhr = new XMLHttpRequest();
+//    xhr.open("POST", "/api/favourites", true);
+//    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+//    xhr.onreadystatechange = function () {
+//        if (xhr.readyState === 4 && xhr.status === 200) {
+//            // do something if the insertion was successful
+//            console.log("Favourite mission inserted into database for user " + favouriteData.userId);
+//        }
+//    };
+//    xhr.send(JSON.stringify(favouriteData));
+
+
+
+
 let filterPills = $('.filter-pills');
 let allDropdowns = $('.dropdown ul');
 allDropdowns.each(function () {
@@ -86,10 +199,11 @@ allDropdowns.each(function () {
                 // Uncheck the corresponding checkbox
                 const checkboxElement = dropdown.find(`input[type="checkbox"][value="${selectedOptionValue}"]`);
                 checkboxElement.prop('checked', false);
+                FilterMissions();
                 if (filterPills.children('.pill').length === 1) {
                     filterPills.children('.closeAll').remove();
                 }
-                FilterMissions();
+                
             });
 
             // Add "Close All" button
@@ -130,7 +244,7 @@ allDropdowns.each(function () {
 
 })
 
-function FilterMissions() { 
+function FilterMissions() {
 
     var selectedCities = $('#CityList input[type="checkbox"]:checked').map(function () {
         return $(this).next('label').text();
@@ -164,23 +278,11 @@ function FilterMissions() {
             var themeFlag = selectedThemes.some(function (selectedTheme) {
                 return selectedTheme.trim().toUpperCase() == cardTheme.trim().toUpperCase();
             });
-            var skillFlag = selectedSkills.some(function (selectedSkill) {
-                for (var i = 0; i < cardSkill.length; i++) {
-                    if (selectedSkill.trim() == cardSkill[i]) {
-                        
-                        console.log(i);
-                        return true;
-                    }
-                }
-              
-                //$(this).each(function () {
-                //    var cs = cardSkill.trim().toUpperCase();
-                //    var ss = selectedSkill.trim().toUpperCase();
-                //    /*cardSkill.trim().toUpperCase().indexOf(selectedSkill.trim().toUpperCase()) > -1;*/
-                //     return cs.indexOf(ss) > -1;
-                //});
+
+            var skillFlag = selectedSkills.every(function (selectedSkill) {
+                return cardSkill.indexOf(selectedSkill.trim()) >= 0;
+                   
             });
-           
 
 
             //if (cityFlag) {
@@ -203,12 +305,41 @@ function FilterMissions() {
                 }
             }
             else {
-                if (skillFlag )  {
+                if (skillFlag && cityFlag && themeFlag)  {
                     $(this).show();
-                } else {
+                }
+                else {
                     $(this).hide();
                 }
             }
+            //if (selectedCities.length === 0) {
+            //    $(this).hide();
+            //}
+            //else if (cityFlag) {
+            //    if (selectedThemes.length === 0) {
+            //        $(this).show();
+            //    }
+            //    else if (themeFlag) {
+            //        if (selectedSkills.length === 0) {
+            //            $(this).show();
+            //        }
+            //        else if (skillFlag) {
+            //            $(this).show();
+            //        }
+            //        else {
+            //            $(this).hide();
+            //        }
+
+            //    }
+            //    else {
+            //        $(this).hide();
+            //    }
+            //}
+            //else {
+            //    $(this).hide();
+            //}
+
+
         });
     }
 
@@ -221,6 +352,7 @@ $('#sortByDropdown li').on('click', function () {
     let gridCardsContainer = $('.grid-card').parent().parent();
     let listCardsContainer = $('.list-card').parent();
     var dateArray = [];
+    var SeatLeftArray = [];
     switch (selectedSortOption) {
         case 'Newest':
             let cardsDateForNewest = $('.card').find('.created-date');
@@ -248,7 +380,7 @@ $('#sortByDropdown li').on('click', function () {
                     }
                 });
             }
-            filter()
+
             break;
         case 'Oldest':
             let cardsDateForOldest = $('.card').find('.created-date')
@@ -281,18 +413,74 @@ $('#sortByDropdown li').on('click', function () {
                     }
                 });
             }
-            filter()
+
             break;
         case 'Lowest available seats':
+            let cardsSeatLeftForLowest = $('.card').find('.seat-left');
+            cardsSeatLeftForLowest.each(function (j) {
+                SeatLeftArray.push(parseInt($(this).text()));
+            });
 
-            console.log(selectedSortOption)
+            SeatLeftArray = $.unique(SeatLeftArray)
+            // Arrange array Elemeny in Ascending order
+
+            SeatLeftArray.sort(function (a, b) {
+                return a - b
+            });
+
+            for (var i = 0; i < SeatLeftArray.length; i++) {
+                $('.grid-card').each(function () {
+                    if ($(this).find('.seat-left').text() == SeatLeftArray[i]) {
+                        $(this).parent().appendTo($(gridCardsContainer));
+                    }
+                });
+            }
+            for (var i = 0; i < SeatLeftArray.length; i++) {
+                $('.list-card').each(function () {
+                    if ($(this).find('.seat-left').text() == SeatLeftArray[i]) {
+                        $(this).parent().appendTo($(listCardsContainer));
+                    }
+                });
+            }
+
             break;
         case 'Highest available seats':
-            console.log(selectedSortOption)
+
+            let cardsSeatLeftForHighest = $('.card').find('.seat-left');
+            cardsSeatLeftForHighest.each(function (j) {
+                SeatLeftArray.push(parseInt($(this).text()));
+            });
+
+            SeatLeftArray = $.unique(SeatLeftArray)
+            // Arrange array Elemeny in Ascending order
+
+            SeatLeftArray.sort(function (a, b) {
+                return a - b
+            });
+
+            // Arrange array Element in Descending order
+            SeatLeftArray.reverse();
+
+            for (var i = 0; i < SeatLeftArray.length; i++) {
+                $('.grid-card').each(function () {
+                    if ($(this).find('.seat-left').text() == SeatLeftArray[i]) {
+                        $(this).parent().appendTo($(gridCardsContainer));
+                    }
+                });
+            }
+            for (var i = 0; i < SeatLeftArray.length; i++) {
+                $('.list-card').each(function () {
+                    if ($(this).find('.seat-left').text() == SeatLeftArray[i]) {
+                        $(this).parent().appendTo($(listCardsContainer));
+                    }
+                });
+            }
             break;
+
         case 'My favourites':
-            console.log(selectedSortOption)
+
             break;
+
         case 'Registration deadline':
             let deadlines = $('.card').find('.deadline')
             var dateArray = [];
@@ -333,7 +521,7 @@ $('#sortByDropdown li').on('click', function () {
                     }
                 });
             }
-            filter()
+            /*    filter() */
             break;
     }
 })
@@ -341,4 +529,4 @@ $('#sortByDropdown li').on('click', function () {
 
 
 
-      
+

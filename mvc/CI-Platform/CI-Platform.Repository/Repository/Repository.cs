@@ -20,17 +20,17 @@ namespace CI_Platform.Repository.Repository
             _db = db;
             this.dbSet = _db.Set<T>();
         }
-        public T GetFirstOrDefault(Expression <T, bool> filter)
-        {
-            IQueryable<T> query = dbSet;
-            query = query.Where(Convert(filter));
-            return query.FirstOrDefault();
-        }
+        //public T GetFirstOrDefault(Expression <T, bool> filter)
+        //{
+        //    IQueryable<T> query = dbSet;
+        //    query = query.Where(Convert(filter));
+        //    return query.FirstOrDefault();
+        //}
 
-        private Expression<Func<T, bool>> Convert(Expression<T, bool> filter)
-        {
-            throw new NotImplementedException();
-        }
+        //private Expression<Func<T, bool>> Convert(Expression<T, bool> filter)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         
         public void Add(T entity)
@@ -38,15 +38,15 @@ namespace CI_Platform.Repository.Repository
             dbSet.Add(entity);
         }
 
-        public IEnumerable<T> GetAll()
-        {
-            IQueryable<T> query = dbSet;
-            return query.ToList();
-        }
+        //public IEnumerable<T> GetAll()
+        //{
+        //    IQueryable<T> query = dbSet;
+        //    return query.ToList();
+        //}
 
-        public T GetFirstOrDefault(Expression<Func<T, bool>> filter)
-        {
-            throw new NotImplementedException();
-        }
+        //public T GetFirstOrDefault(Expression<Func<T, bool>> filter)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

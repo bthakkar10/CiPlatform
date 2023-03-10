@@ -7,7 +7,7 @@ public partial class MissionApplication
 {
     public long MissionApplicationId { get; set; }
 
-    public int MissionId { get; set; }
+    public long MissionId { get; set; }
 
     public long UserId { get; set; }
 

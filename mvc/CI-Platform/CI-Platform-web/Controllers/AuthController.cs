@@ -32,7 +32,7 @@ namespace CI_Platform_web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(string Email, string Password)
+        public IActionResult Index(string Email, string Password, long UserId)
         {
             if (ModelState.IsValid)
             {
@@ -48,7 +48,9 @@ namespace CI_Platform_web.Controllers
                     {
                         TempData["success"] = "Login Successful!!";
                         HttpContext.Session.SetString("SEmail", Email);
+                        HttpContext.Session.SetString("Id", UserId.ToString());
                         HttpContext.Session.SetString("Username", cursor.FirstName + " " + cursor.LastName);
+
                         return RedirectToAction("HomePage", "Home");
 
                     }

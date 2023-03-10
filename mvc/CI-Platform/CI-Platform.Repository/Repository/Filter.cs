@@ -20,6 +20,7 @@ namespace CI_Platform.Repository.Repository
         {
             return _db.Countries.ToList();
         }
+
         public List<City> CityList(int CountryId)
         {
             return _db.Cities.Where(c => c.CountryId == CountryId).ToList();
