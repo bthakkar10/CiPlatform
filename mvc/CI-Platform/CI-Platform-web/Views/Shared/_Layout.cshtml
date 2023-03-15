@@ -1,6 +1,6 @@
 ﻿
 @{
-    var user_id = ViewBag.Id;
+    var Id = ViewBag.Id;
     var email = ViewBag.email;
     var Username = ViewBag.Username;
 }
@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 </head>
 
-<body style="display:flex; flex-direction:column; min-height:100vh;" onload="for_grid()">
+<body style="display:flex; flex-direction:column; min-height:100vh;" >
   
 
         <header>
@@ -157,7 +157,7 @@
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     <img class="icon rounded-circle" src="~/images/user-img.png">
 
-                                   @Username
+                            @Username
                                     <img src="~/images/drop-down.png">
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
@@ -211,6 +211,7 @@
             crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="~/js/Filter.js" asp-append-version="true"></script>
+    <script src="~/js/fav.js" asp-append-version="true"></script>
 
 </body>
 

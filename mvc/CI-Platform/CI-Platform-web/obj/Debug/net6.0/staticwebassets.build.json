@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "QDIroQHsdKgtMpnawF4JPilYXT5x0rxTafNQ4KoyJBI=",
+  "Hash": "IkhImVuMclgDbWDW6FNIMn5lEzyt7P4hcKwBdDwV9FQ=",
   "Source": "CI-Platform-web",
   "BasePath": "_content/CI-Platform-web",
   "Mode": "Default",
@@ -1273,6 +1273,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\next.png"
+    },
+    {
+      "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\no-image-icon-21.png",
+      "SourceId": "CI-Platform-web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\",
+      "BasePath": "_content/CI-Platform-web",
+      "RelativePath": "images/no-image-icon-21.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\no-image-icon-21.png"
     },
     {
       "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Nourish-the-Children-in--African-country.png",

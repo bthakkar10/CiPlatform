@@ -1,5 +1,6 @@
 ﻿@using System.Linq;
 @{
+   
     Layout = "_Layout";
     ViewData["Title"] = "Homepage";
     //var MissionList = ViewBag.MissionList;
@@ -17,7 +18,7 @@
 <!-- selected filters div ends here -->
 <!-- Heading of page -->
 <div class="container justify-content-between d-flex mt-4">
-    <h2>Explore @Model.MissionList.Count Missions</h2>
+    <h2>Explore Missions</h2>
     <div class="d-none d-md-flex justify-content-start">
         <div class="dropdown mx-4 " >
             <div class="dropdown-toggle h-auto mt-3" href="#" role="button" data-bs-toggle="dropdown"
@@ -26,12 +27,12 @@
                 <img class="ps-5 pe-2" src="~/images/drop-down.png">
             </div>
             <ul class="dropdown-menu" id="sortByDropdown">
-                <li><a class="dropdown-item" >Newest</a></li>
-                <li><a class="dropdown-item" >Oldest</a></li>
-                <li><a class="dropdown-item">Lowest available seats</a></li>
-                <li><a class="dropdown-item">Highest available seats</a></li>
-                <li><a class="dropdown-item">My favourites</a></li>
-                <li><a class="dropdown-item">Registration deadline</a></li>
+                <li value="1"><a class="dropdown-item">Newest</a></li>
+                <li value="2"><a class="dropdown-item">Oldest</a></li>
+                <li value="3"><a class="dropdown-item">Lowest available seats</a></li>
+                <li value="4"><a class="dropdown-item">Highest available seats</a></li>
+                <li value="5"><a class="dropdown-item">My favourites</a></li>
+                <li value="6"><a class="dropdown-item">Registration deadline</a></li>
             </ul>
         </div>
         <button class="btn grid" type="submit" id="grid-btn" onclick="show_grid()">
@@ -45,14 +46,17 @@
 </div>
 <!-- Heading of page -->
 <!-- Card start for GridView -->
-<div class="container my-5" id="grid-view">
-   <partial name="_GridView" ></partial>
-</div>
+
+@*<div class="container my-5" id="grid-view">*@
+ @*  <partial name="_GridView" ></partial>*@
+<div class="partialViews"></div>
+
+@*</div>*@
 <!-- Card end for GridView -->
 <!-- Card start for ListView -->
-<div class="container " id="list-view">
+@*<div class="container " id="list-view">
     <partial name="_ListView"></partial>
-</div>
+</div>*@
 <!-- Card ends for ListView -->
 <!-- Pagination starts here -->
 <nav>
@@ -71,3 +75,14 @@
 
 <!-- Pagination ends here -->
 <!-- Main content ends here -->
+
+        <script>
+    function show_grid() {
+        document.getElementById("grid-view").style.display = "block";
+        document.getElementById("list-view").style.display = "none";
+    }
+    function show_list() {
+        document.getElementById("list-view").style.display = "block";
+        document.getElementById("grid-view").style.display = "none";
+    }
+        </script>

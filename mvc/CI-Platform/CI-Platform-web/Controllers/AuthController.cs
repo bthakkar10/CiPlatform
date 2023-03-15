@@ -48,7 +48,7 @@ namespace CI_Platform_web.Controllers
                     {
                         TempData["success"] = "Login Successful!!";
                         HttpContext.Session.SetString("SEmail", Email);
-                        HttpContext.Session.SetString("Id", UserId.ToString());
+                        HttpContext.Session.SetString("Id", cursor.UserId.ToString());
                         HttpContext.Session.SetString("Username", cursor.FirstName + " " + cursor.LastName);
 
                         return RedirectToAction("HomePage", "Home");

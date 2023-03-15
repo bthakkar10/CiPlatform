@@ -1,7 +1,7 @@
 ﻿@model CI_Platform.Entities.ViewModels.MissionListModel
 
 
-@foreach (var obj in Model.MissionList)
+@foreach (var obj in Model.DisplayMissionCardsDemo)
 {
     double avg_rating = obj.MissionRatings.Average(r => r.Rating);
 
@@ -11,11 +11,20 @@
 
     <div class=" card-div card my-3 ">
         <div class="row g-0 list-card ">
-            <span class="created-date d-none">@obj.CreatedAt </span>
+            <span class="created-date">@obj.CreatedAt </span>
             <div class="col-md-4 ">
                 <div class="pill-on-img">
-                    <img src="~/images/Grow-Trees-On-the-path-to-environment-sustainability-1.png"
-                     class="card-img-top" alt="...">
+
+                    @foreach (var img_mission in obj.MissionMedia)
+                    {
+                       
+                        <img src=@img_mission.MediaPath class="card-img-top" alt="@img_mission.MediaName">
+                        @if (img_mission.MediaPath == null)
+                        {
+                            <img src="~/images/no-image-icon-21.png" />
+                        }
+                    }
+                  
                     <div class="applied-pill">
                         APPLIED
                     </div>

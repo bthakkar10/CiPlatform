@@ -7,32 +7,39 @@
 
 <div class=" row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-sm-1   g-4">
     <!-- Card starts from col -->
-    @foreach (var obj in Model.MissionList)
+    @foreach (var obj in Model.DisplayMissionCardsDemo)
     {
 
         double avg_rating = obj.MissionRatings.Average(r => r.Rating);
 
 
         var registered_users = obj.MissionApplications.Count(m => m.ApprovalStatus.Contains("APPROVE"));
-        var total_seats = obj.TotalSeats - registered_users;
-       
-    
+        var seats_left = obj.TotalSeats - registered_users;
+        var mission_id = obj.MissionId;
+
         <div class="col card-div">
             <div class="card grid-card">
-                <span class="created-date d-none">@obj.CreatedAt </span>
-                <span class="mission-skill d-none"> 
+                <span class=""> @obj.MissionId </span>
+                <span class="created-date ">@obj.CreatedAt </span>
+                <p class="mission-skill d-none"> 
                 @foreach (var skill in obj.MissionSkills)
                 {
-                    <p class=" skillName" >@skill.Skill.SkillName</p>
+                    <span class=" skillName" >@skill.Skill.SkillName</span>
                 }
-                </span>
+                </p>
                 <span class="mission-country d-none">@obj.Country.CountryId</span>
                 <span> </span>
                 <div class="pill-on-img">
                     @foreach (var img_mission in obj.MissionMedia)
                     {
-                       
-                        <img src=@img_mission.MediaPath class="card-img-top" alt="@img_mission.MediaName">
+                        @if (img_mission.MissionId != mission_id)
+                        {
+                            <img src="~/images/no-image-icon-21.png" class="card-img-top" alt="No mission img"/>
+                        }
+                        else
+                        {
+                            <img src=@img_mission.MediaPath class="card-img-top" alt="@img_mission.MediaName">
+                        }
                     }
                     @*@if (obj.MissionMedia == null)
                     {
@@ -99,10 +106,12 @@
                             <img class="icon-detail my-2" src="~/images/Seats-left.png" alt="seats left">
                             <div class="card-detail-text">
 
-                                <p class="seat-left">  @total_seats </p>
+                                <p class="seat-left">  @seats_left </p>
                                 <span>Seats left</span>
                             </div>
                         </div>
+                        @if (obj.MissionType.Equals("Time"))
+                        {
                         <div class="col card-detail">
                             <img class="icon-detail my-2" src="~/images/deadline.png" alt="deadline">
                             <div class="card-detail-text " >
@@ -110,6 +119,7 @@
                                 <span>Deadline</span>
                             </div>
                         </div>
+                        }
                     </div>
                 </div>
 

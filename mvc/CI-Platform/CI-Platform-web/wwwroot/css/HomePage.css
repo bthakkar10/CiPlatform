@@ -51,6 +51,10 @@ a,li,button,h3 {
     color: black;
 }
 
+#list-view{
+    display:none;
+}
+
 .user-image {
     width: 40px;
     height: 40px;

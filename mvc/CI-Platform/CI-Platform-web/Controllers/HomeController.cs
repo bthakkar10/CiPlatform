@@ -4,8 +4,10 @@ using CI_Platform.Repository.Interface;
 using CI_Platform.Repository.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace CI_Platform_web.Controllers
@@ -51,16 +53,59 @@ namespace CI_Platform_web.Controllers
             vm.Country = _filterMission.CountryList();
             vm.Theme = _filterMission.ThemeList();
             vm.Skill = _filterMission.SkillList();
-            vm.MissionList = _missionDisplay.DisplayMission();
-          
+            //vm.MissionList = _missionDisplay.DisplayMission();
 
-            //var Skill = _db.Skills.ToList();
-            //var skillall = new SelectList(Skill, "SkillId", "SkillName");
+
             return View(vm);
 
         }
 
 
+
+       
+
+        [HttpPost]
+        public async Task<IActionResult> HomePage(string searchText, int? countryId, string? cityId, string? themeId, string? skillId, int? sortCase, string? userId)
+        {
+            var response = _db.Missions.FromSql($"exec spFilterSortSearchPagination @searchText={searchText}, @countryId={countryId}, @cityId={cityId}, @themeId={themeId}, @skillId={skillId}, @sortCase = {sortCase}, @userId = {userId}");
+
+            var items = await response.ToListAsync();
+
+            var MissionIds = items.Select(m => m.MissionId).ToList();
+
+            var vm = new MissionListModel();
+
+            vm.DisplayMissionCardsDemo = _missionDisplay.DisplayMissionCardsDemo(MissionIds).OrderBy(ml => MissionIds.IndexOf(ml.MissionId)).ToList();
+
+ 
+            return PartialView("_MissionDisplayPartial", vm);
+        }
+
+        [HttpPost]
+        public IActionResult AddToFavorites(int missionId)
+        {
+            string Id = HttpContext.Session.GetString("Id");
+            long userId = long.Parse(Id);
+
+            // Check if the mission is already in favorites for the user
+            if (_db.FavouriteMissions.Any(fm => fm.MissionId == missionId && fm.UserId == userId))
+            {
+                // Mission is already in favorites, return an error message or redirect back to the mission page
+                var FavouriteMissionId = _db.FavouriteMissions.Where(fm => fm.MissionId == missionId && fm.UserId == userId).FirstOrDefault();
+                _db.FavouriteMissions.Remove(FavouriteMissionId);
+                _db.SaveChanges();
+                return Ok();
+
+                //return BadRequest("Mission is already in favorites.");
+            }
+
+            // Add the mission to favorites for the user
+            var favoriteMission = new FavouriteMission { MissionId = missionId, UserId = userId };
+            _db.FavouriteMissions.Add(favoriteMission);
+            _db.SaveChanges();
+
+            return Ok();
+        }
 
         public IActionResult GetCitiesByCountry(int countryId)
         {

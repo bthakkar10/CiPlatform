@@ -19,7 +19,7 @@
             <input type="search" placeholder="Search mission... " aria-label="Search">
         </form>*@
         <input style="width:18rem" type="text" class="form-control border-none" placeholder="Search mission..." aria-label="Search"
-               aria-describedby="seacrhIcon" id="search" onkeyup="search()">
+               aria-describedby="seacrhIcon" id="search" onkeyup="FilterSortPaginationSearch()">
     </div>
 
     <div class=" flex-row d-none d-md-flex">
@@ -66,8 +66,8 @@
                         <li>
                             <a class="dropdown-item" href="#">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" />
-                                    <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="@obj.MissionThemeId"/>
+                                    <label class="form-check-label" value="@obj.MissionThemeId">
                                         @obj.Title
                                     </label>
                                 </div>
@@ -91,8 +91,8 @@
                         <li>
                             <a class="dropdown-item" href="#">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" />
-                                    <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="@obj.SkillId"/>
+                                    <label class="form-check-label" value="@obj.SkillId">
                                         @obj.SkillName
                                     </label>
                                 </div>
@@ -308,8 +308,8 @@
 </div>
 <!-- search Nav bar ends here -->
 
-<script>
-    //$('#car').change(function () {
+@*<script>*@
+    @*//$('#car').change(function () {
     //    var text = $('option:selected', this).text()
     //    $('#demo ').append('<span class="alert pill">' + text + '<img src="cancel1.png" data-bs-dismiss="alert" />' + '</span>');
     //    // $('span:last-child').append("<p>Test</p>");
@@ -325,9 +325,9 @@
     //$('<div id="NextElement"' + id + '>' + '</div>')
     //    .insertAfter($('[id^="NextElement"]').last());
 
-    //$("p span").last().addClass("highlight");
+    //$("p span").last().addClass("highlight");*@
 
-
+@*
     function search() {
         var searchString = document.getElementById("search");
         filter = searchString.value.toUpperCase();
@@ -342,5 +342,5 @@
             }
         }
     }
-</script>
+</script>*@
 

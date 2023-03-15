@@ -10,7 +10,7 @@ namespace CI_Platform.Entities.ViewModels
 {
     public  class MissionListModel
     {
-        public List<Country> Country { get; set; }
+        public List<Country> Country { get; set; } = null;
 
         public List<City> City { get; set; }
 
@@ -26,8 +26,10 @@ namespace CI_Platform.Entities.ViewModels
 
         public List<GoalMission> goalMissions { get; set; }
 
-        public List<Mission> MissionList { get; set; }
-      
-        
+        //public List<Mission> MissionList { get; set; }
+
+        public List<Mission> DisplayMissionCardsDemo { get; set; }
+
+
     }
 }
