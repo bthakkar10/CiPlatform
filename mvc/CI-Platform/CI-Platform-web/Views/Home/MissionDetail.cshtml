@@ -1,8 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Volunteering Mission Page";
     Layout = "_Layout";
+    var UserId = ViewBag.UserId;
 }
-
+@model CI_Platform.Entities.ViewModels.MissionDetailViewModel
 <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
 
@@ -54,20 +55,58 @@
         </div>
 
 
+
+        @{
+         
+             string userId = ViewBag.UserId;
+            var mission_id = Model.MissionDetails.MissionId;
+            long Id = long.Parse(userId);
+            var count = Model.MissionDetails.MissionRatings.Count();
+            double avg_rating = Model.MissionDetails.MissionRatings.Average(r => r.Rating);
+            DateTime? currDate = @DateTime.Now;
+            TimeSpan timeSpan = new TimeSpan(1, 0, 0, 0);
+            var deadline = Model.MissionDetails.StartDate - timeSpan;
+            bool isDeadlinePassed = currDate > deadline;
+            bool isEndDatePassed = currDate > Model.MissionDetails.EndDate;
+            bool isOngoing = currDate > Model.MissionDetails.StartDate;
+            bool isAlreadyApplied = Model.MissionDetails.MissionApplications.Any(a => a.UserId == Id);
+
+            var registered_users = Model.MissionDetails.MissionApplications.Count(m => m.ApprovalStatus.Contains("APPROVE"));
+            var seats_left = Model.MissionDetails.TotalSeats - registered_users;
+           
+        }
         <div class="col-lg-6">
             <div class="volunteer-card-details py-4 px-4">
                 <h2 class="volunteer-card-title">
-                    CSR initiative stands for Coffee and Farmer Equity
+                   @Model.MissionDetails.Title
                 </h2>
                 <p class="card-text py-2">
-                    Some quick example text to build on the card title
-                    and make
-                    up the bulk of the card's content.
+                    @Model.MissionDetails.ShortDescription
                 </p>
 
                 <div class="card-body ">
                     <div class="mission-detail-border position-relative">
-                        <div class="rounded-pill capsule-border capsule-transparent"> Plant 100 trees </div>
+                        <div class="rounded-pill capsule-border capsule-transparent">
+                            
+                               @if (Model.MissionDetails.MissionType.Equals("Time"))
+                                    {
+                                        if(isOngoing)
+                                        {
+                                    <span>Ongoing Opportunity</span>
+                                        }
+                                        else{
+                                    <span>From @Model.MissionDetails.StartDate.Value.ToShortDateString() until @Model.MissionDetails.EndDate.Value.ToShortDateString()</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @foreach (var goal_mission in Model.MissionDetails.GoalMissions)
+                                        {
+                                            @goal_mission.GoalObjectiveText
+                                        }
+                                    }
+                            
+                        </div>
                     </div>
 
 
@@ -76,28 +115,74 @@
                             <img class="my-2" src="~/images/Seats-left.png"
                                  alt="star">
                             <div class="card-detail-text">
-                                <p>10</p>
+                                <p>@seats_left</p>
                                 <span>Seats left</span>
                             </div>
                         </div>
-                        <div class="col card-detail mission-card-detail">
-                            <img class="my-2" src="~/images/achieved.png"
-                                 alt="achieved">
 
-                            <div class="card-detail-text">
-                                <div class="progress">
-                                    <div class="progress-bar " role="progressbar" style="width:80%; background-color:#F88634" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                        @foreach (var goal_mission in Model.MissionDetails.GoalMissions)
+                        {
+                            <div class="col card-detail mission-card-detail">
+                                <img class="icon-detail my-2" src="~/images/achieved.png" alt="achieved">
+                                <div class="card-detail-text">
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" aria-label="Warning example" style="background-color: #F88634; width:@goal_mission.GoalValue%" aria - valuenow="@goal_mission.GoalValue" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <span>@goal_mission.GoalValue achieved</span>
                                 </div>
-                                <span>8000 achieved</span>
                             </div>
-                        </div>
+                        }
+
+
+                   
                     </div>
                     <div class="mission-detail-border"> </div>
                     <div class="d-flex flex-column flex-md-row">
-                        <button type="submit" class="mission-detail-capsule">
+
+
+                        @*<button type="submit" class="mission-detail-capsule">
                             <img src="~/images/heart1.png" />
                             Add To Favourites
                         </button>
+*@
+                      
+                        
+                            @if (Model.MissionDetails.FavouriteMissions.Any(fm => fm.UserId == Id))
+                            {
+                                <button class=" mission-detail-capsule " onclick="favourite()">
+                                    <i class="bi bi-heart-fill favourite-button filled-heart text-danger" data-mission-id="@Model.MissionDetails.MissionId"></i>
+                                    Add To Favourites
+                                  
+                                </button>
+                            }
+                            else
+                            {
+                            <button class="   mission-detail-capsule " onclick="favourite()">
+                                <i class="bi bi-heart empty-heart text-light favourite-button " data-mission-id="@Model.MissionDetails.MissionId"></i>
+                                Add To Favourites
+                            </button>
+                            }
+
+                        
+
+                       @* @if (md.FavoriteMissions.Any(fm => fm.UserId == UserId))
+                        {
+
+
+                            <i class="bi bi-heart-fill text-danger @MissionId"></i>
+
+                            <span>Add To Favourite</span>
+
+                        }
+
+                        else
+                        {
+                            <i class="bi bi-heart text-light @MissionId"></i>
+
+                            <span>Add To Favourite</span>
+                        }
+                        *@
+
                         <button type="submit" class="mission-detail-capsule">
                             <img src="~/images/L0001.png" />
                             Recommended To a Co-Worker
@@ -117,25 +202,34 @@
                         <div class="col-md-3 col-6">
                             <div class="mission-detail-box">
                                 <img class="icon" src="~/images/pin1.png" />
-                                <p>City<br /><span>London</span></p>
+                                <p>City<br /><span>@Model.MissionDetails.City.CityName</span></p>
                             </div>
                         </div>
                         <div class="col-md-3 col-6">
                             <div class="mission-detail-box">
                                 <img class="icon" src="~/images/web.png" />
-                                <p>Theme<br /><span>Environment</span></p>
+                                <p>Theme<br /><span>@Model.MissionDetails.MissionTheme.Title</span></p>
                             </div>
                         </div>
                         <div class="col-md-3 col-6">
                             <div class="mission-detail-box">
                                 <img class="icon" src="~/images/calender.png" />
-                                <p>Date<br /><span>Ongoing Opportunity</span></p>
+                                <p>Date<br /><span>
+                                        @if(isOngoing)
+                                        {
+                                        <span>Ongoing Opportunity</span>
+                                        }
+                                        else{
+                                        <span>From @Model.MissionDetails.StartDate.Value.ToShortDateString() until @Model.MissionDetails.EndDate.Value.ToShortDateString()</span>
+                                        }
+
+                                </span></p>
                             </div>
                         </div>
                         <div class="col-md-3 col-6">
                             <div class="mission-detail-box">
                                 <img class="icon" src="~/images/organization.png" />
-                                <p>Organisation<br /><span>CSE Network</span></p>
+                                <p>Organisation<br /><span>@Model.MissionDetails.OrganizationName</span></p>
                             </div>
                         </div>
                     </div>
@@ -173,7 +267,7 @@
                 <div id="Mission" class="container tab-pane active">
                     <br>
                     <h3>Introduction</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p>@Model.MissionDetails.Description</p>
                     <h3>Challenge</h3>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                     <h3>Documents</h3>
@@ -196,8 +290,8 @@
                 <div id="Organization" class="container tab-pane fade">
                     <br>
                     <h3>Organization </h3>
-                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                </div>
+                    <p>@Model.MissionDetails.OrganizationDetail</p>
+                     </div>
                 <div id="Comments" class="container tab-pane fade">
                     <br>
                     <h3>Comments</h3>
@@ -268,21 +362,34 @@
                     <tbody>
                         <tr>
                             <td scope="row">Skills</td>
-                            <td>Math, Easy going, Cool</td>
+                            <td>
+                                @foreach (var skill in Model.MissionDetails.MissionSkills)
+                                {
+                                    <span>@skill.Skill.SkillName</span>
+                                }
+                            </td>
                         </tr>
                         <tr>
                             <td scope="row">Days</td>
-                            <td>Weekends only</td>
+                            <td>@Model.MissionDetails.Availability</td>
                         </tr>
                         <tr class="table-last-row">
                             <td scope="row">Ratings</td>
                             <td>
+                                @for (int i = 1; i <= avg_rating; i++)
+                                {
+                                    <img src="~/images/selected-star.png" />
+                                }
+                                @for (int i = 5; i > avg_rating; i--)
+                                {
+                                    <img src="~/images/star.png" />
+                                }
+                               @* <img src="~/images/selected-star.png" />
                                 <img src="~/images/selected-star.png" />
                                 <img src="~/images/selected-star.png" />
                                 <img src="~/images/selected-star.png" />
-                                <img src="~/images/selected-star.png" />
-                                <img src="~/images/selected-star.png" />
-                                <span>(by 125 volunteers)</span>
+                                <img src="~/images/selected-star.png" />*@
+                                <span>(by @count volunteers)</span>
                             </td>
                         </tr>
                     </tbody>

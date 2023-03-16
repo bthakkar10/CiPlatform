@@ -18,19 +18,19 @@ namespace CI_Platform.Repository.Repository
         {
             _db = db;
         }
-        public List<Mission> DisplayMission()
-        {
-            List<Mission> MissionList = _db.Missions
-                .Include(m => m.City)
-                .Include(m => m.Country)
-                .Include(m => m.MissionSkills).ThenInclude(ms => ms.Skill)
-                .Include(m => m.MissionTheme)
-                .Include(m => m.MissionRatings)
-                .Include(m => m.GoalMissions)
-                .Include(m => m.MissionApplications)
-                .Include(m => m.MissionMedia).ToList();
-            return MissionList;
-        }
+        //public List<Mission> DisplayMission()
+        //{
+        //    List<Mission> MissionList = _db.Missions
+        //        .Include(m => m.City)
+        //        .Include(m => m.Country)
+        //        .Include(m => m.MissionSkills).ThenInclude(ms => ms.Skill)
+        //        .Include(m => m.MissionTheme)
+        //        .Include(m => m.MissionRatings)
+        //        .Include(m => m.GoalMissions)
+        //        .Include(m => m.MissionApplications)
+        //        .Include(m => m.MissionMedia).ToList();
+        //    return MissionList;
+        //}
 
         public List<Mission> DisplayMissionCardsDemo(List<long> MissionIds)
         {

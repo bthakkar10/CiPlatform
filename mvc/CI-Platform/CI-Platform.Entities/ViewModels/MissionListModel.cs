@@ -12,19 +12,19 @@ namespace CI_Platform.Entities.ViewModels
     {
         public List<Country> Country { get; set; } = null;
 
-        public List<City> City { get; set; }
+        public List<City> City { get; set; } = null;
 
-        public List<MissionTheme> Theme { get; set; }
+        public List<MissionTheme> Theme { get; set; } = null;
 
-        public List<Skill> Skill { get; set; }
+        public List<Skill> Skill { get; set; } = null;
 
-        public List<MissionApplication> Application { get; set; }
+        public List<MissionApplication> Application { get; set; } = null;
 
 
-        public List<MissionRating> MissionRatings { get; set; }
-        
+        public List<MissionRating> MissionRatings { get; set; } = null;
 
-        public List<GoalMission> goalMissions { get; set; }
+
+        public List<GoalMission> GoalMissions { get; set; } = null;
 
         //public List<Mission> MissionList { get; set; }
 

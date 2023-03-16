@@ -1,13 +1,13 @@
 ﻿//console.log("hi")
-
-FilterSortPaginationSearch();
+$(document).ready(function () {
+    FilterSortPaginationSearch(); 
+});
 
 var SelectedsortCase = null;
 var SelectedCountry = null;
 
-
-
 function FilterSortPaginationSearch() {
+    console.log(UserId);
     console.log("HEllo");
     var CountryId = SelectedCountry;
     var CityId = $('#CityList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
@@ -16,9 +16,9 @@ function FilterSortPaginationSearch() {
     var SkillId = $('#SkillList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var SearchText = $('#search').val();
     var sortCase = SelectedsortCase;
-    console.log("SORTCASE" + sortCase);
-    var UserId = null;
-    //console.log(SortCase);
+    var UserId = $('.user-id').text();
+
+    console.log(UserId);
     /*   var UserId = $()*/
 
     $.ajax({
@@ -122,6 +122,45 @@ function GetCitiesByCountry(CountryId) {
         }
     });
 }
+
+function favourite() {
+    $('.favourite-button').on('click', function () {
+        console.log("success");
+        var missionId = $(this).data('mission-id');
+        $.ajax({
+            url: '/Home/AddToFavorites',
+            type: 'POST',
+            data: { missionId: missionId },
+            success: function () {
+                // Show a success message or update the UI
+                console.log(missionId);
+                alert("Mission added to favourites successfully!!!");
+                var allMissionId = $('.favourite-button')
+                allMissionId.each(function () {
+                    if ($(this).data('mission-id') === missionId) {
+                        if ($(this).hasClass('bi-heart')) {
+                            $(this).addClass('bi-heart-fill text-danger')
+                            $(this).removeClass('bi-heart text-light')
+                            console.log("added")
+                        }
+                        else {
+                            $(this).addClass('bi-heart text-light')
+                            $(this).removeClass('bi-heart-fill text-danger')
+                            console.log("remove")
+                        }
+                    }
+                })
+            },
+            error: function (error) {
+                // Show an error message or handle the error
+                console.log("error")
+
+            }
+        });
+    });
+}
+
+
 
 
 
@@ -305,201 +344,3 @@ function GetCitiesByCountry(CountryId) {
     //}
 
 
-    //$('#sortByDropdown li').on('click', function () {
-    //    selectedSortOption = $(this).find('a').text();
-
-    //    let gridCardsContainer = $('.grid-card').parent().parent();
-    //    let listCardsContainer = $('.list-card').parent();
-
-
-    //    switch (selectedSortOption) {
-    //        case 'Newest':
-    //            var dateArray = [];
-    //            let cardsDateForNewest = $('.card').find('.created-date');
-    //            cardsDateForNewest.each(function () {
-    //                dateArray.push($(this).text());
-    //            });
-    //            dateArray = $.unique(dateArray)
-    //            // Arrange array Elemeny in Ascending order
-    //            dateArray.sort();
-
-    //            // Arrange Array Element In Descending order
-    //            dateArray.reverse();
-    //            dateArray = $.unique(dateArray)
-    //            for (var i = 0; i < dateArray.length; i++) {
-    //                $('.grid-card').each(function () {
-    //                    if ($(this).find('.created-date').text() == dateArray[i]) {
-    //                        $(this).parent().appendTo($(gridCardsContainer));
-    //                    }
-    //                });
-    //            }
-    //            //console.log("Hello");
-
-    //            //for (var i = 0; i < dateArray.length; i++) {
-    //            //    $('.list-card').each(function () {
-    //            //        if ($(this).find('.created-date').text() == dateArray[i]) {
-    //            //            $(this).parent().appendTo($(listCardsContainer));
-    //            //        }
-    //            //    });
-    //            //}
-    //            for (var i = 0; i < dateArray.length; i++) {
-    //                $('.list-card').each(function () {
-    //                    console.log(dateArray.length);
-    //                    if ($(this).find('.created-date').text() == dateArray[i]) {
-    //                        console.log(true)
-
-    //                        $(this).parent().appendTo($(listCardsContainer));
-    //                    }
-    //                    console.log("Hello");
-    //                });
-
-    //            }
-
-    //            console.log("Hello");
-
-    //            break;
-    //        case 'Oldest':
-    //            let cardsDateForOldest = $('.card').find('.created-date')
-    //            var dateArray = [];
-    //            cardsDateForOldest.each(function () {
-    //                dateArray.push($(this).text());
-    //            });
-    //            // Arrange array Elemeny in Ascending order
-    //            dateArray = $.unique(dateArray)
-    //            dateArray.sort(function (a, b) {
-    //                return new Date(a) - new Date(b);
-    //            });
-    //            console.log(dateArray)
-
-    //            for (var i = 0; i < dateArray.length; i++) {
-    //                $('.grid-card').each(function () {
-    //                    if ($(this).find('.created-date').text() == dateArray[i]) {
-    //                        console.log(true)
-
-    //                        $(this).parent().appendTo($(gridCardsContainer));
-    //                    }
-    //                });
-    //            }
-    //            for (var i = 0; i < dateArray.length; i++) {
-    //                $('.list-card').each(function () {
-    //                    if ($(this).find('.created-date').text() == dateArray[i]) {
-    //                        console.log(true)
-
-    //                        $(this).parent().appendTo($(listCardsContainer));
-    //                    }
-    //                });
-    //            }
-
-    //            break;
-    //        case 'Lowest available seats':
-    //            var SeatLeftArray = [];
-    //            let cardsSeatLeftForLowest = $('.card').find('.seat-left');
-    //            cardsSeatLeftForLowest.each(function () {
-    //                SeatLeftArray.push(parseInt($(this).text()));
-    //            });
-
-    //            SeatLeftArray = $.unique(SeatLeftArray)
-    //            // Arrange array Elemeny in Ascending order
-
-    //            SeatLeftArray.sort(function (a, b) {
-    //                return a - b
-    //            });
-
-    //            for (var i = 0; i < SeatLeftArray.length; i++) {
-    //                $('.grid-card').each(function () {
-    //                    if ($(this).find('.seat-left').text() == SeatLeftArray[i]) {
-    //                        $(this).parent().appendTo($(gridCardsContainer));
-    //                    }
-    //                });
-    //            }
-    //            for (var i = 0; i < SeatLeftArray.length; i++) {
-    //                $('.list-card').each(function () {
-    //                    if ($(this).find('.seat-left').text() == SeatLeftArray[i]) {
-    //                        $(this).parent().appendTo($(listCardsContainer));
-    //                    }
-    //                });
-    //            }
-
-    //            break;
-    //        case 'Highest available seats':
-    //            var SeatLeftArray = [];
-
-    //            let cardsSeatLeftForHighest = $('.card').find('.seat-left');
-    //            cardsSeatLeftForHighest.each(function () {
-    //                SeatLeftArray.push(parseInt($(this).text()));
-    //            });
-
-    //            SeatLeftArray = $.unique(SeatLeftArray)
-    //            // Arrange array Elemeny in Ascending order
-
-    //            SeatLeftArray.sort(function (a, b) {
-    //                return a - b
-    //            });
-
-    //            // Arrange array Element in Descending order
-    //            SeatLeftArray.reverse();
-
-    //            for (var i = 0; i < SeatLeftArray.length; i++) {
-    //                $('.grid-card').each(function () {
-    //                    if ($(this).find('.seat-left').text() == SeatLeftArray[i]) {
-    //                        $(this).parent().appendTo($(gridCardsContainer));
-    //                    }
-    //                });
-    //            }
-    //            for (var i = 0; i < SeatLeftArray.length; i++) {
-    //                $('.list-card').each(function () {
-    //                    if ($(this).find('.seat-left').text() == SeatLeftArray[i]) {
-    //                        $(this).parent().appendTo($(listCardsContainer));
-    //                    }
-    //                });
-    //            }
-    //            break;
-
-    //        case 'My favourites':
-    //            console.log(selectedSortOption);
-    //            break;
-
-    //        case 'Registration deadline':
-    //            let deadlines = $('.card').find('.deadline')
-    //            var dateArray = [];
-    //            deadlines.each(function (j) {
-    //                dateArray.push($(this).text());
-    //            });
-    //            dateArray.sort(function (a, b) {
-    //                var dateA = new Date(
-    //                    parseInt(a.substring(6)),
-    //                    parseInt(a.substring(3, 5)) - 1,
-    //                    parseInt(a.substring(0, 2))
-    //                );
-    //                var dateB = new Date(
-    //                    parseInt(b.substring(6)),
-    //                    parseInt(b.substring(3, 5)) - 1,
-    //                    parseInt(b.substring(0, 2))
-    //                );
-    //                return dateA - dateB;
-    //            });
-    //            //dateArray = $.unique(dateArray)
-    //            // Arrange array Elemeny in Ascending order
-    //            //dateArray.sort();
-    //            console.log(dateArray)
-    //            for (var i = 0; i < dateArray.length; i++) {
-    //                $('.grid-card').each(function () {
-    //                    if ($(this).find('.deadline').text() == dateArray[i]) {
-
-    //                        $(this).parent().appendTo($(gridCardsContainer));
-    //                    }
-    //                });
-    //            }
-    //            for (var i = 0; i < dateArray.length; i++) {
-    //                $('.list-card').each(function () {
-    //                    if ($(this).find('.deadline').text() == dateArray[i]) {
-    //                        console.log(true)
-
-    //                        $(this).parent().appendTo($(listCardsContainer));
-    //                    }
-    //                });
-    //            }
-    //            /*    filter() */
-    //            break;
-    //    }
-    //});

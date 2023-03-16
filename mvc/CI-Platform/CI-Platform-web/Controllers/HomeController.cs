@@ -17,16 +17,17 @@ namespace CI_Platform_web.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IFilter _filterMission;
         private readonly IMissionDisplay _missionDisplay;
+        private readonly IMissionDetail _missionDetail;
         private readonly CiDbContext _db;
-        private readonly IConfiguration _config;
-
-        public HomeController(ILogger<HomeController> logger, IFilter filterMission, IMissionDisplay missionDisplay, CiDbContext db, IConfiguration config)
+ 
+        public HomeController(ILogger<HomeController> logger,  IMissionDisplay missionDisplay, CiDbContext db, IFilter filterMission, IMissionDetail missionDetail)
         {
             _logger = logger;
-            _filterMission = filterMission;   
+            _filterMission = filterMission;
             _missionDisplay = missionDisplay;
+            _missionDetail = missionDetail;
             _db = db;
-            _config = config;
+
         }
 
 
@@ -36,11 +37,10 @@ namespace CI_Platform_web.Controllers
             if (HttpContext.Session.GetString("SEmail") != null)
             {
                 ViewBag.email = HttpContext.Session.GetString("SEmail");
-
             }
             if (HttpContext.Session.GetString("Id") != null)
             {
-                ViewBag.Id = HttpContext.Session.GetString("Id");
+                ViewBag.UserId = HttpContext.Session.GetString("Id");
             }
             if (HttpContext.Session.GetString("Username") != null)
             {
@@ -65,8 +65,21 @@ namespace CI_Platform_web.Controllers
        
 
         [HttpPost]
-        public async Task<IActionResult> HomePage(string searchText, int? countryId, string? cityId, string? themeId, string? skillId, int? sortCase, string? userId)
+        public async Task<IActionResult> HomePage(string searchText, int? countryId, string? cityId, string? themeId, string? skillId, int? sortCase, int? userId)
         {
+            if (HttpContext.Session.GetString("SEmail") != null)
+            {
+                ViewBag.email = HttpContext.Session.GetString("SEmail");
+            }
+            if (HttpContext.Session.GetString("Id") != null)
+            {
+                ViewBag.UserId = HttpContext.Session.GetString("Id");
+            }
+            if (HttpContext.Session.GetString("Username") != null)
+            {
+                ViewBag.Username = HttpContext.Session.GetString("Username");
+            }
+
             var response = _db.Missions.FromSql($"exec spFilterSortSearchPagination @searchText={searchText}, @countryId={countryId}, @cityId={cityId}, @themeId={themeId}, @skillId={skillId}, @sortCase = {sortCase}, @userId = {userId}");
 
             var items = await response.ToListAsync();
@@ -114,34 +127,16 @@ namespace CI_Platform_web.Controllers
             return Json(vm.City);
         }
 
-        public IActionResult AddToFavourites(int missionId)
+        public IActionResult MissionDetail(int MissionId)
         {
-            return View();
-        }
+            if (HttpContext.Session.GetString("Id") != null)
+            {
+                ViewBag.UserId = HttpContext.Session.GetString("Id");
+            }
+            var vm = new MissionDetailViewModel();
+            vm.MissionDetails = _missionDetail.MissionDetails(MissionId);
+            return View(vm);
 
-
-        
-
-        //[HttpPost]
-        //public IActionResult AddToFavourites()
-        //{
-        //    // insert the favourite mission into the database
-        //    var sql = "INSERT INTO FavouriteMissions (UserId, MissionName, MissionDescription) VALUES (@UserId, @MissionName, @MissionDescription)";
-        //    var parameters = new { UserId = favouriteMissionData.UserId, MissionName = favouriteMissionData.MissionName, MissionDescription = favouriteMissionData.MissionDescription };
-        //    var affectedRows = _db.Execute(sql, parameters);
-        //    if (affectedRows > 0)
-        //    {
-        //        return Ok();
-        //    }
-        //    else
-        //    {
-        //        return BadRequest("Failed to add mission to favourites");
-        //    }
-        //}
-
-        public IActionResult MissionDetail()
-        {
-            return View();
         }
         public IActionResult StoryListing()
         {

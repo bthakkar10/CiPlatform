@@ -3,11 +3,13 @@
    
     Layout = "_Layout";
     ViewData["Title"] = "Homepage";
+
     //var MissionList = ViewBag.MissionList;
     //DateTime StartDate = MissionList.StartDate.GetDate();
     //var Stars = .MissionList.MissionRatings.Rating.ToInt32();
 }
 @model CI_Platform.Entities.ViewModels.MissionListModel
+
 
 
 
@@ -31,8 +33,8 @@
                 <li value="2"><a class="dropdown-item">Oldest</a></li>
                 <li value="3"><a class="dropdown-item">Lowest available seats</a></li>
                 <li value="4"><a class="dropdown-item">Highest available seats</a></li>
-                <li value="5"><a class="dropdown-item">My favourites</a></li>
-                <li value="6"><a class="dropdown-item">Registration deadline</a></li>
+                <li value="5"><a class="dropdown-item">Registration deadline</a></li>
+                <li value="6"><a class="dropdown-item">My favourites</a></li>
             </ul>
         </div>
         <button class="btn grid" type="submit" id="grid-btn" onclick="show_grid()">
