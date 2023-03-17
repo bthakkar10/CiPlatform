@@ -1,44 +1,74 @@
-﻿//console.log("hi")
+﻿//global
 $(document).ready(function () {
     FilterSortPaginationSearch(); 
 });
 
 var SelectedsortCase = null;
 var SelectedCountry = null;
+//for filters sorting stored procedure
+//function FilterSortPaginationSearch() {
+//    console.log(UserId);
+//    console.log("HEllo");
+//    var CountryId = SelectedCountry;
+//    var CityId = $('#CityList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
+//    var ThemeId = $('#ThemeList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
+//    console.log(ThemeId);
+//    var SkillId = $('#SkillList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
+//    var SearchText = $('#search').val();
+//    var sortCase = SelectedsortCase;
+//    var UserId = $('.user-id').text();
+
+//    console.log(UserId);
+//    /*   var UserId = $()*/
+
+//    $.ajax({
+//        type: "POST",
+//        url: "/Home/HomePage",
+//        data: { CountryId: CountryId, CityId: CityId, ThemeId: ThemeId, SkillId: SkillId, SearchText: SearchText, sortCase: sortCase, UserId: UserId },
+//        success: function (data) {
+//            console.log("This works");
+            
+//            var view = $(".partialViews");
+//            view.empty();
+//            view.append(data);
+
+//        },
+//        error: function (error) {
+//            // Show an error message or handle the error
+//            console.log(error);
+//        }
+//    });
+//}
+
+
 
 function FilterSortPaginationSearch() {
-    console.log(UserId);
-    console.log("HEllo");
     var CountryId = SelectedCountry;
     var CityId = $('#CityList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var ThemeId = $('#ThemeList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
-    console.log(ThemeId);
     var SkillId = $('#SkillList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
-    var SearchText = $('#search').val();
+    var SearchText = $("#search").val();
     var sortCase = SelectedsortCase;
-    var UserId = $('.user-id').text();
-
     console.log(UserId);
-    /*   var UserId = $()*/
-
     $.ajax({
-        type: "POST",
-        url: "/Home/HomePage",
+        type: 'POST',
+        url: '/Home/HomePage',
         data: { CountryId: CountryId, CityId: CityId, ThemeId: ThemeId, SkillId: SkillId, SearchText: SearchText, sortCase: sortCase, UserId: UserId },
         success: function (data) {
-            console.log("This works");
+            console.log("Done");
             var view = $(".partialViews");
             view.empty();
             view.append(data);
-
         },
         error: function (error) {
-            // Show an error message or handle the error
-            console.log("error");
+            console.log(error)
         }
     });
 }
 
+
+
+//for selecting sort dropdown in mission page
 $("#sortByDropdown li").click(function () {
     var sortCase = $(this).val();
     SelectedsortCase = sortCase;
@@ -46,7 +76,7 @@ $("#sortByDropdown li").click(function () {
 
     FilterSortPaginationSearch();
 });
-
+// for country selection
 $("#CountryList li").click(function () {
     $(this).addClass('selected');
 
@@ -69,7 +99,7 @@ $("#CountryList li").click(function () {
     GetCitiesByCountry(CountryId);
     FilterSortPaginationSearch();
 });
-
+//get cities based on countries 
 function GetCitiesByCountry(CountryId) {
     $.ajax({
         type: "GET",
@@ -123,50 +153,10 @@ function GetCitiesByCountry(CountryId) {
     });
 }
 
-function favourite() {
-    $('.favourite-button').on('click', function () {
-        console.log("success");
-        var missionId = $(this).data('mission-id');
-        $.ajax({
-            url: '/Home/AddToFavorites',
-            type: 'POST',
-            data: { missionId: missionId },
-            success: function () {
-                // Show a success message or update the UI
-                console.log(missionId);
-                alert("Mission added to favourites successfully!!!");
-                var allMissionId = $('.favourite-button')
-                allMissionId.each(function () {
-                    if ($(this).data('mission-id') === missionId) {
-                        if ($(this).hasClass('bi-heart')) {
-                            $(this).addClass('bi-heart-fill text-danger')
-                            $(this).removeClass('bi-heart text-light')
-                            console.log("added")
-                        }
-                        else {
-                            $(this).addClass('bi-heart text-light')
-                            $(this).removeClass('bi-heart-fill text-danger')
-                            console.log("remove")
-                        }
-                    }
-                })
-            },
-            error: function (error) {
-                // Show an error message or handle the error
-                console.log("error")
-
-            }
-        });
-    });
-}
-
-
-
-
-
-    let filterPills = $('.filter-pills');
-    let allDropdowns = $('.dropdown ul');
-    allDropdowns.each(function () {
+//to display pills according to the filter selection
+let filterPills = $('.filter-pills');
+let allDropdowns = $('.dropdown ul');
+allDropdowns.each(function () {
         let dropdown = $(this);
         $(this).on('change', 'input[type="checkbox"]', function () {
 
@@ -242,105 +232,92 @@ function favourite() {
     
     })
 
-    //function FilterMissions() {
+//to add or remove favourites
+function favourite() {
+    $('.favourite-button').on('click', function () {
+        console.log("success");
+        var missionId = $(this).data('mission-id');
+        $.ajax({
+            url: '/Home/AddToFavorites',
+            type: 'POST',
+            data: { missionId: missionId },
+            success: function () {
+                // Show a success message or update the UI
+                console.log(missionId);
 
-    //    var selectedCities = $('#CityList input[type="checkbox"]:checked').map(function () {
-    //        return $(this).next('label').text();
-    //    }).get();
-    //    console.log(selectedCities);
+                var allMissionId = $('.favourite-button')
+                allMissionId.each(function () {
+                    if ($(this).data('mission-id') === missionId) {
+                        if ($(this).hasClass('bi-heart')) {
+                            $(this).addClass('bi-heart-fill text-danger')
+                            $(this).removeClass('bi-heart text-light')
+                            console.log("added");
+                            alert("Mission added to favourites successfully!!!");
+                        }
+                        else {
+                            $(this).addClass('bi-heart text-light')
+                            $(this).removeClass('bi-heart-fill text-danger')
+                            console.log("remove");
+                            alert("Mission removed from favourites successfully!!!");
+                        }
+                    }
+                })
+            },
+            error: function (error) {
+                // Show an error message or handle the error
+                console.log("error")
 
-    //    var selectedThemes = $('#ThemeList input[type="checkbox"]:checked').map(function () {
-    //        return $(this).next('label').text();
-    //    }).get();
-    //    console.log(selectedThemes);
-
-    //    var selectedSkills = $('#SkillList input[type="checkbox"]:checked').map(function () {
-    //        return $(this).next('label').text();
-    //    }).get();
-    //    console.log(selectedSkills);
-
-    //    if (selectedCities.length === 0 && selectedThemes.length === 0 && selectedSkills.length === 0) {
-    //        $('.card-div').show();
-    //    } else {
-    //        //console.log(selectedCities);
-
-    //        $('.card-div').each(function () {
-    //            var cardCity = $(this).find('.mission-city').text();
-    //            var cardTheme = $(this).find('.mission-theme').text();
-    //            var cardSkill = $(this).find('.mission-skill').text();
-    //            console.log(cardSkill);
-
-    //            var cityFlag = selectedCities.some(function (selectedCity) {
-    //                return selectedCity.trim().toUpperCase() == cardCity.trim().toUpperCase();
-    //            });
-    //            var themeFlag = selectedThemes.some(function (selectedTheme) {
-    //                return selectedTheme.trim().toUpperCase() == cardTheme.trim().toUpperCase();
-    //            });
-
-    //            var skillFlag = selectedSkills.every(function (selectedSkill) {
-    //                return cardSkill.indexOf(selectedSkill.trim()) >= 0;
-
-    //            });
-
-
-                //if (cityFlag) {
-                //    $(this).show();
-                //} else {
-                //    $(this).hide();
-                //}
-                //if (selectedThemes.length === 0 && selectedSkills.length === 0) {
-                //    if (cityFlag) {
-                //        $(this).show();
-                //    } else {
-                //        $(this).hide();
-                //    }
-                //}
-                //else if (selectedSkills.length === 0) {
-                //    if (cityFlag && themeFlag) {
-                //        $(this).show();
-                //    } else {
-                //        $(this).hide();
-                //    }
-                //}
-                //else {
-                //    if (skillFlag && cityFlag && themeFlag) {
-                //        $(this).show();
-                //    }
-                //    else {
-                //        $(this).hide();
-                //    }
-                //}
-                //if (selectedCities.length === 0) {
-                //    $(this).hide();
-                //}
-                //else if (cityFlag) {
-                //    if (selectedThemes.length === 0) {
-                //        $(this).show();
-                //    }
-                //    else if (themeFlag) {
-                //        if (selectedSkills.length === 0) {
-                //            $(this).show();
-                //        }
-                //        else if (skillFlag) {
-                //            $(this).show();
-                //        }
-                //        else {
-                //            $(this).hide();
-                //        }
-
-                //    }
-                //    else {
-                //        $(this).hide();
-                //    }
-                //}
-                //else {
-                //    $(this).hide();
-                //}
+            }
+        });
+    });
+}
 
 
-    //        });
-    //    }
+//to add or update ratings(working on it)
+$('.rating-star i').on('click', function () {
+    var rating = $(this).index() + 1;
+    var missionId = $(this).data('mission-id');
+    var selectedIcon = $(this).prevAll().addBack();
+    var unselectedIcon = $(this).nextAll();
 
-    //}
 
+    $.ajax({
+        method: 'POST',
+        url: '/Home/Rating',
+        data: { rating: rating, missionId: missionId },
+        success: function () {
+            selectedIcon.removeClass('bi-star').addClass('bi-star-fill text-warning');
+            unselectedIcon.removeClass('bi-star-fill text-warning').addClass('bi-star');
+            alert("ratings updated successfully!!");
+        },
+        error: function (error) {
+            alert("Sessin Expired.");
+            if (confirm("Please Login Again And Try Agaion")) {
+                window.location.href = "/Home/Index";
+            }
+        }
+    });
+});
 
+//comments
+$('.commentButton').click(function () {
+    var comment = $('.newComment').val();
+    var missionId = $(this).data('mission-id');
+    if (comment != null) {
+        console.log(comment);
+        $.ajax({
+            type: 'POST',
+            url: '/Mission/PostComment',
+            data: { comment: comment, missionId: missionId },
+            success: function () {
+                $('.newComment').val('');
+            },
+            error: function (error) {
+                console.log("error");
+            }
+        });
+    }
+    else {
+        console.log("null");
+    }
+});

@@ -9,6 +9,6 @@ namespace CI_Platform.Entities.ViewModels
 {
     public class MissionDetailViewModel
     {
-       public Mission MissionDetails { get; set; } 
+        public Mission MissionDetails { get; set; } = null;
     }
 }

@@ -201,6 +201,9 @@ public partial class CiDbContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('PENDING')")
                 .HasColumnName("approval_status");
+            entity.Property(e => e.CommentText)
+                .HasColumnType("text")
+                .HasColumnName("commentText");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")

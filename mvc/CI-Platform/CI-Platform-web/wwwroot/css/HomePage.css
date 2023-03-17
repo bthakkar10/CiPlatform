@@ -21,7 +21,7 @@ a,li,button,h3 {
     position: absolute;
 }
 
-.sidebar,
+.sidebar
  {
     position: fixed;
     top: 0;

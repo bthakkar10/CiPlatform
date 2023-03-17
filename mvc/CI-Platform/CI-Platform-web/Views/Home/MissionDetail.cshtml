@@ -57,8 +57,8 @@
 
 
         @{
-         
-             string userId = ViewBag.UserId;
+            
+            string userId = ViewBag.UserId;
             var mission_id = Model.MissionDetails.MissionId;
             long Id = long.Parse(userId);
             var count = Model.MissionDetails.MissionRatings.Count();
@@ -70,11 +70,24 @@
             bool isEndDatePassed = currDate > Model.MissionDetails.EndDate;
             bool isOngoing = currDate > Model.MissionDetails.StartDate;
             bool isAlreadyApplied = Model.MissionDetails.MissionApplications.Any(a => a.UserId == Id);
-
+            double missionRating = 0;
+            
             var registered_users = Model.MissionDetails.MissionApplications.Count(m => m.ApprovalStatus.Contains("APPROVE"));
             var seats_left = Model.MissionDetails.TotalSeats - registered_users;
-           
+          
         }
+        @*@foreach (var rate in Model.MissionDetails.MissionRatings.Where(r => r.MissionId == mission_id && UserId == userId))
+        {
+            missionRating = rate.Rating;
+        }*@
+       @foreach ( var rate in Model.MissionDetails.MissionRatings.Where(r => r.MissionId == mission_id && UserId == userId))
+        {
+            missionRating = rate.Rating;
+        }
+       @* @foreach (var rate in Model.MissionDetails.MissionRatings.Any())
+        {
+            missionRating = Math.Round(rate.Average(r => r.Rating));
+        }*@
         <div class="col-lg-6">
             <div class="volunteer-card-details py-4 px-4">
                 <h2 class="volunteer-card-title">
@@ -151,7 +164,7 @@
                             {
                                 <button class=" mission-detail-capsule " onclick="favourite()">
                                     <i class="bi bi-heart-fill favourite-button filled-heart text-danger" data-mission-id="@Model.MissionDetails.MissionId"></i>
-                                    Add To Favourites
+                                    Remove from Favourites
                                   
                                 </button>
                             }
@@ -189,12 +202,19 @@
                         </button>
                     </div>
                     <div class="mission-detail-border position-relative">
-                        <div class="rounded-pill capsule-transparent">
-                            <img src="~/images/star-empty.png" />
-                            <img src="~/images/star-empty.png" />
-                            <img src="~/images/star-empty.png" />
-                            <img src="~/images/star-empty.png" />
-                            <img src="~/images/star-empty.png" />
+                        <div class="rounded-pill capsule-transparent stars">
+                            <div class="rating-star m-2">
+                                @for (var i = 1; i <= @missionRating; i++)
+                                {
+                                    <i class="bi bi-star-fill text-warning m-2" data-mission-Id="@mission_id"></i>
+
+                                }
+                                @for (var i = 5; i > @missionRating; i--)
+                                {
+                                    <i class="bi bi-star m-2" data-mission-Id="@mission_id"></i>
+                                }
+
+                            </div>
                         </div>
                     </div>
 
@@ -295,14 +315,14 @@
                 <div id="Comments" class="container tab-pane fade">
                     <br>
                     <h3>Comments</h3>
-                    <form>
-                        <div class="form-floating">
-                            <textarea class="form-control my-2" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                    <form >
+                        <div class="form-floating" >
+                            <textarea class="form-control my-2 newComment" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
                             <label for="floatingTextarea2">Enter your Comments here...</label>
                         </div>
-                        <button class="btn card-btn">Post Comment</button>
+                        <button class="btn card-btn commentButton" data-mission-Id="@mission_id">Post Comment</button>
                     </form>
-                    <div class="container mt-2 bg-light p-4">
+                    <div class="container mt-2 bg-light overflow-scroll p-4" style="max-height:30rem">
                         <div class="card mb-3">
                             <div class="card-body">
                                 <div class="row">
@@ -376,11 +396,11 @@
                         <tr class="table-last-row">
                             <td scope="row">Ratings</td>
                             <td>
-                                @for (int i = 1; i <= avg_rating; i++)
+                                @for (var i = 1; i <= avg_rating; i++)
                                 {
                                     <img src="~/images/selected-star.png" />
                                 }
-                                @for (int i = 5; i > avg_rating; i--)
+                                @for (var i = 5; i > avg_rating; i--)
                                 {
                                     <img src="~/images/star.png" />
                                 }
@@ -639,7 +659,7 @@
 
 
 
-<script>
+@*<script>
     var swiper = new Swiper(".mySwiper", {
         loop: true,
         spaceBetween: 10,
@@ -658,6 +678,4 @@
             swiper: swiper,
         },
     });
-</script>
-
-
+</script>*@

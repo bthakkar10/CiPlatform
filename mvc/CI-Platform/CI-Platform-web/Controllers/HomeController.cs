@@ -33,6 +33,7 @@ namespace CI_Platform_web.Controllers
 
 
         public IActionResult HomePage()
+        
         {
             if (HttpContext.Session.GetString("SEmail") != null)
             {
@@ -55,8 +56,7 @@ namespace CI_Platform_web.Controllers
             vm.Skill = _filterMission.SkillList();
             //vm.MissionList = _missionDisplay.DisplayMission();
 
-
-            return View(vm);
+             return View(vm);
 
         }
 
@@ -90,7 +90,7 @@ namespace CI_Platform_web.Controllers
 
             vm.DisplayMissionCardsDemo = _missionDisplay.DisplayMissionCardsDemo(MissionIds).OrderBy(ml => MissionIds.IndexOf(ml.MissionId)).ToList();
 
- 
+            //return Ok(new { StatusCode = 200, PartialView = PartialView("_MissionDisplayPartial", vm) });
             return PartialView("_MissionDisplayPartial", vm);
         }
 
@@ -138,6 +138,50 @@ namespace CI_Platform_web.Controllers
             return View(vm);
 
         }
+
+
+        [HttpPost]
+        public IActionResult Rating(byte rating, int missionId)
+        {
+            
+            var userId = HttpContext.Session.GetString("Id");
+            long UserId = Convert.ToInt64(userId);
+
+
+            var alredyRated = _db.MissionRatings.SingleOrDefault(mr => mr.MissionId == missionId && mr.UserId == UserId);
+
+            if (alredyRated != null)
+            {
+                alredyRated.Rating = rating;
+                _db.SaveChanges();
+            }
+            else
+            {
+                var newRating = new MissionRating { UserId = UserId, MissionId = missionId, Rating = rating };
+                _db.MissionRatings.Add(newRating);
+                _db.SaveChanges();
+            }
+
+            return Json(rating);
+        }
+
+        [HttpPost]
+        public IActionResult PostComment(string comment, long missionId)
+        {
+            string Id = HttpContext.Session.GetString("UserId");
+            long userId = long.Parse(Id);
+
+            if (comment != null)
+            {
+                var newComment = new Comment { UserId = userId, MissionId = missionId, CommentText = comment };
+                _db.Comments.Add(newComment);
+                _db.SaveChanges();
+            }
+
+            return Ok();
+        }
+
+
         public IActionResult StoryListing()
         {
             return View();
