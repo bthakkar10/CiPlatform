@@ -28,7 +28,7 @@ namespace CI_Platform.Entities.ViewModels
 
         //public List<Mission> MissionList { get; set; }
 
-        public List<Mission> DisplayMissionCardsDemo { get; set; }
+        public List<Mission> DisplayMissionCardsDemo { get; set; } = null;
 
 
     }

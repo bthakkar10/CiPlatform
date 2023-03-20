@@ -4,8 +4,7 @@
     var email = ViewBag.email;
     var Username = ViewBag.Username;
 
-    string UserId = ViewBag.UserId;
-    long Id = long.Parse(UserId);
+    var Id = Convert.ToInt64(ViewBag.UserId);
 
 }
 
@@ -166,7 +165,7 @@
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     <img class="icon rounded-circle" src="~/images/user-img.png">
 
-                            @Username @UserId
+                            @Username 
                                     <img src="~/images/drop-down.png">
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">

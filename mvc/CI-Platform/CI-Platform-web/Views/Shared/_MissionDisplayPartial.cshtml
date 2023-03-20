@@ -4,20 +4,22 @@
     var email = ViewBag.email;
     var Username = ViewBag.Username;
 
-    string UserId = ViewBag.UserId;
-
-    long Id = long.Parse(UserId);
+    var Id = Convert.ToInt64(ViewBag.UserId);
 
 }
-<span class="user-id">@Id</span>
+<span class=" d-none user-id">@Id</span>
 @*grid view*@
+
+
 <div class="container my-5" id="grid-view">
     <div class=" row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-sm-1   g-4">
         <!-- Card starts from col -->
         @foreach (var obj in Model.DisplayMissionCardsDemo)
         {
+            double avg_rating = 0;
+            if (obj.MissionRatings.Count > 0)
+            { avg_rating = obj.MissionRatings.Average(r => r.Rating); }
 
-@*            double avg_rating = obj.MissionRatings.Average(r => r.Rating);*@
             DateTime? currDate = @DateTime.Now;
             TimeSpan timeSpan = new TimeSpan(1, 0, 0, 0);
             var deadline = obj.StartDate - timeSpan;
@@ -90,14 +92,14 @@
                         <div class="d-flex justify-content-between">
                             @obj.OrganizationName
                             <div class="stars">
-                                @*@for (int i = 1; i <= avg_rating; i++)
+                                @for (int i = 1; i <= avg_rating; i++)
                                 {
                                     <img src="~/images/selected-star.png" />
                                 }
                                 @for (int i = 5; i > avg_rating; i--)
                                 {
                                     <img src="~/images/star.png" />
-                                }*@
+                                }
 
                             </div>
 
@@ -105,7 +107,7 @@
                     </div>
 
 
-                    @if (isEndDatePassed)
+                    @if (isEndDatePassed || isAlreadyApplied || seats_left<=0 || isDeadlinePassed)
                     {
                         <div class=" d-flex pb-3 justify-content-center">
                             <a class="btn btn card-btn" href="@Url.Action("MissionDetail", "Home" , new { MissionId = @obj.MissionId})">
@@ -174,14 +176,16 @@
                                 }
                             </div>
                         </div>
-
-                        <div class=" d-flex pb-3 justify-content-center">
-                            <a class="btn card-btn" href="@Url.Action("MissionDetail", "Home" , new { MissionId = @obj.MissionId})">
-                                Apply  &nbsp;&nbsp;&nbsp;
-                                <img src="~/images/right-arrow.png">
-                                <img src="~/images/right-arrow2.png" />
-                            </a>
-                        </div>
+                        
+                        
+                            <div class=" d-flex pb-3 justify-content-center">
+                                <a class="btn card-btn" >
+                                    Apply  &nbsp;&nbsp;&nbsp;
+                                    <img src="~/images/right-arrow.png">
+                                    <img src="~/images/right-arrow2.png" />
+                                </a>
+                            </div>
+                        
                     }
 
                 </div>
@@ -197,11 +201,19 @@
 <div class="container " id="list-view">
     @foreach (var obj in Model.DisplayMissionCardsDemo)
     {
-        double avg_rating = obj.MissionRatings.Average(r => r.Rating);
-
-
+        double avg_rating = 0;
+        if (obj.MissionRatings.Count > 0)
+            {avg_rating = obj.MissionRatings.Average(r => r.Rating);}
+        var flag = 1;
+             DateTime? currDate = @DateTime.Now;
+            TimeSpan timeSpan = new TimeSpan(1, 0, 0, 0);
+            var deadline = obj.StartDate - timeSpan;
+            bool isDeadlinePassed = currDate > deadline;
+            bool isEndDatePassed = currDate > obj.EndDate;
+        bool isAlreadyApplied = obj.MissionApplications.Any(a => a.UserId == Id);
+       
         var registered_users = obj.MissionApplications.Count(m => m.ApprovalStatus.Contains("APPROVE"));
-        var total_seats = obj.TotalSeats - registered_users;
+        var seats_left = obj.TotalSeats - registered_users;
 
         <div class=" card-div card my-3 ">
             <div class="row g-0 list-card ">
@@ -219,16 +231,49 @@
                             }
                         }
 
-                        <div class="applied-pill">
-                            APPLIED
-                        </div>
+                       
+                            @if (isAlreadyApplied)
+                            {
+                            <div class="applied-pill" style="background:green 0% 0% no-repeat;">
+                                <span>APPLIED</span>
+                                </div>
+                            }
+                        @if (obj.MissionType.Equals("Time"))
+                            {
+                            if (isDeadlinePassed || isEndDatePassed)
+                            {
+                                <div class="applied-pill" style="background:red 0% 0% no-repeat;">
+                                <span >CLOSED</span>
+                                </div>
+                            }
+                            }
+                        
                         <div class="location">
                             <img src="~/images/pin1.png">
                             @obj.City.CityName
                         </div>
-                        <div class="like-on-img">
+
+                        @foreach (var fm in obj.FavouriteMissions)
+                        {
+                            @if (fm.UserId.Equals(Id))
+                            {
+                                <button class="  like-on-img " onclick="favourite()">
+                                    <i class="bi bi-heart-fill favourite-button filled-heart text-danger" data-mission-id="@obj.MissionId"></i>
+                                    flag = 0;
+                                </button>
+                            }
+
+                        }
+                        @if (flag == 1)
+                        {
+                            <button class="  like-on-img " onclick="favourite()">
+                                <i class="bi bi-heart empty-heart text-light favourite-button " data-mission-id="@obj.MissionId"></i>
+                            </button>
+                        }
+
+                   @*     <div class="like-on-img">
                             <img style="opacity: 1;" src="~/images/heart.png">
-                        </div>
+                        </div>*@
                         <div class="add-on-img">
                             <img style="opacity: 1;" src="~/images/add1.png">
                         </div>
@@ -265,7 +310,7 @@
                                     <div class="col card-detail-listview">
                                         <img class="icon-detail icon" src="~/images/Seats-left.png" alt="seats left">
                                         <div class="card-detail-text">
-                                            <p class="seat-left">  @total_seats</p>
+                                            <p class="seat-left">  @seats_left</p>
                                             <p>Seats left</p>
                                         </div>
                                     </div>
@@ -303,22 +348,47 @@
                                     <div class="col card-detail-listview">
                                         <i class="bi bi-tools icon-detail icon text-secondary tools-icon"></i>
                                         <div class="card-detail-text">
-                                            <p>Skills</p>
-                                            @foreach (var skill in obj.MissionSkills)
+                                           <p>Skills</p>
+                                           
+                                            @if (obj.MissionSkills.Any())
                                             {
-                                                <p class=" skillName">@skill.Skill.SkillName</p>
+                                                <p class="skillName">@obj.MissionSkills.First().Skill.SkillName</p>
                                             }
+                                            else
+                                            {
+                                                <span>No Skills required</span>
+                                            }
+                                            
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div>
+                             @if (isAlreadyApplied || isDeadlinePassed || isEndDatePassed || seats_left <= 0)
+                        {
+                            <div class=" d-flex pb-3 justify-content-center">
+                                <a class="btn card-btn" href="@Url.Action("MissionDetail", "Home" , new { MissionId = @obj.MissionId})">
+                                    View Details  &nbsp;&nbsp;&nbsp;
+                                    <img src="~/images/right-arrow.png">
+                                    <img src="~/images/right-arrow2.png" />
+                                </a>
+                            </div>
+                        }
+                        else {
+                            <div class=" d-flex pb-3 justify-content-center">
+                                <a class="btn card-btn" >
+                                    Apply  &nbsp;&nbsp;&nbsp;
+                                    <img src="~/images/right-arrow.png">
+                                    <img src="~/images/right-arrow2.png" />
+                                </a>
+                            </div>
+                        }
+                          @*  <div>
                                 <button type="submit" class="btn card-btn">
                                     View Details
                                     <img src="~/images/right-arrow.png">
                                     <img src="~/images/right-arrow2.png" />
                                 </button>
-                            </div>
+                            </div>*@
                         </div>
 
                     </div>

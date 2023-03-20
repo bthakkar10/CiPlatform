@@ -10,5 +10,15 @@ namespace CI_Platform.Entities.ViewModels
     public class MissionDetailViewModel
     {
         public Mission MissionDetails { get; set; } = null;
+
+        public List<Comment> ApprovedComments { get; set; } = null;
+
+        public List<User> UserList { get; set; } = null;
+
+        public List<MissionApplication> RecentVolunteers { get; set; }
+
+        public List<Mission> RelatedMissions { get; set; }
+
+        public string? link { get; set; }
     }
 }
