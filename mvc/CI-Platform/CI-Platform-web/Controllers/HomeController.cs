@@ -35,28 +35,24 @@ namespace CI_Platform_web.Controllers
         public IActionResult HomePage()
         
         {
-            if (HttpContext.Session.GetString("SEmail") != null)
+            if (HttpContext.Session.GetString("SEmail") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
             {
                 ViewBag.email = HttpContext.Session.GetString("SEmail");
-            }
-            if (HttpContext.Session.GetString("Id") != null)
-            {
                 ViewBag.UserId = HttpContext.Session.GetString("Id");
-            }
-            if (HttpContext.Session.GetString("Username") != null)
-            {
                 ViewBag.Username = HttpContext.Session.GetString("Username");
             }
 
+            var UserId = HttpContext.Session.GetString("Id");
+            long userId = Convert.ToInt64(UserId);
 
-            var vm = new MissionListModel();
+            var vm = new MissionListViewModel();
 
             vm.Country = _filterMission.CountryList();
             vm.Theme = _filterMission.ThemeList();
             vm.Skill = _filterMission.SkillList();
-            //vm.MissionList = _missionDisplay.DisplayMission();
+     
 
-             return View(vm);
+            return View(vm);
 
         }
 
@@ -73,14 +69,15 @@ namespace CI_Platform_web.Controllers
                 ViewBag.UserId = HttpContext.Session.GetString("Id");
                 ViewBag.Username = HttpContext.Session.GetString("Username");
             }
-            //try { 
+            try
+            {
                 var response = _db.Missions.FromSql($"exec spFilterSortSearchPagination @searchText={searchText}, @countryId={countryId}, @cityId={cityId}, @themeId={themeId}, @skillId={skillId}, @sortCase = {sortCase}, @userId = {userId}");
 
                 var items = await response.ToListAsync();
 
                 var MissionIds = items.Select(m => m.MissionId).ToList();
 
-                var vm = new MissionListModel();
+                var vm = new MissionListViewModel();
 
                 vm.DisplayMissionCardsDemo = _missionDisplay.DisplayMissionCardsDemo(MissionIds).OrderBy(ml => MissionIds.IndexOf(ml.MissionId)).ToList();
 
@@ -93,16 +90,18 @@ namespace CI_Platform_web.Controllers
                     return PartialView("_NoMissionFound");
                 }
 
-            //}
-            //catch(Exception ex)
-            //{
-            //    return View(ex);
+            }
+            catch(Exception ex)
+            {
+                return View(ex);
 
-            //}
-            //return Ok(new { StatusCode = 200, PartialView = PartialView("_MissionDisplayPartial", vm) });
-            
-            //return Ok(); _MissionDisplayPartial
+            }
+    //return Ok(new { StatusCode = 200, PartialView = PartialView("_MissionDisplayPartial", vm) });
+
+    //return Ok(); _MissionDisplayPartial
         }
+
+        
 
         [HttpPost]
         public IActionResult AddToFavorites(int missionId)
@@ -136,7 +135,7 @@ namespace CI_Platform_web.Controllers
 
         public IActionResult GetCitiesByCountry(int countryId)
         {
-            var vm = new MissionListModel();
+            var vm = new MissionListViewModel();
             vm.City = _filterMission.CityList(countryId);
             return Json(vm.City);
         }
@@ -149,7 +148,7 @@ namespace CI_Platform_web.Controllers
                 {
                     ViewBag.UserId = HttpContext.Session.GetString("Id");
                 }
-                ViewBag.MissionId = MissionId;
+                //ViewBag.MissionId = MissionId;
                 long userId = Convert.ToInt64(HttpContext.Session.GetString("Id"));
                 //long userId = long.Parse(Id);
                 var vm = new MissionDetailViewModel();
@@ -157,7 +156,7 @@ namespace CI_Platform_web.Controllers
                 vm.ApprovedComments = _missionDetail.GetApprovedComments(MissionId);
                 vm.RecentVolunteers = _missionDetail.GetRecentVolunteers(MissionId, userId);
                 vm.RelatedMissions = _missionDetail.GetRelatedMissions(MissionId);
-                vm.UserList = _missionDetail.UserList(userId);
+                vm.UserList = _missionDetail.UserList(userId, MissionId);
                 return View(vm);
             //}
             //catch (Exception ex)
@@ -193,21 +192,7 @@ namespace CI_Platform_web.Controllers
             return Json(rating);
         }
 
-        //[HttpPost]
-        //public IActionResult PostComment(string comment, long missionId)
-        //{
-        //    string Id = HttpContext.Session.GetString("UserId");
-        //    long userId = long.Parse(Id);
-
-        //    if (comment != null)
-        //    {
-        //        var newComment = new Comment { UserId = userId, MissionId = missionId, CommentText = comment };
-        //        _db.Comments.Add(newComment);
-        //        _db.SaveChanges();
-        //    }
-
-        //    return Json(missionId);
-        //}
+        
 
         [HttpPost]
         public IActionResult PostComment(string comment, long missionId)
@@ -228,6 +213,16 @@ namespace CI_Platform_web.Controllers
             return Ok();
         }
 
+        //necessary for displayin list in recommended to co worker on grid and list view
+
+        [HttpGet]
+        public IActionResult UserList(long MissionId)
+        {
+            string Id = HttpContext.Session.GetString("Id");
+            long userId = long.Parse(Id);
+            var coworkers= _db.Users.Where(u => u.UserId != userId && !u.MissionApplications.Any(m => m.MissionId == MissionId && m.ApprovalStatus == "APPROVE")).ToList();
+            return Json(coworkers);  
+        }
 
         [HttpPost]
         public async Task<IActionResult> MissionInvite(long ToUserId, long MissionId, long FromUserId, MissionDetailViewModel viewmodel)
@@ -240,22 +235,17 @@ namespace CI_Platform_web.Controllers
             };
 
             _db.MissionInvites.Add(missionInvite);
-            await _db.SaveChangesAsync();
 
             var MissionLink = Url.Action("MissionDetail", "Home", new { MissionId = MissionId }, Request.Scheme);
             viewmodel.link = MissionLink;
+
+            await _db.SaveChangesAsync();
 
             await _missionDetail.SendInvitationToCoWorker(ToUserId, FromUserId, viewmodel);
 
             return Json(new { success = true });
         }
 
-
-
-        public IActionResult StoryListing()
-        {
-            return View();
-        }
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -106,9 +106,9 @@ namespace CI_Platform.Repository.Repository
             return relatedMissions;
         }
 
-        public List<User> UserList(long UserId)
+        public List<User> UserList(long UserId, long MissionId)
         {
-            return _db.Users.Where(u => u.UserId != UserId).ToList();
+            return _db.Users.Where(u => u.UserId != UserId && !u.MissionApplications.Any(m => m.MissionId == MissionId && m.ApprovalStatus == "APPROVE")).ToList();
         }
 
 
@@ -118,9 +118,9 @@ namespace CI_Platform.Repository.Repository
 
             var Sender = await _db.Users.Where(su => su.UserId == FromUserId).FirstOrDefaultAsync();
 
-            var fromEmail = new MailAddress("ciplatformdemo@gmail.com");
+            var fromEmail = new MailAddress("thomasedison111986@gmail.com");
             var toEmail = new MailAddress(Email.Email);
-            var fromEmailPassword = "pmbqpeqxflbwwyjt";
+            var fromEmailPassword = "comefyrgfzsqikvk";
             string subject = "Mission Invitation";
             string body = "You Have Reciever Mission Invitation From " + Sender.FirstName + " " + Sender.LastName + " For:\n\n" + viewmodel.link;
 

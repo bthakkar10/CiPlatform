@@ -197,7 +197,7 @@
                         }
                         *@
 
-                        <button type="submit" class="mission-detail-capsule"  data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                        <button type="submit" class="mission-detail-capsule text-dark"  data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
                             <img src="~/images/L0001.png" />
                             Recommended To a Co-Worker
                         </button>
@@ -220,7 +220,7 @@
                                                 <span class="me-4 ">@u.FirstName @u.LastName</span>
 
 
-                                                <span style="margin-left : 6%;" mailto:class="invited-@u.UserId"><button class="btn btn-outline-primary model-button model-invite-btn" data-mission-id="@mission_id" data-user-id="@Id" data-from-user-id="@u.UserId">Invite</button></span>
+                                                <span style="margin-left : 6%;" mailto:class="invited-@u.UserId"><button class="btn btn-outline-primary model-button model-invite-btn" data-mission-id="@mission_id" data-from-user-id="@Id" data-to-user-id="@u.UserId">Invite</button></span>
 
                                             </div>
                                         }
@@ -287,7 +287,26 @@
                             </div>
                         </div>
                     </div>
-
+                    @if (isAlreadyApplied)
+                    {
+                        <div class="d-flex justify-content-center">
+                            <a style="width:max-content " class="btn card-btn disabled text-success">
+                                Already Applied
+                                
+                                
+                            </a>
+                        </div>
+                    }
+                    else if(isDeadlinePassed || isEndDatePassed || seats_left <=0 )
+                    {
+                        <div class="d-flex justify-content-center">
+                            <a style="width:max-content" class="btn card-btn disabled text-danger">
+                                Closed
+                               
+                            </a>
+                        </div>
+                    }
+                    else{
                     <div class="d-flex justify-content-center">
                         <a style="width:max-content" class="btn card-btn">
                             Apply Now &nbsp; &nbsp;
@@ -295,7 +314,7 @@
                             <img src="~/images/right-arrow2.png">
                         </a>
                     </div>
-
+                    }
 
                 </div>
             </div>

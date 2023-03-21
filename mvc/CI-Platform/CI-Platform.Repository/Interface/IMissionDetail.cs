@@ -18,8 +18,9 @@ namespace CI_Platform.Repository.Interface
 
         public List<Mission> GetRelatedMissions(long MissionId);
 
-        public List<User> UserList(long UserId);
+        public List<User> UserList(long UserId, long MissionId);
 
         public Task SendInvitationToCoWorker(long ToUserId, long FromUserId, MissionDetailViewModel viewmodel);
+
     }
 }

@@ -10,9 +10,8 @@ namespace CI_Platform.Repository.Interface
 {
     public interface IMissionDisplay
     {
-        //public List<Mission> DisplayMission();
+       
         public List<Mission> DisplayMissionCardsDemo(List<long> MissionIds);
-
 
     }
 }

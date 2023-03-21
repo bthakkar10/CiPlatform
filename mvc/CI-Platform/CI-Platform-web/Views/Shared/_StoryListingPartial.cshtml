@@ -1,0 +1,79 @@
+﻿ <!-- Card start for GridView -->
+    <div class="container my-5">
+        <div class=" row row-cols-md-2 row-cols-lg-3 row-cols-sm-1 g-4">
+            <!-- Card starts from col -->
+            @foreach(var obj in Model.DisplayStoryCard)
+            {
+            <div class="col">
+                <div class="card ">
+                    <div class="pill-on-img">
+                        <div>
+                            <img src="~/images/Grow-Trees-On-the-path-to-environment-sustainability-1.png"
+                             class="card-img-top" alt="...">
+                            <div class="btn-share-story rounded-pill d-none">View Details</div>
+                        </div>
+                        <div class="theme-pill rounded-pill"> @obj.Mission.MissionTheme.Title  </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">@obj.Title</h3>
+                        <p class="card-text align-items-center">@obj.Description</p>
+                        <div class="d-flex">
+                                <img class="rounded-circle story-card-icon" src="~/images/volunteer2.png" />
+                                <div class="story-card-icon-detail">
+                                <p>@obj.User.FirstName @obj.User.LastName</p>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+                <!-- card 1 ends here and card 2 starts -->
+@*            <div class="col">
+                <div class="card ">
+                    <div class="pill-on-img">
+                        <div>
+                            <img src="~/images/Grow-Trees-On-the-path-to-environment-sustainability-1.png"
+                                 class="card-img-top" alt="...">
+                            <div class="btn-share-story rounded-pill d-none">View Details</div>
+                        </div>
+                        <div class="theme-pill rounded-pill"> Environment </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Grow Trees On the path to environment sustainability</h3>
+                        <p class="card-text align-items-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...</p>
+                        <div class="d-flex">
+                            <img class="rounded-circle story-card-icon" src="~/images/volunteer2.png" />
+                            <div class="story-card-icon-detail">
+                                <p>Andrew Johnson</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+                <!-- card 2 ends here and card 3 starts -->
+            @*<div class="col">
+                <div class="card ">
+                    <div class="pill-on-img">
+                        <div>
+                            <img src="~/images/Grow-Trees-On-the-path-to-environment-sustainability-1.png"
+                                 class="card-img-top" alt="...">
+                            <div class="btn-share-story rounded-pill d-none">View Details</div>
+                        </div>
+                        <div class="theme-pill rounded-pill"> Environment </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Grow Trees On the path to environment sustainability</h3>
+                        <p class="card-text align-items-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...</p>
+                        <div class="d-flex">
+                            <img class="rounded-circle story-card-icon" src="~/images/volunteer2.png" />
+                            <div class="story-card-icon-detail">
+                                <p>Andrew Johnson</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+                <!-- card 3 ends here and card 4 starts -->
+            </div>
+        </div>
+        <!-- Card end for GridView -->

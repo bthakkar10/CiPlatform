@@ -1,0 +1,28 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Story";
+}
+@model CI_Platform.Entities.ViewModels.StoryListingViewModel
+<partial name="_SearchNav"></partial>
+<div container-fluid>
+    <div class="story-bg-img position-relative">
+        <!-- BG IMAGE -->
+        <img src="~/images/Grow-Trees-On-the-path-to-environment-sustainability-login.png" alt="">
+        <div class="story-bg-img-text">
+            <!-- TEXT -->
+            <div class="text text-white mb-3">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod cupiditate excepturi non
+                tempora odio. Earum at nulla quibusdam qui sequi. Lorem ipsum dolor sit amet consectetur.
+            </div>
+            <!-- BUTTON -->
+            <div>
+                <button class="btn-share-story rounded-pill px-4 py-2">
+                    Share your story &nbsp;
+                    <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="StorypartialViews"></div>
+</div>

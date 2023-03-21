@@ -1,4 +1,4 @@
-﻿@model CI_Platform.Entities.ViewModels.MissionListModel
+﻿@model CI_Platform.Entities.ViewModels.MissionListViewModel
 @{
     //var Id = ViewBag.Id;
     var email = ViewBag.email;
@@ -7,7 +7,7 @@
     var Id = Convert.ToInt64(ViewBag.UserId);
 
 }
-<span class=" d-none user-id">@Id</span>
+
 @*grid view*@
 
 
@@ -81,9 +81,32 @@
                             </button>
                         }
 
-                        <div class="add-on-img">
+                        <button class="add-on-img" type="submit" data-mission-id="@mission_id" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
                             <img style="opacity: 1;" src="~/images/add1.png">
+                        </button>
+
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Recommend to a Co-Worker</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="grid-modal-body">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+
+
+
                         <div class="theme-pill rounded-pill "> <span class="mission-theme">@obj.MissionTheme.Title</span>  </div>
                     </div>
                     <div class="card-body">
@@ -179,7 +202,7 @@
                         
                         
                             <div class=" d-flex pb-3 justify-content-center">
-                                <a class="btn card-btn" >
+                            <a class="btn card-btn" href="@Url.Action("MissionDetail", "Home" , new { MissionId = @obj.MissionId})">
                                     Apply  &nbsp;&nbsp;&nbsp;
                                     <img src="~/images/right-arrow.png">
                                     <img src="~/images/right-arrow2.png" />
@@ -271,12 +294,32 @@
                             </button>
                         }
 
-                   @*     <div class="like-on-img">
-                            <img style="opacity: 1;" src="~/images/heart.png">
-                        </div>*@
-                        <div class="add-on-img">
+                        <button class="add-on-img" type="submit" data-mission-id="@obj.MissionId" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
                             <img style="opacity: 1;" src="~/images/add1.png">
+                        </button>
+
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Recommend to a Co-Worker</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="grid-modal-body">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+
+
+
                         <div class="theme-pill rounded-pill"> Environment </div>
                     </div>
                 </div>
@@ -375,7 +418,7 @@
                         }
                         else {
                             <div class=" d-flex pb-3 justify-content-center">
-                                <a class="btn card-btn" >
+                                <a class="btn card-btn" href="@Url.Action("MissionDetail", "Home" , new { MissionId = @obj.MissionId})">
                                     Apply  &nbsp;&nbsp;&nbsp;
                                     <img src="~/images/right-arrow.png">
                                     <img src="~/images/right-arrow2.png" />
