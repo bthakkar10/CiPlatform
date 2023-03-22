@@ -153,6 +153,10 @@
       "PackagePath": "staticwebassets\\images\\add1.png"
     },
     {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\animal-welfare-2.jpg",
+      "PackagePath": "staticwebassets\\images\\animal-welfare-2.jpg"
+    },
+    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\arrow.png",
       "PackagePath": "staticwebassets\\images\\arrow.png"
     },
@@ -335,6 +339,10 @@
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\no-image-icon-21.png",
       "PackagePath": "staticwebassets\\images\\no-image-icon-21.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\no-image.png",
+      "PackagePath": "staticwebassets\\images\\no-image.png"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\organization.png",

@@ -25,9 +25,9 @@ public partial class User
 
     public string? Department { get; set; }
 
-    public long CityId { get; set; }
+    public long? CityId { get; set; }
 
-    public long CountryId { get; set; }
+    public long? CountryId { get; set; }
 
     public string? ProfileText { get; set; }
 
@@ -43,11 +43,11 @@ public partial class User
 
     public DateTime? DeletedAt { get; set; }
 
-    public virtual City City { get; set; } = null!;
+    public virtual City? City { get; set; }
 
     public virtual ICollection<Comment> Comments { get; } = new List<Comment>();
 
-    public virtual Country Country { get; set; } = null!;
+    public virtual Country? Country { get; set; }
 
     public virtual ICollection<FavouriteMission> FavouriteMissions { get; } = new List<FavouriteMission>();
 

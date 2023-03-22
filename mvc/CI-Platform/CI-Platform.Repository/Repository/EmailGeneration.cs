@@ -67,7 +67,7 @@ namespace CI_Platform.Repository.Repository
             string body = PasswordResetLink;
 
 
-        var smtp = new SmtpClient
+            var smtp = new SmtpClient
             {
                 Host = "smtp.gmail.com",
                 Port = 587,

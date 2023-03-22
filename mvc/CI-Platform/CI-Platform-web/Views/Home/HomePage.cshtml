@@ -20,7 +20,7 @@
 <!-- selected filters div ends here -->
 <!-- Heading of page -->
 <div class="container justify-content-between d-flex mt-4">
-    <h2 id="total-records">Explore Missions</h2>
+    <h2 id="exploreText"></h2>
     <div class="d-none d-md-flex justify-content-start">
         <div class="dropdown mx-4 " >
             <div class="dropdown-toggle h-auto mt-3" href="#" role="button" data-bs-toggle="dropdown"
@@ -63,20 +63,15 @@
 </div>*@
 <!-- Card ends for ListView -->
 <!-- Pagination starts here -->
-<nav id="  pagination-container">
+<center>
 
-    <ul class="pagination  d-flex justify-content-center flex-wrap pagination-flat pagination-success">
-        <li class="page-item me-2"><a class="page-link" href="#" data-abc="true"><img src="~/images/previous.png" /></a></li>
-        <li class="page-item me-2"><a class="page-link" href="#" data-abc="true"><img src="~/images/left.png" /></a></li>
-        <li class="page-item me-2 "><a class="page-link" href="#" data-abc="true">1</a></li>
-        <li class="page-item me-2"><a class="page-link" href="#" data-abc="true">2</a></li>
-        <li class="page-item me-2"><a class="page-link" href="#" data-abc="true">3</a></li>
-        <li class="page-item me-2"><a class="page-link" href="#" data-abc="true">4</a></li>
-        <li class="page-item me-2"><a class="page-link" href="#" data-abc="true"><img src="~/images/right-arrow1.png" /> </a></li>
-        <li class="page-item me-2"><a class="page-link" href="#" data-abc="true"><img src="~/images/next.png" /></a></li>
-
-    </ul>
-</nav>
+    <div class="container">
+        <nav aria-label="Page navigation example" class="pagination justify-content-center">
+            <ul class="pagination" id="pagination-container">
+            </ul>
+        </nav>
+    </div>
+</center>
 
 <!-- Pagination ends here -->
 <!-- Main content ends here -->
@@ -85,9 +80,11 @@
     function show_grid() {
         document.getElementById("grid-view").style.display = "block";
         document.getElementById("list-view").style.display = "none";
+        localStorage.setItem('view', 1);
     }
     function show_list() {
         document.getElementById("list-view").style.display = "block";
         document.getElementById("grid-view").style.display = "none";
+        localStorage.setItem('view', 0);
     }
         </script>

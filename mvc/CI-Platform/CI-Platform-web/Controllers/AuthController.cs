@@ -16,13 +16,15 @@ namespace CI_Platform_web.Controllers
         private readonly ILogger<AuthController> _logger;
         private readonly IUserRepository _dbUserRepository;
         private readonly IEmailGeneration _emailGeneration;
+        private readonly CiDbContext _db;
 
 
-        public AuthController(ILogger<AuthController> logger, IUserRepository dbUserRepository, IEmailGeneration emailGeneration)
+        public AuthController(ILogger<AuthController> logger, IUserRepository dbUserRepository, IEmailGeneration emailGeneration, CiDbContext db)
         {
             _logger = logger;
             _dbUserRepository = dbUserRepository;
             _emailGeneration= emailGeneration;
+            _db = db;
         }
 
         public IActionResult Index()
@@ -31,7 +33,7 @@ namespace CI_Platform_web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+   
         public IActionResult Index(string Email, string Password, long UserId)
         {
             if (ModelState.IsValid)
@@ -102,7 +104,7 @@ namespace CI_Platform_web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+    
         public IActionResult Register(User obj, IFormCollection form)
         {
             if (ModelState.IsValid)
@@ -112,8 +114,8 @@ namespace CI_Platform_web.Controllers
                 {
                     if (form["ConfirmPassword"] == obj.Password)
                     {
-                        _dbUserRepository.Add(obj);
-                        _dbUserRepository.Save();
+                        _db.Users.Add(obj);
+                        _db.SaveChanges();
                         TempData["success"] = "Registeration successful!!";
                         return RedirectToAction("HomePage", "Home");
                     }

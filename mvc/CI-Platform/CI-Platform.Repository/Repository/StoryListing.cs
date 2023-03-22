@@ -19,14 +19,15 @@ namespace CI_Platform.Repository.Repository
 
         public List<Story> DisplayStoryCard(List<long> StoryIds)
         {
-            List<Story> StoryList = _db.Stories.Where(m => StoryIds.Contains(m.StoryId))
+          
+           return _db.Stories.Where(m => StoryIds.Contains(m.StoryId))
                 .Include(m => m.User)
                 .Include(m => m.StoryMedia)
                 .Include(m => m.Mission)
                 .ThenInclude(m => m.MissionTheme)
                 .ToList();
 
-            return StoryList;
+           
         }
 
     }

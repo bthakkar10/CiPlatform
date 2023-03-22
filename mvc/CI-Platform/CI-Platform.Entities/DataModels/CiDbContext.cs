@@ -901,12 +901,10 @@ public partial class CiDbContext : DbContext
 
             entity.HasOne(d => d.City).WithMany(p => p.Users)
                 .HasForeignKey(d => d.CityId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__user__city_id__75A278F5");
 
             entity.HasOne(d => d.Country).WithMany(p => p.Users)
                 .HasForeignKey(d => d.CountryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__user__country_id__76969D2E");
         });
 

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "pTM6UTHWyijQZZZSSunX3o6+s/+jB9k41Xdh8YIyhYA=",
+  "Hash": "YEFDpAw6GtRYVdnpksX8LWyFShnR9HHi3g1YIYsoBek=",
   "Source": "CI-Platform-web",
   "BasePath": "_content/CI-Platform-web",
   "Mode": "Default",
@@ -236,6 +236,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\Animal-welfare-&-save-birds-campaign-1.png"
+    },
+    {
+      "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\animal-welfare-2.jpg",
+      "SourceId": "CI-Platform-web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\",
+      "BasePath": "_content/CI-Platform-web",
+      "RelativePath": "images/animal-welfare-2.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\animal-welfare-2.jpg"
     },
     {
       "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\arrow.png",
@@ -1307,6 +1324,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\next.png"
+    },
+    {
+      "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\no-image.png",
+      "SourceId": "CI-Platform-web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\",
+      "BasePath": "_content/CI-Platform-web",
+      "RelativePath": "images/no-image.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\no-image.png"
     },
     {
       "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\no-image-icon-21.png",

@@ -48,7 +48,6 @@ C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\C
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\ref\CI-Platform-web.dll
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\CI-Platform-web.pdb
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\CI-Platform-web.genruntimeconfig.cache
-C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\scopedcss\Views\Shared\_AuthLayout.cshtml.rz.scp.css
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\Humanizer.dll
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\MessagePack.dll
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\MessagePack.Annotations.dll
@@ -325,3 +324,4 @@ C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\C
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\CI_Platform.Repository.pdb
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\WebMatrix.Data.dll
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\WebMatrix.WebData.dll
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\scopedcss\Views\Auth\_AuthLayout.cshtml.rz.scp.css

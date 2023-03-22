@@ -19,6 +19,6 @@ namespace CI_Platform.Entities.ViewModels
 
         public List<Story> DisplayStoryCard { get; set; } = null; 
 
-        public string? Avtaar { get; set; } = string.Empty;
+
     }
 }

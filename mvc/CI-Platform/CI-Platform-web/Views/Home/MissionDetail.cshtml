@@ -1,10 +1,13 @@
-﻿@{
+﻿@model CI_Platform.Entities.ViewModels.MissionDetailViewModel
+
+@{
     ViewData["Title"] = "Volunteering Mission Page";
     Layout = "_Layout";
     var UserId = Convert.ToInt64(ViewBag.UserId);
     //var mission_id = ViewBag.MissionId;
+    var mission_id = Model.MissionDetails.MissionId;
 }
-@model CI_Platform.Entities.ViewModels.MissionDetailViewModel
+
 <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
 
@@ -13,42 +16,27 @@
         <div class="col-lg-6">
             <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <img src="~/images/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-2.png" />
-                    </div>
-                    <div class="swiper-slide">
-                        bottom                 <img src="~/images/img1.png" />
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="~/images/Grow-Trees-On-the-path-to-environment-sustainability-login.png" />
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="~/images/img1.png" />
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="~/images/image1.png" />
-                    </div>
+                    @foreach (var slider_img in Model.MissionDetails.MissionMedia.Where(m => m.MissionId == mission_id))
+                    {
+                        <div class="swiper-slide">
+                            <img src=@slider_img.MediaPath />
+                        </div>
+                    }
+                 
                 </div>
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
             </div>
             <div thumbsSlider="" class="swiper mySwiper">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <img src="~/images/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-2.png" />
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="~/images/img1.png" />
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="~/images/Grow-Trees-On-the-path-to-environment-sustainability-login.png" />
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="~/images/img11.png" />
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="~/images/image1.png" />
-                    </div>
+                    @foreach (var slider_img in Model.MissionDetails.MissionMedia.Where(m => m.MissionId == mission_id))
+                    {
+                        <div class="swiper-slide">
+                            <img src=@slider_img.MediaPath />
+                        </div>
+                    }
+
+                  
 
                 </div>
 
@@ -61,7 +49,7 @@
 
             var Id = Convert.ToInt64(ViewBag.UserId);
 
-            var mission_id = Model.MissionDetails.MissionId;
+          
             var count = Model.MissionDetails.MissionRatings.Count();
             double avg_rating = 0;
             if (Model.MissionDetails.MissionRatings.Count > 0)
@@ -88,14 +76,7 @@
         }
         
         
-       @* @foreach (var rate in Model.MissionDetails.MissionRatings.Where(r => r.MissionId == mission_id && UserId == Id))
-        {
-            missionRating = rate.Rating;
-        }*@
-       @* @foreach (var rate in Model.MissionDetails.MissionRatings.Any())
-        {
-            missionRating = Math.Round(rate.Average(r => r.Rating));
-        }*@
+      
         <div class="col-lg-6">
             <div class="volunteer-card-details py-4 px-4">
                
