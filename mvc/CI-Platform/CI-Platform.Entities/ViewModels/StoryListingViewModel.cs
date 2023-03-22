@@ -18,5 +18,7 @@ namespace CI_Platform.Entities.ViewModels
         public List<Skill> Skill { get; set; } = null;
 
         public List<Story> DisplayStoryCard { get; set; } = null; 
+
+        public string? Avtaar { get; set; } = string.Empty;
     }
 }

@@ -2,7 +2,7 @@
     ViewData["Title"] = "Volunteering Mission Page";
     Layout = "_Layout";
     var UserId = Convert.ToInt64(ViewBag.UserId);
-    var mission_id = ViewBag.MissionId;
+    //var mission_id = ViewBag.MissionId;
 }
 @model CI_Platform.Entities.ViewModels.MissionDetailViewModel
 <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
@@ -61,7 +61,7 @@
 
             var Id = Convert.ToInt64(ViewBag.UserId);
 
-            //var mission_id = Model.MissionDetails.MissionId;
+            var mission_id = Model.MissionDetails.MissionId;
             var count = Model.MissionDetails.MissionRatings.Count();
             double avg_rating = 0;
             if (Model.MissionDetails.MissionRatings.Count > 0)

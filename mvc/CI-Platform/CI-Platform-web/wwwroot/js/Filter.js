@@ -1,14 +1,17 @@
 ﻿//global
+let searchText = $("").text();
+console.log(searchText);
+
 //$(document).ready(function () {
     var currentUrl = window.location.href;
 
     if (currentUrl.includes("HomePage")) {
         FilterSortPaginationSearch();
-        console.log("first")
+       
     }
     else if (currentUrl.includes("StoryListing")) {
         StoryFilter();
-        console.log("second")
+       
     } 
 //});
 
@@ -17,34 +20,43 @@ var SelectedCountry = null;
 var UserId = ($("#user-id").text());
 let allDropdowns = $('.dropdown ul');
 
+//searchText.on('change', function () {
+//    if (currentUrl.includes("HomePage")) {
+//        FilterSortPaginationSearch();
+//        console.log("first")
+//    }
+//    else if (currentUrl.includes("StoryListing")) {
+//        StoryFilter();
+//        console.log("second")
+//    }
+//})
 
 allDropdowns.on('change', function () {
     if (currentUrl.includes("HomePage")) {
         FilterSortPaginationSearch();
-        console.log("first")
+
     }
     else if (currentUrl.includes("StoryListing")) {
         StoryFilter();
-        console.log("second")
+
     }
 })
 
-//for filters sorting stored procedure
+//for mission filters sorting stored procedure
 function FilterSortPaginationSearch() {
     var CountryId = SelectedCountry;
     var CityId = $('#CityList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var ThemeId = $('#ThemeList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var SkillId = $('#SkillList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
-    var SearchText = $("#search").val();
+    var SearchText = searchText;
+/*    var SearchText = $("#search").val();*/
     var sortCase = SelectedsortCase;
-    console.log(UserId);
+/*    console.log(SearchText);*/
     $.ajax({
         type: 'POST',
         url: '/Home/HomePage',
         data: { CountryId: CountryId, CityId: CityId, ThemeId: ThemeId, SkillId: SkillId, SearchText: SearchText, sortCase: sortCase, UserId: UserId },
         success: function (data) {
-
-            
             var view = $(".partialViews");
             view.empty();
             view.append(data);
@@ -56,16 +68,15 @@ function FilterSortPaginationSearch() {
 }
 
 
-
+//stories filters
 function StoryFilter() {
     var CountryId = SelectedCountry;
     var CityId = $('#CityList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var ThemeId = $('#ThemeList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var SkillId = $('#SkillList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
-    var SearchText = $("#search").val();
-    console.log(CityId);
-    console.log(ThemeId);
-
+/*    var SearchText = $("#search").val();*/
+/*    console.log(SearchText);*/
+    var SearchText = searchText;
     $.ajax({
         type: 'POST',
         url: '/Story/StoryListing',
@@ -97,19 +108,6 @@ $("#CountryList li").click(function () {
 
     var CountryId = $(this).val();
     SelectedCountry = CountryId;
-/*    console.log(CountryId);*/
-
-    //$('.card-div').each(function () {
-
-    //    var cardCountry = $(this).find('.mission-country').text();
-
-
-    //    if (CountryId == cardCountry) {
-    //        $(this).show();
-    //    } else {
-    //        $(this).hide();
-    //    }
-    //});
 
     GetCitiesByCountry(CountryId);
 
@@ -325,7 +323,7 @@ function favourite() {
 }
 
 
-//to add or update ratings(working on it)
+//to add or update ratings
 $('.rating-star i').on('click', function () {
     var rating = $(this).index() + 1;
     var missionId = $(this).data('mission-id');
@@ -376,7 +374,7 @@ $('.commentButton').click(function () {
     }
 });
 
-//recommend to co-worker invite for missin details page 
+//recommend to co-worker invite for mission details page 
 $(document).on('click', '.model-invite-btn', function () {
 
     var FromUserId = $(this).data('from-user-id');
@@ -401,7 +399,7 @@ $(document).on('click', '.model-invite-btn', function () {
     });
 });
 
-//recommend to co-worker invite for mission page
+//recommend to co-worker invite for mission page through get function which will fetch user list here and go to above function again
 $(document).on('click', '.add-on-img', function () { 
     var MissionId = $(this).data('mission-id');
     $.ajax({
@@ -423,11 +421,6 @@ $(document).on('click', '.add-on-img', function () {
 
             });
             list.html(items);
-
-            //var button = $('<button>').addClass('btn btn-success disabled')
-            //    .append($('<span>').text('Already Invited '));
-            //btn.replaceWith(button);
-            /* $('invited-' + ToUserId).html('<button class="btn btn-outline-success" data-mission-Id="@mission_id">Already Invited</button>');*/
         },
         error: function (error) {
             console.log(error);

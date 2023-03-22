@@ -21,6 +21,7 @@ namespace CI_Platform.Repository.Repository
         {
             List<Story> StoryList = _db.Stories.Where(m => StoryIds.Contains(m.StoryId))
                 .Include(m => m.User)
+                .Include(m => m.StoryMedia)
                 .Include(m => m.Mission)
                 .ThenInclude(m => m.MissionTheme)
                 .ToList();

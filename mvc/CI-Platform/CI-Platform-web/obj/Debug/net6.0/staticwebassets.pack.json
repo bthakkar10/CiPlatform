@@ -189,6 +189,10 @@
       "PackagePath": "staticwebassets\\images\\cross.png"
     },
     {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\customer-engagement.jfif",
+      "PackagePath": "staticwebassets\\images\\customer-engagement.jfif"
+    },
+    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\deadline.png",
       "PackagePath": "staticwebassets\\images\\deadline.png"
     },
@@ -289,6 +293,10 @@
       "PackagePath": "staticwebassets\\images\\info.png"
     },
     {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\laptop-working.jpg",
+      "PackagePath": "staticwebassets\\images\\laptop-working.jpg"
+    },
+    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\left.png",
       "PackagePath": "staticwebassets\\images\\left.png"
     },
@@ -347,6 +355,10 @@
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\previous.png",
       "PackagePath": "staticwebassets\\images\\previous.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\reports-story.webp",
+      "PackagePath": "staticwebassets\\images\\reports-story.webp"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\right-arrow.png",

@@ -142,13 +142,13 @@ namespace CI_Platform_web.Controllers
 
         public IActionResult MissionDetail(int MissionId)
         {
-            //try
-            //{
+            try
+            {
                 if (HttpContext.Session.GetString("Id") != null)
                 {
                     ViewBag.UserId = HttpContext.Session.GetString("Id");
                 }
-                //ViewBag.MissionId = MissionId;
+                ViewBag.MissionId = MissionId;
                 long userId = Convert.ToInt64(HttpContext.Session.GetString("Id"));
                 //long userId = long.Parse(Id);
                 var vm = new MissionDetailViewModel();
@@ -158,11 +158,11 @@ namespace CI_Platform_web.Controllers
                 vm.RelatedMissions = _missionDetail.GetRelatedMissions(MissionId);
                 vm.UserList = _missionDetail.UserList(userId, MissionId);
                 return View(vm);
-            //}
-            //catch (Exception ex)
-            //{
-            //    return View("Error");
-            //}
+            }
+            catch (Exception ex)
+            {
+                return View(ex);
+            }
 
         }
 
