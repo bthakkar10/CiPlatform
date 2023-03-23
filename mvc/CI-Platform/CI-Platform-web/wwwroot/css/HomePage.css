@@ -167,6 +167,7 @@ a,li,button,h3 {
     position: relative;
 }
 
+
 .location {
     position: absolute;
     top: 4%;
@@ -308,6 +309,29 @@ a,li,button,h3 {
         flex-direction: column;
     }
 
+
+.btn-share-story {
+    border-color: #fff;
+    color: #fff;
+    font-weight: 500;
+    background: #F8863400 0% 0% no-repeat padding-box;
+    border: 2px solid #fff;
+    letter-spacing: 0px;
+    opacity: 1;
+}
+
+.card-img button {
+    display: none;
+}
+
+.card-img:hover img {
+    filter: brightness(50%);
+}
+
+.card-img:hover button {
+    display: block;
+}
+
 .pagination li {
     margin: 10px 5px;
 }
@@ -327,6 +351,7 @@ a,li,button,h3 {
     background-color: #F88634 !important;
     border-color: #F88634 !important;
 }
+
 
 
 .footer {

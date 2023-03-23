@@ -15,11 +15,13 @@ namespace CI_Platform_web.Controllers
         private readonly CiDbContext _db;
         private readonly IFilter _filterMission;
         private readonly IStoryListing _storyListing;
-        public StoryController(IFilter filterMission, IStoryListing storyListing, CiDbContext db)
-        {
+        private readonly IShareStory _shareStory;
+        public StoryController(CiDbContext db,IFilter filterMission, IStoryListing storyListing, IShareStory shareStory)
+        {  
             _db = db;
             _filterMission = filterMission;
             _storyListing = storyListing;
+            _shareStory = shareStory;
         }
 
         public IActionResult StoryListing()
@@ -102,10 +104,6 @@ namespace CI_Platform_web.Controllers
                         return PartialView("_NoMissionFound");
                     }
                 }
-
-
-
-
             }
             catch (Exception ex)
             {
@@ -120,6 +118,27 @@ namespace CI_Platform_web.Controllers
             var vm = new StoryListingViewModel();
             vm.City = _filterMission.CityList(countryId);
             return Json(vm.City);
+        }
+
+        public IActionResult ShareStory(long userId)
+        {
+            var vm = new ShareStoryViewModel();
+            var draftDetails = _db.Stories.FirstOrDefault(sd => sd.Status == "DRAFT");
+            if (draftDetails != null)
+            {
+                //vm.MissionTitle = draftDetails.Mission.Title;
+                vm.StoryTitle = draftDetails.Title;
+                vm.date = draftDetails.PublishedAt;
+                vm.StoryDescription = draftDetails.Description;
+
+                return Json(new { success = true, data = vm }/*, JsonRequestBehavior.AllowGet*/);
+            }
+            else
+            {
+                vm.GetMissionListofUser = _shareStory.GetMissionListofUser(userId);
+                //return Json(new { success = false, error = "Draft details not found" }, JsonRequestBehavior.AllowGet);
+            }
+            return View(vm); 
         }
     }
 }

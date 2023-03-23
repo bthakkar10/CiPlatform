@@ -45,10 +45,10 @@
             var seats_left = obj.TotalSeats - registered_users;
             var mission_id = obj.MissionId;
 
-            <div class="col card-div">
-                <div class="card grid-card">
-                    <span class=""> @obj.MissionId </span>
-                    <span class="created-date ">@obj.CreatedAt </span>
+            <div class="col card-div ">
+                <div class="card grid-card h-100">
+                    <span class="d-none"> @obj.MissionId </span>
+                    <span class="created-date d-none ">@obj.CreatedAt </span>
 
                     <p class="mission-skill d-none">
                         @foreach (var skill in obj.MissionSkills)
@@ -59,17 +59,7 @@
                     <span class="mission-country d-none">@obj.Country.CountryId</span>
                     <span> </span>
                     <div class="pill-on-img">
-                        @* @foreach (var img_mission in obj.MissionMedia)
-                    {
-                    @if (img_mission.MissionId != mission_id)
-                    {
-                    <img src="~/images/no-image-icon-21.png" class="card-img-top" alt="No mission img" />
-                    }
-                    else
-                    {
-                    <img src=@img_mission.MediaPath class="card-img-top" alt="@img_mission.MediaName">
-                    }
-                    }*@
+                        
 
                         @foreach (var img_mission in obj.MissionMedia)
                         {

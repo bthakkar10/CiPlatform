@@ -34,12 +34,13 @@ namespace CI_Platform.Repository.Repository
                 .Include(m => m.GoalMissions)
                 .Include(m => m.FavouriteMissions)
                 .Include(m => m.MissionMedia)
+                .Include(m => m.MissionDocuments)
                 .Include(m => m.Comments)
                 .ThenInclude(u => u.User)
                 .FirstOrDefault(m => m.MissionId == MissionId);
 
             return mission;
-            //return mission;
+            
 
         }
 
@@ -118,7 +119,7 @@ namespace CI_Platform.Repository.Repository
 
             var Sender = await _db.Users.Where(su => su.UserId == FromUserId).FirstOrDefaultAsync();
 
-            var fromEmail = new MailAddress("thomasedison111986@gmail.com");
+            var fromEmail = new MailAddress("ciplatformdemo@gmail.com");
             var toEmail = new MailAddress(Email.Email);
             var fromEmailPassword = "comefyrgfzsqikvk";
             string subject = "Mission Invitation";

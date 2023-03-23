@@ -13,11 +13,9 @@
 
             var story_id = obj.StoryId;
             <div class="col">
-                <div class="card ">
-                    <div class="pill-on-img">
+                <div class="card h-100">
+                    <div class="card-img position-relative">
                         <div>
-                            @*<img src="~/images/Grow-Trees-On-the-path-to-environment-sustainability-1.png"
-                             class="card-img-top" alt="...">*@
 
                             @foreach (var img_story in obj.StoryMedia)
                             {
@@ -25,11 +23,11 @@
                                 <img src=@img_story.Path class="card-img-top">
                                                                
                             }
-
-                           
-
-                           
-
+                      
+                            <button class="btn-share-story rounded-pill px-4 py-2 position-absolute top-50 start-50 translate-middle">
+                                View Details &nbsp;
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
                             <div class="btn-share-story rounded-pill d-none">View Details</div>
                         </div>
                         <div class="theme-pill rounded-pill"> @obj.Mission.MissionTheme.Title  </div>
@@ -43,10 +41,11 @@
                             {
                                 <img class="rounded-circle story-card-icon" src= @user_img.  />
                             }*@
-                            
-                                <div class="story-card-icon-detail">
+                            <img class="rounded-circle story-card-icon" src=@obj.User.Avtar />
+                             <div class="story-card-icon-detail">
                                 <p>@obj.User.FirstName @obj.User.LastName</p>
-                                </div>
+                                <p>@obj.CreatedAt</p>
+                             </div>
                         </div>
                     </div>
                 </div>

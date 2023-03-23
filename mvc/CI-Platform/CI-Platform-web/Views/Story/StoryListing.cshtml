@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "_Layout";
     ViewData["Title"] = "Story";
+    var Id = Convert.ToInt64(ViewBag.UserId);
 }
 @model CI_Platform.Entities.ViewModels.StoryListingViewModel
 <partial name="_SearchNav"></partial>
@@ -16,10 +17,10 @@
             </div>
             <!-- BUTTON -->
             <div>
-                <button class="btn-share-story rounded-pill px-4 py-2">
+                <a class="btn-share-story btn rounded-pill px-4 py-2" href="@Url.Action("ShareStory", "Story" , new { UserId = @Id })">
                     Share your story &nbsp;
                     <i class="bi bi-arrow-right"></i>
-                </button>
+                </a>
             </div>
         </div>
     </div>

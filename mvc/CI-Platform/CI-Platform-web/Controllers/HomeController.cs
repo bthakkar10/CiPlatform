@@ -33,7 +33,7 @@ namespace CI_Platform_web.Controllers
         }
 
 
-
+        //get method for homepage
         public IActionResult HomePage()
         
         {
@@ -58,10 +58,7 @@ namespace CI_Platform_web.Controllers
 
         }
 
-
-
-       
-
+        //post method for homepage
         [HttpPost]
         public async Task<IActionResult> HomePage(string searchText, int? countryId, string? cityId, string? themeId, string? skillId, int? sortCase, int? userId, int? pageNo, int? pagesize)
         {
@@ -73,26 +70,8 @@ namespace CI_Platform_web.Controllers
             }
             try
             {
-                //var response = _db.Missions.FromSql($"exec spFilterSortSearchPagination @searchText={searchText}, @countryId={countryId}, @cityId={cityId}, @themeId={themeId}, @skillId={skillId}, @sortCase = {sortCase}, @userId = {userId}");
 
-                //var items = await response.ToListAsync();
-
-                //var MissionIds = items.Select(m => m.MissionId).ToList();
-
-                //var vm = new MissionListViewModel();
-
-                //vm.DisplayMissionCardsDemo = _missionDisplay.DisplayMissionCardsDemo(MissionIds).OrderBy(ml => MissionIds.IndexOf(ml.MissionId)).ToList();
-
-                //if (vm != null && vm.DisplayMissionCardsDemo.Any())
-                //{
-                //    return PartialView("_MissionDisplayPartial", vm);
-                //}
-                //else
-                //{
-                //    return PartialView("_NoMissionFound");
-                //}
-
-                IConfigurationRoot _configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
+               IConfigurationRoot _configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
 
                 string connectionString = _configuration.GetConnectionString("DefaultConnection");
 
@@ -151,7 +130,7 @@ namespace CI_Platform_web.Controllers
         }
 
         
-
+        //add to favourites
         [HttpPost]
         public IActionResult AddToFavorites(int missionId)
         {
@@ -182,13 +161,15 @@ namespace CI_Platform_web.Controllers
             return Ok();
         }
 
+        //get cities based on country filter
         public IActionResult GetCitiesByCountry(int countryId)
         {
             var vm = new MissionListViewModel();
             vm.City = _filterMission.CityList(countryId);
             return Json(vm.City);
         }
-
+        
+        //get method for mission details page
         public IActionResult MissionDetail(int MissionId)
         {
             try
@@ -215,7 +196,7 @@ namespace CI_Platform_web.Controllers
 
         }
 
-
+        //ratings
         [HttpPost]
         public IActionResult Rating(byte rating, int missionId)
         {
@@ -241,8 +222,7 @@ namespace CI_Platform_web.Controllers
             return Json(rating);
         }
 
-        
-
+        //post comments in mission details
         [HttpPost]
         public IActionResult PostComment(string comment, long missionId)
         {
@@ -262,8 +242,7 @@ namespace CI_Platform_web.Controllers
             return Ok();
         }
 
-        //necessary for displayin list in recommended to co worker on grid and list view
-
+        //necessary for displaying user list in recommended to co worker on grid and list view
         [HttpGet]
         public IActionResult UserList(long MissionId)
         {
@@ -273,6 +252,7 @@ namespace CI_Platform_web.Controllers
             return Json(coworkers);  
         }
 
+        //for mission invite(recommended to coworker)
         [HttpPost]
         public async Task<IActionResult> MissionInvite(long ToUserId, long MissionId, long FromUserId, MissionDetailViewModel viewmodel)
         {
@@ -295,6 +275,16 @@ namespace CI_Platform_web.Controllers
             return Json(new { success = true });
         }
 
+        //for documents in mission details page
+        public IActionResult DisplayDocument(string fileName)
+        {
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(),
+            "wwwroot/documents", fileName);
+
+            var fileStream = new FileStream(filePath, FileMode.Open);
+
+            return File(fileStream, "application/pdf");
+        }
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,7 +1,5 @@
 ﻿//global
 
-
-//$(document).ready(function () {
     var currentUrl = window.location.href;
 
     if (currentUrl.includes("HomePage")) {
@@ -12,14 +10,14 @@
         StoryFilter(1);
        
     } 
-//});
+
 
 var SelectedsortCase = null;
 var SelectedCountry = null;
 var UserId = ($("#user-id").text());
 let allDropdowns = $('.dropdown ul');
 
-
+//global search text selection
 $('#searchText').on('keyup', function () {
     if (currentUrl.includes("HomePage")) {
         FilterSortPaginationSearch();
@@ -31,6 +29,7 @@ $('#searchText').on('keyup', function () {
     }
 });
 
+//global dropdown selection for filters
 allDropdowns.on('change', function () {
     if (currentUrl.includes("HomePage")) {
         FilterSortPaginationSearch();
@@ -183,7 +182,7 @@ function FilterSortPaginationSearch(pageNo) {
     });
 }
 
-
+//to count no of total missions for explore -- missions count in mission page
 function totalMission() {
     var count = document.getElementById('missionCount').innerText;
     $('#exploreText').text("Explore " + count + " missions");
@@ -198,7 +197,7 @@ function totalMission() {
 }
 
 
-//stories filters
+//stories filters stored procedure
 function StoryFilter(pageNo) {
     var CountryId = SelectedCountry;
     var CityId = $('#CityList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
@@ -362,7 +361,8 @@ $("#CountryList li").click(function () {
         console.log("second")
     }
 });
-//get cities based on countries 
+
+//get cities based on countries for filters 
 function GetCitiesByCountry(CountryId) {
     $.ajax({
         type: "GET",
@@ -397,7 +397,7 @@ function GetCitiesByCountry(CountryId) {
     });
 }
 
-
+//for accordian function
 function GetCitiesByCountry(CountryId) {
     $.ajax({
         type: "GET",
@@ -542,7 +542,7 @@ function favourite() {
                             text.empty();
                             text.append("Remove from favourites");
                             console.log("added");
-                            alert("Mission added to favourites successfully!!!");
+                          /*  alert("Mission added to favourites successfully!!!");*/
                         }
                         else {
                             $(this).addClass('bi-heart text-dark')
@@ -550,7 +550,7 @@ function favourite() {
                             text.empty();
                             text.append("Add to favourites");
                             console.log("remove");
-                            alert("Mission removed from favourites successfully!!!");
+                           /* alert("Mission removed from favourites successfully!!!");*/
                         }
                     }
                 })
@@ -563,7 +563,6 @@ function favourite() {
         });
     });
 }
-
 
 //to add or update ratings
 $('.rating-star i').on('click', function () {
@@ -580,10 +579,10 @@ $('.rating-star i').on('click', function () {
         success: function () {
             selectedIcon.removeClass('bi-star').addClass('bi-star-fill text-warning');
             unselectedIcon.removeClass('bi-star-fill text-warning').addClass('bi-star');
-            alert("ratings updated successfully!!");
+            /*alert("ratings updated successfully!!");*/
         },
         error: function (error) {
-            alert("Sessin Expired.");
+           /* alert("Sessin Expired.");*/
             if (confirm("Please Login Again And Try Agaion")) {
                 window.location.href = "/Home/Index";
             }
@@ -591,7 +590,7 @@ $('.rating-star i').on('click', function () {
     });
 });
 
-//comments
+//comments in mission details page
 $('.commentButton').click(function () {
     var comment = $('.newComment').val();
         console.log(comment);
@@ -604,7 +603,7 @@ $('.commentButton').click(function () {
             success: function () {
         
                 $('.newComment').val('');
-                alert("comment will be displayed after approval");
+               /* alert("comment will be displayed after approval");*/
             },
             error: function (error) {
                 console.log("error");
@@ -612,7 +611,7 @@ $('.commentButton').click(function () {
         });
     }
     else {
-        console.log("null");
+        alert("null comment not allowed");
     }
 });
 
@@ -668,4 +667,173 @@ $(document).on('click', '.add-on-img', function () {
             console.log(error);
         }
     });
+});
+
+
+//to show story details when in draft
+function draft_details()
+{
+    var StoryTitle = $(#StoryTitle).val();
+    console.log(StoryTitle);
+    $.ajax({
+        url: "/Story/ShareStory", // The URL of your server-side method that retrieves the draft details
+        method: "GET",
+        success: function (response) {
+            if (response.success) {
+                // The draft details were successfully retrieved
+                $("#draft-details").html(response.data);
+               
+                StoryTitle.append(response.data);
+
+                // Display the draft details in the HTML element
+            } else {
+                // There was an error retrieving the draft details
+                console.log(response.error); // Log the error message to the console
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            // There was an error making the AJAX call
+            console.log(errorThrown); // Log the error message to the console
+        }
+    });
+}
+
+
+//for share story page (not sure if it works or not)
+let optionsButtons = document.querySelectorAll(".option-button");
+let writingArea = document.getElementById("text-input");
+let formatButtons = document.querySelectorAll(".format");
+let scriptButtons = document.querySelectorAll(".script");
+
+
+// Initial Setting
+const initializer = () => {
+    highlighter(formatButtons, false);
+    highlighter(scriptButtons, true);
+};
+
+// main logic
+const modifyText = (command, defaultUi, value) => {
+    document.execCommand(command, defaultUi, value);
+};
+
+// button operations
+optionsButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        modifyText(button.id, false, null);
+    });
+});
+
+// function format(){
+//     var id = document.getElementById("textformat");
+//     id.style.textDecoration="none";
+// }
+
+
+// function for highlight selected options
+const highlighter = (className, needsRemoval) => {
+    className.forEach((button) => {
+        button.addEventListener("click", () => {
+            if (needsRemoval) {
+                let alreadyActive = false;
+
+                // clicked button is active
+                if (button.classList.contains("active")) {
+                    alreadyActive = true;
+                }
+
+                highlighterRemover(className);
+                if (!alreadyActive) {
+                    // highlight clicked button
+                    button.classList.add("active");
+                }
+            }
+            else {
+                // other button can highlighted
+                button.classList.toggle("active");
+            }
+        });
+    });
+};
+
+// remove highlighter
+const highlighterRemover = (className) => {
+    className.forEach((button) => {
+        button.classList.remove("active");
+    });
+}
+
+
+
+window.onload = initializer();
+
+
+// share story
+let files = [],
+    dragArea = document.querySelector('.drag-area'),
+    input = document.querySelector('.drag-area input'),
+    button = document.querySelector('.drag-card button'),
+    select = document.querySelector('.drag-area .select'),
+    container = document.querySelector('.container-img');
+
+/** CLICK LISTENER */
+select.addEventListener('click', () => input.click());
+
+/* INPUT CHANGE EVENT */
+input.addEventListener('change', () => {
+    let file = input.files;
+
+    // if user select no image
+    if (file.length == 0) return;
+
+    for (let i = 0; i < file.length; i++) {
+        if (file[i].type.split("/")[0] != 'image') continue;
+        if (!files.some(e => e.name == file[i].name)) files.push(file[i])
+    }
+
+    showImages();
+});
+
+/** SHOW IMAGES */
+function showImages() {
+    container.innerHTML = files.reduce((prev, curr, index) => {
+        return `${prev}
+                <div class="image">
+                    <span onclick="delImage(${index})">&times;</span>
+                    <img src="${URL.createObjectURL(curr)}" />
+                </div>`
+    }, '');
+}
+
+/* DELETE IMAGE */
+function delImage(index) {
+    files.splice(index, 1);
+    showImages();
+}
+
+/* DRAG & DROP */
+dragArea.addEventListener('dragover', e => {
+    e.preventDefault()
+    dragArea.classList.add('dragover')
+})
+
+/* DRAG LEAVE */
+dragArea.addEventListener('dragleave', e => {
+    e.preventDefault()
+    dragArea.classList.remove('dragover')
+});
+
+/* DROP EVENT */
+dragArea.addEventListener('drop', e => {
+    e.preventDefault()
+    dragArea.classList.remove('dragover');
+
+    let file = e.dataTransfer.files;
+    for (let i = 0; i < file.length; i++) {
+        /** Check selected file is image */
+        if (file[i].type.split("/")[0] != 'image') continue;
+
+        if (!files.some(e => e.name == file[i].name)) files.push(file[i])
+    }
+    showImages();
 });
