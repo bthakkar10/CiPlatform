@@ -190,27 +190,27 @@ form{
 <!-- main container -->
 <div class="container">
     <h2 class="ms-4 mt-3">Share your Story</h2>
-    
-    <form method="post" onload="draft_details()" class="ms-4 mt-5 text-secondary">
+@*    <span id="storyId">@Model.StoryId</span>*@
+    <form method="post" class="ms-4 mt-5 text-secondary">
         <!-- first row -->
         <div class="row row-cols-lg-3 row-cols-md-3 row-cols-sm-2 row-cols-1">
             <div class="col">
                 <label for="" class="form-label ms-1">Select Mission</label>
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>Select your mission</option>
-                    @*@foreach (var mission_list in Model.GetMissionListofUser)
+                <select class="form-select" id="missionTitle" aria-label="Default select example">
+                    <option  asp-for="MissionTitle" selected>Select your mission</option>
+                    @foreach (var mission_list in Model.GetMissionListofUser)
                     {
-                        <option value="@mission_list.Mission.MissionId">@mission_list.Mission.Title</option>
-                    }*@
+                        <option  value="@mission_list.Mission.MissionId">@mission_list.Mission.Title</option>
+                    }
                 </select>
             </div>
             <div class="col">
-                <label for="" class="form-label ms-1">My Story Title</label>
-                <input type="text"  id="StoryTitle" class="form-control" placeholder="Enter story title">
+                <label asp-for="StoryTitle" class="form-label ms-1">My Story Title</label>
+                <input asp-for="StoryTitle" type="text" id="StoryTitle" class="form-control" placeholder="Enter story title">
             </div>
             <div class="col">
-                <label for="" class="form-label ms-1">Date</label>
-                <input type="date"  id="DatePublished" class="form-control">
+                <label asp-for="date" class="form-label ms-1">Date</label>
+                <input asp-for="date" type="date" id="date" class="form-control">
             </div>
         </div>
         <!-- end of first row -->
@@ -259,7 +259,7 @@ form{
             </div>
 
             <!-- text-area -->
-            <div id="text-input StoryDescription" contenteditable="true" class="bg-white m-2"></div>
+            <div id="text-input" contenteditable="true" class="bg-white m-2"></div>
             <div class="end"></div>
             <!-- <div class="end"></div> -->
         </div>
@@ -267,7 +267,7 @@ form{
         <!-- video link -->
         <div class="mt-3">
             <label for="" class="form-label ms-1">Enter Video URL</label>
-            <textarea  name="storyTitle" class="form-control" id="" rows="3" placeholder="Enter your url"></textarea>
+            <textarea name="storyTitle" class="form-control" id="videoUrls" rows="3" placeholder="Enter your url (Only Youtube URLs are allowed)"></textarea>
         @*    <input type="url" name="storyTitle" id="" class="form-control" placeholder="Enter your url">*@
         </div>
         <!-- video link ends -->
@@ -291,13 +291,13 @@ form{
                 <button class="btn btn-outline-secondary rounded-pill px-5 py-2 mt-md-0 mt-2" type="submit">Cancel</button>
             </div>
             <div class="col-lg-2 col">
-                <button class="btn submit rounded-pill  px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" type="submit">Save as Draft</button>
+                <button class="btn submit rounded-pill  px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" id="saveStory" type="submit">Save as Draft</button>
             </div>
             <div class="col-lg-2 col">
-                <button class="btn submit rounded-pill disabled px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" type="submit">Preview</button>
+                <button class="btn submit rounded-pill disabled px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" id="previewButton" type="submit">Preview</button>
             </div>
             <div class="col-lg-2 col">
-                <button class="btn submit rounded-pill disabled px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" type="submit">Submit</button>
+                <button class="btn submit rounded-pill disabled px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" id="submitButton" type="submit">Submit</button>
             </div>
         </div>
         <!-- end of button -->

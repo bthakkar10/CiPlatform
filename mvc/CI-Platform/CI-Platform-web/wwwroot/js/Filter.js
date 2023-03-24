@@ -671,32 +671,70 @@ $(document).on('click', '.add-on-img', function () {
 
 
 //to show story details when in draft
-function draft_details()
-{
-    var StoryTitle = $(#StoryTitle).val();
-    console.log(StoryTitle);
-    $.ajax({
-        url: "/Story/ShareStory", // The URL of your server-side method that retrieves the draft details
-        method: "GET",
-        success: function (response) {
-            if (response.success) {
-                // The draft details were successfully retrieved
-                $("#draft-details").html(response.data);
-               
-                StoryTitle.append(response.data);
+$('#missionTitle').click(function () {
+    var missionId = $(this).val();
 
-                // Display the draft details in the HTML element
-            } else {
-                // There was an error retrieving the draft details
-                console.log(response.error); // Log the error message to the console
+    $.ajax({
+        type: 'GET',
+        url: '/Story/GetDraftedStory',
+        data: { missionId: missionId },
+        success: function (result) {
+            if (result != null) {
+                $('#StoryTitle').val(result.title);
+
+                const date = new Date(result.createdAt);
+                const yyyy = date.getFullYear();
+                const mm = String(date.getMonth() + 1).padStart(2, '0');
+                const dd = String(date.getDate()).padStart(2, '0');
+                const formattedDate = `${yyyy}-${mm}-${dd}`;
+
+                $('#date').val(formattedDate);
+                $('#text-input').text(result.description);
+                $('#previewButton').removeClass('disabled');
+                $('#submitButton').removeClass('disabled');
+            }
+            else {
+                $('#StoryTitle').val(' ');
+                $('#date').val(' ');
+                $('#text-input').text(' ');
             }
         },
-        error: function (jqXHR, textStatus, errorThrown) {
-            // There was an error making the AJAX call
-            console.log(errorThrown); // Log the error message to the console
+        error: function (error) {
+            console.log(error);
         }
     });
-}
+});
+
+//to save story in database 
+$('#saveStory').click(function () {
+    var urls = null;
+    var u = $('#videoUrls').val();
+    if (u != null) {
+        urls = u.split('\n');
+    }
+    console.log(urls);
+    $.ajax({
+        type: 'POST',
+        url: '/Story/SaveStory',
+        data: {
+            MissionId: $('#missionTitle').val(),
+            StoryTitle: $('#StoryTitle').val(),
+            Date: $('#date').val(),
+            StoryDescription: $('#text-input').text(),
+            storyId: $('#storyId').val(),
+            VideoUrl: urls
+        },
+        success: function (result) {
+            console.log(result.message);
+            $('#previewButton').removeClass('disabled');
+            $('#submitButton').removeClass('disabled');
+        },
+        error: function (error) {
+            console.log(error);
+        }
+
+    });
+});
 
 
 //for share story page (not sure if it works or not)

@@ -24,6 +24,7 @@ namespace CI_Platform_web.Controllers
             _shareStory = shareStory;
         }
 
+        //get method for story listing
         public IActionResult StoryListing()
         {
             if (HttpContext.Session.GetString("SEmail") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
@@ -45,6 +46,7 @@ namespace CI_Platform_web.Controllers
             return View(vm);
         }
 
+        //post method for story listing sp
         [HttpPost]
         public async Task<IActionResult> StoryListing(string? countryId, string? cityId, string? themeId, string? skillId, string searchText, int? pageNo, int? pagesize)
         {
@@ -113,6 +115,7 @@ namespace CI_Platform_web.Controllers
           
         }
 
+        //get cities by country filter
         public IActionResult GetCitiesByCountry(int countryId)
         {
             var vm = new StoryListingViewModel();
@@ -120,25 +123,67 @@ namespace CI_Platform_web.Controllers
             return Json(vm.City);
         }
 
+        //get method for share your story
         public IActionResult ShareStory(long userId)
         {
-            var vm = new ShareStoryViewModel();
-            var draftDetails = _db.Stories.FirstOrDefault(sd => sd.Status == "DRAFT");
-            if (draftDetails != null)
+            if (HttpContext.Session.GetString("SEmail") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
             {
-                //vm.MissionTitle = draftDetails.Mission.Title;
-                vm.StoryTitle = draftDetails.Title;
-                vm.date = draftDetails.PublishedAt;
-                vm.StoryDescription = draftDetails.Description;
+                ViewBag.email = HttpContext.Session.GetString("SEmail");
+                ViewBag.UserId = HttpContext.Session.GetString("Id");
+                ViewBag.Username = HttpContext.Session.GetString("Username");
+            }
+            var vm = new ShareStoryViewModel();
+            vm.GetMissionListofUser = _shareStory.GetMissionListofUser(userId);
+            return View(vm);    
+        }
 
-                return Json(new { success = true, data = vm }/*, JsonRequestBehavior.AllowGet*/);
+        //get method for drafted story in share story page
+        public IActionResult GetDraftedStory(long missionId)
+        {
+            if (HttpContext.Session.GetString("SEmail") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
+            {
+                ViewBag.email = HttpContext.Session.GetString("SEmail");
+                ViewBag.UserId = HttpContext.Session.GetString("Id");
+                ViewBag.Username = HttpContext.Session.GetString("Username");
+            }
+             var Id = Convert.ToInt64(ViewBag.UserId);
+            var userId = (long) Id;
+
+            Story story = _shareStory.GetDraftedStory(userId, missionId);
+            return Json(story);
+        }
+
+        //to save story in database in draft mode only 
+        public IActionResult SaveStory(ShareStoryViewModel viewModel) 
+        {
+            if (HttpContext.Session.GetString("SEmail") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
+            {
+                ViewBag.email = HttpContext.Session.GetString("SEmail");
+                ViewBag.UserId = HttpContext.Session.GetString("Id");
+                ViewBag.Username = HttpContext.Session.GetString("Username");
+            }
+            var Id = Convert.ToInt64(ViewBag.UserId);
+            var userId = (long)Id;
+
+            Story DraftStory = _shareStory.GetDraftedStory(userId, viewModel.MissionId);
+            if(DraftStory == null)
+            {
+                if (_shareStory.isPublishedStory(userId, viewModel.MissionId) == true)
+                {
+                    return Ok(new { message = "Volunteers can publish only one story per mission!!" });
+                }
+                else
+                {
+                    _shareStory.AddNewStory(viewModel, userId);
+                    return Ok(new { message = "New Story is added successfully in draft mode!!" });
+                }
             }
             else
             {
-                vm.GetMissionListofUser = _shareStory.GetMissionListofUser(userId);
-                //return Json(new { success = false, error = "Draft details not found" }, JsonRequestBehavior.AllowGet);
+                _shareStory.EditDraftedStory(viewModel, userId);
             }
-            return View(vm); 
+            return Ok();
         }
+
     }
 }
