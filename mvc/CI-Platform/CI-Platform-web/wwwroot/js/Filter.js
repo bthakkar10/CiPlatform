@@ -681,7 +681,7 @@ $('#missionTitle').click(function () {
         success: function (result) {
             if (result != null) {
                 $('#StoryTitle').val(result.title);
-
+                console.log(result);
                 const date = new Date(result.createdAt);
                 const yyyy = date.getFullYear();
                 const mm = String(date.getMonth() + 1).padStart(2, '0');
@@ -690,6 +690,31 @@ $('#missionTitle').click(function () {
 
                 $('#date').val(formattedDate);
                 $('#text-input').text(result.description);
+                console.log(result.storyMedia);
+
+                
+                var UrlRecords = '';
+                $.each(result.storyMedia, function (index, item) {
+                    if (item.type === "videos") {
+                        UrlRecords += item.path + '\n';
+                   }
+                });
+                console.log(UrlRecords);
+                $('#videoUrls').val(UrlRecords);
+
+                /*   console.log(result.storyMedia[i].path);*/
+                $.each(result.storyMedia, function (index, item) {
+                    if (item.type === "images") {
+                        var image = $('<img>').attr('src', '/images/Upload/' + item.path);
+                        var closeIcon = $('<button>').text('x').click(function () {
+                            $(this).parent().remove(); // remove the parent div containing both the image and the close button
+                        });
+                        var img = $('<span>').addClass('image').append(image).append(closeIcon);
+                        $('#img-output').append(img);
+
+                    }
+                })
+
                 $('#previewButton').removeClass('disabled');
                 $('#submitButton').removeClass('disabled');
             }
@@ -697,6 +722,8 @@ $('#missionTitle').click(function () {
                 $('#StoryTitle').val(' ');
                 $('#date').val(' ');
                 $('#text-input').text(' ');
+                $('#videoUrls').val(' ');
+                $('#img-output').val(' ');
             }
         },
         error: function (error) {
@@ -705,27 +732,43 @@ $('#missionTitle').click(function () {
     });
 });
 
-//to save story in database 
+//to save story in database in draft mode 
 $('#saveStory').click(function () {
+    var formData = new FormData();
     var urls = null;
     var u = $('#videoUrls').val();
     if (u != null) {
         urls = u.split('\n');
+        for (var i = 0; i < urls.length; i++) {
+            formData.append("VideoUrls", urls[i]);
+        }
     }
-    console.log(urls);
+    else {
+        formData.append("VideoUrls", null);
+    }
+
+    var input = $('#img-input');
+    var files = input[0].files;
+    for (var i = 0; i < files.length; i++) {
+        formData.append("Images", files[i]);
+    }
+    console.log(files);
+    formData.append("MissionId", $('#missionTitle').val());
+    formData.append("StoryTitle", $('#StoryTitle').val());
+    formData.append("Date", $('#date').val());
+    formData.append("StoryDescription", $('#text-input').text());
+
     $.ajax({
-        type: 'POST',
         url: '/Story/SaveStory',
-        data: {
-            MissionId: $('#missionTitle').val(),
-            StoryTitle: $('#StoryTitle').val(),
-            Date: $('#date').val(),
-            StoryDescription: $('#text-input').text(),
-            storyId: $('#storyId').val(),
-            VideoUrl: urls
-        },
+        type: 'POST',
+        processData: false,
+        contentType: false,
+        data: formData,
+        
         success: function (result) {
             console.log(result.message);
+            toastr.success("Data is saved in draft mode!!");
+           
             $('#previewButton').removeClass('disabled');
             $('#submitButton').removeClass('disabled');
         },
@@ -735,6 +778,76 @@ $('#saveStory').click(function () {
 
     });
 });
+
+//to submit story 
+$('#submitButton').click(function () {
+    var formData = new FormData();
+    var urls = null;
+    var u = $('#videoUrls').val();
+    if (u != null) {
+        urls = u.split('\n');
+        for (var i = 0; i < urls.length; i++) {
+            formData.append("VideoUrls", urls[i]);
+        }
+    }
+    else {
+        formData.append("VideoUrls", null);
+    }
+
+    var input = $('#img-input');
+    var files = input[0].files;
+    for (var i = 0; i < files.length; i++) {
+        formData.append("Images", files[i]);
+    }
+    console.log(files);
+    formData.append("MissionId", $('#missionTitle').val());
+    formData.append("StoryTitle", $('#StoryTitle').val());
+    formData.append("Date", $('#date').val());
+    formData.append("StoryDescription", $('#text-input').text());
+
+    $.ajax({
+        url: '/Story/SubmitStory',
+        type: 'POST',
+        processData: false,
+        contentType: false,
+        data: formData,
+
+        success: function (result) {
+            console.log(result.message);
+            toastr.success(result.message);
+        },
+        error: function (error) {
+            console.log(error);
+        }
+
+    });
+});
+
+////for preview button
+//$(#previewButton).click(function () {
+
+//});
+
+//validate youtube urls 
+$('#videoUrls').on('blur', validateYoutubeUrls);
+function validateYoutubeUrls() {
+    var urls = $('#videoUrls').val().split('\n');
+
+    for (var i = 0; i < urls.length; i++) {
+        var url = urls[i].trim();
+        if (url.length > 0 && !isYoutubeUrl(url)) {
+            $("#HelpBlock").removeClass('d-none');
+            /*toastr.danger("not a valid youtube url");*/
+            $('#videoUrls').focus();
+            return false;
+        }
+    }
+    $("#HelpBlock").addClass('d-none');
+}
+function isYoutubeUrl(url) {
+    var pattern = /^.*(youtube.com\/|youtu.be\/|\/v\/|\/e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/;
+    return pattern.test(url);
+}
 
 
 //for share story page (not sure if it works or not)
@@ -837,7 +950,7 @@ function showImages() {
     container.innerHTML = files.reduce((prev, curr, index) => {
         return `${prev}
                 <div class="image">
-                    <span onclick="delImage(${index})">&times;</span>
+                    <span class="closeIconImg" onclick="delImage(${index})">&times;</span>
                     <img src="${URL.createObjectURL(curr)}" />
                 </div>`
     }, '');

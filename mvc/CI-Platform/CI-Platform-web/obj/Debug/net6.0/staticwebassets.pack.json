@@ -153,6 +153,30 @@
       "PackagePath": "staticwebassets\\images\\Seats-left.png"
     },
     {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\404-Page-image.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\404-Page-image.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Screenshot (11).png",
+      "PackagePath": "staticwebassets\\images\\Upload\\Screenshot (11).png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Screenshot (8).png",
+      "PackagePath": "staticwebassets\\images\\Upload\\Screenshot (8).png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\achieved.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\achieved.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\animal-welfare-3.jpg",
+      "PackagePath": "staticwebassets\\images\\Upload\\animal-welfare-3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\animal-welfare-4.jpg",
+      "PackagePath": "staticwebassets\\images\\Upload\\animal-welfare-4.jpg"
+    },
+    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Volunteering-Rank.png",
       "PackagePath": "staticwebassets\\images\\Volunteering-Rank.png"
     },

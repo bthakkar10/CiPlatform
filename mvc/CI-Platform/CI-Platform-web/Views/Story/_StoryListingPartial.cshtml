@@ -16,31 +16,37 @@
                 <div class="card h-100">
                     <div class="card-img position-relative">
                         <div>
-
-                            @foreach (var img_story in obj.StoryMedia)
+                            @*@{
+                                var img = obj.StoryMedia.FirstOrDefault() ;
+                            }*@
+                           @foreach (var img_story in obj.StoryMedia)
                             {
                                
                                 <img src=@img_story.Path class="card-img-top">
                                                                
                             }
-                      
-                            <button class="btn-share-story rounded-pill px-4 py-2 position-absolute top-50 start-50 translate-middle">
+                          @*  <img src=@img class="card-img-top">*@
+                            <button class="btn-view-details-story rounded-pill px-4 py-2 position-absolute top-50 start-50 translate-middle" onclick="location.href='@Url.Action("StoryDetails","Story", new{StoryId = story_id})' ">
                                 View Details &nbsp;
                                 <i class="bi bi-arrow-right"></i>
                             </button>
-                            <div class="btn-share-story rounded-pill d-none">View Details</div>
                         </div>
                         <div class="theme-pill rounded-pill"> @obj.Mission.MissionTheme.Title  </div>
                     </div>
                     <div class="card-body">
                         <h3 class="card-title">@obj.Title</h3>
-                        <p class="card-text align-items-center">@obj.Description</p>
-                        <div class="d-flex">
+                        <p class="card-text align-items-center">
+                            @{
+                                int maxLength = 100;
+                                string description = obj.Description.Length > maxLength
+                                ? @obj.Description.Substring(0, maxLength) + "..."
+                                : @obj.Description;
+                            }
 
-                           @* @foreach(var user_img in (dynamic) obj.User)
-                            {
-                                <img class="rounded-circle story-card-icon" src= @user_img.  />
-                            }*@
+                            @description
+                     
+                        </p>
+                        <div class="d-flex">
                             <img class="rounded-circle story-card-icon" src=@obj.User.Avtar />
                              <div class="story-card-icon-detail">
                                 <p>@obj.User.FirstName @obj.User.LastName</p>

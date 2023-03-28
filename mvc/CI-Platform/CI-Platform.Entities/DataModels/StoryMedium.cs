@@ -19,5 +19,6 @@ public partial class StoryMedium
 
     public DateTime? DeletedAt { get; set; }
 
+    [System.Text.Json.Serialization.JsonIgnore]
     public virtual Story Story { get; set; } = null!;
 }

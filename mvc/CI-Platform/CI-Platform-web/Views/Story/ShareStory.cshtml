@@ -3,189 +3,6 @@
     ViewData["Title"] = "ShareStory";
 }
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
-<style>
-    .submit{
-    border: 1px solid #F88634;
-    color: #F88634;
-}
-.submit:hover{
-    color: #E8E8E8;
-    background-color: #F88634;
-}
-
-/* darg and drop */
-.drag-card {
-    width: 100%;
-    height: auto;
-    overflow: hidden;
-}
-
-.drag-card .top {
-    width: 100%;
-}
-
-
-.drag-card button {
-    outline: 0;
-    border: 0;
-    -webkit-appearence: none;
-    background-color: white;
-    color: black;
-    border-radius: 4px;
-    transition: 0.3s;
-    cursor: pointer;
-    font-weight: 400;
-    font-size: 0.8rem;
-    padding: 8px 13px;
-}
-
-.drag-card button:hover {
-    opacity: 0.8;
-}
-
-.drag-card button:active {
-    transform: translateY(5px);
-}
-
-.drag-card .drag-area {
-    width: 100%;
-    height: 150px;
-    border-radius: 5px;
-    border: 2px dashed #d5d5e1;
-    color: #c8c9dd;
-    font-size: 0.9rem;
-    font-weight: 500;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    -webkit-user-select: none;
-    margin-top: 10px;
-}
-
-.drag-card .drag-area .visible {
-    font-size: 18px;
-}
-.drag-card .select {
-    color: #5256ad;
-    margin-left: 5px;
-    cursor: pointer;
-    transition: 0.4s;
-}
-
-.drag-card .select:hover {
-    opacity: 0.6;
-}
-
-.drag-card .container-img {
-    width: 100%;
-    height: auto;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-.drag-card .container-img .image {
-    max-width: 100px;
-    width: 100%;
-    margin-top: 30px;
-    margin-right: 30px;
-    height: 100px;
-    position: relative;
-}
-
-.drag-card .container-img .image img {
-    width: 100%;
-    height: 100%;
-    border-radius: 1px;
-}
-
-.drag-card .container-img .image span {
-    position: absolute;
-    top: -2px;
-    right: 5px;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-/*dragover class will used in drag and drop system */
-.drag-card .drag-area.dragover {
-    background: rgba(0, 0, 0, 0.4);
-}
-
-.drag-card .drag-area.dragover .on-drop {
-    display: inline;
-    font-size: 28px;
-}
-
-.drag-card input,
-.drag-card .drag-area .on-drop, 
-.drag-card .drag-area.dragover .visible {
-    display: none;
-}
-/* end drag drop css */
-
-/* ck editor */
-.options{
-    display: flex;
-    flex-wrap: wrap;
-    /* align-items: center; */
-    gap: 15px;
-    
-}
-.buttons{
-    height: 28px;
-    width: 28px;
-    display: grid;
-    place-items: center;
-    border-radius: 3px;
-    border: none;
-    background-color: #f8f9fa;
-    outline: none;
-    color: #020929;
-} 
-#text-input{
-    border: 1px solid #757575;
-    padding: 20px;
-    height: 30vh;
-}
-.active{
-    background-color: #e0e9ff;
-}
-.end{
-    height: 20px;
-}
-
-form{
-    font-size: 20px;
-}
-
-.no-mission{
-    padding-top: 15px;
-    color: #757575;
-}
-.no-mission li{
-    list-style: none;
-}
-.no-mission li a{
-    color: #333;
-    text-decoration: none;
-}
-
-.dropdown-toggle::after {
-    margin-left: 9px !important;
-}
-
-/*media (max-width:767px){
-    .username{
-        display: none;
-    }
-}*/
-</style>
 @model CI_Platform.Entities.ViewModels.ShareStoryViewModel
 <!-- main container -->
 <div class="container">
@@ -198,19 +15,22 @@ form{
                 <label for="" class="form-label ms-1">Select Mission</label>
                 <select class="form-select" id="missionTitle" aria-label="Default select example">
                     <option  asp-for="MissionTitle" selected>Select your mission</option>
-                    @foreach (var mission_list in Model.GetMissionListofUser)
+                    @if(Model.GetMissionListofUser.Any())
                     {
-                        <option  value="@mission_list.Mission.MissionId">@mission_list.Mission.Title</option>
+                        @foreach (var mission_list in Model.GetMissionListofUser)
+                        {
+                            <option  value="@mission_list.Mission.MissionId">@mission_list.Mission.Title</option>
+                        }
                     }
                 </select>
             </div>
             <div class="col">
                 <label asp-for="StoryTitle" class="form-label ms-1">My Story Title</label>
-                <input asp-for="StoryTitle" type="text" id="StoryTitle" class="form-control" placeholder="Enter story title">
+                <input asp-for="StoryTitle" type="text" id="StoryTitle" class="form-control" required placeholder="Enter story title">
             </div>
             <div class="col">
-                <label asp-for="date" class="form-label ms-1">Date</label>
-                <input asp-for="date" type="date" id="date" class="form-control">
+                <label asp-for="Date" class="form-label ms-1">Date</label>
+                <input asp-for="Date" type="date" id="date" class="form-control">
             </div>
         </div>
         <!-- end of first row -->
@@ -267,8 +87,8 @@ form{
         <!-- video link -->
         <div class="mt-3">
             <label for="" class="form-label ms-1">Enter Video URL</label>
-            <textarea name="storyTitle" class="form-control" id="videoUrls" rows="3" placeholder="Enter your url (Only Youtube URLs are allowed)"></textarea>
-        @*    <input type="url" name="storyTitle" id="" class="form-control" placeholder="Enter your url">*@
+            <div><small class="text-danger d-none" id="HelpBlock">Please enter only valid youtube URLs</small></div>
+            <textarea name="storyTitle" class="form-control videoUrls" id="videoUrls" rows="3" placeholder="Enter your url (Only Youtube URLs are allowed)"></textarea>
         </div>
         <!-- video link ends -->
         <!-- darg and drop -->
@@ -279,169 +99,27 @@ form{
                     <span class="select" role="button"><img src="~/images/drag-and-drop.png"></span>
                 </span>
                 <span class="on-drop">Drop images here</span>
-                <input name="file" type="file" class="file" multiple />
+                <input name="file" type="file" accept="images/*" class="file" multiple id="img-input" />
             </div>
             <!-- IMAGE PREVIEW CONTAINER -->
-            <div class="container-img mt-3"></div>
+            <div class="container-img mt-3" id="img-output"> </div>
         </div>
         <!--  -->
         <!-- submit buttons -->
         <div class="row mt-3">
             <div class="col-md-6 col">
-                <button class="btn btn-outline-secondary rounded-pill px-5 py-2 mt-md-0 mt-2" type="submit">Cancel</button>
+                <a class="btn btn-outline-secondary rounded-pill px-5 py-2 mt-md-0 mt-2" href="@Url.Action("StoryListing", "Story")">Cancel</a>
             </div>
             <div class="col-lg-2 col">
-                <button class="btn submit rounded-pill  px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" id="saveStory" type="submit">Save as Draft</button>
+                <button class="btn story-btns rounded-pill  px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" id="saveStory" type="submit">Save as Draft</button>
             </div>
             <div class="col-lg-2 col">
-                <button class="btn submit rounded-pill disabled px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" id="previewButton" type="submit">Preview</button>
+                <button class="btn story-btns rounded-pill disabled px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" id="previewButton" type="submit">Preview</button>
             </div>
             <div class="col-lg-2 col">
-                <button class="btn submit rounded-pill disabled px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" id="submitButton" type="submit">Submit</button>
+                <button class="btn story-btns rounded-pill disabled px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" id="submitButton" type="submit">Submit</button>
             </div>
         </div>
         <!-- end of button -->
     </form>
 </div>
-
-<script>
-    // script of ckeditor
-//let optionsButtons = document.querySelectorAll(".option-button");
-//let writingArea = document.getElementById("text-input");
-//let formatButtons = document.querySelectorAll(".format");
-//let scriptButtons = document.querySelectorAll(".script");
-
-
-//// Initial Setting
-//const initializer = () => {
-//    highlighter(formatButtons,false);
-//    highlighter(scriptButtons,true);
-//};
-
-//// main logic
-//const modifyText = (command,defaultUi,value) => {
-//    document.execCommand(command,defaultUi,value);
-//};
-
-//// button operations
-//optionsButtons.forEach(button => {
-//    button.addEventListener("click", () => {
-//        modifyText(button.id,false,null);
-//    });
-//});
-
-//// function format(){
-////     var id = document.getElementById("textformat");
-////     id.style.textDecoration="none";
-//// }
-
-
-//// function for highlight selected options
-//const highlighter = (className , needsRemoval) => {
-//    className.forEach((button) => {
-//        button.addEventListener("click",() => {
-//             if(needsRemoval){
-//                let alreadyActive = false;
-
-//                // clicked button is active
-//                if(button.classList.contains("active")){
-//                    alreadyActive = true;
-//                }
-
-//                highlighterRemover(className);
-//                if(!alreadyActive){
-//                    // highlight clicked button
-//                    button.classList.add("active");
-//                }
-//            }
-//            else{
-//                // other button can highlighted
-//                button.classList.toggle("active");
-//            }
-//        });
-//    });
-//};
-
-//// remove highlighter
-//const highlighterRemover = (className) => {
-//    className.forEach((button) => {
-//        button.classList.remove("active");
-//    });
-//}
-
-
-
-//window.onload = initializer();
-
-
-//    // share story
-//    let files = [],
-//        dragArea = document.querySelector('.drag-area'),
-//        input = document.querySelector('.drag-area input'),
-//        button = document.querySelector('.drag-card button'),
-//        select = document.querySelector('.drag-area .select'),
-//        container = document.querySelector('.container-img');
-
-//    /** CLICK LISTENER */
-//    select.addEventListener('click', () => input.click());
-
-//    /* INPUT CHANGE EVENT */
-//    input.addEventListener('change', () => {
-//        let file = input.files;
-
-//        // if user select no image
-//        if (file.length == 0) return;
-
-//        for (let i = 0; i < file.length; i++) {
-//            if (file[i].type.split("/")[0] != 'image') continue;
-//            if (!files.some(e => e.name == file[i].name)) files.push(file[i])
-//        }
-
-//        showImages();
-//    });
-
-//    /** SHOW IMAGES */
-//    function showImages() {
-//        container.innerHTML = files.reduce((prev, curr, index) => {
-//            return `${prev}
-//                <div class="image">
-//                    <span onclick="delImage(${index})">&times;</span>
-//                    <img src="${URL.createObjectURL(curr)}" />
-//                </div>`
-//        }, '');
-//    }
-
-//    /* DELETE IMAGE */
-//    function delImage(index) {
-//        files.splice(index, 1);
-//        showImages();
-//    }
-
-//    /* DRAG & DROP */
-//    dragArea.addEventListener('dragover', e => {
-//        e.preventDefault()
-//        dragArea.classList.add('dragover')
-//    })
-
-//    /* DRAG LEAVE */
-//    dragArea.addEventListener('dragleave', e => {
-//        e.preventDefault()
-//        dragArea.classList.remove('dragover')
-//    });
-
-//    /* DROP EVENT */
-//    dragArea.addEventListener('drop', e => {
-//        e.preventDefault()
-//        dragArea.classList.remove('dragover');
-
-//        let file = e.dataTransfer.files;
-//        for (let i = 0; i < file.length; i++) {
-//            /** Check selected file is image */
-//            if (file[i].type.split("/")[0] != 'image') continue;
-
-//            if (!files.some(e => e.name == file[i].name)) files.push(file[i])
-//        }
-//        showImages();
-//    });
-
-</script>

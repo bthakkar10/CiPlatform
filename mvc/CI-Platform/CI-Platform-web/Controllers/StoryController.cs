@@ -16,12 +16,14 @@ namespace CI_Platform_web.Controllers
         private readonly IFilter _filterMission;
         private readonly IStoryListing _storyListing;
         private readonly IShareStory _shareStory;
-        public StoryController(CiDbContext db,IFilter filterMission, IStoryListing storyListing, IShareStory shareStory)
-        {  
+        private readonly IStoryDetails _storyDetails;
+        public StoryController(CiDbContext db, IFilter filterMission, IStoryListing storyListing, IShareStory shareStory, IStoryDetails storyDetails)
+        {
             _db = db;
             _filterMission = filterMission;
             _storyListing = storyListing;
             _shareStory = shareStory;
+            _storyDetails = storyDetails;
         }
 
         //get method for story listing
@@ -42,7 +44,7 @@ namespace CI_Platform_web.Controllers
             vm.Country = _filterMission.CountryList();
             vm.Theme = _filterMission.ThemeList();
             vm.Skill = _filterMission.SkillList();
-            
+
             return View(vm);
         }
 
@@ -72,7 +74,7 @@ namespace CI_Platform_web.Controllers
                     command.Parameters.Add("@themeId", SqlDbType.VarChar).Value = themeId != null ? themeId : null;
                     command.Parameters.Add("@skillId", SqlDbType.VarChar).Value = skillId != null ? skillId : null;
                     command.Parameters.Add("@searchText", SqlDbType.VarChar).Value = searchText;
-                    
+
                     command.Parameters.Add("@pageSize", SqlDbType.Int).Value = pagesize;
                     command.Parameters.Add("@pageNo", SqlDbType.Int).Value = pageNo;
                     SqlDataReader reader = command.ExecuteReader();
@@ -96,7 +98,7 @@ namespace CI_Platform_web.Controllers
 
                     var UserId = Convert.ToInt64(ViewBag.UserId);
                     vm.DisplayStoryCard = _storyListing.DisplayStoryCard(StoryIds);
-                   
+
                     if (vm != null && vm.DisplayStoryCard.Any())
                     {
                         return PartialView("_StoryListingPartial", vm);
@@ -112,7 +114,7 @@ namespace CI_Platform_web.Controllers
                 return View(ex);
 
             }
-          
+
         }
 
         //get cities by country filter
@@ -134,7 +136,7 @@ namespace CI_Platform_web.Controllers
             }
             var vm = new ShareStoryViewModel();
             vm.GetMissionListofUser = _shareStory.GetMissionListofUser(userId);
-            return View(vm);    
+            return View(vm);
         }
 
         //get method for drafted story in share story page
@@ -146,15 +148,16 @@ namespace CI_Platform_web.Controllers
                 ViewBag.UserId = HttpContext.Session.GetString("Id");
                 ViewBag.Username = HttpContext.Session.GetString("Username");
             }
-             var Id = Convert.ToInt64(ViewBag.UserId);
-            var userId = (long) Id;
+            var Id = Convert.ToInt64(ViewBag.UserId);
+            var userId = (long)Id;
 
             Story story = _shareStory.GetDraftedStory(userId, missionId);
             return Json(story);
         }
 
+        [HttpPost]
         //to save story in database in draft mode only 
-        public IActionResult SaveStory(ShareStoryViewModel viewModel) 
+        public IActionResult SaveStory(ShareStoryViewModel viewmodel)
         {
             if (HttpContext.Session.GetString("SEmail") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
             {
@@ -165,25 +168,63 @@ namespace CI_Platform_web.Controllers
             var Id = Convert.ToInt64(ViewBag.UserId);
             var userId = (long)Id;
 
-            Story DraftStory = _shareStory.GetDraftedStory(userId, viewModel.MissionId);
-            if(DraftStory == null)
+            Story DraftStory = _shareStory.GetDraftedStory(userId, viewmodel.MissionId);
+            if (DraftStory == null)
             {
-                if (_shareStory.isPublishedStory(userId, viewModel.MissionId) == true)
+                if (_shareStory.isPublishedStory(userId, viewmodel.MissionId) == true)
                 {
+                    TempData["success"] = "Volunteers can publish only one story per mission!!";
                     return Ok(new { message = "Volunteers can publish only one story per mission!!" });
                 }
                 else
                 {
-                    _shareStory.AddNewStory(viewModel, userId);
+                    _shareStory.AddNewStory(viewmodel, userId);
                     return Ok(new { message = "New Story is added successfully in draft mode!!" });
                 }
             }
             else
             {
-                _shareStory.EditDraftedStory(viewModel, userId);
+                _shareStory.EditDraftedStory(viewmodel, userId);
             }
             return Ok();
         }
 
+        [HttpPost]
+        //to submit story(now the story is in pending mode and will be published when admin approves it)
+        public IActionResult SubmitStory(ShareStoryViewModel viewmodel)
+        {
+            if (HttpContext.Session.GetString("SEmail") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
+            {
+                ViewBag.email = HttpContext.Session.GetString("SEmail");
+                ViewBag.UserId = HttpContext.Session.GetString("Id");
+                ViewBag.Username = HttpContext.Session.GetString("Username");
+            }
+            var Id = Convert.ToInt64(ViewBag.UserId);
+            var userId = (long)Id;
+            _shareStory.SubmitStory(viewmodel, userId);
+            return Ok(new { message = "New Story is submitted successfully" });
+        }
+
+        public IActionResult StoryDetails(long StoryId)
+        {
+            try
+            {
+                if (HttpContext.Session.GetString("Id") != null)
+                {
+                    ViewBag.UserId = HttpContext.Session.GetString("Id");
+                }
+                long userId = Convert.ToInt64(HttpContext.Session.GetString("Id"));
+
+                StoryDetailsViewModel vm = new StoryDetailsViewModel();
+
+                vm.GetStoryDetails = _storyDetails.GetStoryDetails(StoryId);
+                vm.UserList = _storyDetails.UserList(userId);
+                return View(vm);
+            }
+            catch (Exception ex)
+            {
+                return View(ex);
+            }
+        }
     }
 }

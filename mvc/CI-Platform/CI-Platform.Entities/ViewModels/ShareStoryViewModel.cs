@@ -1,4 +1,5 @@
 ﻿using CI_Platform.Entities.DataModels;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,23 +11,23 @@ namespace CI_Platform.Entities.ViewModels
 {
     public  class ShareStoryViewModel
     {
-        public List<MissionApplication> GetMissionListofUser { get; set; } = null;
-
-        public Story GetDraftedStory { get; set; } = null;
+        public List<MissionApplication>? GetMissionListofUser { get; set; } = null;
 
         [Required]
-        public string? MissionTitle { get; set; }
+        public string? MissionTitle { get; set; } = null;
+
+        [Required] 
+        public string? StoryTitle { get; set; } = null;
+
+        [Required] 
+        public string? StoryDescription { get; set; } = null; 
 
         [Required]
-        public string? StoryTitle { get; set; }
+        public DateTime? Date { get; set; } = null;
 
-        [Required]
-        public string? StoryDescription { get; set; }
+        public string[]? VideoUrls { get; set; } = null;
 
-        [Required]
-        public DateTime? date;
-
-        public string[] VideoUrls { get; set; } 
+        public List<IFormFile>? Images { get; set; } = null;
 
         public long MissionId { get; set; }
 

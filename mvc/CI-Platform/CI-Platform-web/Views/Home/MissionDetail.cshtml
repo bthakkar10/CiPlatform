@@ -3,8 +3,8 @@
 @{
     ViewData["Title"] = "Volunteering Mission Page";
     Layout = "_Layout";
-    var UserId = Convert.ToInt64(ViewBag.UserId);
-    //var mission_id = ViewBag.MissionId;
+    //var UserId = Convert.ToInt64(ViewBag.UserId);
+    ////var mission_id = ViewBag.MissionId;
     var mission_id = Model.MissionDetails.MissionId;
 }
 
@@ -78,12 +78,11 @@
             }
             var registered_users = Model.MissionDetails.MissionApplications.Count(m => m.ApprovalStatus.Contains("APPROVE"));
             var seats_left = Model.MissionDetails.TotalSeats - registered_users;
-          
         }
         
         
       
-        <div class="col-lg-6">
+    <div class="col-lg-6">
             <div class="volunteer-card-details py-4 px-4">
                
                 <h2 class="volunteer-card-title">
@@ -91,6 +90,7 @@
                    @Model.MissionDetails.Title
                 </h2>
                 <p class="card-text py-2">
+
                     @Model.MissionDetails.ShortDescription
                 </p>
 
@@ -150,22 +150,21 @@
                     <div class="d-flex flex-column flex-md-row">
                             @if (Model.MissionDetails.FavouriteMissions.Any(fm => fm.UserId == Id))
                             {
-                                <button class=" mission-detail-capsule " onclick="favourite()">
+                                <button class=" capsule-details " onclick="favourite()">
                                     <i class="bi bi-heart-fill favourite-button filled-heart text-danger" data-mission-id="@Model.MissionDetails.MissionId"></i>
-                                <span class="favText">Remove from Favourites</span>
-                                  
+                                    <span class="favText">Remove from Favourites</span>
                                 </button>
                             }
                             else
                             {
-                            <button class="   mission-detail-capsule " onclick="favourite()">
+                            <button class="   capsule-details " onclick="favourite()">
                                 <i class="bi bi-heart empty-heart text-dark favourite-button " data-mission-id="@Model.MissionDetails.MissionId"></i>
                                 <span class="favText">Add To Favourites</span>
                             </button>
                             }
 
-                        <button type="submit" class="mission-detail-capsule text-dark"  data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
-                            <img src="~/images/L0001.png" />
+                        <button type="submit" class="capsule-details text-dark"  data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                            <i class="bi bi-people"></i>
                             Recommended To a Co-Worker
                         </button>
 
@@ -315,7 +314,7 @@
 
                         @foreach(var doc in Model.MissionDetails.MissionDocuments)
                         {
-                            <div class="mission-detail-capsule">
+                            <div class="details-capsule">
                                     <a class="text-decoration-none" href="@Url.Action("DisplayDocument", "Home", new { fileName = @doc.DocumentPath })" target="_blank">
                                         <img src="~/images/pdf.png" />
                                         &nbsp;@doc.DocumentName
@@ -348,7 +347,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="d-flex">
-                                        <img class="rounded-circle comments-img d-none d-md-flex" src=@com.User.Avtar />
+                                        <img class="rounded-circle comments-img d-none d-md-flex" src= @com.User.Avtar />
                                         <div class="comments-details">
                                                 <h6>@com.User.FirstName @com.User.LastName</h6>
                                                 <p> @com.CreatedAt.Value.ToString("dddd, MMMM dd, yyyy, h:mm tt")</p>

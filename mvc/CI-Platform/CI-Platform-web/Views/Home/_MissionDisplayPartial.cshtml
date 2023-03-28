@@ -129,7 +129,16 @@
                     </div>
                     <div class="card-body">
                         <h3 class="card-title ">@obj.Title</h3>
-                        <p class="card-text align-items-center">@obj.ShortDescription</p>
+                        <p class="card-text align-items-center">
+                            @{
+                                int maxLength = 100;
+                                string description = obj.Description.Length > maxLength
+                                ? @obj.Description.Substring(0, maxLength) + "..."
+                                : @obj.Description;
+                            }
+
+                            @description
+                        </p>
                         <div class="d-flex justify-content-between">
                             @obj.OrganizationName
                             <div class="stars">

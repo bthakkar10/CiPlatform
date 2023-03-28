@@ -1,6 +1,7 @@
 ﻿html,
 body {
-    /* overflow-x: hidden; Prevent scroll on narrow devices */
+    font-family: 'NotoSans';
+/*    color: #414141;*/
 }
 
 a,li,button,h3 {
@@ -310,15 +311,23 @@ a,li,button,h3 {
     }
 
 
-.btn-share-story {
+.btn-share-story , .btn-view-details-story{
     border-color: #fff;
-    color: #fff;
+     color: #fff;
     font-weight: 500;
     background: #F8863400 0% 0% no-repeat padding-box;
     border: 2px solid #fff;
     letter-spacing: 0px;
     opacity: 1;
 }
+
+.btn-share-story:hover {
+        background: white 0% 0% no-repeat padding-box;
+}
+    .btn-view-details-story:hover {
+        background: white 0% 0% no-repeat padding-box;
+        color:black;
+    }
 
 .card-img button {
     display: none;
@@ -354,6 +363,8 @@ a,li,button,h3 {
 
 
 
+
+
 .footer {
     text-decoration: none;
     color: #757575;
@@ -384,13 +395,7 @@ a,li,button,h3 {
     }
 }
 
-    /*for pagination but not working*/
-    /*.active > .page-link, .page-link.active {
-    z-index: 3;
-    color: var(--bs-pagination-active-color);
-    background-color: #F88634;
-    border-color: var(--bs-pagination-active-border-color);
-}*/
+
 
     /*for swiper*/
     .swiper {
@@ -473,7 +478,7 @@ a,li,button,h3 {
         border-radius: 21px;
     }
 
-    .mission-detail-capsule {
+    .capsule-details {
         background: #FFFFFF 0% 0% no-repeat padding-box;
         border: 2px solid #757575;
         border-radius: 25px;
@@ -618,10 +623,217 @@ a,li,button,h3 {
         font-size: 14px;
     }
 
-    /*.story-bg-img img{
-    background-size:cover;
+/*story listing page*/
+.story-btns {
+    border: 1px solid #F88634;
+    color: #F88634;
+}
+
+    .story-btns:hover {
+        color: #E8E8E8;
+        background-color: #F88634;
+    }
+
+/* darg and drop */
+.drag-card {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
+    .drag-card .top {
+        width: 100%;
+    }
+
+
+    .drag-card button {
+        outline: 0;
+        border: 0;
+        -webkit-appearence: none;
+        background-color: white;
+        color: black;
+        border-radius: 4px;
+        transition: 0.3s;
+        cursor: pointer;
+        font-weight: 400;
+        font-size: 0.8rem;
+        padding: 8px 13px;
+        /*    addded afterwards for btn when img is fetched*/
+
+        position: absolute;
+        right: 1%;
+        opacity: 30%;
+    }
+
+        .drag-card button:hover {
+            opacity: 0.8;
+        }
+
+        .drag-card button:active {
+            transform: translateY(5px);
+        }
+
+    .drag-card .drag-area {
+        width: 100%;
+        height: 150px;
+        border-radius: 5px;
+        border: 2px dashed #d5d5e1;
+        color: #c8c9dd;
+        font-size: 0.9rem;
+        font-weight: 500;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        user-select: none;
+        -webkit-user-select: none;
+        margin-top: 10px;
+    }
+
+        .drag-card .drag-area .visible {
+            font-size: 18px;
+        }
+
+    .drag-card .select {
+        color: #5256ad;
+        margin-left: 5px;
+        cursor: pointer;
+        transition: 0.4s;
+    }
+
+        .drag-card .select:hover {
+            opacity: 0.6;
+        }
+
+    .drag-card .container-img {
+        width: 100%;
+        height: auto;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+        .drag-card .container-img .image {
+            max-width: 100px;
+            width: 100%;
+            margin-top: 30px;
+            margin-right: 30px;
+            height: 100px;
+            position: relative;
+        }
+
+            .drag-card .container-img .image img {
+                width: 100%;
+                height: 100%;
+                border-radius: 1px;
+            }
+
+            .drag-card .container-img .image span {
+                position: absolute;
+                top: -2px;
+                right: 5px;
+                font-size: 20px;
+                cursor: pointer;
+            }
+
+    /*dragover class will used in drag and drop system */
+    .drag-card .drag-area.dragover {
+        background: rgba(0, 0, 0, 0.4);
+    }
+
+        .drag-card .drag-area.dragover .on-drop {
+            display: inline;
+            font-size: 28px;
+        }
+
+        .drag-card input,
+        .drag-card .drag-area .on-drop,
+        .drag-card .drag-area.dragover .visible {
+            display: none;
+        }
+/* end drag drop css */
+
+/* ck editor */
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    /* align-items: center; */
+    gap: 15px;
+}
+
+.buttons {
+    height: 28px;
+    width: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 3px;
+    border: none;
+    background-color: #f8f9fa;
+    outline: none;
+    color: #020929;
+}
+
+#text-input {
+    border: 1px solid #757575;
+    padding: 20px;
+    height: 30vh;
+}
+
+/*.active {
+    background-color: #e0e9ff;
 }*/
-    @media(max-width: 1200px) {
+
+.end {
+    height: 20px;
+}
+
+form {
+    font-size: 20px;
+}
+
+.no-mission {
+    padding-top: 15px;
+    color: #757575;
+}
+
+    .no-mission li {
+        list-style: none;
+    }
+
+        .no-mission li a {
+            color: #333;
+            text-decoration: none;
+        }
+
+.dropdown-toggle::after {
+    margin-left: 9px !important;
+}
+
+/*media (max-width:767px){
+    .username{
+        display: none;
+    }
+}*/
+/*story listing page ends*/
+
+/*story details page starts*/
+.views-capsule {
+    border-radius: 25%;
+    width: fit-content;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border:1px solid #E8E8E8;
+    border-radius: 19px;
+    color: #757575;
+    padding:  0.5rem 1.5rem;
+}
+
+
+/*story details page ends*/
+
+    @media(max-width: 1000px) {
         #list-view {
             display: none !important;
         }

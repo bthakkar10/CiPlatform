@@ -1,5 +1,6 @@
 ﻿using CI_Platform.Entities.DataModels;
 using CI_Platform.Entities.ViewModels;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,10 @@ namespace CI_Platform.Repository.Interface
 
         public void AddOrRemoveStoryUrls(long storyId, string[] url);
 
+        public void AddOrRemoveStoryImages(long storyId, List<IFormFile> Images);
+
         public bool isPublishedStory(long userId, long missionId);
+
+        public void SubmitStory(ShareStoryViewModel vm, long userId);
     }
 }
