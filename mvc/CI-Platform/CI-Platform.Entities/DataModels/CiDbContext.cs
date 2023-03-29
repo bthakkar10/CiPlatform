@@ -705,6 +705,9 @@ public partial class CiDbContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("updated_at");
             entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.UserVisits)
+                .HasDefaultValueSql("((0))")
+                .HasColumnName("user_visits");
 
             entity.HasOne(d => d.Mission).WithMany(p => p.Stories)
                 .HasForeignKey(d => d.MissionId)

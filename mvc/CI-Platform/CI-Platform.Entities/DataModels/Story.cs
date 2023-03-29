@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace CI_Platform.Entities.DataModels;
 
@@ -25,6 +24,8 @@ public partial class Story
     public DateTime? UpdatedAt { get; set; }
 
     public DateTime? DeletedAt { get; set; }
+
+    public long? UserVisits { get; set; }
 
     public virtual Mission Mission { get; set; } = null!;
 

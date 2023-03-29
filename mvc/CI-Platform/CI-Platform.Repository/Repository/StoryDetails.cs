@@ -18,21 +18,34 @@ namespace CI_Platform.Repository.Repository
             _db = db;
         }
 
-        public Story GetStoryDetails(long StoryId)
+        public Story GetStoryDetails(long MissionId,long UserId)
         {
             return _db.Stories.
             Include(s => s.StoryMedia).
-            Include(s=>s.StoryInvites).
+            Include(s => s.StoryInvites).
             Include(s => s.User).
-            ThenInclude(su=>su.City).
-            ThenInclude(su=>su.Country).
-            FirstOrDefault(s => s.StoryId == StoryId);
+            ThenInclude(su => su.City).
+            ThenInclude(su => su.Country).
+            Where(s => s.MissionId == MissionId && s.UserId == UserId).
+            FirstOrDefault();
         }
 
         public List<User> UserList(long UserId)
         {
             return _db.Users.Where(u => u.UserId != UserId).ToList();
             //return _db.Users.Where(u => u.UserId != UserId && !u.MissionApplications.Any(m => m.MissionId == MissionId && m.ApprovalStatus == "APPROVE")).ToList();
+        }
+
+        public void IncreaseViewCount(long UserId, long MissionId)
+        {
+            Story story = _db.Stories.Where(s => s.MissionId == MissionId && s.UserId == UserId && s.Status == "PUBLISHED").FirstOrDefault();
+            if (story != null)
+            {
+                story.UserVisits = story.UserVisits + 1;
+                story.UpdatedAt = DateTime.Now;
+                _db.Update(story);
+                _db.SaveChanges();
+            }
         }
     }
 }

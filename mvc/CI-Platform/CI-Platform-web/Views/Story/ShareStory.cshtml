@@ -1,12 +1,14 @@
 ﻿@{
     Layout = "_Layout";
     ViewData["Title"] = "ShareStory";
+    long user_id = Convert.ToInt64(ViewBag.UserId);
 }
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
 @model CI_Platform.Entities.ViewModels.ShareStoryViewModel
 <!-- main container -->
 <div class="container">
     <h2 class="ms-4 mt-3">Share your Story</h2>
+    <div id="error-message " class="text-warning"></div>
 @*    <span id="storyId">@Model.StoryId</span>*@
     <form method="post" class="ms-4 mt-5 text-secondary">
         <!-- first row -->
@@ -26,16 +28,19 @@
             </div>
             <div class="col">
                 <label asp-for="StoryTitle" class="form-label ms-1">My Story Title</label>
+                <div><small class="text-danger" id="HelpBlock-storyTitle"></small></div>
                 <input asp-for="StoryTitle" type="text" id="StoryTitle" class="form-control" required placeholder="Enter story title">
             </div>
             <div class="col">
                 <label asp-for="Date" class="form-label ms-1">Date</label>
-                <input asp-for="Date" type="date" id="date" class="form-control">
+                <div><small class="text-danger" id="HelpBlock-date"></small></div>
+                <input asp-for="Date" type="date" id="date" required class="form-control">
             </div>
         </div>
         <!-- end of first row -->
         <!-- ckeditor -->
         <label for="" class="form-label ms-1 mt-3">My Story</label>
+        <div><small class="text-danger" id="HelpBlock-storyDes"></small></div>
         <div class="container border bg-light">
             <div class="options py-2 m-2">
                 <!-- text format options -->
@@ -79,7 +84,8 @@
             </div>
 
             <!-- text-area -->
-            <div id="text-input" contenteditable="true" class="bg-white m-2"></div>
+
+            <div id="text-input" contenteditable="true" class="bg-white m-2 editor"></div>
             <div class="end"></div>
             <!-- <div class="end"></div> -->
         </div>
@@ -87,19 +93,20 @@
         <!-- video link -->
         <div class="mt-3">
             <label for="" class="form-label ms-1">Enter Video URL</label>
-            <div><small class="text-danger d-none" id="HelpBlock">Please enter only valid youtube URLs</small></div>
+            <div><small class="text-danger" id="HelpBlock-urls"></small></div>
             <textarea name="storyTitle" class="form-control videoUrls" id="videoUrls" rows="3" placeholder="Enter your url (Only Youtube URLs are allowed)"></textarea>
         </div>
         <!-- video link ends -->
         <!-- darg and drop -->
         <label for="" class="form-label mt-3 ms-1 mb-0">Upload your Photos</label>
+        <div><small>(Only <strong> jpg, png, jpeg</strong>  file formats are allowed)</small></div>
         <div class="card drag-card" style="border: none;">
-            <div class="drag-area">
+            <div class="drag-area" id="drop-area">
                 <span class="visible">
                     <span class="select" role="button"><img src="~/images/drag-and-drop.png"></span>
                 </span>
                 <span class="on-drop">Drop images here</span>
-                <input name="file" type="file" accept="images/*" class="file" multiple id="img-input" />
+                <input name="file" type="file" accept=".png, .jpg, .jpeg" class="file" multiple id="img-input" />
             </div>
             <!-- IMAGE PREVIEW CONTAINER -->
             <div class="container-img mt-3" id="img-output"> </div>
@@ -114,7 +121,7 @@
                 <button class="btn story-btns rounded-pill  px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" id="saveStory" type="submit">Save as Draft</button>
             </div>
             <div class="col-lg-2 col">
-                <button class="btn story-btns rounded-pill disabled px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" id="previewButton" type="submit">Preview</button>
+                <button class="btn story-btns rounded-pill disabled px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" id="previewButton" data-user-id="@user_id">Preview</button>
             </div>
             <div class="col-lg-2 col">
                 <button class="btn story-btns rounded-pill disabled px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" id="submitButton" type="submit">Submit</button>

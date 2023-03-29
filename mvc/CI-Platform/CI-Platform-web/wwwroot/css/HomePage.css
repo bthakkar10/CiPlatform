@@ -144,11 +144,13 @@ a,li,button,h3 {
             box-shadow: 0 0 3px 0 black;
             outline: none;
         }
-.pill{
-    border: black 1px solid;
-    border-radius: 30%;
-    margin: 3px 5px;
-    padding: 2px;
+.pill {
+    border: #E8E8E8 1px solid;
+    border-radius: 21px;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    background: #FFFFFF 0% 0% no-repeat;
+    color: #414141;
 }
 
 .filter-list-view li:nth-child(n) {

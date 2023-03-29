@@ -1,15 +1,14 @@
 ﻿//global
+var currentUrl = window.location.href;
 
-    var currentUrl = window.location.href;
+if (currentUrl.includes("HomePage")) {
+    FilterSortPaginationSearch(1);
 
-    if (currentUrl.includes("HomePage")) {
-        FilterSortPaginationSearch(1);
-       
-    }
-    else if (currentUrl.includes("StoryListing")) {
-        StoryFilter(1);
-       
-    } 
+}
+else if (currentUrl.includes("StoryListing")) {
+    StoryFilter(1);
+
+}
 
 
 var SelectedsortCase = null;
@@ -47,8 +46,8 @@ function FilterSortPaginationSearch(pageNo) {
     var CityId = $('#CityList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var ThemeId = $('#ThemeList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var SkillId = $('#SkillList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
-/* var SearchText = searchText;*/
-   var SearchText = $("#searchText").val();
+    /* var SearchText = searchText;*/
+    var SearchText = $("#searchText").val();
     var sortCase = SelectedsortCase;
     var pagesize = 9;
 
@@ -294,10 +293,10 @@ function StoryFilter(pageNo) {
                     })
                 }
                 else if ($(this).find('a').hasClass('previous-page')) {
-                    if (currentPage-1 > 0) {
+                    if (currentPage - 1 > 0) {
                         pageNo = currentPage - 1;
-                   
-                    currentPage = pageNo;
+
+                        currentPage = pageNo;
                     }
                     $('.pagination li').find('a').each(function () {
                         if ($(this).data('page') == pageNo) {
@@ -341,7 +340,6 @@ $("#sortByDropdown li").click(function () {
 
     FilterSortPaginationSearch();
 });
-
 
 // for country selection
 $("#CountryList li").click(function () {
@@ -419,110 +417,110 @@ function GetCitiesByCountry(CountryId) {
 //to display pills according to the filter selection
 let filterPills = $('.filter-pills');
 allDropdowns.each(function () {
-        let dropdown = $(this);
-        $(this).on('change', 'input[type="checkbox"]', function () {
+    let dropdown = $(this);
+    $(this).on('change', 'input[type="checkbox"]', function () {
 
-            // if the check box is checked then add it to pill
-            if ($(this).is(':checked')) {
-                let selectedOptionText = $(this).next('label').text();
-                let selectedOptionValue = $(this).val();
-                const closeAllButton = filterPills.children('.closeAll');
+        // if the check box is checked then add it to pill
+        if ($(this).is(':checked')) {
+            let selectedOptionText = $(this).next('label').text();
+            let selectedOptionValue = $(this).val();
+            const closeAllButton = filterPills.children('.closeAll');
 
-                // creating a new pill
-                let pill = $('<span></span>').addClass('pill ');
+            // creating a new pill
+            let pill = $('<span></span>').addClass('pill');
 
-                // adding the text to pill
-                let pillText = $('<span></span>').text(selectedOptionText);
-                pill.append(pillText);
+            // adding the text to pill
+            let pillText = $('<span></span>').text(selectedOptionText);
+            pill.append(pillText);
 
-                // add the close icon (bootstrap)
-                let closeIcon = $('<span></span>').addClass('close').html(' x');
-                pill.append(closeIcon);
+            // add the close icon (bootstrap)
+            let closeIcon = $('<span></span>').addClass('close').html(' x');
+            pill.append(closeIcon);
 
 
-                // for closing the pill when clicking on close icon
-                closeIcon.click(function () {
-                    const pillToRemove = $(this).closest('.pill');
-                    pillToRemove.remove();
-                    // Uncheck the corresponding checkbox
-                    const checkboxElement = dropdown.find(`input[type="checkbox"][value="${selectedOptionValue}"]`);
-                    checkboxElement.prop('checked', false);
+            // for closing the pill when clicking on close icon
+            closeIcon.click(function () {
+                const pillToRemove = $(this).closest('.pill');
+                pillToRemove.remove();
+                // Uncheck the corresponding checkbox
+                const checkboxElement = dropdown.find(`input[type="checkbox"][value="${selectedOptionValue}"]`);
+                checkboxElement.prop('checked', false);
+                if (currentUrl.includes("HomePage")) {
+                    FilterSortPaginationSearch();
+
+                }
+                else if (currentUrl.includes("StoryListing")) {
+                    StoryFilter();
+
+                }
+
+
+                if (filterPills.children('.pill').length === 1) {
+                    filterPills.children('.closeAll').remove();
+                }
+
+            });
+
+            // Add "Close All" button
+            if (closeAllButton.length === 0) {
+                filterPills.append('<span class=" closeAll"><span>Close All</span></span>');
+                filterPills.children('.closeAll').click(function () {
+                    allDropdowns.find('input[type="checkbox"]').prop('checked', false);
+                    filterPills.empty();
                     if (currentUrl.includes("HomePage")) {
                         FilterSortPaginationSearch();
-                      
+
                     }
                     else if (currentUrl.includes("StoryListing")) {
                         StoryFilter();
-                        
+
                     }
 
-                  
-                    if (filterPills.children('.pill').length === 1) {
-                        filterPills.children('.closeAll').remove();
-                    }
+
 
                 });
 
-                // Add "Close All" button
-                if (closeAllButton.length === 0) {
-                    filterPills.append('<div class=" closeAll"><span>Close All</span></div>');
-                    filterPills.children('.closeAll').click(function () {
-                        allDropdowns.find('input[type="checkbox"]').prop('checked', false);
-                        filterPills.empty();
-                        if (currentUrl.includes("HomePage")) {
-                            FilterSortPaginationSearch();
-                        
-                        }
-                        else if (currentUrl.includes("StoryListing")) {
-                            StoryFilter();
-                       
-                        }
-
-                       
-
-                    });
-
-                    //add the pill before the close icon
-                    filterPills.prepend(pill);
-
-                }
-                else {
-                    filterPills.children('.closeAll').before(pill);
-                }
+                //add the pill before the close icon
+                filterPills.prepend(pill);
 
             }
-            // if the checkbox is not checked then we have to check for its value if it is exists in the pills section then we have to remove it
             else {
-                let selectedOptionText = $(this).next('label').text() + ' x';
-                let selectedOptionValue = $(this).val();
-                $('.pill').each(function () {
-                    const pillText = $(this).text();
-                    if (pillText === selectedOptionText) {
-                        $(this).remove();
-                    }
-                });
-                if ($('.pill').length === 1) {
-                    $('.closeAll').remove();
-                }
+                filterPills.children('.closeAll').before(pill);
             }
 
-            if (currentUrl.includes("HomePage")) {
-                FilterSortPaginationSearch();
-              
+        }
+        // if the checkbox is not checked then we have to check for its value if it is exists in the pills section then we have to remove it
+        else {
+            let selectedOptionText = $(this).next('label').text() + ' x';
+            let selectedOptionValue = $(this).val();
+            $('.pill').each(function () {
+                const pillText = $(this).text();
+                if (pillText === selectedOptionText) {
+                    $(this).remove();
+                }
+            });
+            if ($('.pill').length === 1) {
+                $('.closeAll').remove();
             }
-            else if (currentUrl.includes("StoryListing")) {
-                StoryFilter();
-        
-            }
-         
-        });
-    
-    })
+        }
+
+        if (currentUrl.includes("HomePage")) {
+            FilterSortPaginationSearch();
+
+        }
+        else if (currentUrl.includes("StoryListing")) {
+            StoryFilter();
+
+        }
+
+    });
+
+})
 
 //to add or remove favourites
 function favourite() {
     $('.favourite-button').on('click', function () {
-       
+
         var missionId = $(this).data('mission-id');
         $.ajax({
             url: '/Home/AddToFavorites',
@@ -542,7 +540,7 @@ function favourite() {
                             text.empty();
                             text.append("Remove from favourites");
                             console.log("added");
-                          /*  alert("Mission added to favourites successfully!!!");*/
+                            /*  alert("Mission added to favourites successfully!!!");*/
                         }
                         else {
                             $(this).addClass('bi-heart text-dark')
@@ -550,7 +548,7 @@ function favourite() {
                             text.empty();
                             text.append("Add to favourites");
                             console.log("remove");
-                           /* alert("Mission removed from favourites successfully!!!");*/
+                            /* alert("Mission removed from favourites successfully!!!");*/
                         }
                     }
                 })
@@ -582,7 +580,7 @@ $('.rating-star i').on('click', function () {
             /*alert("ratings updated successfully!!");*/
         },
         error: function (error) {
-           /* alert("Sessin Expired.");*/
+            /* alert("Sessin Expired.");*/
             if (confirm("Please Login Again And Try Agaion")) {
                 window.location.href = "/Home/Index";
             }
@@ -593,7 +591,7 @@ $('.rating-star i').on('click', function () {
 //comments in mission details page
 $('.commentButton').click(function () {
     var comment = $('.newComment').val();
-        console.log(comment);
+    console.log(comment);
     var missionId = $(this).data('mission-id');
     if (comment != null) {
         $.ajax({
@@ -601,9 +599,9 @@ $('.commentButton').click(function () {
             url: '/Home/PostComment',
             data: { comment: comment, missionId: missionId },
             success: function () {
-        
+
                 $('.newComment').val('');
-               /* alert("comment will be displayed after approval");*/
+                /* alert("comment will be displayed after approval");*/
             },
             error: function (error) {
                 console.log("error");
@@ -628,11 +626,11 @@ $(document).on('click', '.model-invite-btn', function () {
         url: "/Home/MissionInvite",
         data: { ToUserId: ToUserId, MissionId: MissionId, FromUserId: FromUserId },
         success: function () {
-            
+
             var button = $('<button>').addClass('btn btn-success disabled')
                 .append($('<span>').text('Already Invited '));
             btn.replaceWith(button);
-         
+
         },
         error: function (error) {
             console.log(error);
@@ -641,22 +639,22 @@ $(document).on('click', '.model-invite-btn', function () {
 });
 
 //recommend to co-worker invite for mission page through get function which will fetch user list here and go to above function again
-$(document).on('click', '.add-on-img', function () { 
+$(document).on('click', '.add-on-img', function () {
     var MissionId = $(this).data('mission-id');
     $.ajax({
         type: "GET",
         url: "/Home/UserList",
-        data: {  MissionId: MissionId},
+        data: { MissionId: MissionId },
         success: function (coworkers) {
-            
+
             var list = $('.grid-modal-body');
             list.empty();
             var items = " ";
             $(coworkers).each(function (index, coworker) {
-                items += 
-                   ` <div class="mt-2" style="display : flex; justify-content : space-between;">
+                items +=
+                    ` <div class="mt-2" style="display : flex; justify-content : space-between;">
                         <span class="mx-4 "> ` + coworker.firstName + ` ` + coworker.lastName + `</span>
-                        <span  mailto:class="invited- `+ coworker.UserId + `"><button class="btn mx-3 btn-outline-primary model-button model-invite-btn" data-mission-id=" ` + MissionId + `" data-from-user-id=" ` +  UserId + `" data-to-user-id=" ` + coworker.userId   +`">Invite</button></span>
+                        <span  mailto:class="invited- `+ coworker.UserId + `"><button class="btn mx-3 btn-outline-primary model-button model-invite-btn" data-mission-id=" ` + MissionId + `" data-from-user-id=" ` + UserId + `" data-to-user-id=" ` + coworker.userId + `">Invite</button></span>
 
                     </div>`
 
@@ -692,12 +690,12 @@ $('#missionTitle').click(function () {
                 $('#text-input').text(result.description);
                 console.log(result.storyMedia);
 
-                
+
                 var UrlRecords = '';
                 $.each(result.storyMedia, function (index, item) {
                     if (item.type === "videos") {
                         UrlRecords += item.path + '\n';
-                   }
+                    }
                 });
                 console.log(UrlRecords);
                 $('#videoUrls').val(UrlRecords);
@@ -733,50 +731,65 @@ $('#missionTitle').click(function () {
 });
 
 //to save story in database in draft mode 
-$('#saveStory').click(function () {
-    var formData = new FormData();
-    var urls = null;
-    var u = $('#videoUrls').val();
-    if (u != null) {
-        urls = u.split('\n');
-        for (var i = 0; i < urls.length; i++) {
-            formData.append("VideoUrls", urls[i]);
+$('#saveStory').click(function (e) {
+    e.preventDefault();
+    let isValid = false;
+    if (validateStoryTitle() == true && validateDate() == true && validateStoryDes() == true && validateYoutubeUrls() == true) {
+        isValid = true;
+    }
+    if (isValid) {
+        console.log("validation");
+        var formData = new FormData();
+        var urls = null;
+        var u = $('#videoUrls').val();
+        if (u != null) {
+            urls = u.split('\n');
+            for (var i = 0; i < urls.length; i++) {
+                formData.append("VideoUrls", urls[i]);
+            }
         }
+        else {
+            formData.append("VideoUrls", null);
+        }
+
+        var input = $('#img-input');
+        var files = input[0].files;
+        for (var i = 0; i < files.length; i++) {
+            formData.append("Images", files[i]);
+        }
+        console.log(files);
+        formData.append("MissionId", $('#missionTitle').val());
+        formData.append("StoryTitle", $('#StoryTitle').val());
+        formData.append("Date", $('#date').val());
+        formData.append("StoryDescription", $('#text-input').text());
+
+        $.ajax({
+            url: '/Story/SaveStory',
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: formData,
+
+            success: function (result) {
+                swal.fire({
+                    position: 'top-end',
+                    icon: result.icon,
+                    title: result.message,
+                    showConfirmButton: false,
+                    timer: 4000
+                })
+                $('#previewButton').removeClass('disabled');
+                $('#submitButton').removeClass('disabled');
+            },
+            error: function (error) {
+                console.log(error);
+            }
+
+        });
     }
     else {
-        formData.append("VideoUrls", null);
+        $('#error-message').text("Please enter all the fields as required.");
     }
-
-    var input = $('#img-input');
-    var files = input[0].files;
-    for (var i = 0; i < files.length; i++) {
-        formData.append("Images", files[i]);
-    }
-    console.log(files);
-    formData.append("MissionId", $('#missionTitle').val());
-    formData.append("StoryTitle", $('#StoryTitle').val());
-    formData.append("Date", $('#date').val());
-    formData.append("StoryDescription", $('#text-input').text());
-
-    $.ajax({
-        url: '/Story/SaveStory',
-        type: 'POST',
-        processData: false,
-        contentType: false,
-        data: formData,
-        
-        success: function (result) {
-            console.log(result.message);
-            toastr.success("Data is saved in draft mode!!");
-           
-            $('#previewButton').removeClass('disabled');
-            $('#submitButton').removeClass('disabled');
-        },
-        error: function (error) {
-            console.log(error);
-        }
-
-    });
 });
 
 //to submit story 
@@ -813,8 +826,13 @@ $('#submitButton').click(function () {
         data: formData,
 
         success: function (result) {
-            console.log(result.message);
-            toastr.success(result.message);
+            swal.fire({
+                position: 'top-end',
+                icon: result.icon,
+                title: result.message,
+                showConfirmButton: false,
+                timer: 4000
+            })
         },
         error: function (error) {
             console.log(error);
@@ -823,10 +841,23 @@ $('#submitButton').click(function () {
     });
 });
 
-////for preview button
-//$(#previewButton).click(function () {
+//for preview button
+$('#previewButton').click(function () {
+    var UserId = $(this).data('user-id');
+    var MissionId = $('#missionTitle').val();
+    $.ajax({
+        method: 'GET',
+        url: '/Story/StoryDetails',
+        data: { UserId: UserId, MissionId: MissionId },
+        success: function (result) {
+            /* window.location.href = "/Story/StoryDetails";*/
+        },
+        error: function (error) {
+            console.log(error);
+        },
 
-//});
+    });
+});
 
 //validate youtube urls 
 $('#videoUrls').on('blur', validateYoutubeUrls);
@@ -836,21 +867,111 @@ function validateYoutubeUrls() {
     for (var i = 0; i < urls.length; i++) {
         var url = urls[i].trim();
         if (url.length > 0 && !isYoutubeUrl(url)) {
-            $("#HelpBlock").removeClass('d-none');
-            /*toastr.danger("not a valid youtube url");*/
+            $("#HelpBlock-urls").text("Please enter only valid youtube urls");
             $('#videoUrls').focus();
             return false;
         }
+        //} else if (url.length > 20) {
+        //    $("#HelpBlock-urls").text("Maximum 20 URLs are allowed!!");
+        //    return false;
+        //} else {
+            $("#HelpBlock-urls").text(" ");
+            return true;
+          
     }
-    $("#HelpBlock").addClass('d-none');
+    
 }
 function isYoutubeUrl(url) {
     var pattern = /^.*(youtube.com\/|youtu.be\/|\/v\/|\/e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/;
     return pattern.test(url);
 }
 
+$('#StoryTitle').on('blur', validateStoryTitle);
+function validateStoryTitle() {
+    if ($('#StoryTitle').val() === '') {
+        $("#HelpBlock-storyTitle").text("Story Title is a required field!!");
+        $('#StoryTitle').focus();
+        return false;
+    } else if ($('#StoryTitle').val().length > 255) {
+        $("#HelpBlock-storyTitle").text("Maximum 255 characters are allowed!!");
+        $('#StoryTitle').focus();
+        return false;
+    }
+    $("#HelpBlock-storyTitle").text("");
+    return true;
+}
 
-//for share story page (not sure if it works or not)
+$('#date').on('blur', validateDate);
+function validateDate() {
+    if ($('#date').val() === '') {
+        $("#HelpBlock-date").text("Date is a required field!!");
+        $('#date').focus();
+        return false;
+    }
+
+    $("#HelpBlock-date").text("");
+    return true;
+}
+
+$('.editor').on('blur', validateStoryDes);
+function validateStoryDes() {
+    if ($('#text-input').text().trim() === '') {
+        $("#HelpBlock-storyDes").text("Story Description is a required field!!");
+        return false;
+    }
+    else if ($('#text-input').text().length > 40000) {
+        $("#HelpBlock-storyDes").text("Maximum 40000 characters are allowed!!");
+        return false;
+    }
+    $("#HelpBlock-storyDes").text("");
+    return true;
+}
+
+
+    var images = [];
+    var maxImages = 20;
+    var maxImageSize = 4 * 1024 * 1024; // 4MB in bytes
+
+    // Bind drop event to the drag and drop area
+    //$('#drop-area').on('drop', function (e) {
+    //    e.preventDefault();
+    //    var files = e.originalEvent.dataTransfer.files;
+
+    //    for (var i = 0; i < files.length; i++) {
+    //        var file = files[i];
+    //        var fileType = file.type;
+    //        var fileSize = file.size;
+
+    //        // Check if file is an image and not more than 4MB
+    //        if (!fileType.startsWith('image/')) {
+    //            alert('Please upload only images.');
+    //            return;
+    //        }
+    //        if (fileSize > maxImageSize) {
+    //            alert('Please upload images smaller than 4MB.');
+    //            return;
+    //        }
+
+    //        // Add image to array and display in drag and drop area
+    //        images.push(file);
+    //        $('#drop-area').append('<img src="' + URL.createObjectURL(file) + '">');
+
+    //        // Limit the number of images to 20
+    //        if (images.length >= maxImages) {
+    //            alert('You can upload a maximum of 20 images.');
+    //            return;
+    //        }
+    //    }
+    //});
+
+    // Prevent default behavior on dragover event
+    $('#drop-area').on('dragover', function (e) {
+        e.preventDefault();
+    });
+
+
+
+//for share story page(ck-editor and drag and drop functionality)
 let optionsButtons = document.querySelectorAll(".option-button");
 let writingArea = document.getElementById("text-input");
 let formatButtons = document.querySelectorAll(".format");
@@ -914,10 +1035,7 @@ const highlighterRemover = (className) => {
     });
 }
 
-
-
 window.onload = initializer();
-
 
 // share story
 let files = [],
@@ -974,6 +1092,7 @@ dragArea.addEventListener('dragleave', e => {
     dragArea.classList.remove('dragover')
 });
 
+var maxImageSize = 4 * 1024 * 1024; 
 /* DROP EVENT */
 dragArea.addEventListener('drop', e => {
     e.preventDefault()
@@ -981,10 +1100,24 @@ dragArea.addEventListener('drop', e => {
 
     let file = e.dataTransfer.files;
     for (let i = 0; i < file.length; i++) {
+        var files = files[i];
+/*        var fileType = file.type;*/
+        var fileSize = files.size;
         /** Check selected file is image */
         if (file[i].type.split("/")[0] != 'image') continue;
+        if (fileSize > maxImageSize) {
+            alert('Please upload images smaller than 4MB.');
+            return;
+        }
+        if (!files.some(e => e.name == file[i].name)) files.push(file[i]);
 
-        if (!files.some(e => e.name == file[i].name)) files.push(file[i])
+        $('#drop-area').append('<img src="' + URL.createObjectURL(file) + '">');
+
+        // Limit the number of images to 20
+        if (images.length >= maxImages) {
+            alert('You can upload a maximum of 20 images.');
+            return;
+        }
     }
     showImages();
 });

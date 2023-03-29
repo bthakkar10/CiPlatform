@@ -21,13 +21,13 @@
 
             <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
                 <div class="swiper-wrapper">
-                    @if (Model.GetStoryDetails.StoryMedia.Any(s => s.StoryId != story_id))
+                    @if (Model.GetStoryDetails.StoryMedia.Any(s => s.StoryId != Model.GetStoryDetails.StoryId))
                     {
                         <img src="~/images/no-image.png" alt=" " />
                     }
                     else
                     {
-                        @foreach (var slider_img in Model.GetStoryDetails.StoryMedia.Where(s => s.StoryId == story_id && s.Type != "videos"))
+                        @foreach (var slider_img in Model.GetStoryDetails.StoryMedia.Where(s => s.StoryId == Model.GetStoryDetails.StoryId && s.Type != "videos"))
                         {
                             <div class="swiper-slide">
                                 <img src=@slider_img.Path />
@@ -40,7 +40,7 @@
             </div>
             <div thumbsSlider="" class="swiper mySwiper">
                 <div class="swiper-wrapper">
-                    @foreach (var slider_img in Model.GetStoryDetails.StoryMedia.Where(m => m.StoryId == story_id))
+                    @foreach (var slider_img in Model.GetStoryDetails.StoryMedia.Where(m => m.StoryId == Model.GetStoryDetails.StoryId))
                     {
                         <div class="swiper-slide">
                             <img src=@slider_img.Path />
@@ -63,10 +63,7 @@
                 <div class="align-self-end my-4">
                     <span class="views-capsule">
                         <img src="~/images/eye.png" />
-                        @if(Model.GetStoryDetails.StoryId==story_id)
-                        {
-                             <span id="visits"></span>  
-                        }
+                       <span>@Model.GetStoryDetails.UserVisits</span>
                         Views
                     </span>
                 </div>

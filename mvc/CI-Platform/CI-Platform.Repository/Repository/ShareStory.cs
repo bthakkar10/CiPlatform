@@ -183,7 +183,17 @@ namespace CI_Platform.Repository.Repository
             // Update the record in the database
             _db.Update(existingStory);
             _db.SaveChanges();
-            
+
+            if (vm.VideoUrls != null)
+            {
+                AddOrRemoveStoryUrls(existingStory.StoryId, vm.VideoUrls);
+            }
+
+            if (vm.Images != null)
+            {
+                AddOrRemoveStoryImages(existingStory.StoryId, vm.Images);
+            }
+
         }
     }
 }

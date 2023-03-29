@@ -10,7 +10,6 @@
             <!-- Card starts from col -->
             @foreach(var obj in Model.DisplayStoryCard)
             {
-
             var story_id = obj.StoryId;
             <div class="col">
                 <div class="card h-100">
@@ -19,14 +18,14 @@
                             @*@{
                                 var img = obj.StoryMedia.FirstOrDefault() ;
                             }*@
-                           @foreach (var img_story in obj.StoryMedia)
-                            {
-                               
+                               @foreach (var img_story in obj.StoryMedia)
+                                {
+
                                 <img src=@img_story.Path class="card-img-top">
                                                                
-                            }
+                                }
                           @*  <img src=@img class="card-img-top">*@
-                            <button class="btn-view-details-story rounded-pill px-4 py-2 position-absolute top-50 start-50 translate-middle" onclick="location.href='@Url.Action("StoryDetails","Story", new{StoryId = story_id})' ">
+                            <button class="btn-view-details-story rounded-pill px-4 py-2 position-absolute top-50 start-50 translate-middle" onclick="location.href='@Url.Action("StoryDetails","Story", new{MissionId = obj.MissionId, UserId = obj.UserId})' ">
                                 View Details &nbsp;
                                 <i class="bi bi-arrow-right"></i>
                             </button>

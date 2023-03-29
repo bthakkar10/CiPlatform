@@ -125,7 +125,7 @@ namespace CI_Platform_web.Controllers
             return Json(vm.City);
         }
 
-        //get method for share your story
+        //get method for share your story page to fetch mission list where user has registered
         public IActionResult ShareStory(long userId)
         {
             if (HttpContext.Session.GetString("SEmail") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
@@ -134,6 +134,7 @@ namespace CI_Platform_web.Controllers
                 ViewBag.UserId = HttpContext.Session.GetString("Id");
                 ViewBag.Username = HttpContext.Session.GetString("Username");
             }
+            //long UserId = Convert.ToInt64(ViewBag.UserId);
             var vm = new ShareStoryViewModel();
             vm.GetMissionListofUser = _shareStory.GetMissionListofUser(userId);
             return View(vm);
@@ -173,18 +174,18 @@ namespace CI_Platform_web.Controllers
             {
                 if (_shareStory.isPublishedStory(userId, viewmodel.MissionId) == true)
                 {
-                    TempData["success"] = "Volunteers can publish only one story per mission!!";
-                    return Ok(new { message = "Volunteers can publish only one story per mission!!" });
+                    return Ok(new { icon="error", message = "Volunteers can publish only one story per mission!!" });
                 }
                 else
                 {
                     _shareStory.AddNewStory(viewmodel, userId);
-                    return Ok(new { message = "New Story is added successfully in draft mode!!" });
+                    return Ok(new { icon="success", message = "New Story is added successfully in draft mode!!" });
                 }
             }
             else
             {
                 _shareStory.EditDraftedStory(viewmodel, userId);
+                return Ok(new { icon = "success", message = "Story is edited successfully and saved in draft mode!!" });
             }
             return Ok();
         }
@@ -202,10 +203,10 @@ namespace CI_Platform_web.Controllers
             var Id = Convert.ToInt64(ViewBag.UserId);
             var userId = (long)Id;
             _shareStory.SubmitStory(viewmodel, userId);
-            return Ok(new { message = "New Story is submitted successfully" });
+            return Ok(new { icon="success", message = "Story is submitted successfully and will be published when admin approves!!" });
         }
 
-        public IActionResult StoryDetails(long StoryId)
+        public IActionResult StoryDetails(long MissionId, long UserId)
         {
             try
             {
@@ -217,8 +218,9 @@ namespace CI_Platform_web.Controllers
 
                 StoryDetailsViewModel vm = new StoryDetailsViewModel();
 
-                vm.GetStoryDetails = _storyDetails.GetStoryDetails(StoryId);
+                vm.GetStoryDetails = _storyDetails.GetStoryDetails(MissionId, UserId);
                 vm.UserList = _storyDetails.UserList(userId);
+                //vm.ViewCount = _storyDetails.IncreaseViewCount(UserId, MissionId);
                 return View(vm);
             }
             catch (Exception ex)
@@ -226,5 +228,18 @@ namespace CI_Platform_web.Controllers
                 return View(ex);
             }
         }
+
+        //public IActionResult PreviewStory(long UserId, long MissionId)
+        //{
+        //    Story existingStory = _shareStory.GetDraftedStory(UserId, MissionId);
+        //    return RedirectToAction("StoryDetails", "Story", new { existingStory.StoryId });
+        //    //Story existingStory = _shareStory.GetDraftedStory(UserId, MissionId);
+
+        //    //if(existingStory != null)
+        //    //{
+        //    //    return RedirectToAction("StoryDetails", "Story", existingStory.StoryId);
+        //    //}
+        //    //return Ok();
+        //}
     }
 }
