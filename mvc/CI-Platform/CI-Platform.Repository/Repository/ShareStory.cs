@@ -122,7 +122,13 @@ namespace CI_Platform.Repository.Repository
             {
                 if (m != null)
                 {
-                    var fileName = m.Path;
+                    var guid = Guid.NewGuid().ToString().Substring(0, 8);
+                    var fileName = $"{guid}_{m.Path}"; // getting filename
+                    //var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName); // set filepat
+
+
+
+                    //var fileName = m.Path;
                     File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Upload", fileName));
                     _db.Remove(m);
                 }
@@ -132,8 +138,9 @@ namespace CI_Platform.Repository.Repository
             {
                 if( img != null)
                 {
-                    var fileName = img.FileName;
-
+                    var ImgName = img.FileName;
+                    var guid = Guid.NewGuid().ToString().Substring(0, 8);
+                    var fileName = $"{guid}_{ImgName}"; // getting filename
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Upload", fileName);
 
                     var newImage = new StoryMedium()
@@ -166,11 +173,11 @@ namespace CI_Platform.Repository.Repository
             Story existingStory = GetDraftedStory(userId, vm.MissionId);
 
             // If the story doesn't exist, throw an exception or return an error message
-            if (existingStory == null)
-            {
-                throw new Exception("Story not found");
-                // or return an error message to the caller
-            }
+            //if (existingStory == null)
+            //{
+            //    throw new Exception("Story not found");
+            //    // or return an error message to the caller
+            //}
 
             // Modify the properties of the existing story record
             existingStory.UserId = userId;

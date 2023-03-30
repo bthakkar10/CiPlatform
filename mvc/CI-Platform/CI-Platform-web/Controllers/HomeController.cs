@@ -286,6 +286,28 @@ namespace CI_Platform_web.Controllers
             return File(fileStream, "application/pdf");
         }
 
+        public IActionResult ApplyMission(long MissionId)
+        {
+            var userId = HttpContext.Session.GetString("Id");
+            long UserId = Convert.ToInt64(userId);
+
+            var AlreadyApplied = _db.MissionApplications.FirstOrDefault(m=>m.MissionId== MissionId && m.UserId == UserId);
+            if(AlreadyApplied == null)
+            {
+                var missionApplication = new MissionApplication()
+                {
+                    MissionId= MissionId,
+                    UserId = UserId,
+                    AppliedAt= DateTime.Now,
+                    CreatedAt= DateTime.Now,
+                    ApprovalStatus = "PENDING"
+                };
+                _db.Add(missionApplication);
+                _db.SaveChanges();
+            }
+
+            return Ok();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

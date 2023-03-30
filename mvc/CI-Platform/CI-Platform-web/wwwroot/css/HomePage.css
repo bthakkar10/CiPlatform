@@ -170,7 +170,14 @@ a,li,button,h3 {
     position: relative;
 }
 
-
+.card-img-top {
+    box-shadow: 5px 4px 8px 5px rgba(0, 0, 0, 0.2), 5px 6px 20px 5px rgba(0, 0, 0, 0.10);
+}
+.listView-card-details {
+    flex: 1 1 auto;
+    padding: 0rem 2rem 0 2rem ;
+    color: var(--bs-card-color);
+}
 .location {
     position: absolute;
     top: 4%;

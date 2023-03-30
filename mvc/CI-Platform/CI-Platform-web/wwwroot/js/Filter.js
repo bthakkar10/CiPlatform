@@ -1,9 +1,7 @@
 ﻿//global
 var currentUrl = window.location.href;
-
 if (currentUrl.includes("HomePage")) {
     FilterSortPaginationSearch(1);
-
 }
 else if (currentUrl.includes("StoryListing")) {
     StoryFilter(1);
@@ -194,7 +192,6 @@ function totalMission() {
         $('.NoMissionFound').hide();
     }
 }
-
 
 //stories filters stored procedure
 function StoryFilter(pageNo) {
@@ -667,6 +664,27 @@ $(document).on('click', '.add-on-img', function () {
     });
 });
 
+//apply in mission button 
+$('#ApplyBtnMission').click(function () {
+    var MissionId = $(this).data('mission-id');
+    var btn = $(this);
+    $.ajax({
+        type: 'POST',
+        url: '/Home/ApplyMission',
+        data: { MissionId: MissionId },
+        success: function (result) {
+            /*$('#ApplyBtnMission').addClass('disabled text-danger');*/
+         
+            var newButton = $('<a>').addClass('btn card-btn disabled text-danger')
+                .append($('<span>').text('Approval Pending ')
+                    .append($('<i>').addClass('bi bi-patch-exclamation-fill')));
+            btn.replaceWith(newButton);
+        },
+        error: function (error) {
+            console.log(error);
+        },
+    });
+});
 
 //to show story details when in draft
 $('#missionTitle').click(function () {
@@ -826,6 +844,8 @@ $('#submitButton').click(function () {
         data: formData,
 
         success: function (result) {
+            console.log(result.message);
+            debugger
             swal.fire({
                 position: 'top-end',
                 icon: result.icon,
@@ -850,7 +870,9 @@ $('#previewButton').click(function () {
         url: '/Story/StoryDetails',
         data: { UserId: UserId, MissionId: MissionId },
         success: function (result) {
-            /* window.location.href = "/Story/StoryDetails";*/
+            var url = '/Story/StoryDetails?MissionId=' + MissionId + '&UserId=' + UserId;
+            window.location.href = url;
+            /*window.location.href = "/Story/StoryDetails?UserId=UserId&MissionId=MissionId";*/
         },
         error: function (error) {
             console.log(error);
@@ -928,9 +950,9 @@ function validateStoryDes() {
 }
 
 
-    var images = [];
-    var maxImages = 20;
-    var maxImageSize = 4 * 1024 * 1024; // 4MB in bytes
+    //var images = [];
+    //var maxImages = 20;
+    //var maxImageSize = 4 * 1024 * 1024; // 4MB in bytes
 
     // Bind drop event to the drag and drop area
     //$('#drop-area').on('drop', function (e) {
@@ -1100,24 +1122,24 @@ dragArea.addEventListener('drop', e => {
 
     let file = e.dataTransfer.files;
     for (let i = 0; i < file.length; i++) {
-        var files = files[i];
+        //var files = files[i];
 /*        var fileType = file.type;*/
         var fileSize = files.size;
         /** Check selected file is image */
         if (file[i].type.split("/")[0] != 'image') continue;
-        if (fileSize > maxImageSize) {
-            alert('Please upload images smaller than 4MB.');
-            return;
-        }
+        //if (fileSize > maxImageSize) {
+        //    alert('Please upload images smaller than 4MB.');
+        //    return;
+        //}
         if (!files.some(e => e.name == file[i].name)) files.push(file[i]);
 
-        $('#drop-area').append('<img src="' + URL.createObjectURL(file) + '">');
+        //$('#drop-area').append('<img src="' + URL.createObjectURL(file) + '">');
 
-        // Limit the number of images to 20
-        if (images.length >= maxImages) {
-            alert('You can upload a maximum of 20 images.');
-            return;
-        }
+        //// Limit the number of images to 20
+        //if (images.length >= maxImages) {
+        //    alert('You can upload a maximum of 20 images.');
+        //    return;
+        //}
     }
     showImages();
 });

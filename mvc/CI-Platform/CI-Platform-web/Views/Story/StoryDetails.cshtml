@@ -30,7 +30,7 @@
                         @foreach (var slider_img in Model.GetStoryDetails.StoryMedia.Where(s => s.StoryId == Model.GetStoryDetails.StoryId && s.Type != "videos"))
                         {
                             <div class="swiper-slide">
-                                <img src=@slider_img.Path />
+                                <img src="~/images/@slider_img.Path" />
                             </div>
                         }
                     }
@@ -43,7 +43,7 @@
                     @foreach (var slider_img in Model.GetStoryDetails.StoryMedia.Where(m => m.StoryId == Model.GetStoryDetails.StoryId))
                     {
                         <div class="swiper-slide">
-                            <img src=@slider_img.Path />
+                            <img src="~/images/@slider_img.Path" />
                         </div>
                     }
                 </div>
@@ -56,7 +56,7 @@
         <div class="col-lg-6 ">
             <div class="d-flex justify-content-between p-4">
                 <div>
-                    <img class="rounded-circle " src=@Model.GetStoryDetails.User.Avtar alt="user_icon" />
+                    <img class="rounded-circle " src="~/images/@Model.GetStoryDetails.User.Avtar" alt="user_icon" />
                     <div class="ms-3"> @Model.GetStoryDetails.User.FirstName  @Model.GetStoryDetails.User.LastName</div>
                     <div class="ms-2"> @Model.GetStoryDetails.User.City.CityName,  @Model.GetStoryDetails.User.Country.Name  </div>
                 </div>
@@ -148,7 +148,7 @@
     var swiper = new Swiper(".mySwiper", {
         loop: true,
         spaceBetween: 10,
-        slidesPerView: 4,
+        slidesPerView: 3,
         freeMode: true,
         watchSlidesProgress: true,
     });

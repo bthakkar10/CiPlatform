@@ -25,7 +25,7 @@
                         @foreach (var slider_img in Model.MissionDetails.MissionMedia.Where(m => m.MissionId == mission_id))
                         {
                             <div class="swiper-slide">
-                                <img src=@slider_img.MediaPath />
+                                <img src="~/images/@slider_img.MediaPath" />
                             </div>
                         }                 
                     }
@@ -38,7 +38,7 @@
                     @foreach (var slider_img in Model.MissionDetails.MissionMedia.Where(m => m.MissionId == mission_id))
                     {
                         <div class="swiper-slide">
-                            <img src=@slider_img.MediaPath />
+                            <img src="~/images/@slider_img.MediaPath" />
                         </div>
                     }
 
@@ -68,7 +68,7 @@
             bool isDeadlinePassed = currDate > deadline;
             bool isEndDatePassed = currDate > Model.MissionDetails.EndDate;
             bool isOngoing = currDate > Model.MissionDetails.StartDate;
-            bool isAlreadyApplied = Model.MissionDetails.MissionApplications.Any(a => a.UserId == Id);
+            bool isAlreadyApplied = Model.MissionDetails.MissionApplications.Any(a => a.UserId == Id && a.ApprovalStatus=="APPROVE");
            
             double userRate = 0;
             if (Model.MissionDetails.MissionRatings.Where(u => u.UserId == Id).Any())
@@ -258,8 +258,6 @@
                         <div class="d-flex justify-content-center">
                             <a style="width:max-content " class="btn card-btn disabled text-success">
                                 Already Applied
-                                
-                                
                             </a>
                         </div>
                     }
@@ -274,7 +272,7 @@
                     }
                     else{
                     <div class="d-flex justify-content-center">
-                        <a style="width:max-content" class="btn card-btn">
+                        <a style="width:max-content" class="btn card-btn" id="ApplyBtnMission" data-mission-id="@mission_id">
                             Apply Now &nbsp; &nbsp;
                             <img src="~/images/right-arrow.png">
                             <img src="~/images/right-arrow2.png">
@@ -311,16 +309,21 @@
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                     <h3>Documents</h3>
                     <div class="d-flex flex-column flex-md-row">
-
-                        @foreach(var doc in Model.MissionDetails.MissionDocuments)
+                        @if (Model.MissionDetails.MissionDocuments.Any())
                         {
-                            <div class="details-capsule">
-                                    <a class="text-decoration-none" href="@Url.Action("DisplayDocument", "Home", new { fileName = @doc.DocumentPath })" target="_blank">
-                                        <img src="~/images/pdf.png" />
-                                        &nbsp;@doc.DocumentName
-                                    </a>
-                            </div>
-                            
+                            @foreach(var doc in Model.MissionDetails.MissionDocuments)
+                            {
+                                <div class="capsule-details">
+                                        <a class="text-decoration-none" href="@Url.Action("DisplayDocument", "Home", new { fileName = @doc.DocumentPath })" target="_blank">
+                                            <img src="~/images/pdf.png" />
+                                            &nbsp;@doc.DocumentName
+                                        </a>
+                                </div> 
+                            }
+                        }
+                        else
+                        {
+                            <span>No Documents are uploaded for this mission</span>
                         }
                     </div>
 
@@ -380,7 +383,7 @@
                                 {
                                     @foreach (var skill in Model.MissionDetails.MissionSkills)
                                     {
-                                        <span>@skill.Skill.SkillName</span>
+                                        <span>@skill.Skill.SkillName  <br>  </span>
                                     }
                                 } 
                                 else
@@ -425,7 +428,7 @@
                         @foreach(var recent in Model.RecentVolunteers)
                         {
                             <div class="volunteerd-img">
-                                <img src= @recent.User.Avtar />
+                                <img src="~/images/@recent.User.Avtar" />
                                 <figcaption>@recent.User.FirstName  @recent.User.LastName </figcaption>
                             </div>
                         }
@@ -454,19 +457,19 @@
                 <div class="col">
                         <div class="card  ">
                             <div class="pill-on-img">
-                                @foreach (var img_mission in releated.MissionMedia)
+                                @if (!releated.MissionMedia.Any())
                                 {
-                                    @if (img_mission.Defaultval == true)
+                                    <img src="~/images/no-image.png" class="card-img-top" />
+                                }
+                                else
+                                {
+                                    @foreach (var img_mission in releated.MissionMedia)
                                     {
-                                        <img src=@img_mission.MediaPath class="card-img-top" alt="@img_mission.MediaName">
-
+                                        @if (img_mission.Defaultval == true)
+                                        {
+                                            <img src="~/images/@img_mission.MediaPath" class="card-img-top" alt="@img_mission.MediaName">
+                                        }
                                     }
-
-                                    @if (img_mission.MediaPath == null)
-                                    {
-                                        <img src="~/images/no-image.png" alt=" " />
-                                    }
-                                
                                 }
                                 <div class="location">
                                     <img src="~/images/pin1.png">
@@ -607,7 +610,7 @@
     var swiper = new Swiper(".mySwiper", {
         loop: true,
         spaceBetween: 10,
-        slidesPerView: 4,
+        slidesPerView: 3,
         freeMode: true,
         watchSlidesProgress: true,
     });

@@ -10,7 +10,7 @@
     <h2 class="ms-4 mt-3">Share your Story</h2>
     <div id="error-message " class="text-warning"></div>
 @*    <span id="storyId">@Model.StoryId</span>*@
-    <form method="post" class="ms-4 mt-5 text-secondary">
+    <div class="ms-4 mt-5 text-secondary">
         <!-- first row -->
         <div class="row row-cols-lg-3 row-cols-md-3 row-cols-sm-2 row-cols-1">
             <div class="col">
@@ -85,7 +85,7 @@
 
             <!-- text-area -->
 
-            <div id="text-input" contenteditable="true" class="bg-white m-2 editor"></div>
+            <div id="text-input" contenteditable="true" class="bg-white m-2 editor" style="overflow-y:scroll;"></div>
             <div class="end"></div>
             <!-- <div class="end"></div> -->
         </div>
@@ -121,12 +121,12 @@
                 <button class="btn story-btns rounded-pill  px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" id="saveStory" type="submit">Save as Draft</button>
             </div>
             <div class="col-lg-2 col">
-                <button class="btn story-btns rounded-pill disabled px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" id="previewButton" data-user-id="@user_id">Preview</button>
+                <button class="btn story-btns rounded-pill disabled px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" id="previewButton" type="submit" data-user-id="@user_id">Preview</button>
             </div>
             <div class="col-lg-2 col">
-                <button class="btn story-btns rounded-pill disabled px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" id="submitButton" type="submit">Submit</button>
+                <button class="btn story-btns rounded-pill disabled px-lg-5 px-md-4 px-5 mt-md-0 mt-2 py-2" id="submitButton">Submit</button>
             </div>
         </div>
         <!-- end of button -->
-    </form>
+    </div>
 </div>

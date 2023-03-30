@@ -220,12 +220,12 @@ namespace CI_Platform_web.Controllers
 
                 vm.GetStoryDetails = _storyDetails.GetStoryDetails(MissionId, UserId);
                 vm.UserList = _storyDetails.UserList(userId);
-                //vm.ViewCount = _storyDetails.IncreaseViewCount(UserId, MissionId);
+                _storyDetails.IncreaseViewCount(UserId, MissionId);
                 return View(vm);
             }
             catch (Exception ex)
             {
-                return View(ex);
+               return View(ex);
             }
         }
 

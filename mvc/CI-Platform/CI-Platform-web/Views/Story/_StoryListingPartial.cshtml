@@ -15,16 +15,18 @@
                 <div class="card h-100">
                     <div class="card-img position-relative">
                         <div>
-                            @*@{
-                                var img = obj.StoryMedia.FirstOrDefault() ;
-                            }*@
-                               @foreach (var img_story in obj.StoryMedia)
-                                {
-
-                                <img src=@img_story.Path class="card-img-top">
-                                                               
-                                }
-                          @*  <img src=@img class="card-img-top">*@
+                             @{
+                                var default_img = obj.StoryMedia.Where(s => s.StoryId == story_id).FirstOrDefault();
+                             }
+                            @if(default_img == null)
+                            {
+                                <img src="~/images/no-image.png" class="card-img-top">
+                            }
+                            else
+                            { 
+                                <img src="~/images/@default_img.Path" class="card-img-top" >
+                            }
+                              
                             <button class="btn-view-details-story rounded-pill px-4 py-2 position-absolute top-50 start-50 translate-middle" onclick="location.href='@Url.Action("StoryDetails","Story", new{MissionId = obj.MissionId, UserId = obj.UserId})' ">
                                 View Details &nbsp;
                                 <i class="bi bi-arrow-right"></i>
@@ -46,7 +48,7 @@
                      
                         </p>
                         <div class="d-flex">
-                            <img class="rounded-circle story-card-icon" src=@obj.User.Avtar />
+                            <img class="rounded-circle story-card-icon" src="~/images/@obj.User.Avtar" />
                              <div class="story-card-icon-detail">
                                 <p>@obj.User.FirstName @obj.User.LastName</p>
                                 <p>@obj.CreatedAt</p>

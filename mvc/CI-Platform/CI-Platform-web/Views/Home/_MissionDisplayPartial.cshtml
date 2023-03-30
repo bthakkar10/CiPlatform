@@ -10,7 +10,7 @@
 
 
 <script>
- if (localStorage.getItem('view') == 1) {
+    if (localStorage.getItem('view') == 1) {
         $('#grid-view').show();
         $('#list-view').hide();
     }
@@ -59,19 +59,19 @@
                     <span class="mission-country d-none">@obj.Country.CountryId</span>
                     <span> </span>
                     <div class="pill-on-img">
-                        
 
-                        @foreach (var img_mission in obj.MissionMedia)
+                        @if (!obj.MissionMedia.Any())
                         {
-                            @if(img_mission.Defaultval == true)
+                            <img src="~/images/no-image.png" class="card-img-top" />
+                        }
+                        else
+                        {
+                            @foreach (var img_mission in obj.MissionMedia)
                             {
-                             <img src=@img_mission.MediaPath class="card-img-top" alt="@img_mission.MediaName">
-                                
-                            }
-
-                            @if (img_mission.MediaPath == null)
-                            {
-                                <img src="~/images/no-image.png"  alt= " "/>
+                                @if (img_mission.Defaultval == true)
+                                {
+                                    <img src="~/images/@img_mission.MediaPath" class="card-img-top" alt="@img_mission.MediaName">
+                                }
                             }
                         }
 
@@ -90,7 +90,6 @@
                                     flag = 0;
                                 </button>
                             }
-
                         }
                         @if (flag == 1)
                         {
@@ -265,23 +264,24 @@
         var registered_users = obj.MissionApplications.Count(m => m.ApprovalStatus.Contains("APPROVE"));
         var seats_left = obj.TotalSeats - registered_users;
 
-        <div class=" card-div card my-3 ">
+        <div class=" card-div card my-5 ">
             <div class="row g-0 list-card ">
-                <span class="created-date">@obj.CreatedAt </span>
+                <span class="created-date d-none">@obj.CreatedAt </span>
                 <div class="col-md-4 ">
                     <div class="pill-on-img">
 
-                        @foreach (var img_mission in obj.MissionMedia)
+                        @if (!obj.MissionMedia.Any())
                         {
-
-                            @if (img_mission.Defaultval == true)
+                            <img src="~/images/no-image.png" class="card-img-top" />
+                        }
+                        else
+                        {
+                            @foreach (var img_mission in obj.MissionMedia)
                             {
-                                <img src=@img_mission.MediaPath class="card-img-top" alt="@img_mission.MediaName">
-
-                            }
-                            @if (img_mission.MediaPath == null)
-                            {
-                                <img src="~/images/no-image.png" />
+                                @if (img_mission.Defaultval == true)
+                                {
+                                    <img src="~/images/@img_mission.MediaPath" class="card-img-top" alt="@img_mission.MediaName">
+                                }
                             }
                         }
 
@@ -355,7 +355,7 @@
                     </div>
                 </div>
                 <div class="col-md-8">
-                    <div class="card-body">
+                    <div class="card-body listView-card-details">
                         <div class="card-text d-flex justify-content-between">
                             <div>
                                 <img class="p-2" src="~/images/pin1.png" />
@@ -378,7 +378,7 @@
                         </div>
                         <h3 class="card-title">@obj.Title</h3>
                         <p class="card-text">@obj.ShortDescription</p>
-                        <div class="card-text d-flex justify-content-between pt-5">
+                        <div class="card-text d-flex justify-content-between pt-4">
                             <div>
                                 <div class="row gutter justify-content-around">
                                     <div class="col card-detail-listview">
