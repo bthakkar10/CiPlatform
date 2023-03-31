@@ -686,6 +686,150 @@ $('#ApplyBtnMission').click(function () {
     });
 });
 
+
+// Prevent default behavior on dragover event
+$('#drop-area').on('dragover', function (e) {
+    e.preventDefault();
+});
+
+
+
+//for share story page(ck-editor and drag and drop functionality)
+let optionsButtons = document.querySelectorAll(".option-button");
+let writingArea = document.getElementById("text-input");
+let formatButtons = document.querySelectorAll(".format");
+let scriptButtons = document.querySelectorAll(".script");
+
+
+// Initial Setting
+const initializer = () => {
+    highlighter(formatButtons, false);
+    highlighter(scriptButtons, true);
+};
+
+// main logic
+const modifyText = (command, defaultUi, value) => {
+    document.execCommand(command, defaultUi, value);
+};
+
+// button operations
+optionsButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        modifyText(button.id, false, null);
+    });
+});
+
+// function format(){
+//     var id = document.getElementById("textformat");
+//     id.style.textDecoration="none";
+// }
+
+
+// function for highlight selected options
+const highlighter = (className, needsRemoval) => {
+    className.forEach((button) => {
+        button.addEventListener("click", () => {
+            if (needsRemoval) {
+                let alreadyActive = false;
+
+                // clicked button is active
+                if (button.classList.contains("active")) {
+                    alreadyActive = true;
+                }
+
+                highlighterRemover(className);
+                if (!alreadyActive) {
+                    // highlight clicked button
+                    button.classList.add("active");
+                }
+            }
+            else {
+                // other button can highlighted
+                button.classList.toggle("active");
+            }
+        });
+    });
+};
+
+// remove highlighter
+const highlighterRemover = (className) => {
+    className.forEach((button) => {
+        button.classList.remove("active");
+    });
+}
+
+window.onload = initializer();
+
+// share story
+var files = [],
+    dragArea = document.querySelector('.drag-area'),
+    input = document.querySelector('.drag-area input'),
+    button = document.querySelector('.drag-card button'),
+    select = document.querySelector('.drag-area .select'),
+    container = document.querySelector('.container-img');
+
+/** CLICK LISTENER */
+select.addEventListener('click', () => input.click());
+
+/* INPUT CHANGE EVENT */
+input.addEventListener('change', () => {
+    let file = input.files;
+
+    // if user select no image
+    if (file.length == 0) return;
+
+    for (let i = 0; i < file.length; i++) {
+        if (file[i].type.split("/")[0] != 'image') continue;
+        if (!files.some(e => e.name == file[i].name)) files.push(file[i])
+    }
+
+    showImages();
+});
+
+/** SHOW IMAGES */
+function showImages() {
+    container.innerHTML = files.reduce((prev, curr, index) => {
+        return `${prev}
+                <div class="image">
+                    <span class="closeIconImg" onclick="delImage(${index})">&times;</span>
+                    <img src="${URL.createObjectURL(curr)}" />
+                </div>`
+    }, '');
+}
+
+/* DELETE IMAGE */
+function delImage(index) {
+    files.splice(index, 1);
+    showImages();
+}
+
+/* DRAG & DROP */
+dragArea.addEventListener('dragover', e => {
+    e.preventDefault()
+    dragArea.classList.add('dragover')
+})
+
+/* DRAG LEAVE */
+dragArea.addEventListener('dragleave', e => {
+    e.preventDefault()
+    dragArea.classList.remove('dragover')
+});
+
+var maxImageSize = 4 * 1024 * 1024;
+/* DROP EVENT */
+dragArea.addEventListener('drop', e => {
+    e.preventDefault()
+    dragArea.classList.remove('dragover');
+
+    let file = e.dataTransfer.files;
+    for (let i = 0; i < file.length; i++) {
+        if (file[i].type.split("/")[0] != 'image') continue
+        if (!files.some(e => e.name == file[i].name)) files.push(file[i]); 
+    }
+    showImages();
+});
+
+var allfiles = [];
 //to show story details when in draft
 $('#missionTitle').click(function () {
     var missionId = $(this).val();
@@ -694,10 +838,10 @@ $('#missionTitle').click(function () {
         type: 'GET',
         url: '/Story/GetDraftedStory',
         data: { missionId: missionId },
-        success: function (result) {
+        success: async function (result) {
             if (result != null) {
                 $('#StoryTitle').val(result.title);
-                console.log(result);
+             
                 const date = new Date(result.createdAt);
                 const yyyy = date.getFullYear();
                 const mm = String(date.getMonth() + 1).padStart(2, '0');
@@ -715,21 +859,42 @@ $('#missionTitle').click(function () {
                         UrlRecords += item.path + '\n';
                     }
                 });
-                console.log(UrlRecords);
-                $('#videoUrls').val(UrlRecords);
 
+                $('#videoUrls').val(UrlRecords);
+           /*     var images = [];*/
                 /*   console.log(result.storyMedia[i].path);*/
-                $.each(result.storyMedia, function (index, item) {
+                $.each(result.storyMedia, async function (index, item) {
                     if (item.type === "images") {
-                        var image = $('<img>').attr('src', '/images/Upload/' + item.path);
-                        var closeIcon = $('<button>').text('x').click(function () {
-                            $(this).parent().remove(); // remove the parent div containing both the image and the close button
-                        });
+                        var file = result.storyMedia[index];
+                        var image = $('<img>').attr('src', '/images/Upload/Story/' + item.path);
+                        var closeIcon = $('<button>').text('x');
+                            /*.click(function ()*/
+                        //{
+                        //   $(this).parent().remove(); // remove the parent div containing both the image and the close button
+                        //});
                         var img = $('<span>').addClass('image').append(image).append(closeIcon);
+                       /* images.push(img.get(0));*/
                         $('#img-output').append(img);
 
+
+                        const response = await fetch('/Upload/Story/' + file.path);
+                        const blob = await response.blob();
+                        const imgfiles = new File([blob], file.path, { type: blob.type });
+
+                        files.push(imgfiles);
+
+                        console.log(files);
+
+
+                        closeIcon.on('click', function () {
+                            var index = $(this).parent().index();
+                            files.splice(index, 1);
+                            $(this).parent().remove();
+                            console.log(allfiles);
+                        });
                     }
-                })
+                });
+
 
                 $('#previewButton').removeClass('disabled');
                 $('#submitButton').removeClass('disabled');
@@ -756,7 +921,7 @@ $('#saveStory').click(function (e) {
         isValid = true;
     }
     if (isValid) {
-        console.log("validation");
+      /*  console.log("validation");*/
         var formData = new FormData();
         var urls = null;
         var u = $('#videoUrls').val();
@@ -769,18 +934,24 @@ $('#saveStory').click(function (e) {
         else {
             formData.append("VideoUrls", null);
         }
-
+     /*   var ImageArray = [];*/
         var input = $('#img-input');
-        var files = input[0].files;
+        files = input[0].files;
         for (var i = 0; i < files.length; i++) {
-            formData.append("Images", files[i]);
+            formData.append("Images", files[i]);   
         }
+
+        for (var i = 0; i < allfiles.length; i++) {
+            formData.append("Images", allfiles[i]);
+        }
+
+     /*  formData.append("Images", ImageArray);*/
         console.log(files);
         formData.append("MissionId", $('#missionTitle').val());
         formData.append("StoryTitle", $('#StoryTitle').val());
         formData.append("Date", $('#date').val());
         formData.append("StoryDescription", $('#text-input').text());
-
+        /*console.log(formData.val());*/
         $.ajax({
             url: '/Story/SaveStory',
             type: 'POST',
@@ -826,10 +997,15 @@ $('#submitButton').click(function () {
     }
 
     var input = $('#img-input');
+  /*  var fileInput = input[0];*/
     var files = input[0].files;
     for (var i = 0; i < files.length; i++) {
+        if (files[i].type.split("/")[0] != 'image') continue;
+        if (!files.some(e => e.name == files[i].name)) files.push(files[i]);
+        
         formData.append("Images", files[i]);
     }
+    showImages();
     console.log(files);
     formData.append("MissionId", $('#missionTitle').val());
     formData.append("StoryTitle", $('#StoryTitle').val());
@@ -844,7 +1020,7 @@ $('#submitButton').click(function () {
         data: formData,
 
         success: function (result) {
-            console.log(result.message);
+           /* console.log(result.message);*/
             debugger
             swal.fire({
                 position: 'top-end',
@@ -986,160 +1162,3 @@ function validateStoryDes() {
     //    }
     //});
 
-    // Prevent default behavior on dragover event
-    $('#drop-area').on('dragover', function (e) {
-        e.preventDefault();
-    });
-
-
-
-//for share story page(ck-editor and drag and drop functionality)
-let optionsButtons = document.querySelectorAll(".option-button");
-let writingArea = document.getElementById("text-input");
-let formatButtons = document.querySelectorAll(".format");
-let scriptButtons = document.querySelectorAll(".script");
-
-
-// Initial Setting
-const initializer = () => {
-    highlighter(formatButtons, false);
-    highlighter(scriptButtons, true);
-};
-
-// main logic
-const modifyText = (command, defaultUi, value) => {
-    document.execCommand(command, defaultUi, value);
-};
-
-// button operations
-optionsButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        modifyText(button.id, false, null);
-    });
-});
-
-// function format(){
-//     var id = document.getElementById("textformat");
-//     id.style.textDecoration="none";
-// }
-
-
-// function for highlight selected options
-const highlighter = (className, needsRemoval) => {
-    className.forEach((button) => {
-        button.addEventListener("click", () => {
-            if (needsRemoval) {
-                let alreadyActive = false;
-
-                // clicked button is active
-                if (button.classList.contains("active")) {
-                    alreadyActive = true;
-                }
-
-                highlighterRemover(className);
-                if (!alreadyActive) {
-                    // highlight clicked button
-                    button.classList.add("active");
-                }
-            }
-            else {
-                // other button can highlighted
-                button.classList.toggle("active");
-            }
-        });
-    });
-};
-
-// remove highlighter
-const highlighterRemover = (className) => {
-    className.forEach((button) => {
-        button.classList.remove("active");
-    });
-}
-
-window.onload = initializer();
-
-// share story
-let files = [],
-    dragArea = document.querySelector('.drag-area'),
-    input = document.querySelector('.drag-area input'),
-    button = document.querySelector('.drag-card button'),
-    select = document.querySelector('.drag-area .select'),
-    container = document.querySelector('.container-img');
-
-/** CLICK LISTENER */
-select.addEventListener('click', () => input.click());
-
-/* INPUT CHANGE EVENT */
-input.addEventListener('change', () => {
-    let file = input.files;
-
-    // if user select no image
-    if (file.length == 0) return;
-
-    for (let i = 0; i < file.length; i++) {
-        if (file[i].type.split("/")[0] != 'image') continue;
-        if (!files.some(e => e.name == file[i].name)) files.push(file[i])
-    }
-
-    showImages();
-});
-
-/** SHOW IMAGES */
-function showImages() {
-    container.innerHTML = files.reduce((prev, curr, index) => {
-        return `${prev}
-                <div class="image">
-                    <span class="closeIconImg" onclick="delImage(${index})">&times;</span>
-                    <img src="${URL.createObjectURL(curr)}" />
-                </div>`
-    }, '');
-}
-
-/* DELETE IMAGE */
-function delImage(index) {
-    files.splice(index, 1);
-    showImages();
-}
-
-/* DRAG & DROP */
-dragArea.addEventListener('dragover', e => {
-    e.preventDefault()
-    dragArea.classList.add('dragover')
-})
-
-/* DRAG LEAVE */
-dragArea.addEventListener('dragleave', e => {
-    e.preventDefault()
-    dragArea.classList.remove('dragover')
-});
-
-var maxImageSize = 4 * 1024 * 1024; 
-/* DROP EVENT */
-dragArea.addEventListener('drop', e => {
-    e.preventDefault()
-    dragArea.classList.remove('dragover');
-
-    let file = e.dataTransfer.files;
-    for (let i = 0; i < file.length; i++) {
-        //var files = files[i];
-/*        var fileType = file.type;*/
-        var fileSize = files.size;
-        /** Check selected file is image */
-        if (file[i].type.split("/")[0] != 'image') continue;
-        //if (fileSize > maxImageSize) {
-        //    alert('Please upload images smaller than 4MB.');
-        //    return;
-        //}
-        if (!files.some(e => e.name == file[i].name)) files.push(file[i]);
-
-        //$('#drop-area').append('<img src="' + URL.createObjectURL(file) + '">');
-
-        //// Limit the number of images to 20
-        //if (images.length >= maxImages) {
-        //    alert('You can upload a maximum of 20 images.');
-        //    return;
-        //}
-    }
-    showImages();
-});

@@ -29,7 +29,7 @@ namespace CI_Platform.Entities.ViewModels
 
         //public List<Mission> MissionList { get; set; }
 
-        public List<Mission> DisplayMissionCardsDemo { get; set; } = null;
+        public IEnumerable<Mission> DisplayMissionCardsDemo { get; set; } = null;
 
         public List<User> UserList { get; set; } = null;
 

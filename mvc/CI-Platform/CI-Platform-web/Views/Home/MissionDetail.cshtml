@@ -181,12 +181,23 @@
                                         @foreach (var u in Model.UserList)
                                         {
 
+                                            
+
                                             <div class="mt-2" style="display : flex; justify-content : space-between;">
 
                                                 <span class="me-4 ">@u.FirstName @u.LastName</span>
 
+                                                @if(u.MissionInviteToUsers.Any(i=>i.ToUserId == u.UserId)) 
+                                                {
+                                                    <span style="margin-left : 6%;" mailto:class="invited-@u.UserId"><button class="btn btn-success model-button model-invite-btn disabled" data-mission-id="@mission_id" data-from-user-id="@Id" data-to-user-id="@u.UserId">Invite</button></span>
 
-                                                <span style="margin-left : 6%;" mailto:class="invited-@u.UserId"><button class="btn btn-outline-primary model-button model-invite-btn" data-mission-id="@mission_id" data-from-user-id="@Id" data-to-user-id="@u.UserId">Invite</button></span>
+                                                } else
+                                                {
+                                                    <span style="margin-left : 6%;" mailto:class="invited-@u.UserId"><button class="btn btn-outline-primary model-button model-invite-btn" data-mission-id="@mission_id" data-from-user-id="@Id" data-to-user-id="@u.UserId">Invite</button></span>
+
+                                                    @*<div class="col-auto" mailto:class="invited-@coworker.userid"><button type="button" class="btn btn-outline-primary modal-invite-btn" data-mission-id="@Model.Mission.MissionId" data-user-id="@UserId" data-coworker-id="@coworker.UserId">Invite</button></div>*@
+                                                }
+                                                @*<span style="margin-left : 6%;" mailto:class="invited-@u.UserId"><button class="btn btn-outline-primary model-button model-invite-btn" data-mission-id="@mission_id" data-from-user-id="@Id" data-to-user-id="@u.UserId">Invite</button></span>*@
 
                                             </div>
                                         }

@@ -11,7 +11,7 @@ namespace CI_Platform.Repository.Interface
     public interface IMissionDisplay
     {
        
-        public List<Mission> DisplayMissionCardsDemo(List<long> MissionIds);
+        public IEnumerable<Mission> DisplayMissionCardsDemo(List<long> MissionIds);
 
     }
 }

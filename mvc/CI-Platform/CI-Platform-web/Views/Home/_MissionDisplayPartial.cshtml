@@ -46,7 +46,7 @@
             var mission_id = obj.MissionId;
 
             <div class="col card-div ">
-                <div class="card grid-card h-100">
+                <div class="card grid-card h-100 shadow">
                     <span class="d-none"> @obj.MissionId </span>
                     <span class="created-date d-none ">@obj.CreatedAt </span>
 
@@ -75,6 +75,22 @@
                             }
                         }
 
+                        @if (isAlreadyApplied)
+                        {
+                            <div class="applied-pill" style="background:green 0% 0% no-repeat;">
+                                <span>APPLIED</span>
+                            </div>
+                        }
+                        @if (obj.MissionType.Equals("Time"))
+                        {
+                            if (isDeadlinePassed || isEndDatePassed)
+                            {
+                                <div class="applied-pill" style="background:red 0% 0% no-repeat;">
+                                    <span>CLOSED</span>
+                                </div>
+                            }
+                        }
+
                         <div class="location">
                             <img src="~/images/pin1.png">
                             <span class="mission-city">@obj.City.CityName</span>
@@ -87,8 +103,9 @@
                             {
                                 <button class="  like-on-img " onclick="favourite()">
                                     <i class="bi bi-heart-fill favourite-button filled-heart text-danger" data-mission-id="@obj.MissionId"></i>
-                                    flag = 0;
+                                    
                                 </button>
+                                flag = 0;
                             }
                         }
                         @if (flag == 1)
@@ -313,8 +330,9 @@
                             {
                                 <button class="  like-on-img " onclick="favourite()">
                                     <i class="bi bi-heart-fill favourite-button filled-heart text-danger" data-mission-id="@obj.MissionId"></i>
-                                    flag = 0;
+                                    
                                 </button>
+                                flag = 0;
                             }
 
                         }

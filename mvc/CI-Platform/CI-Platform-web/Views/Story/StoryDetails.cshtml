@@ -21,16 +21,16 @@
 
             <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
                 <div class="swiper-wrapper">
-                    @if (Model.GetStoryDetails.StoryMedia.Any(s => s.StoryId != Model.GetStoryDetails.StoryId))
+                    @if (Model.GetStoryDetails.StoryMedia.Any(s => s.StoryId != story_id))
                     {
                         <img src="~/images/no-image.png" alt=" " />
                     }
                     else
                     {
-                        @foreach (var slider_img in Model.GetStoryDetails.StoryMedia.Where(s => s.StoryId == Model.GetStoryDetails.StoryId && s.Type != "videos"))
+                        @foreach (var slider_img in Model.GetStoryDetails.StoryMedia.Where(s => s.StoryId == story_id && s.Type != "videos"))
                         {
                             <div class="swiper-slide">
-                                <img src="~/images/@slider_img.Path" />
+                                <img src="~/images/Upload/Story/@slider_img.Path" />
                             </div>
                         }
                     }
@@ -40,11 +40,18 @@
             </div>
             <div thumbsSlider="" class="swiper mySwiper">
                 <div class="swiper-wrapper">
-                    @foreach (var slider_img in Model.GetStoryDetails.StoryMedia.Where(m => m.StoryId == Model.GetStoryDetails.StoryId))
+                    @if (Model.GetStoryDetails.StoryMedia.Any(s => s.StoryId != story_id))
                     {
-                        <div class="swiper-slide">
-                            <img src="~/images/@slider_img.Path" />
-                        </div>
+                        <img src="~/images/no-image.png" alt=" " />
+                    }
+                    else
+                    {
+                        @foreach (var slider_img in Model.GetStoryDetails.StoryMedia.Where(s => s.StoryId == story_id && s.Type != "videos"))
+                        {
+                            <div class="swiper-slide">
+                                <img src="~/images/Upload/Story/@slider_img.Path" />
+                            </div>
+                        }
                     }
                 </div>
 
@@ -61,11 +68,11 @@
                     <div class="ms-2"> @Model.GetStoryDetails.User.City.CityName,  @Model.GetStoryDetails.User.Country.Name  </div>
                 </div>
                 <div class="align-self-end my-4">
-                    <span class="views-capsule">
+                    <div class="views-capsule">
                         <img src="~/images/eye.png" />
                        <span>@Model.GetStoryDetails.UserVisits</span>
                         Views
-                    </span>
+                    </div>
                 </div>
             </div>
             <div class="px-4">

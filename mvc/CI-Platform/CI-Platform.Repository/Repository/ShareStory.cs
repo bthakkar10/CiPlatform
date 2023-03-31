@@ -129,7 +129,7 @@ namespace CI_Platform.Repository.Repository
 
 
                     //var fileName = m.Path;
-                    File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Upload", fileName));
+                    File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Upload/Story", fileName));
                     _db.Remove(m);
                 }
             }
@@ -141,7 +141,7 @@ namespace CI_Platform.Repository.Repository
                     var ImgName = img.FileName;
                     var guid = Guid.NewGuid().ToString().Substring(0, 8);
                     var fileName = $"{guid}_{ImgName}"; // getting filename
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Upload", fileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Upload/Story", fileName);
 
                     var newImage = new StoryMedium()
                     { 
