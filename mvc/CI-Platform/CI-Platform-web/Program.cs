@@ -1,3 +1,4 @@
+//using AspNetCore;
 using CI_Platform.Entities.DataModels;
 using CI_Platform.Repository.Interface;
 using CI_Platform.Repository.Repository;
@@ -17,6 +18,7 @@ builder.Services.AddScoped<IMissionDetail, MissionDetail>();
 builder.Services.AddScoped<IStoryListing, StoryListing>();
 builder.Services.AddScoped<IShareStory, ShareStory>();
 builder.Services.AddScoped<IStoryDetails, StoryDetails>();
+builder.Services.AddScoped<IUserProfile, UserProfile>();
 
 builder.Services.AddSession();
 builder.Services.AddMemoryCache();

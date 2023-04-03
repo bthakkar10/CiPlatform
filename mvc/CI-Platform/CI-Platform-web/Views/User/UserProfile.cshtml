@@ -1,0 +1,174 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "User Profile";
+}
+@model CI_Platform.Entities.ViewModels.UserProfileViewModel
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-2 ">
+            <div class="user-profile-section">
+                <div class="image-edit">
+                     <img src="~/images/user-img-large.png" class="img-thumbnail mx-auto d-block my-2 " alt="...">
+                      <div class="edit-icon"><i class="bi bi-pencil-fill"></i></div>
+                </div>
+                <input type="file" class="d-none" id="profile-image-input" />
+                <h5 class="text-center">
+                    Evan Donhoue
+                </h5>
+                <div class=" text-center">
+                    <a data-bs-toggle="modal" data-bs-target="#ChangePasswordModal">Change Password</a>
+                    <!-- Modal -->
+                    <div class="modal fade" id="ChangePasswordModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Change Password</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-3">
+                                            <input type="password" class="form-control" id="OldPassword" placeholder="Enter Old Password">
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="password" class="form-control" id="NewPassword" placeholder="Enter New Password">
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="password" class="form-control" id="ConfirmPassword" placeholder="Enter Confirm Password">
+                                        </div>
+                                        @*<button type="submit" class="btn btn-primary">Submit</button>*@
+                                        <div class="d-flex justify-content-end">
+                                            <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn card-btn ms-2">Change Password</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-10 px-2 ps-4 my-4 my-xl-0">
+            <form>
+                @*basic information*@
+                <div class="my-4 my-xl-0 row g-3">
+                    <h2 class="pb-1 border-bottom"><span class="form-underline pb-1"> Basic Information</span></h2>
+                    <div class="col-md-6">
+                        <label asp-for="FirstName" class="form-label">Name</label>
+                        <input asp-for="FirstName" type="text" placeholder="Enter your name" class="form-control" id="Name">
+                    </div>
+                    <div class="col-md-6">
+                        <label  asp-for="Surname" class="form-label">Surname</label>
+                        <input asp-for="Surname" type="text" placeholder="Enter your Surname" class="form-control" id="Surname">
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="EmployeeId" for="EmployeeId" class="form-label">Employee Id</label>
+                        <input asp-for="EmployeeId" type="text" placeholder="Enter your Employee Id" class="form-control" id="EmployeeId">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="Manager" class="form-label">Manager</label>
+                        <input type="text" placeholder="Enter your Manager details" class="form-control" id="Manager">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="Title" class="form-label">Title</label>
+                        <input type="text" placeholder="Enter the Title" class="form-control" id="Title">
+                    </div>
+                    <div class="col-md-6">
+                        <label  asp-for="Department" class="form-label">Department</label>
+                        <input asp-for="Department" type="text" placeholder="Enter your Department details" class="form-control" id="Department">
+                    </div>
+                    <div class="mb-3 col-12">
+                        <label asp-for="ProfileText" class="form-label">My  Profile</label>
+                        <textarea  asp-for="ProfileText" class="form-control" id="Profile" rows="4" placeholder="Enter something about yourself"></textarea>
+                    </div>
+                    <div class="mb-3 col-12">
+                        <label asp-for="WhyIVolunteer" class="form-label">Why I Volunteer</label>
+                        <textarea asp-for="WhyIVolunteer" class="form-control" id="WhyIVolunteer" rows="4" placeholder="Enter your comments"></textarea>
+                    </div>
+                </div>
+                @*address information*@
+                <div class="my-5 row g-3">
+                    <h2 class="pb-1 border-bottom"><span class="form-underline pb-1"> Address Information</span></h2>
+                    <div class="col-md-6">
+                        <label for="Country" class="form-label ms-1">Country</label>
+                        <select class="form-select" id="CountrySelect" aria-label="Enter your Country">
+                            <option selected>Enter your Country</option>
+                            @*  <option  value="@mission_list.Mission.MissionId">@mission_list.Mission.Title</option>*@
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="City" class="form-label ms-1">City</label>
+                        <select class="form-select" id="CitySelect" aria-label="Enter your City">
+                            <option selected>Enter your City</option>
+                            @* <option  value="@mission_list.Mission.MissionId">@mission_list.Mission.Title</option>*@
+
+                        </select>
+                    </div>
+                </div>
+
+                @*Professional information*@
+                <div class="mb-5 row g-3">
+                    <h2 class="pb-1 border-bottom"><span class="form-underline pb-1"> Professional Information</span></h2>
+                    <div class="col-md-6">
+                        <label for="Avaliability" class="form-label ms-1">Avaliability</label>
+                        <select class="form-select" id="AvaliabilitySelect" aria-label="Select your Avaliability">
+                            <option value="">Daily</option>
+                            <option value="">Weekend</option>
+                            <option value="">Monthly</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="LinkedInUrl" class="form-label">LinkedInUrl</label>
+                        <input type="url" placeholder="Enter LinkedIn Url" class="form-control" id="LinkedInUrl">
+                    </div>
+                </div>
+
+                @*     skills add*@
+                <div class="mb-5 row g-3">
+                    <h2 class="pb-1 border-bottom"><span class="form-underline pb-1"> My Skills</span></h2>
+                    <div class="skills-container">
+                        @foreach(var skill in Model.UserSkills)
+                        {
+                            <p>@skill.Skill.SkillName</p>
+                        }
+                    </div>
+                    <div class="col-12">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#AddSkillsModal" class="btn btn-outline-secondary rounded-pill" data>Add Skills</button>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="AddSkillsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Your Skills</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body row">
+                                    <div class="col-md-5 flex-column">
+                                        
+                                    </div>
+                                    <div class="col-md-2">
+                                        buttons
+                                    </div>
+                                    <div class="col-md-5">
+                                        con2
+                                    </div>
+                                </div>
+                                <div class="modal-footer justify-content-start">
+                                    <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn card-btn">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class= "row justify-content-end">
+                    <button type="submit" class="btn card-btn w-auto">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
