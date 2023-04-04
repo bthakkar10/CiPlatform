@@ -36,6 +36,12 @@ namespace CI_Platform.Entities.ViewModels
 
         public List<UserSkill>? UserSkills { get; set; }
 
+        public List<Skill>? Skills { get; set; }
+
+        public List<Country>? Countries { get; set; }
+
+        public List<City>? Cities { get; set; }  
+
         public string? Avatar { get; set; }
 
     }

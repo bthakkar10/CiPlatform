@@ -641,6 +641,10 @@
       "PackagePath": "staticwebassets\\images\\previous.png"
     },
     {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\profile-user.png",
+      "PackagePath": "staticwebassets\\images\\profile-user.png"
+    },
+    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\reports-story.webp",
       "PackagePath": "staticwebassets\\images\\reports-story.webp"
     },

@@ -8,12 +8,19 @@
         <div class="col-lg-2 ">
             <div class="user-profile-section">
                 <div class="image-edit">
-                     <img src="~/images/user-img-large.png" class="img-thumbnail mx-auto d-block my-2 " alt="...">
-                      <div class="edit-icon"><i class="bi bi-pencil-fill"></i></div>
+                    @if(Model.Avatar != null)
+                    {
+                        <img src="~/images/@Model.Avatar" class="img-thumbnail mx-auto d-block my-2 " alt="...">
+                    }
+                    else
+                    {
+                        <img src="~/images/profile-user.png" class="img-thumbnail mx-auto d-block my-2 " alt="...">
+                    }
+                    <div class="edit-icon"><i class="bi bi-pencil-fill"></i></div>
                 </div>
                 <input type="file" class="d-none" id="profile-image-input" />
                 <h5 class="text-center">
-                    Evan Donhoue
+                    @Model.FirstName @Model.Surname
                 </h5>
                 <div class=" text-center">
                     <a data-bs-toggle="modal" data-bs-target="#ChangePasswordModal">Change Password</a>
@@ -29,17 +36,20 @@
                                     <form>
                                         <div class="mb-3">
                                             <input type="password" class="form-control" id="OldPassword" placeholder="Enter Old Password">
+                                            <small class="text-danger" id="validateOldPass"> </small>
                                         </div>
                                         <div class="mb-3">
                                             <input type="password" class="form-control" id="NewPassword" placeholder="Enter New Password">
+                                            <small class="text-danger" id="validateNewPass"> </small>
                                         </div>
                                         <div class="mb-3">
                                             <input type="password" class="form-control" id="ConfirmPassword" placeholder="Enter Confirm Password">
+                                            <small class="text-danger" id="validateConfirmPass"> </small>
                                         </div>
                                         @*<button type="submit" class="btn btn-primary">Submit</button>*@
                                         <div class="d-flex justify-content-end">
                                             <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                                            <button type="button" class="btn card-btn ms-2">Change Password</button>
+                                            <button type="button" class="btn card-btn ms-2" id="ChangePasswordBtn">Change Password</button>
                                         </div>
                                     </form>
                                 </div>
@@ -60,7 +70,7 @@
                         <input asp-for="FirstName" type="text" placeholder="Enter your name" class="form-control" id="Name">
                     </div>
                     <div class="col-md-6">
-                        <label  asp-for="Surname" class="form-label">Surname</label>
+                        <label asp-for="Surname" class="form-label">Surname</label>
                         <input asp-for="Surname" type="text" placeholder="Enter your Surname" class="form-control" id="Surname">
                     </div>
                     <div class="col-md-6">
@@ -76,12 +86,12 @@
                         <input type="text" placeholder="Enter the Title" class="form-control" id="Title">
                     </div>
                     <div class="col-md-6">
-                        <label  asp-for="Department" class="form-label">Department</label>
+                        <label asp-for="Department" class="form-label">Department</label>
                         <input asp-for="Department" type="text" placeholder="Enter your Department details" class="form-control" id="Department">
                     </div>
                     <div class="mb-3 col-12">
                         <label asp-for="ProfileText" class="form-label">My  Profile</label>
-                        <textarea  asp-for="ProfileText" class="form-control" id="Profile" rows="4" placeholder="Enter something about yourself"></textarea>
+                        <textarea asp-for="ProfileText" class="form-control" id="Profile" rows="4" placeholder="Enter something about yourself"></textarea>
                     </div>
                     <div class="mb-3 col-12">
                         <label asp-for="WhyIVolunteer" class="form-label">Why I Volunteer</label>
@@ -93,16 +103,25 @@
                     <h2 class="pb-1 border-bottom"><span class="form-underline pb-1"> Address Information</span></h2>
                     <div class="col-md-6">
                         <label for="Country" class="form-label ms-1">Country</label>
-                        <select class="form-select" id="CountrySelect" aria-label="Enter your Country">
+                        <select asp-for="CountryId" class="form-select" id="UserCountrySelect" aria-label="Enter your Country">
                             <option selected>Enter your Country</option>
-                            @*  <option  value="@mission_list.Mission.MissionId">@mission_list.Mission.Title</option>*@
+                            @foreach(var country in Model.Countries)
+                            {
+                                <option  value="@country.CountryId">@country.Name</option>
+                            }
                         </select>
                     </div>
                     <div class="col-md-6">
                         <label for="City" class="form-label ms-1">City</label>
-                        <select class="form-select" id="CitySelect" aria-label="Enter your City">
-                            <option selected>Enter your City</option>
-                            @* <option  value="@mission_list.Mission.MissionId">@mission_list.Mission.Title</option>*@
+                        <select asp-for="CityId" class="form-select" id="UserCitySelect" aria-label="Enter your City">
+                           
+                            @{
+                                var city = Model.Cities.Where(c => c.CountryId == Model.CountryId);
+                            }
+                            @foreach(var c in city)
+                            {
+                                <option value="@c.CityId">@c.CityName</option>
+                            }
 
                         </select>
                     </div>
@@ -120,18 +139,19 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label for="LinkedInUrl" class="form-label">LinkedInUrl</label>
-                        <input type="url" placeholder="Enter LinkedIn Url" class="form-control" id="LinkedInUrl">
+                        <label asp-for="LinkedInUrl" class="form-label">LinkedInUrl</label>
+                        <input asp-for="LinkedInUrl" type="url" placeholder="Enter LinkedIn Url" class="form-control" id="LinkedInUrl">
                     </div>
                 </div>
 
                 @*     skills add*@
                 <div class="mb-5 row g-3">
                     <h2 class="pb-1 border-bottom"><span class="form-underline pb-1"> My Skills</span></h2>
-                    <div class="skills-container">
-                        @foreach(var skill in Model.UserSkills)
+                    <div class="user-skills-container">
+                        @foreach (var skill in Model.UserSkills)
                         {
-                            <p>@skill.Skill.SkillName</p>
+                           
+                            <label>@skill.Skill.SkillName</label>
                         }
                     </div>
                     <div class="col-12">
@@ -140,32 +160,58 @@
 
                     <!-- Modal -->
                     <div class="modal fade" id="AddSkillsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h1 class="modal-title fs-5" id="exampleModalLabel">Add Your Skills</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <div class="modal-body row">
-                                    <div class="col-md-5 flex-column">
-                                        
-                                    </div>
-                                    <div class="col-md-2">
-                                        buttons
-                                    </div>
-                                    <div class="col-md-5">
-                                        con2
+                                <div class="modal-body">
+                                    <div class="row ">
+                                        <div class="col-6 position-relative">
+                                            <div class="skills-list">
+                                                @foreach (var skills in Model.Skills)
+                                                {
+                                                    if (Model.UserSkills.Select(us => us.SkillId).Contains(skills.SkillId))
+                                                    {
+                                                        <label class="all-skills-label highlight">@skills.SkillName</label>
+                                                    }
+                                                    else
+                                                    {
+                                                        <label class="all-skills-label">@skills.SkillName</label>
+                                                    }
+                                                }
+                                            </div>
+                                            <a class="position-absolute start-100 translate-middle" id="addSkillsToRight" style="top:45%">
+                                                <img src="~/images/right-arrow1.png" />
+                                            </a>
+                                            <a class="position-absolute start-100 translate-middle top-50" id="RemoveSkillsFromRight">
+                                                <img src="~/images/left.png" />
+                                            </a>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="selected-skills-list">
+                                                @foreach (var skills in Model.Skills)
+                                                {
+                                                    if (Model.UserSkills.Select(us => us.SkillId).Contains(skills.SkillId))
+                                                    {
+                                                        <label class="all-skills-label">@skills.SkillName</label>
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
                                 <div class="modal-footer justify-content-start">
                                     <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn card-btn">Save</button>
+                                    <button type="button" class="btn card-btn" id="SaveSkillBtn" data-bs-dismiss="modal">Save</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class= "row justify-content-end">
+                <div class="row justify-content-end">
                     <button type="submit" class="btn card-btn w-auto">Save</button>
                 </div>
             </form>

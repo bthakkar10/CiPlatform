@@ -11,5 +11,7 @@ namespace CI_Platform.Repository.Interface
     public  interface IUserProfile
     {
         public UserProfileViewModel GetUserDetails(long UserId);
+
+        public bool ChangePassword(long userId, string oldPassword, string newPassword);
     }
 }

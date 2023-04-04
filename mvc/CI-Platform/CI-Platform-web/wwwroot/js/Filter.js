@@ -30,7 +30,6 @@ $('#searchText').on('keyup', function () {
 allDropdowns.on('change', function () {
     if (currentUrl.includes("HomePage")) {
         FilterSortPaginationSearch();
-
     }
     else if (currentUrl.includes("StoryListing")) {
         StoryFilter();
@@ -183,8 +182,6 @@ function FilterSortPaginationSearch(pageNo) {
 function totalMission() {
     var count = document.getElementById('missionCount').innerText;
     $('#exploreText').text("Explore " + count + " missions");
-
-
     if (count == 0) {
         $('.NoMissionFound').show();
     }
@@ -712,12 +709,6 @@ optionsButtons.forEach(button => {
     });
 });
 
-// function format(){
-//     var id = document.getElementById("textformat");
-//     id.style.textDecoration="none";
-// }
-
-
 // function for highlight selected options
 const highlighter = (className, needsRemoval) => {
     className.forEach((button) => {
@@ -909,12 +900,6 @@ $('#missionTitle').click(function () {
                 });
 
                 $('#videoUrls').val(UrlRecords);
-
-
-
-
-
-
                 $('#previewButton').removeClass('disabled');
                 $('#submitButton').removeClass('disabled');
             }
@@ -936,7 +921,7 @@ $('#missionTitle').click(function () {
 $('#saveStory').click(function (e) {
     e.preventDefault();
     let isValid = false;
-    if (validateStoryTitle() == true && validateDate() == true && validateStoryDes() == true && validateYoutubeUrls() == true) {
+    if (validateStoryTitle() == true && validateDate() == true && validateStoryDes() == true && validateYoutubeUrls() == true && validateMissionTitle() == true) {
         isValid = true;
     }
     if (isValid) {
@@ -993,50 +978,57 @@ $('#saveStory').click(function (e) {
 
 //to submit story 
 $('#submitButton').click(function () {
-    var formData = new FormData();
-    var urls = null;
-    var u = $('#videoUrls').val();
-    if (u != null) {
-        urls = u.split('\n');
-        for (var i = 0; i < urls.length; i++) {
-            formData.append("VideoUrls", urls[i]);
-        }
+    e.preventDefault();
+    let isValid = false;
+    if (validateStoryTitle() == true && validateDate() == true && validateStoryDes() == true && validateYoutubeUrls() == true && validateMissionTitle() == true) {
+        isValid = true;
     }
-    else {
-        formData.append("VideoUrls", null);
+    if (isValid) {
+            var formData = new FormData();
+            var urls = null;
+            var u = $('#videoUrls').val();
+            if (u != null) {
+                urls = u.split('\n');
+                for (var i = 0; i < urls.length; i++) {
+                    formData.append("VideoUrls", urls[i]);
+                }
+            }
+            else {
+                formData.append("VideoUrls", null);
+            }
+
+            for (var i = 0; i < allfiles.length; i++) {
+                formData.append("Images", allfiles[i]);
+            }
+            formData.append("MissionId", $('#missionTitle').val());
+            formData.append("StoryTitle", $('#StoryTitle').val());
+            formData.append("Date", $('#date').val());
+            formData.append("StoryDescription", $('#text-input').text());
+
+            $.ajax({
+                url: '/Story/SubmitStory',
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                data: formData,
+
+                success: function (result) {
+                    /* console.log(result.message);*/
+
+                    swal.fire({
+                        position: 'top-end',
+                        icon: result.icon,
+                        title: result.message,
+                        showConfirmButton: false,
+                        timer: 4000
+                    })
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+
+            });
     }
-
-    for (var i = 0; i < allfiles.length; i++) {
-        formData.append("Images", allfiles[i]);
-    }
-    formData.append("MissionId", $('#missionTitle').val());
-    formData.append("StoryTitle", $('#StoryTitle').val());
-    formData.append("Date", $('#date').val());
-    formData.append("StoryDescription", $('#text-input').text());
-
-    $.ajax({
-        url: '/Story/SubmitStory',
-        type: 'POST',
-        processData: false,
-        contentType: false,
-        data: formData,
-
-        success: function (result) {
-            /* console.log(result.message);*/
-
-            swal.fire({
-                position: 'top-end',
-                icon: result.icon,
-                title: result.message,
-                showConfirmButton: false,
-                timer: 4000
-            })
-        },
-        error: function (error) {
-            console.log(error);
-        }
-
-    });
 });
 
 //for preview button
@@ -1086,6 +1078,17 @@ function validateYoutubeUrls() {
 function isYoutubeUrl(url) {
     var pattern = /^.*(youtube.com\/|youtu.be\/|\/v\/|\/e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/;
     return pattern.test(url);
+}
+
+$('#missionTitle').on('blur', validateMissionTitle);
+function validateMissionTitle() {
+    if ($('#missionTitle').val() === '') {
+        $("#HelpBlock-missionTitle").text("Please select the title of the mission!");
+        $('#missionTitle').focus();
+        return false;
+    }
+    $("#HelpBlock-date").text("");
+    return true;
 }
 
 $('#StoryTitle').on('blur', validateStoryTitle);
@@ -1146,39 +1149,172 @@ $('#profile-image-input').change(function () {
     reader.readAsDataURL(this.files[0]);
 });
 
-    //var images = [];
-    //var maxImages = 20;
-    //var maxImageSize = 4 * 1024 * 1024; // 4MB in bytes
+// Adding skills to Profile
+// Add selected skill to the right div on label click
+$(document).on('click', '.all-skills-label', function () {
+    $(this).toggleClass('highlight');
+});
 
-    // Bind drop event to the drag and drop area
-    //$('#drop-area').on('drop', function (e) {
-    //    e.preventDefault();
-    //    var files = e.originalEvent.dataTransfer.files;
+//adding skills to the right side of the container 
+$('#addSkillsToRight').click(function () {
+    $('.selected-skills-list').empty();
+    var selectedUserSkills = "";
+    $('.all-skills-label').each(function () {
+        if ($(this).hasClass('highlight')) {
+            selectedUserSkills += $(this).text() + "\n";
+        }
+    })
 
-    //    for (var i = 0; i < files.length; i++) {
-    //        var file = files[i];
-    //        var fileType = file.type;
-    //        var fileSize = file.size;
+    var skillsArray = selectedUserSkills.split("\n");
+    console.log(skillsArray);
 
-    //        // Check if file is an image and not more than 4MB
-    //        if (!fileType.startsWith('image/')) {
-    //            alert('Please upload only images.');
-    //            return;
-    //        }
-    //        if (fileSize > maxImageSize) {
-    //            alert('Please upload images smaller than 4MB.');
-    //            return;
-    //        }
+    skillsArray.forEach(function (skill, index) {
+        var label = $('<label>');
+        label.addClass('all-skills-label');
+        label.text(skill);
+        $('.selected-skills-list').append(label);
+    })
+})
 
-    //        // Add image to array and display in drag and drop area
-    //        images.push(file);
-    //        $('#drop-area').append('<img src="' + URL.createObjectURL(file) + '">');
+//removing skills from the right container
+$('#RemoveSkillsFromRight').click(function () {
+    var selectedUserSkills = "";
+    $('.selected-skills-list .all-skills-label').each(function () {
+        if ($(this).hasClass('highlight')) {
+            $(this).remove();
+            selectedUserSkills += $(this).text() + "\n";
+        }
+    })
 
-    //        // Limit the number of images to 20
-    //        if (images.length >= maxImages) {
-    //            alert('You can upload a maximum of 20 images.');
-    //            return;
-    //        }
-    //    }
-    //});
+    var skillsArray = selectedUserSkills.split("\n");
+    console.log(skillsArray);
 
+    skillsArray.forEach(function (skill, index) {
+        $('.all-skills-label').each(function () {
+            if ($(this).hasClass('highlight') && $(this).text() === skill) {
+                $(this).toggleClass('highlight');
+            }
+        })
+    })
+})
+
+//to save skill and display them in the my skills container
+$('#SaveSkillBtn').click(function () {
+    $(".user-skills-container").empty();
+    $(".selected-skills-list .all-skills-label").each(function () {
+        $(".user-skills-container").append(`<label>` +$(this).text()+ `</label>`)
+    });
+})
+
+  //cities based on countries in user profile
+$("#UserCountrySelect").click(function () {
+    var CountryId = $(this).val()
+    UserGetCitiesByCountry(CountryId);
+});
+
+//get cities based on countries for filters 
+function UserGetCitiesByCountry(CountryId) {
+    
+    $.ajax({
+        type: "GET",
+        url: "/User/GetCitiesByCountry",
+        data: { CountryId: CountryId },
+        success: function (result) {
+            var selectList = $("#UserCitySelect");
+            var items = "";
+            items = " <option selected>Enter your City</option>";
+            $(result).each(function (index, item) {
+                items += `<option value=` + item.cityId + `>` + item.cityName + `</option>`;
+            })
+            selectList.html(items);
+        }
+    });
+}
+
+//validations for change password in user profile 
+function validateChangePassword() {
+    let oldPassword = validateOldPassword();
+    let newPassword = validateNewPassword();
+    let confirmPassword = validateConfirmPassword();
+
+    if (oldPassword && newPassword && confirmPassword) {
+        return true;
+    }
+    return false;
+}
+
+function validateOldPassword() {
+    var oldPass = $('#OldPassword').val();
+    if (oldPass === "" || oldPass === null) {
+        $('#validateOldPass').text("Old Password is required!");
+        return false;
+    } else {
+        $('#validateOldPass').text("");
+    }
+    return true;
+}
+
+function validateNewPassword() {
+    var newPass = $('#NewPassword').val();
+    if (newPass === "" || newPass === null) {
+        $('#validateNewPass').text("New Password is required!");
+        return false;
+    } else if (newPass === $('#OldPassword').val()) {
+        $('#validateNewPass').text("Old and New Password cannot be same!");
+        return false;
+    }
+    //} else if (newPass.length < 8) {
+    //    $('#validateNewPass').text("New Password must be 8 characters long!");
+    //} else {
+    else { 
+        $('#validateNewPass').text("");
+    }
+    return true;
+}
+
+function validateConfirmPassword() {
+    var confirmPass = $('#ConfirmPassword').val();
+    if (confirmPass === "" || confirmPass === null) {
+        $('#validateConfirmPass').text("Re-enter your New Password!");
+        return false;
+    } else if (confirmPass !== $('#NewPassword').val()) {
+        $('#validateConfirmPass').text("New Password and Confirm Password must be same!");
+        return false;
+    } else {
+        $('#validateConfirmPass').text("");
+    }
+    return true;
+}
+
+$('#ChangePasswordBtn').on('click', function () {
+    if (validateChangePassword()) {
+        var oldPass = $('#OldPassword').val();
+        var newPass = $('#NewPassword').val();
+
+        $.ajax({
+            type: "POST",
+            url: "/User/ChangePassword",
+            data: { oldPass: oldPass, newPass: newPass },
+            success: function (result) {
+                swal.fire({
+                    position: 'top-end',
+                    icon: result.icon,
+                    title: result.message,
+                    showConfirmButton: false,
+                    timer: 4000
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    } else {
+
+    }
+})
+
+////change password in user profile 
+//$("#ChangePasswordBtn").click(function () {
+//    var OldPassword = $(OldPassword).val();
+
+//})
