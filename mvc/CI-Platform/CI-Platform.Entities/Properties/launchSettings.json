@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CI_Platform.Entities": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\Users\\pct127\\Desktop"
+    }
+  }
+}

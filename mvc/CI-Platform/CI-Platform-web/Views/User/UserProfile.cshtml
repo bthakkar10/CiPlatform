@@ -8,7 +8,7 @@
         <div class="col-lg-2 ">
             <div class="user-profile-section">
                 <div class="image-edit">
-                    @if(Model.Avatar != null)
+                    @if (Model.Avatar != null)
                     {
                         <img src="~/images/@Model.Avatar" class="img-thumbnail mx-auto d-block my-2 " alt="...">
                     }
@@ -23,7 +23,7 @@
                     @Model.FirstName @Model.Surname
                 </h5>
                 <div class=" text-center">
-                    <a data-bs-toggle="modal" data-bs-target="#ChangePasswordModal">Change Password</a>
+                    <a href="" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#ChangePasswordModal">Change Password</a>
                     <!-- Modal -->
                     <div class="modal fade" id="ChangePasswordModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
@@ -33,25 +33,37 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form>
+                                    <div>
                                         <div class="mb-3">
-                                            <input type="password" class="form-control" id="OldPassword" placeholder="Enter Old Password">
-                                            <small class="text-danger" id="validateOldPass"> </small>
+                                            <div class="position-relative">
+                                                <input type="password" class="form-control" id="OldPassword" placeholder="Enter Old Password">
+                                                <i class="bi bi-eye-fill position-absolute translate-middle-x end-0 top-0 d-none"></i>
+                                                <i class="bi bi-eye-slash position-absolute translate-middle-x end-0 top-0 "></i>
+                                            </div>
+                                            <small class="text-danger validate-text" id="validateOldPass"> </small>
                                         </div>
                                         <div class="mb-3">
-                                            <input type="password" class="form-control" id="NewPassword" placeholder="Enter New Password">
-                                            <small class="text-danger" id="validateNewPass"> </small>
+                                            <div class="position-relative">
+                                                <input type="password" class="form-control" id="NewPassword" placeholder="Enter New Password">
+                                                <i class="bi bi-eye-fill position-absolute translate-middle-x end-0 top-0 d-none"></i>
+                                                <i class="bi bi-eye-slash position-absolute translate-middle-x end-0 top-0 "></i>
+                                            </div>
+                                            <small class="text-danger validate-text" id="validateNewPass"> </small>
                                         </div>
                                         <div class="mb-3">
-                                            <input type="password" class="form-control" id="ConfirmPassword" placeholder="Enter Confirm Password">
-                                            <small class="text-danger" id="validateConfirmPass"> </small>
+                                            <div class="position-relative">
+                                                <input type="password" class="form-control" id="ConfirmPassword" placeholder="Enter Confirm Password">
+                                                <i class="bi bi-eye-fill position-absolute translate-middle-x end-0 top-0 d-none"></i>
+                                                <i class="bi bi-eye-slash position-absolute translate-middle-x end-0 top-0 "></i>
+                                            </div>
+                                            <small class="text-danger validate-text" id="validateConfirmPass"> </small>
                                         </div>
                                         @*<button type="submit" class="btn btn-primary">Submit</button>*@
                                         <div class="d-flex justify-content-end">
                                             <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
                                             <button type="button" class="btn card-btn ms-2" id="ChangePasswordBtn">Change Password</button>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
 
                             </div>
@@ -61,7 +73,7 @@
             </div>
         </div>
         <div class="col-lg-10 px-2 ps-4 my-4 my-xl-0">
-            <form>
+            <form method="post">
                 @*basic information*@
                 <div class="my-4 my-xl-0 row g-3">
                     <h2 class="pb-1 border-bottom"><span class="form-underline pb-1"> Basic Information</span></h2>
@@ -105,20 +117,20 @@
                         <label for="Country" class="form-label ms-1">Country</label>
                         <select asp-for="CountryId" class="form-select" id="UserCountrySelect" aria-label="Enter your Country">
                             <option selected>Enter your Country</option>
-                            @foreach(var country in Model.Countries)
+                            @foreach (var country in Model.Countries)
                             {
-                                <option  value="@country.CountryId">@country.Name</option>
+                                <option value="@country.CountryId">@country.Name</option>
                             }
                         </select>
                     </div>
                     <div class="col-md-6">
                         <label for="City" class="form-label ms-1">City</label>
                         <select asp-for="CityId" class="form-select" id="UserCitySelect" aria-label="Enter your City">
-                           
+
                             @{
                                 var city = Model.Cities.Where(c => c.CountryId == Model.CountryId);
                             }
-                            @foreach(var c in city)
+                            @foreach (var c in city)
                             {
                                 <option value="@c.CityId">@c.CityName</option>
                             }
@@ -145,12 +157,12 @@
                 </div>
 
                 @*     skills add*@
-                <div class="mb-5 row g-3">
+                <div class="mb-2 row g-3">
                     <h2 class="pb-1 border-bottom"><span class="form-underline pb-1"> My Skills</span></h2>
                     <div class="user-skills-container">
                         @foreach (var skill in Model.UserSkills)
                         {
-                           
+
                             <label>@skill.Skill.SkillName</label>
                         }
                     </div>
@@ -182,10 +194,10 @@
                                                     }
                                                 }
                                             </div>
-                                            <a class="position-absolute start-100 translate-middle" id="addSkillsToRight" style="top:45%">
+                                            <a class="position-absolute start-100 translate-middle" id="addSkillsToRight" style="top:45%;cursor:pointer">
                                                 <img src="~/images/right-arrow1.png" />
                                             </a>
-                                            <a class="position-absolute start-100 translate-middle top-50" id="RemoveSkillsFromRight">
+                                            <a class="position-absolute start-100 translate-middle top-50" id="RemoveSkillsFromRight" style="cursor:pointer">
                                                 <img src="~/images/left.png" />
                                             </a>
                                         </div>
@@ -212,7 +224,7 @@
                     </div>
                 </div>
                 <div class="row justify-content-end">
-                    <button type="submit" class="btn card-btn w-auto">Save</button>
+                    <button type="submit" asp-controller="User" asp-action="EditUserProfile" class="btn card-btn w-auto">Save</button>
                 </div>
             </form>
         </div>

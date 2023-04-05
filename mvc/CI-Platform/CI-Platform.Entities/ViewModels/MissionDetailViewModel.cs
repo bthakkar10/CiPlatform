@@ -13,6 +13,7 @@ namespace CI_Platform.Entities.ViewModels
 
         public List<Comment> ApprovedComments { get; set; } = null;
 
+        public int totalVolunteers { get; set; }
 
         public List<MissionApplication> RecentVolunteers { get; set; }
 

@@ -6,10 +6,13 @@
     var story_id = Model.GetStoryDetails.StoryId;
 }
 
-@*
-{"namespace":"localhost","key":"dc68eacd-0fb8-484b-92b3-ce7bd790b5a7","value":0}*@
-
-<script async src="https://api.countapi.xyz/hit/localhost/dc68eacd-0fb8-484b-92b3-ce7bd790b5a7?callback=websiteVisits"></script>
+@functions {
+    public string GetEmbededUrl(string url)
+    {
+        var videoId = url.Split("v=")[1];
+        return $"https://www.youtube.com/embed/{videoId}";
+    }
+}
 <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
 
@@ -21,17 +24,34 @@
 
             <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
                 <div class="swiper-wrapper">
-                    @if (Model.GetStoryDetails.StoryMedia.Any(s => s.StoryId != story_id))
+                    @if (!Model.GetStoryDetails.StoryMedia.Any(s => s.StoryId == story_id))
                     {
                         <img src="~/images/no-image.png" alt=" " />
                     }
                     else
                     {
-                        @foreach (var slider_img in Model.GetStoryDetails.StoryMedia.Where(s => s.StoryId == story_id && s.Type != "videos"))
+                        @foreach (var slider_img in Model.GetStoryDetails.StoryMedia.Where(s => s.StoryId == story_id))
                         {
-                            <div class="swiper-slide">
-                                <img src="~/images/Upload/Story/@slider_img.Path" />
-                            </div>
+                            @if (slider_img.Type != "videos")
+                            {
+                                <div class="swiper-slide">
+                                    <img src="~/images/Upload/Story/@slider_img.Path" />
+                                </div>
+                            }
+                            else
+                            {
+                                @if (!string.IsNullOrEmpty(slider_img.Path))
+                                {
+                                    <div class="iframe-wrapper">
+                                        <iframe width="550" height="500" src="@GetEmbededUrl(@slider_img.Path)" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                                    </div>
+
+                                }
+                                @*else
+                                {
+                                    <p>No YouTube video available for this story.</p>
+                                }*@
+                            }
                         }
                     }
                 </div>
@@ -46,11 +66,28 @@
                     }
                     else
                     {
-                        @foreach (var slider_img in Model.GetStoryDetails.StoryMedia.Where(s => s.StoryId == story_id && s.Type != "videos"))
+                        @foreach (var slider_img in Model.GetStoryDetails.StoryMedia.Where(s => s.StoryId == story_id))
                         {
-                            <div class="swiper-slide">
-                                <img src="~/images/Upload/Story/@slider_img.Path" />
-                            </div>
+                            @if (slider_img.Type != "videos")
+                            {
+                                <div class="swiper-slide">
+                                    <img src="~/images/Upload/Story/@slider_img.Path" />
+                                </div>
+                            }
+                            else
+                            {
+                                @if (!string.IsNullOrEmpty(slider_img.Path))
+                                {
+                                    <div class="iframe-wrapper">
+                                        <iframe width="300" height="100"  src="@GetEmbededUrl(@slider_img.Path)" frameborder="0"></iframe>
+                                    </div>
+
+                                }
+                               @* else
+                                {
+                                    <p>No YouTube video available for this story.</p>
+                                }*@
+                            }
                         }
                     }
                 </div>
@@ -70,7 +107,7 @@
                 <div class="align-self-end my-4">
                     <div class="views-capsule">
                         <img src="~/images/eye.png" />
-                       <span>@Model.GetStoryDetails.UserVisits</span>
+                        <span>@Model.GetStoryDetails.UserVisits</span>
                         Views
                     </div>
                 </div>
@@ -81,8 +118,8 @@
 
             <div>
                 <div>
-                    <div class="d-flex flex-column flex-md-row">
-                        <button type="submit" class="capsule-details text-dark" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                    <div class="d-flex flex-column justify-content-around flex-wrap flex-md-row">
+                        <button type="submit" class="story-details-capsule text-dark" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
                             <i class="bi bi-people"></i>
                             Recommended To a Co-Worker
                         </button>
@@ -118,7 +155,7 @@
                             </div>
                         </div>
 
-                        <a  class="btn card-btn" style="margin: 2rem 1rem;" href="@Url.Action("MissionDetail", "Home", new{MissionId = Model.GetStoryDetails.MissionId })">
+                        <a class="btn card-btn m-3" href="@Url.Action("MissionDetail", "Home", new{MissionId = Model.GetStoryDetails.MissionId })">
                             Open Mission &nbsp; &nbsp;
                             <img src="~/images/right-arrow.png">
                             <img src="~/images/right-arrow2.png">
@@ -127,7 +164,7 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
     </div>
 
     <div class="row my-5">
@@ -140,17 +177,17 @@
             <div id="StoryTitle" class="container tab-pane active">
                 <br>
                 <h3>Introduction</h3>
-                    <p>@Model.GetStoryDetails.Description</p>
+                <p>@Html.Raw(Model.GetStoryDetails.Description)</p>
             </div>
-         </div>
+        </div>
     </div>
 </div>
 
 <script>
     function websiteVisits(response) {
 
-    document.querySelector("#visits").textContent = response.value;
-}
+        document.querySelector("#visits").textContent = response.value;
+    }
 
     var swiper = new Swiper(".mySwiper", {
         loop: true,

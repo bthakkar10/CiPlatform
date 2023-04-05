@@ -108,7 +108,7 @@ namespace CI_Platform_web.Controllers
 
                     var vm = new MissionListViewModel();
 
-                    var UserId = Convert.ToInt64(ViewBag.UserId);
+                     //userId = Convert.ToInt64(ViewBag.UserId);
                     vm.DisplayMissionCardsDemo = _missionDisplay.DisplayMissionCardsDemo(MissionIds);
 
                     if (vm != null && vm.DisplayMissionCardsDemo.Any())
@@ -187,6 +187,7 @@ namespace CI_Platform_web.Controllers
                 vm.RecentVolunteers = _missionDetail.GetRecentVolunteers(MissionId, userId);
                 vm.RelatedMissions = _missionDetail.GetRelatedMissions(MissionId);
                 vm.UserList = _missionDetail.UserList(userId, MissionId);
+                vm.totalVolunteers = _missionDetail.GetRecentVolunteers(MissionId, userId).Count();
                 return View(vm);
             }
             catch (Exception ex)
@@ -194,6 +195,23 @@ namespace CI_Platform_web.Controllers
                 return View(ex);
             }
 
+        }
+        //RecentVolunteers fetch pagination
+        [HttpGet]
+        public IActionResult RecentVolunteers(long missionId, int pageNo)
+        {
+            long userId = Convert.ToInt64(HttpContext.Session.GetString("Id"));
+
+            int pageSize = 3;
+            int pageNumber = pageNo;
+            var query = _missionDetail.GetRecentVolunteers(missionId, userId).Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize).ToList();
+            MissionDetailViewModel vm = new MissionDetailViewModel()
+            {
+                RecentVolunteers = query
+
+            };
+            return PartialView("_RecentVolunteers", vm);
         }
 
         //ratings

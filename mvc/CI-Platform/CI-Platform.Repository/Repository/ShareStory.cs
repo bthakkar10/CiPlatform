@@ -16,6 +16,18 @@ namespace CI_Platform.Repository.Repository
     public class ShareStory : IShareStory
     {
         private readonly CiDbContext _db;
+        enum StoryStatus
+        {
+            DRAFT ,
+            PENDING ,
+            PUBLISHED ,
+            DECLINED 
+        }
+        enum MediaType
+        {
+            images,
+            videos 
+        }
 
         public ShareStory(CiDbContext db)
         {
@@ -42,7 +54,7 @@ namespace CI_Platform.Repository.Repository
             {
                 EditDraftStory.Title = vm.StoryTitle;
                 EditDraftStory.Description = vm.StoryDescription;
-                EditDraftStory.Status = "DRAFT";
+                EditDraftStory.Status = StoryStatus.DRAFT.ToString();
                 EditDraftStory.CreatedAt = DateTime.Now;
 
                 _db.Update(EditDraftStory);
@@ -69,7 +81,7 @@ namespace CI_Platform.Repository.Repository
                 UserId = userId,
                 Title = vm.StoryTitle,
                 Description = vm.StoryDescription,
-                Status = "DRAFT",
+                Status = StoryStatus.DRAFT.ToString(),
                 CreatedAt = DateTime.Now,
             };
             _db.Add(newStory);
@@ -102,7 +114,7 @@ namespace CI_Platform.Repository.Repository
                     var newMedia = new StoryMedium()
                     {
                         StoryId = storyId,
-                        Type = "videos",
+                        Type = MediaType.videos.ToString(),
                         Path = u,
                         CreatedAt = DateTime.Now,
                     };
@@ -122,13 +134,13 @@ namespace CI_Platform.Repository.Repository
             {
                 if (m != null)
                 {
-                    var guid = Guid.NewGuid().ToString().Substring(0, 8);
-                    var fileName = $"{guid}_{m.Path}"; // getting filename
-                    //var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName); // set filepat
+                    //var guid = Guid.NewGuid().ToString().Substring(0, 8);
+                    //var fileName = $"{guid}_{m.Path}"; // getting filename
+                    ////var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName); // set filepat
 
 
 
-                    //var fileName = m.Path;
+                    var fileName = m.Path;
                     File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Upload/Story", fileName));
                     _db.Remove(m);
                 }
@@ -146,7 +158,7 @@ namespace CI_Platform.Repository.Repository
                     var newImage = new StoryMedium()
                     { 
                         StoryId = storyId,
-                        Type = "images",
+                        Type = MediaType.images.ToString(),
                         Path = fileName,
                         CreatedAt = DateTime.Now,
                     };
@@ -183,7 +195,7 @@ namespace CI_Platform.Repository.Repository
             existingStory.UserId = userId;
             existingStory.Title = vm.StoryTitle;
             existingStory.Description = vm.StoryDescription;
-            existingStory.Status = "PENDING";
+            existingStory.Status = StoryStatus.PENDING.ToString();
             existingStory.CreatedAt = vm.Date;
             existingStory.UpdatedAt = DateTime.Now;
 

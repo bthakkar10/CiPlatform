@@ -51,6 +51,7 @@ namespace CI_Platform.Repository.Repository
             else
             {
                 user.Password = newPassword;
+                user.UpdatedAt= DateTime.Now;   
                 _db.Update(user);
                 _db.SaveChanges();
                 return true;

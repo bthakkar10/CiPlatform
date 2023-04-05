@@ -11,7 +11,7 @@ else if (currentUrl.includes("StoryListing")) {
 
 var SelectedsortCase = null;
 var SelectedCountry = null;
-var UserId = ($("#user-id").text());
+var userId = ($("#user-id").text());
 let allDropdowns = $('.dropdown ul');
 
 //global search text selection
@@ -51,7 +51,7 @@ function FilterSortPaginationSearch(pageNo) {
     $.ajax({
         type: 'POST',
         url: '/Home/HomePage',
-        data: { CountryId: CountryId, CityId: CityId, ThemeId: ThemeId, SkillId: SkillId, SearchText: SearchText, sortCase: sortCase, UserId: UserId, pageNo: pageNo, pagesize: pagesize },
+        data: { CountryId: CountryId, CityId: CityId, ThemeId: ThemeId, SkillId: SkillId, SearchText: SearchText, sortCase: sortCase, userId: userId, pageNo: pageNo, pagesize: pagesize },
         success: function (data) {
             var view = $(".partialViews");
             view.empty();
@@ -528,17 +528,17 @@ function favourite() {
                 var allMissionId = $('.favourite-button')
                 allMissionId.each(function () {
                     if ($(this).data('mission-id') === missionId) {
-                        if ($(this).hasClass('bi-heart')) {
-                            $(this).addClass('bi-heart-fill text-danger')
-                            $(this).removeClass('bi-heart text-dark')
+                        if ($(this).find('i').hasClass('bi-heart')) {
+                            $(this).find('i').addClass('bi-heart-fill text-danger')
+                            $(this).find('i').removeClass('bi-heart text-dark')
                             text.empty();
-                            text.append("Remove from favourites");
+                            text.append("Added To favourites");
                             console.log("added");
                             /*  alert("Mission added to favourites successfully!!!");*/
                         }
                         else {
-                            $(this).addClass('bi-heart text-dark')
-                            $(this).removeClass('bi-heart-fill text-danger')
+                            $(this).find('i').addClass('bi-heart text-dark')
+                            $(this).find('i').removeClass('bi-heart-fill text-danger')
                             text.empty();
                             text.append("Add to favourites");
                             console.log("remove");
@@ -670,10 +670,9 @@ $('#ApplyBtnMission').click(function () {
         url: '/Home/ApplyMission',
         data: { MissionId: MissionId },
         success: function (result) {
-            /*$('#ApplyBtnMission').addClass('disabled text-danger');*/
 
             var newButton = $('<a>').addClass('btn card-btn disabled text-danger')
-                .append($('<span>').text('Approval Pending ')
+                .append($('<span>').text('Approval Pending')
                     .append($('<i>').addClass('bi bi-patch-exclamation-fill')));
             btn.replaceWith(newButton);
         },
@@ -683,6 +682,42 @@ $('#ApplyBtnMission').click(function () {
     });
 });
 
+//recent volunteers pagination
+var rvPageNo = 1;
+if (window.location.href.includes("MissionDetail")) {
+    recentVolunteerNavigation(rvPageNo);
+}
+
+$('.volunteerBtn a').click(function () {
+    let totalVolunteers = $('#totalVolunteers').val();
+    let totalPages = Math.ceil(totalVolunteers / 3);
+    if ($(this).hasClass('prevVolunteersBtn')) {
+        if (rvPageNo > 1) {
+            rvPageNo--;
+            recentVolunteerNavigation(rvPageNo)
+        }
+    } else {
+        if (rvPageNo < totalPages) {
+            rvPageNo++;
+            recentVolunteerNavigation(rvPageNo)
+        }
+    }
+})
+
+function recentVolunteerNavigation(pageNo) {
+    var missionId = $('#MissionId').val();
+    $.ajax({
+        type: "GET",
+        url: '/Home/RecentVolunteers',
+        data: { missionId: missionId, pageNo: pageNo },
+
+        success: function (data) {
+            $('.volunteerd-images').empty();
+            $('.volunteerd-images').append(data);
+            //console.log(data)
+        }
+    })
+}
 
 //for share story page(ck-editor and drag and drop functionality)
 let optionsButtons = document.querySelectorAll(".option-button");
@@ -856,7 +891,8 @@ $('#missionTitle').click(function () {
                 const formattedDate = `${yyyy}-${mm}-${dd}`;
 
                 $('#date').val(formattedDate);
-                $('#text-input').text(result.description);
+                tinymce.get('storyEditor').setContent(result.description);
+              /*  $('#storyEditor').text(result.description);*/
                 console.log(result.storyMedia);
 
 
@@ -872,22 +908,11 @@ $('#missionTitle').click(function () {
                         var item = $('<div>').addClass('image').append(image).append(closebtn);
                         $('#img-output').append(item);
 
-
-                        //var blob = new Blob([file.path], { type: 'image/png' });
-                        //var files = new File([blob], file.path, { type: 'image/png' });
-
-
-
-
-
                         const response = await fetch('/images/Upload/Story/' + file.path);
                         const blob = await response.blob();
                         const files = new File([blob], file.path, { type: blob.type });
 
                         allfiles.push(files);
-
-
-
 
                         closebtn.on('click', function () {
                             var index = $(this).parent().index();
@@ -906,9 +931,9 @@ $('#missionTitle').click(function () {
             else {
                 $('#StoryTitle').val(' ');
                 $('#date').val(' ');
-                $('#text-input').text(' ');
+                tinymce.get('storyEditor').setContent('');
                 $('#videoUrls').val(' ');
-                $('#img-output').val(' ');
+                $('#img-output').empty();
             }
         },
         error: function (error) {
@@ -921,7 +946,7 @@ $('#missionTitle').click(function () {
 $('#saveStory').click(function (e) {
     e.preventDefault();
     let isValid = false;
-    if (validateStoryTitle() == true && validateDate() == true && validateStoryDes() == true && validateYoutubeUrls() == true && validateMissionTitle() == true) {
+    if (validateStoryTitle() == true && validateDate() == true  && validateYoutubeUrls() == true && validateMissionTitle() == true) {
         isValid = true;
     }
     if (isValid) {
@@ -941,11 +966,12 @@ $('#saveStory').click(function (e) {
         for (var i = 0; i < allfiles.length; i++) {
             formData.append("Images", allfiles[i]);
         }
+        var StoryDescription = tinymce.get('storyEditor').getContent();
         console.log(allfiles);
         formData.append("MissionId", $('#missionTitle').val());
         formData.append("StoryTitle", $('#StoryTitle').val());
         formData.append("Date", $('#date').val());
-        formData.append("StoryDescription", $('#text-input').text());
+        formData.append("StoryDescription", StoryDescription);
         /*console.log(formData.val());*/
         $.ajax({
             url: '/Story/SaveStory',
@@ -970,9 +996,6 @@ $('#saveStory').click(function (e) {
             }
 
         });
-    }
-    else {
-        $('#error-message').text("Please enter all the fields as required.");
     }
 });
 
@@ -1000,10 +1023,11 @@ $('#submitButton').click(function () {
             for (var i = 0; i < allfiles.length; i++) {
                 formData.append("Images", allfiles[i]);
             }
+            var StoryDescription = tinymce.get('storyEditor').getContent();
             formData.append("MissionId", $('#missionTitle').val());
             formData.append("StoryTitle", $('#StoryTitle').val());
             formData.append("Date", $('#date').val());
-            formData.append("StoryDescription", $('#text-input').text());
+            formData.append("StoryDescription", StoryDescription);
 
             $.ajax({
                 url: '/Story/SubmitStory',
@@ -1063,7 +1087,7 @@ function validateYoutubeUrls() {
             $('#videoUrls').focus();
             return false;
         }
-    else if (url.length > 20) {
+    else if (url.length <= 20) {
         $("#HelpBlock-urls").text("Maximum 20 URLs are allowed!!");
         return false;
     }
@@ -1118,7 +1142,7 @@ function validateDate() {
     return true;
 }
 
-$('.editor').on('blur', validateStoryDes);
+$('#storyEditor').on('blur', validateStoryDes);
 function validateStoryDes() {
     if ($('#text-input').text().trim() === '') {
         $("#HelpBlock-storyDes").text("Story Description is a required field!!");
@@ -1231,22 +1255,13 @@ function UserGetCitiesByCountry(CountryId) {
     });
 }
 
-//validations for change password in user profile 
-function validateChangePassword() {
-    let oldPassword = validateOldPassword();
-    let newPassword = validateNewPassword();
-    let confirmPassword = validateConfirmPassword();
-
-    if (oldPassword && newPassword && confirmPassword) {
-        return true;
-    }
-    return false;
-}
-
+//validations for change password in user profile
+$('#OldPassword').on('blur', validateOldPassword);
 function validateOldPassword() {
     var oldPass = $('#OldPassword').val();
     if (oldPass === "" || oldPass === null) {
         $('#validateOldPass').text("Old Password is required!");
+        $('#OldPassword').focus();
         return false;
     } else {
         $('#validateOldPass').text("");
@@ -1254,13 +1269,16 @@ function validateOldPassword() {
     return true;
 }
 
+$('#NewPassword').on('blur', validateNewPassword);
 function validateNewPassword() {
     var newPass = $('#NewPassword').val();
     if (newPass === "" || newPass === null) {
         $('#validateNewPass').text("New Password is required!");
+        $('#NewPassword').focus();
         return false;
     } else if (newPass === $('#OldPassword').val()) {
         $('#validateNewPass').text("Old and New Password cannot be same!");
+        $('#NewPassword').focus();
         return false;
     }
     //} else if (newPass.length < 8) {
@@ -1272,13 +1290,16 @@ function validateNewPassword() {
     return true;
 }
 
+$('#ConfirmPassword').on('blur', validateConfirmPassword);
 function validateConfirmPassword() {
     var confirmPass = $('#ConfirmPassword').val();
     if (confirmPass === "" || confirmPass === null) {
         $('#validateConfirmPass').text("Re-enter your New Password!");
+        $('#ConfirmPassword').focus();
         return false;
     } else if (confirmPass !== $('#NewPassword').val()) {
         $('#validateConfirmPass').text("New Password and Confirm Password must be same!");
+        $('#ConfirmPassword').focus();
         return false;
     } else {
         $('#validateConfirmPass').text("");
@@ -1286,8 +1307,13 @@ function validateConfirmPassword() {
     return true;
 }
 
+//change password in user profile
 $('#ChangePasswordBtn').on('click', function () {
-    if (validateChangePassword()) {
+    let isValid = false;
+    if (validateOldPassword() == true && validateNewPassword() == true && validateConfirmPassword() == true) {
+        isValid = true;
+    }
+    if (isValid) {
         var oldPass = $('#OldPassword').val();
         var newPass = $('#NewPassword').val();
 
@@ -1313,8 +1339,14 @@ $('#ChangePasswordBtn').on('click', function () {
     }
 })
 
-////change password in user profile 
-//$("#ChangePasswordBtn").click(function () {
-//    var OldPassword = $(OldPassword).val();
-
-//})
+//password show and hide in user profile 
+$('.bi-eye-slash').on('click', function () {
+    $(this).parent().find('input').attr('type', 'text');
+    $(this).addClass('d-none');
+    $(this).prev().removeClass('d-none');
+})
+$('.bi-eye-fill').on('click', function () {
+    $(this).parent().find('input').attr('type', 'password');
+    $(this).addClass('d-none');
+    $(this).next().removeClass('d-none');
+})

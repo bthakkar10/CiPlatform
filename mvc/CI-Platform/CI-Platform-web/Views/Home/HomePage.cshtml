@@ -1,6 +1,7 @@
 ﻿@*@using System.Linq;*@
 @{
-   
+
+    var Id = Convert.ToInt64(ViewBag.UserId);
     Layout = "_Layout";
     ViewData["Title"] = "Homepage";
 
@@ -21,6 +22,7 @@
 <!-- Heading of page -->
 <div class="container justify-content-between d-flex mt-4">
     <h2 id="exploreText"></h2>
+    <span class="d-none" id="user-id">@Id</span>
     <div class="d-none d-md-flex justify-content-start">
         <div class="dropdown mx-4 " >
             <div class="dropdown-toggle h-auto mt-3" href="#" role="button" data-bs-toggle="dropdown"

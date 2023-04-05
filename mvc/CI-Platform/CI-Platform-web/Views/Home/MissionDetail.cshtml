@@ -16,18 +16,18 @@
         <div class="col-lg-6">
             <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
                 <div class="swiper-wrapper">
-                    @if (Model.MissionDetails.MissionMedia.Any(m => m.MissionId != mission_id))
+                    @if (!Model.MissionDetails.MissionMedia.Any(m => m.MissionId == mission_id))
                     {
                         <img src="~/images/no-image.png" alt=" " />
                     }
                     else
-                    { 
+                    {
                         @foreach (var slider_img in Model.MissionDetails.MissionMedia.Where(m => m.MissionId == mission_id))
                         {
                             <div class="swiper-slide">
                                 <img src="~/images/@slider_img.MediaPath" />
                             </div>
-                        }                 
+                        }
                     }
                 </div>
                 <div class="swiper-button-next"></div>
@@ -41,9 +41,6 @@
                             <img src="~/images/@slider_img.MediaPath" />
                         </div>
                     }
-
-                  
-
                 </div>
 
             </div>
@@ -55,12 +52,12 @@
 
             var Id = Convert.ToInt64(ViewBag.UserId);
 
-          
+
             var count = Model.MissionDetails.MissionRatings.Count();
             double avg_rating = 0;
             if (Model.MissionDetails.MissionRatings.Count > 0)
             {
-                avg_rating = Model.MissionDetails.MissionRatings.Average(r => r.Rating); 
+                avg_rating = Model.MissionDetails.MissionRatings.Average(r => r.Rating);
             }
             DateTime? currDate = @DateTime.Now;
             TimeSpan timeSpan = new TimeSpan(1, 0, 0, 0);
@@ -68,8 +65,8 @@
             bool isDeadlinePassed = currDate > deadline;
             bool isEndDatePassed = currDate > Model.MissionDetails.EndDate;
             bool isOngoing = currDate > Model.MissionDetails.StartDate;
-            bool isAlreadyApplied = Model.MissionDetails.MissionApplications.Any(a => a.UserId == Id && a.ApprovalStatus=="APPROVE");
-           
+            bool isAlreadyApplied = Model.MissionDetails.MissionApplications.Any(a => a.UserId == Id && a.ApprovalStatus == "APPROVE");
+
             double userRate = 0;
             if (Model.MissionDetails.MissionRatings.Where(u => u.UserId == Id).Any())
             {
@@ -79,15 +76,15 @@
             var registered_users = Model.MissionDetails.MissionApplications.Count(m => m.ApprovalStatus.Contains("APPROVE"));
             var seats_left = Model.MissionDetails.TotalSeats - registered_users;
         }
-        
-        
-      
-    <div class="col-lg-6">
+
+
+
+        <div class="col-lg-6">
             <div class="volunteer-card-details py-4 px-4">
-               
+
                 <h2 class="volunteer-card-title">
 
-                   @Model.MissionDetails.Title
+                    @Model.MissionDetails.Title
                 </h2>
                 <p class="card-text py-2">
 
@@ -97,25 +94,26 @@
                 <div class="card-body ">
                     <div class="mission-detail-border position-relative">
                         <div class="rounded-pill capsule-border capsule-transparent">
-                            
-                               @if (Model.MissionDetails.MissionType.Equals("Time"))
-                                    {
-                                        if(isOngoing)
-                                        {
+
+                            @if (Model.MissionDetails.MissionType.Equals("Time"))
+                            {
+                                if (isOngoing)
+                                {
                                     <span>Ongoing Opportunity</span>
-                                        }
-                                        else{
+                                }
+                                else
+                                {
                                     <span>From @Model.MissionDetails.StartDate.Value.ToShortDateString() until @Model.MissionDetails.EndDate.Value.ToShortDateString()</span>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        @foreach (var goal_mission in Model.MissionDetails.GoalMissions)
-                                        {
-                                            @goal_mission.GoalObjectiveText
-                                        }
-                                    }
-                            
+                                }
+                            }
+                            else
+                            {
+                                @foreach (var goal_mission in Model.MissionDetails.GoalMissions)
+                                {
+                                    @goal_mission.GoalObjectiveText
+                                }
+                            }
+
                         </div>
                     </div>
 
@@ -144,26 +142,26 @@
                         }
 
 
-                   
+
                     </div>
                     <div class="mission-detail-border"> </div>
-                    <div class="d-flex flex-column flex-md-row">
-                            @if (Model.MissionDetails.FavouriteMissions.Any(fm => fm.UserId == Id))
-                            {
-                                <button class=" capsule-details " onclick="favourite()">
-                                    <i class="bi bi-heart-fill favourite-button filled-heart text-danger" data-mission-id="@Model.MissionDetails.MissionId"></i>
-                                    <span class="favText">Remove from Favourites</span>
-                                </button>
-                            }
-                            else
-                            {
-                            <button class="   capsule-details " onclick="favourite()">
-                                <i class="bi bi-heart empty-heart text-dark favourite-button " data-mission-id="@Model.MissionDetails.MissionId"></i>
+                    <div class="d-flex justify-content-around flex-column flex-sm-row flex-wrap">
+                        @if (Model.MissionDetails.FavouriteMissions.Any(fm => fm.UserId == Id))
+                        {
+                            <button class="favourite-button capsule-details" onclick="favourite()" data-mission-id="@Model.MissionDetails.MissionId">
+                                <i class="bi bi-heart-fill  filled-heart text-danger"></i>
+                                <span class="favText">Added To Favourites</span>
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" class=" favourite-button capsule-details" onclick="favourite()" data-mission-id="@Model.MissionDetails.MissionId">
+                                <i class="bi bi-heart empty-heart text-dark "></i>
                                 <span class="favText">Add To Favourites</span>
                             </button>
-                            }
+                        }
 
-                        <button type="submit" class="capsule-details text-dark"  data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                        <button type="submit" class=" text-dark capsule-details" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
                             <i class="bi bi-people"></i>
                             Recommended To a Co-Worker
                         </button>
@@ -181,17 +179,18 @@
                                         @foreach (var u in Model.UserList)
                                         {
 
-                                            
+
 
                                             <div class="mt-2" style="display : flex; justify-content : space-between;">
 
                                                 <span class="me-4 ">@u.FirstName @u.LastName</span>
 
-                                                @if(u.MissionInviteToUsers.Any(i=>i.ToUserId == u.UserId)) 
+                                                @if (u.MissionInviteToUsers.Any(i => i.ToUserId == u.UserId))
                                                 {
                                                     <span style="margin-left : 6%;" mailto:class="invited-@u.UserId"><button class="btn btn-success model-button model-invite-btn disabled" data-mission-id="@mission_id" data-from-user-id="@Id" data-to-user-id="@u.UserId">Invited</button></span>
 
-                                                } else
+                                                }
+                                                else
                                                 {
                                                     <span style="margin-left : 6%;" mailto:class="invited-@u.UserId"><button class="btn btn-outline-primary model-button model-invite-btn" data-mission-id="@mission_id" data-from-user-id="@Id" data-to-user-id="@u.UserId">Invite</button></span>
 
@@ -245,16 +244,19 @@
                         <div class="col-md-3 col-6">
                             <div class="mission-detail-box">
                                 <img class="icon" src="~/images/calender.png" />
-                                <p>Date<br /><span>
-                                        @if(isOngoing)
+                                <p>
+                                    Date<br /><span>
+                                        @if (isOngoing)
                                         {
-                                        <span>Ongoing Opportunity</span>
+                                            <span>Ongoing Opportunity</span>
                                         }
-                                        else{
-                                        <span>From @Model.MissionDetails.StartDate.Value.ToShortDateString() until @Model.MissionDetails.EndDate.Value.ToShortDateString()</span>
+                                        else
+                                        {
+                                            <span>From @Model.MissionDetails.StartDate.Value.ToShortDateString() until @Model.MissionDetails.EndDate.Value.ToShortDateString()</span>
                                         }
 
-                                </span></p>
+                                    </span>
+                                </p>
                             </div>
                         </div>
                         <div class="col-md-3 col-6">
@@ -272,23 +274,24 @@
                             </a>
                         </div>
                     }
-                    else if(isDeadlinePassed || isEndDatePassed || seats_left <=0 )
+                    else if (isDeadlinePassed || isEndDatePassed || seats_left <= 0)
                     {
                         <div class="d-flex justify-content-center">
                             <a style="width:max-content" class="btn card-btn disabled text-danger">
                                 Closed
-                               
+
                             </a>
                         </div>
                     }
-                    else{
-                    <div class="d-flex justify-content-center">
-                        <a style="width:max-content" class="btn card-btn" id="ApplyBtnMission" data-mission-id="@mission_id">
-                            Apply Now &nbsp; &nbsp;
-                            <img src="~/images/right-arrow.png">
-                            <img src="~/images/right-arrow2.png">
-                        </a>
-                    </div>
+                    else
+                    {
+                        <div class="d-flex justify-content-center">
+                            <a style="width:max-content" class="btn card-btn" id="ApplyBtnMission" data-mission-id="@mission_id">
+                                Apply Now &nbsp; &nbsp;
+                                <img src="~/images/right-arrow.png">
+                                <img src="~/images/right-arrow2.png">
+                            </a>
+                        </div>
                     }
 
                 </div>
@@ -322,14 +325,14 @@
                     <div class="d-flex flex-column flex-md-row">
                         @if (Model.MissionDetails.MissionDocuments.Any())
                         {
-                            @foreach(var doc in Model.MissionDetails.MissionDocuments)
+                            @foreach (var doc in Model.MissionDetails.MissionDocuments)
                             {
                                 <div class="capsule-details">
-                                        <a class="text-decoration-none" href="@Url.Action("DisplayDocument", "Home", new { fileName = @doc.DocumentPath })" target="_blank">
-                                            <img src="~/images/pdf.png" />
-                                            &nbsp;@doc.DocumentName
-                                        </a>
-                                </div> 
+                                    <a class="text-decoration-none" href="@Url.Action("DisplayDocument", "Home", new { fileName = @doc.DocumentPath })" target="_blank">
+                                        <img src="~/images/pdf.png" />
+                                        &nbsp;@doc.DocumentName
+                                    </a>
+                                </div>
                             }
                         }
                         else
@@ -343,34 +346,34 @@
                     <br>
                     <h3>Organization </h3>
                     <p>@Model.MissionDetails.OrganizationDetail</p>
-                     </div>
+                </div>
                 <div id="Comments" class="container tab-pane fade">
                     <br>
                     <h3>Comments</h3>
-                    <form method="post" >
-                        <div class="form-floating" >
-                            <textarea class="form-control my-2 newComment" placeholder="Leave a comment here"  style="height: 100px"></textarea>
-                           @* <label for="floatingTextarea2">Enter your Comments here...</label>*@
+                    <form method="post">
+                        <div class="form-floating">
+                            <textarea class="form-control my-2 newComment" placeholder="Leave a comment here" style="height: 100px"></textarea>
+                            @* <label for="floatingTextarea2">Enter your Comments here...</label>*@
                         </div>
                         <button class="btn card-btn commentButton" data-mission-Id="@mission_id">Post Comment</button>
                     </form>
                     <div class="container mt-2 bg-light overflow-scroll p-4" style="max-height:30rem">
                         @foreach (var com in Model.ApprovedComments)
                         {
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="d-flex">
-                                        <img class="rounded-circle comments-img d-none d-md-flex" src= @com.User.Avtar />
-                                        <div class="comments-details">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="d-flex">
+                                            <img class="rounded-circle comments-img d-none d-md-flex" src=@com.User.Avtar />
+                                            <div class="comments-details">
                                                 <h6>@com.User.FirstName @com.User.LastName</h6>
                                                 <p> @com.CreatedAt.Value.ToString("dddd, MMMM dd, yyyy, h:mm tt")</p>
                                                 <p>@com.CommentText</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         }
                     </div>
 
@@ -396,15 +399,15 @@
                                     {
                                         <span>@skill.Skill.SkillName  <br>  </span>
                                     }
-                                } 
+                                }
                                 else
                                 {
                                     <span>No Skills required</span>
                                 }
 
-                                
 
-                                
+
+
                             </td>
                         </tr>
                         <tr>
@@ -422,192 +425,188 @@
                                 {
                                     <img src="~/images/star.png" />
                                 }
-                               
+
                                 <span>(by @count volunteers)</span>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-
-            <div class="container volunteers-images-div">
+         @*   <span id="MissionId"> @mission_id</span>*@
+            <input type="hidden" value="@Model.totalVolunteers" id="totalVolunteers" />
+            <input type="hidden" value=@mission_id  id="MissionId" />
+            <div class="container volunteers-images-div ">
                 <h5>Recent Volunteers</h5>
-                
-                    @if (Model.RecentVolunteers.Any())
-                    {
-                    <div class="volunteerd-images">
-                        @foreach(var recent in Model.RecentVolunteers)
-                        {
-                            <div class="volunteerd-img">
-                                <img src="~/images/@recent.User.Avtar" />
-                                <figcaption>@recent.User.FirstName  @recent.User.LastName </figcaption>
-                            </div>
-                        }
-                    </div>
-                    }
-                    else
-                    {
-                        <div> No Recent Volunteers in this mission </div>
-                    }
-                
-                </div>
+                <hr />
+                <partial name="_RecentVolunteers" />
+            </div>
+            <div class="container p-1 d-flex justify-content-between volunteerBtn border">
+                <a class=" flex-start border-end prevVolunteersBtn">
+                    <img class="pe-2" src="~/images/left.png" />
+                </a>
+
+                <span>1-3 of @Model.totalVolunteers Volunteers</span>
+
+                <a class=" border-start flex-end ">
+                    <img class="ps-2" src="~/images/right-arrow1.png" />
+                </a>
             </div>
         </div>
 
     </div>
     <div class="border-navbar my-5"></div>
     <div class="container mt-5">
-        <h2 style="color:#414141; font-weight:normal; text-align:center" >Releated Missions</h2>
+        <h2 style="color:#414141; font-weight:normal; text-align:center">Releated Missions</h2>
         <div class="container my-5" id="grid-view">
             <div class=" row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-sm-1   g-4">
                 <!-- Card starts from col -->
-            @if (Model.RelatedMissions.Any())
-            {
-                @foreach(var releated in Model.RelatedMissions)
+                @if (Model.RelatedMissions.Any())
                 {
-                <div class="col">
-                        <div class="card  ">
-                            <div class="pill-on-img">
-                                @if (!releated.MissionMedia.Any())
+                    @foreach (var releated in Model.RelatedMissions)
+                    {
+                        <div class="col">
+                            <div class="card  ">
+                                <div class="pill-on-img">
+                                    @if (!releated.MissionMedia.Any())
+                                    {
+                                        <img src="~/images/no-image.png" class="card-img-top" />
+                                    }
+                                    else
+                                    {
+                                        @foreach (var img_mission in releated.MissionMedia)
+                                        {
+                                            @if (img_mission.Defaultval == true)
+                                            {
+                                                <img src="~/images/@img_mission.MediaPath" class="card-img-top" alt="@img_mission.MediaName">
+                                            }
+                                        }
+                                    }
+                                    <div class="location">
+                                        <img src="~/images/pin1.png">
+                                        @releated.City.CityName
+                                    </div>
+                                    <div class="like-on-img">
+                                        <img style="opacity: 1;" src="~/images/heart.png">
+                                    </div>
+                                    <div class="add-on-img">
+                                        <img style="opacity: 1;" src="~/images/add1.png">
+                                    </div>
+                                    <div class="theme-pill rounded-pill"> @releated.MissionTheme.Title </div>
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="card-title">@releated.Title</h3>
+                                    <p class="card-text align-items-center">@releated.ShortDescription</p>
+                                    <div class="d-flex justify-content-between">
+                                        @releated.OrganizationName
+                                        <div class="stars">
+                                            @for (int i = 1; i <= avg_rating; i++)
+                                            {
+                                                <img src="~/images/selected-star.png" />
+                                            }
+                                            @for (int i = 5; i > avg_rating; i--)
+                                            {
+                                                <img src="~/images/star.png" />
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @if (isEndDatePassed || isAlreadyApplied || seats_left <= 0 || isDeadlinePassed)
                                 {
-                                    <img src="~/images/no-image.png" class="card-img-top" />
+                                    <div class=" d-flex pb-3 justify-content-center">
+                                        <a class="btn btn card-btn" @* href="@Url.Action("MissionDetail", "Home" , new { MissionId = @obj.MissionId})"*@>
+                                            View Details &nbsp;&nbsp;<img src="~/images/right-arrow.png" />
+                                            <img src="~/images/right-arrow2.png" />
+                                        </a>
+                                    </div>
                                 }
                                 else
                                 {
-                                    @foreach (var img_mission in releated.MissionMedia)
-                                    {
-                                        @if (img_mission.Defaultval == true)
-                                        {
-                                            <img src="~/images/@img_mission.MediaPath" class="card-img-top" alt="@img_mission.MediaName">
-                                        }
-                                    }
-                                }
-                                <div class="location">
-                                    <img src="~/images/pin1.png">
-                                    @releated.City.CityName
-                                </div>
-                                <div class="like-on-img">
-                                    <img style="opacity: 1;" src="~/images/heart.png">
-                                </div>
-                                <div class="add-on-img">
-                                    <img style="opacity: 1;" src="~/images/add1.png">
-                                </div>
-                                <div class="theme-pill rounded-pill"> @releated.MissionTheme.Title </div>
-                            </div>
-                            <div class="card-body">
-                                <h3 class="card-title">@releated.Title</h3>
-                                <p class="card-text align-items-center">@releated.ShortDescription</p>
-                                <div class="d-flex justify-content-between">
-                                    @releated.OrganizationName
-                                    <div class="stars">
-                                        @for (int i = 1; i <= avg_rating; i++)
-                                        {
-                                            <img src="~/images/selected-star.png" />
-                                        }
-                                        @for (int i = 5; i > avg_rating; i--)
-                                        {
-                                            <img src="~/images/star.png" />
-                                        }
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            @if (isEndDatePassed || isAlreadyApplied || seats_left <= 0 || isDeadlinePassed)
-                            {
-                                <div class=" d-flex pb-3 justify-content-center">
-                                    <a class="btn btn card-btn"@* href="@Url.Action("MissionDetail", "Home" , new { MissionId = @obj.MissionId})"*@>
-                                        View Details &nbsp;&nbsp;<img src="~/images/right-arrow.png" />
-                                        <img src="~/images/right-arrow2.png" />
-                                    </a>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="m-3 list-group position-relative ">
-                                    <div class="time-pill rounded-pill ">
-                                        @if (releated.MissionType.Equals("Time"))
-                                        {
-                                            if (isOngoing)
+                                    <div class="m-3 list-group position-relative ">
+                                        <div class="time-pill rounded-pill ">
+                                            @if (releated.MissionType.Equals("Time"))
                                             {
-                                                <span>Ongoing Opportunity</span>
+                                                if (isOngoing)
+                                                {
+                                                    <span>Ongoing Opportunity</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>From @releated.StartDate.Value.ToShortDateString() until @releated.EndDate.Value.ToShortDateString()</span>
+                                                }
                                             }
                                             else
                                             {
-                                                <span>From @releated.StartDate.Value.ToShortDateString() until @releated.EndDate.Value.ToShortDateString()</span>
+                                                @foreach (var goal_mission in releated.GoalMissions)
+                                                {
+                                                    @goal_mission.GoalObjectiveText
+                                                }
                                             }
-                                        }
-                                        else
-                                        {
-                                            @foreach (var goal_mission in releated.GoalMissions)
-                                            {
-                                                @goal_mission.GoalObjectiveText
-                                            }
-                                        }
-                                    </div>
-                                    <div class="row gutter mt-4 mb-2 justify-content-around">
-                                        <div class="col card-detail">
-                                            <img class="icon-detail my-2" src="~/images/Seats-left.png" alt="seats left">
-                                            <div class="card-detail-text">
-
-                                                <p class="seat-left">  @seats_left </p>
-                                                <span>Seats left</span>
-                                            </div>
                                         </div>
-                                        @if (releated.MissionType.Equals("Time"))
-                                        {
+                                        <div class="row gutter mt-4 mb-2 justify-content-around">
                                             <div class="col card-detail">
-                                                <img class="icon-detail my-2" src="~/images/deadline.png" alt="deadline">
-                                                <div class="card-detail-text ">
-                                                    <p class="deadline">@releated.StartDate.Value.AddDays(-1).ToShortDateString()</p>
-                                                    <span>Deadline</span>
+                                                <img class="icon-detail my-2" src="~/images/Seats-left.png" alt="seats left">
+                                                <div class="card-detail-text">
+
+                                                    <p class="seat-left">  @seats_left </p>
+                                                    <span>Seats left</span>
                                                 </div>
                                             </div>
-                                        }
-                                        else
-                                        {
-                                            @foreach (var goal_mission in releated.GoalMissions)
+                                            @if (releated.MissionType.Equals("Time"))
                                             {
                                                 <div class="col card-detail">
-                                                    <img class="icon-detail my-2" src="~/images/achieved.png" alt="deadline">
-                                                    <div class="card-detail-text">
-                                                        <div class="progress">
-                                                            <div class="progress-bar" role="progressbar" aria-label="Warning example" style="background-color: #F88634; width:@goal_mission.GoalValue%" aria - valuenow="@goal_mission.GoalValue" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                        <span>@goal_mission.GoalValue achieved</span>
+                                                    <img class="icon-detail my-2" src="~/images/deadline.png" alt="deadline">
+                                                    <div class="card-detail-text ">
+                                                        <p class="deadline">@releated.StartDate.Value.AddDays(-1).ToShortDateString()</p>
+                                                        <span>Deadline</span>
                                                     </div>
                                                 </div>
                                             }
+                                            else
+                                            {
+                                                @foreach (var goal_mission in releated.GoalMissions)
+                                                {
+                                                    <div class="col card-detail">
+                                                        <img class="icon-detail my-2" src="~/images/achieved.png" alt="deadline">
+                                                        <div class="card-detail-text">
+                                                            <div class="progress">
+                                                                <div class="progress-bar" role="progressbar" aria-label="Warning example" style="background-color: #F88634; width:@goal_mission.GoalValue%" aria - valuenow="@goal_mission.GoalValue" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                            <span>@goal_mission.GoalValue achieved</span>
+                                                        </div>
+                                                    </div>
+                                                }
 
-                                        }
+                                            }
+                                        </div>
                                     </div>
-                                </div>
 
 
-                                <div class=" d-flex pb-3 justify-content-center">
-                                    <a class="btn card-btn">
-                                        Apply  &nbsp;&nbsp;&nbsp;
-                                        <img src="~/images/right-arrow.png">
-                                        <img src="~/images/right-arrow2.png" />
-                                    </a>
-                                </div>
+                                    <div class=" d-flex pb-3 justify-content-center">
+                                        <a class="btn card-btn">
+                                            Apply  &nbsp;&nbsp;&nbsp;
+                                            <img src="~/images/right-arrow.png">
+                                            <img src="~/images/right-arrow2.png" />
+                                        </a>
+                                    </div>
 
-                            }
-                         </div>
-                         </div>
-            }
-                <!-- card 1 ends here and card 2 starts -->
-            }
-            else
-            {
-                <div >
-                    <h3 class="d-flex justify-content-center">No Releated Missions Found</h3>
-                </div>
-            }
+                                }
+                            </div>
+                        </div>
+                    }
+                    <!-- card 1 ends here and card 2 starts -->
+                }
+                else
+                {
+                    <div>
+                        <h3 class="d-flex justify-content-center">No Releated Missions Found</h3>
+                    </div>
+                }
 
-        
-       
-        
+
+
+
             </div>
         </div>
     </div>

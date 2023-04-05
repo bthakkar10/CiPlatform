@@ -55,9 +55,14 @@ namespace CI_Platform_web.Controllers
             }
             else
             {
-                 return Ok(new { icon = "error", message = "New Password and Old Password cannot be same!!" });
-
+                 return Ok(new { icon = "error", message = "Old Password is incorrect!!" });
             }
+        }
+
+        [HttpPost]
+        public IActionResult EditUserProfile()
+        {
+            return View(); 
         }
     }
 }
