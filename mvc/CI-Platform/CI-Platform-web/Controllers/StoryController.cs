@@ -229,6 +229,14 @@ namespace CI_Platform_web.Controllers
             }
         }
 
+        //for story invite(recommended to coworker)
+        [HttpPost]
+        public async Task<IActionResult> StoryInvite(long ToUserId, long StoryId, long FromUserId, StoryDetailsViewModel viewmodel)
+        {
+            _storyDetails.StoryInvite(ToUserId, StoryId, FromUserId, viewmodel);
+            return Ok();
+        }
+
         //public IActionResult PreviewStory(long UserId, long MissionId)
         //{
         //    Story existingStory = _shareStory.GetDraftedStory(UserId, MissionId);

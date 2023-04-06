@@ -60,9 +60,14 @@ namespace CI_Platform_web.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditUserProfile()
+        public IActionResult EditUserProfile(UserProfileViewModel vm)
         {
-            return View(); 
+            var UserId = HttpContext.Session.GetString("Id");
+            long userId = Convert.ToInt64(UserId);
+
+            var viewModal = vm;
+            _userProfile.EditUserProfile(userId, vm);
+            return RedirectToAction("EditUserProfile");
         }
     }
 }

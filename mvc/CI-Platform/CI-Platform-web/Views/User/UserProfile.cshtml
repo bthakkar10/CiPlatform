@@ -10,7 +10,7 @@
                 <div class="image-edit">
                     @if (Model.Avatar != null)
                     {
-                        <img src="~/images/@Model.Avatar" class="img-thumbnail mx-auto d-block my-2 " alt="...">
+                        <img src="~/images/Upload/User/@Model.Avatar" class="img-thumbnail mx-auto d-block my-2 " alt="...">
                     }
                     else
                     {
@@ -18,7 +18,6 @@
                     }
                     <div class="edit-icon"><i class="bi bi-pencil-fill"></i></div>
                 </div>
-                <input type="file" class="d-none" id="profile-image-input" />
                 <h5 class="text-center">
                     @Model.FirstName @Model.Surname
                 </h5>
@@ -73,7 +72,9 @@
             </div>
         </div>
         <div class="col-lg-10 px-2 ps-4 my-4 my-xl-0">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data" >
+                <input type="file" asp-for="UpdatedAvatar" class="d-none" id="profile-image-input" />
+
                 @*basic information*@
                 <div class="my-4 my-xl-0 row g-3">
                     <h2 class="pb-1 border-bottom"><span class="form-underline pb-1"> Basic Information</span></h2>
@@ -163,13 +164,15 @@
                         @foreach (var skill in Model.UserSkills)
                         {
 
-                            <label>@skill.Skill.SkillName</label>
+                            <label >@skill.Skill.SkillName</label>
                         }
                     </div>
                     <div class="col-12">
                         <button type="button" data-bs-toggle="modal" data-bs-target="#AddSkillsModal" class="btn btn-outline-secondary rounded-pill" data>Add Skills</button>
                     </div>
 
+
+                    <input type="hidden" asp-for="UpdatedUserSkills" id="UpdatedUserSkills"/>
                     <!-- Modal -->
                     <div class="modal fade" id="AddSkillsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
@@ -186,11 +189,12 @@
                                                 {
                                                     if (Model.UserSkills.Select(us => us.SkillId).Contains(skills.SkillId))
                                                     {
-                                                        <label class="all-skills-label highlight">@skills.SkillName</label>
+
+                                                        <label  class="all-skills-label highlight">@skills.SkillName</label>
                                                     }
                                                     else
                                                     {
-                                                        <label class="all-skills-label">@skills.SkillName</label>
+                                                        <label  class="all-skills-label">@skills.SkillName</label>
                                                     }
                                                 }
                                             </div>
@@ -207,7 +211,7 @@
                                                 {
                                                     if (Model.UserSkills.Select(us => us.SkillId).Contains(skills.SkillId))
                                                     {
-                                                        <label class="all-skills-label">@skills.SkillName</label>
+                                                        <label  class="all-skills-label">@skills.SkillName</label>
                                                     }
                                                 }
                                             </div>

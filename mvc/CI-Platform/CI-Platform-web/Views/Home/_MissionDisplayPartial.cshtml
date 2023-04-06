@@ -25,7 +25,7 @@
 
 @*grid view*@
 <div class="container my-5" id="grid-view">
-    <div class=" row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-sm-1   g-4">
+    <div class=" row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-sm-1 g-4">
        
         <!-- Card starts from col -->
         @foreach (var obj in Model.DisplayMissionCardsDemo)
@@ -102,8 +102,8 @@
                         {
                             @if (fm.UserId.Equals(Id))
                             {
-                                <button class="  like-on-img " onclick="favourite()">
-                                    <i class="bi bi-heart-fill favourite-button filled-heart text-danger" data-mission-id="@obj.MissionId"></i>
+                                <button class="  like-on-img favourite-button" onclick="favourite()" data-mission-id="@obj.MissionId">
+                                    <i class="bi bi-heart-fill  filled-heart text-danger" ></i>
                                     
                                 </button>
                                 flag = 0;
@@ -111,16 +111,16 @@
                         }
                         @if (flag == 1)
                         {
-                            <button class="  like-on-img " onclick="favourite()">
-                                <i class="bi bi-heart empty-heart text-light favourite-button " data-mission-id="@obj.MissionId"></i>
+                            <button class="favourite-button  like-on-img " onclick="favourite()" data-mission-id="@obj.MissionId">
+                                <i class="bi bi-heart empty-heart text-light  " ></i>
                             </button>
                         }
 
-                        <button class="add-on-img" type="submit" data-mission-id="@mission_id" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                        <button class="add-on-img" type="submit" data-user-id="@Id" data-mission-id="@mission_id" data-bs-toggle="modal" data-bs-target="#GridViewCoworkerInviteModal">
                             <img style="opacity: 1;" src="~/images/add1.png">
                         </button>
 
-                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal fade" id="GridViewCoworkerInviteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -329,26 +329,25 @@
                         {
                             @if (fm.UserId.Equals(Id))
                             {
-                                <button class="  like-on-img " onclick="favourite()">
-                                    <i class="bi bi-heart-fill favourite-button filled-heart text-danger" data-mission-id="@obj.MissionId"></i>
-                                    
+                                <button class="  like-on-img favourite-button" onclick="favourite()" data-mission-id="@obj.MissionId">
+                                    <i class="bi bi-heart-fill  filled-heart text-danger"></i>
+
                                 </button>
                                 flag = 0;
                             }
-
                         }
                         @if (flag == 1)
                         {
-                            <button class="  like-on-img " onclick="favourite()">
-                                <i class="bi bi-heart empty-heart text-light favourite-button " data-mission-id="@obj.MissionId"></i>
+                            <button class="favourite-button  like-on-img " onclick="favourite()" data-mission-id="@obj.MissionId">
+                                <i class="bi bi-heart empty-heart text-light  "></i>
                             </button>
                         }
 
-                        <button class="add-on-img" type="submit" data-mission-id="@obj.MissionId" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                        <button class="add-on-img" type="submit" data-user-id="@Id" data-mission-id="@obj.MissionId" data-bs-toggle="modal" data-bs-target="#ListViewCoworkerInviteModal">
                             <img style="opacity: 1;" src="~/images/add1.png">
                         </button>
 
-                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal fade" id="ListViewCoworkerInviteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -366,7 +365,6 @@
                                 </div>
                             </div>
                         </div>
-
 
 
 

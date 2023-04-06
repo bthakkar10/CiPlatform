@@ -12,5 +12,7 @@ namespace CI_Platform.Entities.ViewModels
         public long StoryId { get; set; }
         public Story GetStoryDetails { get; set; } = null;
         public List<User> UserList { get; set; } = null;
+
+        public string? InviteLink { get; set; }    
     }
 }

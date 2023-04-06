@@ -2,7 +2,7 @@
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Story Details";
-    //var Id = Convert.ToInt64(ViewBag.UserId);
+    var Id = Convert.ToInt64(ViewBag.UserId);
     var story_id = Model.GetStoryDetails.StoryId;
 }
 
@@ -13,6 +13,7 @@
         return $"https://www.youtube.com/embed/{videoId}";
     }
 }
+
 <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
 
@@ -30,6 +31,7 @@
                     }
                     else
                     {
+           
                         @foreach (var slider_img in Model.GetStoryDetails.StoryMedia.Where(s => s.StoryId == story_id))
                         {
                             @if (slider_img.Type != "videos")
@@ -42,17 +44,17 @@
                             {
                                 @if (!string.IsNullOrEmpty(slider_img.Path))
                                 {
-                                    <div class="iframe-wrapper">
-                                        <iframe width="550" height="500" src="@GetEmbededUrl(@slider_img.Path)" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                                    <div class="swiper-slide">
+                                        <div class="iframe-wrapper">
+                                            @*<iframe src="//www.youtube.com/embed/@slider_img.Path.Split("v=").ElementAt(1)" style="height: 100%; width: 100%;" allowfullscreen></iframe>*@
+                                            <iframe width="646" height="500" src="@GetEmbededUrl(@slider_img.Path)" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                                        </div>
                                     </div>
 
                                 }
-                                @*else
-                                {
-                                    <p>No YouTube video available for this story.</p>
-                                }*@
                             }
                         }
+         
                     }
                 </div>
                 <div class="swiper-button-next"></div>
@@ -78,15 +80,17 @@
                             {
                                 @if (!string.IsNullOrEmpty(slider_img.Path))
                                 {
-                                    <div class="iframe-wrapper">
-                                        <iframe width="300" height="100"  src="@GetEmbededUrl(@slider_img.Path)" frameborder="0"></iframe>
+                                    <div class="swiper-slide">
+                                        <div class="iframe-wrapper">
+                                            <iframe style="width:100%; height:100%" src="@GetEmbededUrl(@slider_img.Path)" frameborder="0"  allow=" encrypted-media" allowfullscreen></iframe>
+                                        </div>
                                     </div>
 
                                 }
-                               @* else
-                                {
-                                    <p>No YouTube video available for this story.</p>
-                                }*@
+                                @* else
+                    {
+                    <p>No YouTube video available for this story.</p>
+                    }*@
                             }
                         }
                     }
@@ -136,14 +140,21 @@
                                     <div class="modal-body">
                                         @foreach (var u in Model.UserList)
                                         {
-
                                             <div class="mt-2" style="display : flex; justify-content : space-between;">
 
                                                 <span class="me-4 ">@u.FirstName @u.LastName</span>
+                                                @if (u.StoryInviteToUsers.Any(i => i.ToUserId == u.UserId && story_id == i.StoryId))
+                                                {
+                                                    <span style="margin-left : 6%;" mailto:class="invited-@u.UserId"><button class="btn btn-success model-button model-invite-btn-story disabled" data-story-id="@story_id" data-from-user-id="@Id" data-to-user-id="@u.UserId">Already Invited</button></span>
 
-
-                                                <span style="margin-left : 6%;" mailto:class="invited-@u.UserId"><button class="btn btn-outline-primary model-button model-invite-btn" @*data-mission-id="@mission_id" data-from-user-id="@Id" data-to-user-id="@u.UserId"*@>Invite</button></span>
-
+                                                }
+                                                else
+                                                {
+                                                    <span style="margin-left : 6%;" mailto:class="invited-@u.UserId"><button class="btn btn-outline-primary model-button model-invite-btn-story" data-story-id="@story_id" data-from-user-id="@Id" data-to-user-id="@u.UserId">Invite</button></span>
+                                                }
+                                               @* <span style="margin-left : 6%;" mailto:class="invited-@u.UserId"><button class="btn btn-outline-primary model-button model-invite-btn" data-mission-id="@mission_id" data-from-user-id="@Id" data-to-user-id="@u.UserId">Invite</button></span>
+                                                <span style="margin-left : 6%;" mailto:class="invited-@u.UserId"><button class="btn btn-outline-primary model-button model-invite-btn" data-mission-id="@mission_id" data-from-user-id="@Id" data-to-user-id="@u.UserId">Invite</button></span>
+*@
                                             </div>
                                         }
                                     </div>

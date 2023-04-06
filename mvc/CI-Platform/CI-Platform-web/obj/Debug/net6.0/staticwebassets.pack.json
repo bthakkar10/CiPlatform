@@ -161,6 +161,10 @@
       "PackagePath": "staticwebassets\\images\\Seats-left.png"
     },
     {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\8a2b6158_83a86ab4_71b3578a_d9b7ef8b_34466b3b_31621325_img11.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\Story\\8a2b6158_83a86ab4_71b3578a_d9b7ef8b_34466b3b_31621325_img11.png"
+    },
+    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\Education-Supplies-for-Every--Pair-of-Shoes-Sold.png",
       "PackagePath": "staticwebassets\\images\\Upload\\Story\\Education-Supplies-for-Every--Pair-of-Shoes-Sold.png"
     },
@@ -179,6 +183,50 @@
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\reports-story.webp",
       "PackagePath": "staticwebassets\\images\\Upload\\Story\\reports-story.webp"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\user-img-large.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\User\\user-img-large.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\user-img.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\User\\user-img.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\volunteer1.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\User\\volunteer1.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\volunteer2.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\User\\volunteer2.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\volunteer3.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\User\\volunteer3.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\volunteer4.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\User\\volunteer4.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\volunteer5.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\User\\volunteer5.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\volunteer6.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\User\\volunteer6.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\volunteer7.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\User\\volunteer7.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\volunteer8.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\User\\volunteer8.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\volunteer9.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\User\\volunteer9.png"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Volunteering-Rank.png",

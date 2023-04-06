@@ -15,7 +15,7 @@
                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Country
                     &nbsp; &nbsp; <img class=" pe-2" src="~/images/drop-down.png">
-                    <ul class="dropdown-menu dropdown-menu-light scrollable-menu" id="CountryList" aria-labelledby="navbarDarkDropdownMenuLink">
+                    <ul class="dropdown-menu dropdown-menu-light scrollable-menu CountryListMissionFilter" id="CountryList" aria-labelledby="navbarDarkDropdownMenuLink">
                         @foreach (var obj in Model.Country)
                         {
                             <li value="@obj.CountryId">
@@ -34,7 +34,7 @@
                     City
                     &nbsp; &nbsp; <img class="ps-5 pe-2" src="~/images/drop-down.png">
                 </a>
-                <ul class="dropdown-menu dropdown-menu-light scrollable-menu CardsFilter " id="CityList" aria-labelledby="navbarDarkDropdownMenuLink">
+                <ul class="dropdown-menu dropdown-menu-light scrollable-menu CardsFilter CityListMissionFilter" id="CityList" aria-labelledby="navbarDarkDropdownMenuLink">
                         
                 </ul>
             </li>
@@ -46,7 +46,7 @@
                     Theme
                     &nbsp; &nbsp; <img class="ps-5 pe-2" src="~/images/drop-down.png">
                 </a>
-                <ul class="dropdown-menu dropdown-menu-light scrollable-menu CardsFilter" aria-labelledby="navbarDarkDropdownMenuLink" id="ThemeList">
+                <ul class="dropdown-menu dropdown-menu-light scrollable-menu CardsFilter ThemeListMissionFilter" aria-labelledby="navbarDarkDropdownMenuLink" id="ThemeList">
                     @foreach (var obj in Model.Theme)
                     {
                         <li>
@@ -114,10 +114,20 @@
                             Country
                         </button>
                     </h2>
-                    <div id="countriesAccordion" class="accordion-collapse collapse"
+                    <div id="countriesAccordion" class=" accordion-collapse collapse"
                          aria-labelledby="country" data-bs-parent="#filters">
                         <div class="accordion-body">
-                            <ul class="scrollable-menu" id="CountryList" style="list-style: none">
+                         @*   <ul class="dropdown-menu dropdown-menu-light scrollable-menu CountryListMissionFilter" id="CountryList" aria-labelledby="navbarDarkDropdownMenuLink">
+                        @foreach (var obj in Model.Country)
+                        {
+                            <li value="@obj.CountryId">
+                                <a class="dropdown-item" value="@obj.CountryId">@obj.Name</a>
+                            </li>
+                        }
+                        
+                    </ul>*@
+
+                            <ul class="scrollable-menu CountryListMissionFilter" id="CountryList" style="list-style: none">
                                 @foreach (var obj in Model.Country)
                                 {
                                     <li value="@obj.CountryId" class="mb-3">
@@ -139,7 +149,7 @@
                     <div id="citiesAccordion" class="accordion-collapse collapse" aria-labelledby="city"
                          data-bs-parent="#filters">
                         <div class="accordion-body">
-                            <ul class="scrollable-menu" id="CityListAccordian" style="list-style: none">
+                            <ul class="scrollable-menu CityListMissionFilter" id="CityList" style="list-style: none">
                             </ul>
                         </div>
                     </div>
@@ -154,7 +164,7 @@
                     </h2>
                     <div id="themesAccordion" class="accordion-collapse collapse" aria-labelledby="theme"
                          data-bs-parent="#filters">
-                        <div class="accordion-body">
+                        <div class="accordion-body ThemeListMissionFilter">
                             @foreach (var obj in Model.Theme)
                             {
                                 <div class="form-check">
@@ -198,93 +208,7 @@
 
 
 
-   @* <button class="btn d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"
-            aria-controls="offcanvasScrolling">
-        <img src="~/images/filter.png">
-    </button>
-    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
-         id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasScrollingLabel"></h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                    aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <div class="  d-flex ">
-                <ul class="navbar-nav flex-column align-items-center  d-flex">
-                    <li class="nav-item  dropdown">
-                        <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
-                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Country
-                            &nbsp; &nbsp; <img class=" pe-2" src="~/images/drop-down.png">
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-light scrollable-menu"
-                            aria-labelledby="navbarDarkDropdownMenuLink">
-                            @foreach (var obj in ViewBag.CountryList)
-                            {
-                                <li>
-                                    <a class="dropdown-item" href="#">@obj.Text</a>
-                                </li>
-                            }
-                           
-                        </ul>
-                    </li>
-
-
-                    <li class="nav-item  dropdown">
-                        <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
-                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            City
-                            &nbsp; &nbsp; <img class=" pe-2" src="~/images/drop-down.png">
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-light scrollable-menu"
-                            aria-labelledby="navbarDarkDropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-
-
-                    <li class="nav-item  dropdown">
-                        <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
-                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Theme
-                            &nbsp; &nbsp; <img class="pe-2" src="~/images/drop-down.png">
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-light scrollable-menu" aria-labelledby="navbarDarkDropdownMenuLink">
-                            @foreach (var obj in ViewBag.ThemeList)
-                            {
-                                <li>
-                                    <a class="dropdown-item" href="#">@obj.Text</a>
-                                </li>
-                            }
-                            
-                        </ul>
-                    </li>
-
-
-                    <li class="nav-item  dropdown">
-                        <a class="nav-link ms-3  dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
-                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Skill
-                            &nbsp; &nbsp; <img class=" pe-2" src="~/images/drop-down.png">
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-light scrollable-menu"
-                            aria-labelledby="navbarDarkDropdownMenuLink">
-                            @foreach (var obj in ViewBag.SkillList)
-                            {
-                                <li>
-                                    <a class="dropdown-item" href="#">@obj.Text</a>
-                                </li>
-                            }
-                           
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>*@
+  
 </div>
 <div class="border-navbar"></div>
 <div class="container p-4 d-flex flex-row">
@@ -294,39 +218,4 @@
 </div>
 <!-- search Nav bar ends here -->
 
-@*<script>*@
-    @*//$('#car').change(function () {
-    //    var text = $('option:selected', this).text()
-    //    $('#demo ').append('<span class="alert pill">' + text + '<img src="cancel1.png" data-bs-dismiss="alert" />' + '</span>');
-    //    // $('span:last-child').append("<p>Test</p>");
-    //    $("#demo").last().append("<p>Test</p>");
-
-    //});
-    //$('#car1').change(function () {
-    //    var text = $('option:selected', this).text()
-    //    $('#demo').append('<span class="alert pill">' + text + '<img src="cancel1.png" data-bs-dismiss="alert" />' + '</span>');
-    //});
-    //$('#demo.section:empty').hide()
-
-    //$('<div id="NextElement"' + id + '>' + '</div>')
-    //    .insertAfter($('[id^="NextElement"]').last());
-
-    //$("p span").last().addClass("highlight");*@
-
-@*
-    function search() {
-        var searchString = document.getElementById("search");
-        filter = searchString.value.toUpperCase();
-        cards = document.getElementsByClassName("card-div");
-        titles = document.getElementsByClassName("card-title");
-        for (i = 0; i < cards.length; i++) {
-            a = titles[i];
-            if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                cards[i].classList.remove("d-none");
-            } else {
-                cards[i].classList.add("d-none");
-            }
-        }
-    }
-</script>*@
 

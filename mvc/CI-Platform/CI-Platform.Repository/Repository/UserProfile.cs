@@ -41,9 +41,9 @@ namespace CI_Platform.Repository.Repository
             return vm;
         }
 
-        public bool ChangePassword(long userId, string oldPassword, string newPassword)
+        public bool ChangePassword(long UserId, string oldPassword, string newPassword)
         {
-            var user = _db.Users.FirstOrDefault(u => u.UserId == userId);
+            var user = _db.Users.FirstOrDefault(u => u.UserId == UserId);
             if (user.Password != oldPassword)
             {
                 return false;
@@ -56,6 +56,84 @@ namespace CI_Platform.Repository.Repository
                 _db.SaveChanges();
                 return true;
             }
+        }
+
+        public bool EditUserProfile(long UserId, UserProfileViewModel vm)
+        {
+            try
+            {
+
+                User user = _db.Users.FirstOrDefault(u => u.UserId == UserId);
+
+                user.FirstName = vm.FirstName;
+                user.LastName = vm.Surname;
+                user.CityId = vm.CityId;
+                user.CountryId = vm.CountryId;
+                user.ProfileText = vm.ProfileText;
+                user.WhyIVolunteer = vm.WhyIVolunteer;
+                user.Department = vm.Department;
+                user.Title = vm.Title;
+                user.LinkedInUrl = vm.LinkedInUrl;
+                user.EmployeeId = vm.EmployeeId;
+
+
+                if(vm.UpdatedAvatar != null)
+                {
+                    var OldImg = user.Avtar;
+                    var img = vm.UpdatedAvatar;
+                    var guid = Guid.NewGuid().ToString().Substring(0, 8);
+                    var fileName = $"{guid}_{img}"; // getting filename
+
+                    if(OldImg != null)
+                    {
+                         File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Upload/User", fileName));// for deleting old img
+                    }
+
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Upload/User", fileName);//for updating new img
+
+                    user.Avtar = fileName;
+
+                    using (var stream = new FileStream(fileName, FileMode.Create))
+                    {
+                        img.CopyTo(stream);
+                    }
+
+                    string[] SkillsArr = new string[0];
+                    if(vm.UpdatedUserSkills != null )
+                    {
+                        SkillsArr = vm.UpdatedUserSkills.Split(',');
+
+                    }
+
+                    List<UserSkill> existingSkills = _db.UserSkills.Where(u => u.UserId == UserId).ToList();
+                    var SkillsToAdd = _db.Skills.Where(s => SkillsArr.Contains(s.SkillName)).Select(s => s.SkillId).ToList();
+                    var SkillsToRemove = existingSkills.Where(us => !SkillsToAdd.Contains(us.SkillId)).ToList();
+                    _db.UserSkills.RemoveRange(SkillsToRemove);
+
+
+                    //skills that needs to be added 
+                    foreach(var AddSkills in SkillsToAdd)
+                    {
+                        if(!existingSkills.Any(u=>u.SkillId == AddSkills))
+                        {
+                            UserSkill UserSkill = new UserSkill()
+                            {
+                                UserId = UserId,
+                                SkillId = AddSkills
+                            };
+                            _db.Add(UserSkill);
+                        }
+                    }
+                    _db.Update(user);
+                    _db.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+      
         }
     }
 }

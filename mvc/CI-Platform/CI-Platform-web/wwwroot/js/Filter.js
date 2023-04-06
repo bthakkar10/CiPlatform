@@ -18,11 +18,11 @@ let allDropdowns = $('.dropdown ul');
 $('#searchText').on('keyup', function () {
     if (currentUrl.includes("HomePage")) {
         FilterSortPaginationSearch();
-        console.log("first")
+        /*console.log("first")*/
     }
     else if (currentUrl.includes("StoryListing")) {
         StoryFilter();
-        console.log("second")
+       /* console.log("second")*/
     }
 });
 
@@ -194,7 +194,7 @@ function totalMission() {
 function StoryFilter(pageNo) {
     var CountryId = SelectedCountry;
     var CityId = $('#CityList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
-    var ThemeId = $('#ThemeList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
+    var ThemeId = $('.ThemeListMissionFilter input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var SkillId = $('#SkillList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var SearchText = $("#searchText").val();
     var pagesize = 3;
@@ -336,10 +336,11 @@ $("#sortByDropdown li").click(function () {
 });
 
 // for country selection
-$("#CountryList li").click(function () {
+$(".CountryListMissionFilter li").click(function () {
     $(this).addClass('selected');
 
     var CountryId = $(this).val();
+    console.log(CountryId)
     SelectedCountry = CountryId;
 
     GetCitiesByCountry(CountryId);
@@ -361,7 +362,7 @@ function GetCitiesByCountry(CountryId) {
         url: "/Home/GetCitiesByCountry",
         data: { CountryId: CountryId },
         success: function (data) {
-            var dropdown = $("#CityList");
+            var dropdown = $(".CityListMissionFilter");
             dropdown.empty();
             var items = "";
             $(data).each(function (i, item) {
@@ -377,7 +378,7 @@ function GetCitiesByCountry(CountryId) {
         url: "/Home/GetCitiesByCountry",
         data: { CountryId: CountryId },
         success: function (data) {
-            var dropdown = $("#CityListAccordian");
+            var dropdown = $(".CityListMissionFilter");
             dropdown.empty();
             var items = "";
             $(data).each(function (i, item) {
@@ -549,7 +550,7 @@ function favourite() {
             },
             error: function (error) {
                 // Show an error message or handle the error
-                console.log("error")
+                console.log(error)
 
             }
         });
@@ -587,15 +588,21 @@ $('.commentButton').click(function () {
     var comment = $('.newComment').val();
     console.log(comment);
     var missionId = $(this).data('mission-id');
-    if (comment != null) {
+    if (comment != " ") {
         $.ajax({
             method: 'POST',
             url: '/Home/PostComment',
             data: { comment: comment, missionId: missionId },
-            success: function () {
-
+            success: function (result) {
                 $('.newComment').val('');
-                /* alert("comment will be displayed after approval");*/
+                swal.fire({
+                    position: 'top-end',
+                    icon: result.icon,
+                    title: result.message,
+                    showConfirmButton: false,
+                    timer: 4000
+                })
+                /*$('#CommentHelpBox').text("Comment will be published after approval!!");*/
             },
             error: function (error) {
                 console.log("error");
@@ -603,7 +610,8 @@ $('.commentButton').click(function () {
         });
     }
     else {
-        alert("null comment not allowed");
+        //$('#CommentHelpBox').addClass('text-danger').text("Please enter any comment");
+        //$('.newComment').focus();
     }
 });
 
@@ -635,12 +643,13 @@ $(document).on('click', '.model-invite-btn', function () {
 //recommend to co-worker invite for mission page through get function which will fetch user list here and go to above function again
 $(document).on('click', '.add-on-img', function () {
     var MissionId = $(this).data('mission-id');
+    var UserId = $(this).data('user-id');
     $.ajax({
         type: "GET",
         url: "/Home/UserList",
         data: { MissionId: MissionId },
         success: function (coworkers) {
-
+            console.log(coworkers);
             var list = $('.grid-modal-body');
             list.empty();
             var items = " ";
@@ -714,10 +723,43 @@ function recentVolunteerNavigation(pageNo) {
         success: function (data) {
             $('.volunteerd-images').empty();
             $('.volunteerd-images').append(data);
-            //console.log(data)
+            let totalVolunteers = $('#totalVolunteers').val();
+            let totalPages = Math.ceil(totalVolunteers / 3);
+            var start = (((pageNo - 1) * 3) + 1);
+            var end = start + 2;
+            if (totalPages === pageNo) {
+                end = start + (totalVolunteers % 3) - 1;
+            }
+            $('.volunteerBtn .pagination-vol-info').html(start + ` - ` + end + ` of ` + totalVolunteers + ` Recent Volunteers`)
         }
     })
 }
+
+//story details recommened to coworker
+//recommend to co-worker invite for mission details page 
+$(document).on('click', '.model-invite-btn-story', function () {
+
+    var FromUserId = $(this).data('from-user-id');
+    var StoryId = $(this).data('story-id');
+    var ToUserId = $(this).data('to-user-id');
+    var btn = $(this);
+
+    $.ajax({
+        type: "POST",
+        url: "/Story/StoryInvite",
+        data: { ToUserId: ToUserId, StoryId: StoryId, FromUserId: FromUserId },
+        success: function () {
+
+            var button = $('<button>').addClass('btn btn-success disabled')
+                .append($('<span>').text('Already Invited '));
+            btn.replaceWith(button);
+
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
+});
 
 //for share story page(ck-editor and drag and drop functionality)
 let optionsButtons = document.querySelectorAll(".option-button");
@@ -1000,10 +1042,10 @@ $('#saveStory').click(function (e) {
 });
 
 //to submit story 
-$('#submitButton').click(function () {
+$('#submitButton').click(function (e) {
     e.preventDefault();
     let isValid = false;
-    if (validateStoryTitle() == true && validateDate() == true && validateStoryDes() == true && validateYoutubeUrls() == true && validateMissionTitle() == true) {
+    if (validateStoryTitle() == true && validateDate() == true && validateYoutubeUrls() == true && validateMissionTitle() == true) {
         isValid = true;
     }
     if (isValid) {
@@ -1064,6 +1106,7 @@ $('#previewButton').click(function () {
         url: '/Story/StoryDetails',
         data: { UserId: UserId, MissionId: MissionId },
         success: function (result) {
+            console.log(result)
             var url = '/Story/StoryDetails?MissionId=' + MissionId + '&UserId=' + UserId;
             window.location.href = url;
             /*window.location.href = "/Story/StoryDetails?UserId=UserId&MissionId=MissionId";*/
@@ -1181,6 +1224,7 @@ $(document).on('click', '.all-skills-label', function () {
 
 //adding skills to the right side of the container 
 $('#addSkillsToRight').click(function () {
+
     $('.selected-skills-list').empty();
     var selectedUserSkills = "";
     $('.all-skills-label').each(function () {
@@ -1190,7 +1234,7 @@ $('#addSkillsToRight').click(function () {
     })
 
     var skillsArray = selectedUserSkills.split("\n");
-    console.log(skillsArray);
+/*    console.log(skillsArray);*/
 
     skillsArray.forEach(function (skill, index) {
         var label = $('<label>');
@@ -1211,7 +1255,7 @@ $('#RemoveSkillsFromRight').click(function () {
     })
 
     var skillsArray = selectedUserSkills.split("\n");
-    console.log(skillsArray);
+/*    console.log(skillsArray);*/
 
     skillsArray.forEach(function (skill, index) {
         $('.all-skills-label').each(function () {
@@ -1224,10 +1268,14 @@ $('#RemoveSkillsFromRight').click(function () {
 
 //to save skill and display them in the my skills container
 $('#SaveSkillBtn').click(function () {
+    let skillsArr = []
     $(".user-skills-container").empty();
     $(".selected-skills-list .all-skills-label").each(function () {
-        $(".user-skills-container").append(`<label>` +$(this).text()+ `</label>`)
+        $(".user-skills-container").append(`<label >` + $(this).text() + `</label>`)
+        skillsArr.push($(this).text());
     });
+
+    $("#UpdatedUserSkills").val(skillsArr.join(','));
 })
 
   //cities based on countries in user profile

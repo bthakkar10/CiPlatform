@@ -15,6 +15,8 @@ namespace CI_Platform.Entities.ViewModels
 
         public int totalVolunteers { get; set; }
 
+        //public int nextVolunteers { get; set; }
+
         public List<MissionApplication> RecentVolunteers { get; set; }
 
         public List<Mission> RelatedMissions { get; set; }

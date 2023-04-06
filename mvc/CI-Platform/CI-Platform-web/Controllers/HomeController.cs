@@ -188,6 +188,7 @@ namespace CI_Platform_web.Controllers
                 vm.RelatedMissions = _missionDetail.GetRelatedMissions(MissionId);
                 vm.UserList = _missionDetail.UserList(userId, MissionId);
                 vm.totalVolunteers = _missionDetail.GetRecentVolunteers(MissionId, userId).Count();
+               
                 return View(vm);
             }
             catch (Exception ex)
@@ -255,6 +256,11 @@ namespace CI_Platform_web.Controllers
                 var newComment = new Comment { UserId = userId, MissionId = missionId, CommentText = comment };
                 _db.Comments.Add(newComment);
                 _db.SaveChanges();
+                return Ok(new {icon="success", message="Comments will be visible after approval!!"});
+            }
+            else
+            {
+                return Ok(new { icon = "error", message = "Please enter a comment!!" });
             }
 
             return Ok();
