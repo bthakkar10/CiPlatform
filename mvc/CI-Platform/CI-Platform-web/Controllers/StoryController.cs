@@ -187,7 +187,6 @@ namespace CI_Platform_web.Controllers
                 _shareStory.EditDraftedStory(viewmodel, userId);
                 return Ok(new { icon = "success", message = "Story is edited successfully and saved in draft mode!!" });
             }
-            return Ok();
         }
 
         [HttpPost]
@@ -202,6 +201,7 @@ namespace CI_Platform_web.Controllers
             }
             var Id = Convert.ToInt64(ViewBag.UserId);
             var userId = (long)Id;
+
             _shareStory.SubmitStory(viewmodel, userId);
             return Ok(new { icon="success", message = "Story is submitted successfully and will be published when admin approves!!" });
         }
@@ -231,23 +231,26 @@ namespace CI_Platform_web.Controllers
 
         //for story invite(recommended to coworker)
         [HttpPost]
-        public async Task<IActionResult> StoryInvite(long ToUserId, long StoryId, long FromUserId, StoryDetailsViewModel viewmodel)
+        public async Task<IActionResult> StoryInvite(long ToUserId, long StoryId, long FromUserId, long MissionId, long SPUserId, StoryDetailsViewModel viewmodel)
         {
-            _storyDetails.StoryInvite(ToUserId, StoryId, FromUserId, viewmodel);
-            return Ok();
+            StoryInvite storyInvite = new StoryInvite()
+            {
+                FromUserId = FromUserId,
+                ToUserId = ToUserId,
+                StoryId = StoryId,
+            };
+
+            _db.StoryInvites.Add(storyInvite);
+
+            var StoryInviteLink = Url.Action("StoryDetails", "Story", new { MissionId = MissionId , UserId = SPUserId }, Request.Scheme);
+            viewmodel.InviteLink = StoryInviteLink;
+
+            await _db.SaveChangesAsync();
+
+            await _storyDetails.SendInvitationToCoWorker(ToUserId, FromUserId, viewmodel);
+
+            return Json(new { success = true });
         }
 
-        //public IActionResult PreviewStory(long UserId, long MissionId)
-        //{
-        //    Story existingStory = _shareStory.GetDraftedStory(UserId, MissionId);
-        //    return RedirectToAction("StoryDetails", "Story", new { existingStory.StoryId });
-        //    //Story existingStory = _shareStory.GetDraftedStory(UserId, MissionId);
-
-        //    //if(existingStory != null)
-        //    //{
-        //    //    return RedirectToAction("StoryDetails", "Story", existingStory.StoryId);
-        //    //}
-        //    //return Ok();
-        //}
     }
 }

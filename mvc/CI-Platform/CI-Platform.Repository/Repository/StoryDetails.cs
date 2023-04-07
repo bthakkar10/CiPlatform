@@ -11,21 +11,27 @@ using System.Net;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+//using Microsoft.AspNetCore.Mvc.Routing;
+//using Microsoft.AspNetCore.Http;
 
 namespace CI_Platform.Repository.Repository
 {
     public class StoryDetails : IStoryDetails
     {
         private readonly CiDbContext _db;
+        //private readonly HttpRequest _httpRequest;
+        //private readonly UrlHelper _urlHelper;
 
-        public StoryDetails(CiDbContext db)
+        public StoryDetails(CiDbContext db /*HttpRequest httpRequest, UrlHelper urlHelper*/)
         {
             _db = db;
+           //_httpRequest = httpRequest;
+           // _urlHelper = urlHelper;
         }
 
         public Story GetStoryDetails(long MissionId,long UserId)
         {
-            return _db.Stories.
+            Story story =  _db.Stories.
             Include(s => s.StoryMedia).
             Include(s => s.StoryInvites).
             Include(s => s.User).
@@ -33,6 +39,7 @@ namespace CI_Platform.Repository.Repository
             ThenInclude(su => su.Country).
             Where(s => s.MissionId == MissionId && s.UserId == UserId).
             FirstOrDefault();
+            return story;
         }
 
         public List<User> UserList(long UserId)
@@ -46,31 +53,31 @@ namespace CI_Platform.Repository.Repository
             Story story = _db.Stories.Where(s => s.MissionId == MissionId && s.UserId == UserId && s.Status == "PUBLISHED").FirstOrDefault();
             if (story != null)
             {
-                story.UserVisits = story.UserVisits + 1;
+                story.UserVisits = story.UserVisits++;
                 story.UpdatedAt = DateTime.Now;
                 _db.Update(story);
                 _db.SaveChanges();
             }
         }
 
-        public async void StoryInvite(long ToUserId, long StoryId, long FromUserId,StoryDetailsViewModel vm)
-        {
-            var StoryInvite = new StoryInvite()
-            {
-                ToUserId = ToUserId, 
-                FromUserId = FromUserId,            
-                StoryId = StoryId,
-            };
+        //public async void StoryInvite(long ToUserId, long StoryId, long FromUserId,StoryDetailsViewModel vm)
+        //{
+        //    var StoryInvite = new StoryInvite()
+        //    {
+        //        ToUserId = ToUserId, 
+        //        FromUserId = FromUserId,            
+        //        StoryId = StoryId,
+        //    };
 
-            _db.StoryInvites.Add(StoryInvite);
+        //    _db.StoryInvites.Add(StoryInvite);
 
-            //var StoryInviteLink = Url.Action("StoryDetails", "Story", new { StoryId = StoryId }, Request.Scheme);
-            //vm.InviteLink = StoryInviteLink;
+        //    var StoryInviteLink = _urlHelper.Action("StoryDetails", "Story", new { StoryId = StoryId }/*, _httpRequest.Scheme*/);
+        //    vm.InviteLink = StoryInviteLink;
 
-            await _db.SaveChangesAsync();
+        //    await _db.SaveChangesAsync();
 
-            await _db.SendInvitationToCoWorker(ToUserId, FromUserId, vm);
-        }
+        //    await _db.SendInvitationToCoWorker(ToUserId, FromUserId, vm);
+        //}
 
         public async Task SendInvitationToCoWorker(long ToUserId, long FromUserId, StoryDetailsViewModel vm)
         {

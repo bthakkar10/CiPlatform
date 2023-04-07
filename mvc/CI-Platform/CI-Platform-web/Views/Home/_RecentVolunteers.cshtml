@@ -5,15 +5,15 @@
 
 @if (Model.RecentVolunteers.Any())
 {
-    <div class="volunteerd-images">
+
         @foreach (var recent in Model.RecentVolunteers)
         {
             <div class="volunteerd-img">
-                <img src="~/images/@recent.User.Avtar" />
+                <img src="~/images/Upload/User/@recent.User.Avtar" />
                 <figcaption>@recent.User.FirstName  @recent.User.LastName </figcaption>
             </div>
         }
-    </div>
+
 }
 else
 {

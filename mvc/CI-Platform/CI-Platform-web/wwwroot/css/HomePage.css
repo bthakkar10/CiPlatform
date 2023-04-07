@@ -565,12 +565,12 @@ a,li,button,h3 {
             margin: 1rem 0rem;
         }
 
-    .volunteerd-images {
-        display: grid;
-       
-        grid-template-columns: repeat(3, auto);
-        /*  grid-auto-rows: 200px;*/
-    }
+.volunteerd-images {
+    display: grid;
+
+   grid-template-columns: repeat(3, auto);
+     /* grid-auto-rows: 200px;*/
+}
 
     .volunteerd-img {
         text-align-last: center;

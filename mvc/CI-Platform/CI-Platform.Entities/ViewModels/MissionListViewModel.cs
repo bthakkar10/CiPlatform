@@ -20,14 +20,9 @@ namespace CI_Platform.Entities.ViewModels
 
         public List<MissionApplication> Application { get; set; } = null;
 
-
         public List<MissionRating> MissionRatings { get; set; } = null;
 
-       
-
         public List<GoalMission> GoalMissions { get; set; } = null;
-
-        //public List<Mission> MissionList { get; set; }
 
         public IEnumerable<Mission> DisplayMissionCardsDemo { get; set; } = null;
 

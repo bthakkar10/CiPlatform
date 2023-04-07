@@ -36,20 +36,9 @@ namespace CI_Platform.Repository.Repository
                     .Include(m => m.FavouriteMissions)
                     .Include(m => m.MissionMedia)
                     .ToList().OrderBy(ml => MissionIds.IndexOf(ml.MissionId));
-
-            //List<Mission> MissionList = _db.Missions.Where(m => MissionIds.Contains(m.MissionId))
-            //    .Include(m => m.City)
-            //    .Include(m => m.Country)
-            //    .Include(m => m.MissionSkills).ThenInclude(ms => ms.Skill)
-            //    .Include(m => m.MissionTheme)
-            //    .Include(m => m.MissionRatings)
-            //    .Include(m => m.GoalMissions)
-            //    .Include(m => m.MissionApplications)
-            //    .Include(m => m.MissionMedia)
-            //    .ToList().OrderBy(ml => MissionIds.IndexOf(ml.MissionId));
-
-            //return MissionList;
         }
+
+       
 
     }
 }

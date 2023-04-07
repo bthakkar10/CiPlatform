@@ -35,7 +35,6 @@ namespace CI_Platform_web.Controllers
 
         //get method for homepage
         public IActionResult HomePage()
-        
         {
             if (HttpContext.Session.GetString("SEmail") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
             {
@@ -60,7 +59,7 @@ namespace CI_Platform_web.Controllers
 
         //post method for homepage
         [HttpPost]
-        public async Task<IActionResult> HomePage(string searchText, int? countryId, string? cityId, string? themeId, string? skillId, int? sortCase, int? userId, int? pageNo, int? pagesize)
+        public async Task<IActionResult> HomePage(string searchText, int? countryId, string? cityId, string? themeId, string? skillId, int? sortCase, long? userId, int? pageNo, int? pagesize)
         {
             if (HttpContext.Session.GetString("SEmail") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
             {
@@ -71,7 +70,7 @@ namespace CI_Platform_web.Controllers
             try
             {
 
-               IConfigurationRoot _configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
+                IConfigurationRoot _configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
 
                 string connectionString = _configuration.GetConnectionString("DefaultConnection");
 
@@ -105,10 +104,9 @@ namespace CI_Platform_web.Controllers
                         MissionIds.Add(missionId);
                     }
 
-
                     var vm = new MissionListViewModel();
 
-                     //userId = Convert.ToInt64(ViewBag.UserId);
+                    userId = Convert.ToInt64(ViewBag.UserId);
                     vm.DisplayMissionCardsDemo = _missionDisplay.DisplayMissionCardsDemo(MissionIds);
 
                     if (vm != null && vm.DisplayMissionCardsDemo.Any())
@@ -121,12 +119,12 @@ namespace CI_Platform_web.Controllers
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View(ex);
 
             }
-   
+
         }
 
         
@@ -134,14 +132,8 @@ namespace CI_Platform_web.Controllers
         [HttpPost]
         public IActionResult AddToFavorites(int missionId)
         {
-            //string Id = HttpContext.Session.GetString("Id");
-            //long userId = long.Parse(Id);
-
             var UserId = HttpContext.Session.GetString("Id");
             long userId = Convert.ToInt64(UserId);
-
-
-            // Check if the mission is already in favorites for the user
             if (_db.FavouriteMissions.Any(fm => fm.MissionId == missionId && fm.UserId == userId))
             {
                 // Mission is already in favorites, return an error message or redirect back to the mission page
@@ -174,9 +166,12 @@ namespace CI_Platform_web.Controllers
         {
             try
             {
-                if (HttpContext.Session.GetString("Id") != null)
+                if (HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
                 {
                     ViewBag.UserId = HttpContext.Session.GetString("Id");
+                    ViewBag.UserId = HttpContext.Session.GetString("Id");
+                    ViewBag.Username = HttpContext.Session.GetString("Username");
+
                 }
                 ViewBag.MissionId = MissionId;
                 long userId = Convert.ToInt64(HttpContext.Session.GetString("Id"));
@@ -262,8 +257,6 @@ namespace CI_Platform_web.Controllers
             {
                 return Ok(new { icon = "error", message = "Please enter a comment!!" });
             }
-
-            return Ok();
         }
 
         //necessary for displaying user list in recommended to co worker on grid and list view

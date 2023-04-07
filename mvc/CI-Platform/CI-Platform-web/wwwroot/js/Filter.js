@@ -22,7 +22,7 @@ $('#searchText').on('keyup', function () {
     }
     else if (currentUrl.includes("StoryListing")) {
         StoryFilter();
-       /* console.log("second")*/
+        /* console.log("second")*/
     }
 });
 
@@ -743,17 +743,19 @@ $(document).on('click', '.model-invite-btn-story', function () {
     var StoryId = $(this).data('story-id');
     var ToUserId = $(this).data('to-user-id');
     var btn = $(this);
-
+    var MissionId = $(this).data('mission-id');
+    var SPUserId = $(this).data('sp-user-id');
     $.ajax({
         type: "POST",
         url: "/Story/StoryInvite",
-        data: { ToUserId: ToUserId, StoryId: StoryId, FromUserId: FromUserId },
+        data: { ToUserId: ToUserId, StoryId: StoryId, FromUserId: FromUserId, MissionId: MissionId, SPUserId: SPUserId },
         success: function () {
-
             var button = $('<button>').addClass('btn btn-success disabled')
                 .append($('<span>').text('Already Invited '));
             btn.replaceWith(button);
 
+            //var url = '/Story/StoryDetails?MissionId=' + MissionId + '&UserId=' + FromUserId;
+            //window.location.href = url;
         },
         error: function (error) {
             console.log(error);
@@ -934,7 +936,7 @@ $('#missionTitle').click(function () {
 
                 $('#date').val(formattedDate);
                 tinymce.get('storyEditor').setContent(result.description);
-              /*  $('#storyEditor').text(result.description);*/
+                /*  $('#storyEditor').text(result.description);*/
                 console.log(result.storyMedia);
 
 
@@ -988,7 +990,7 @@ $('#missionTitle').click(function () {
 $('#saveStory').click(function (e) {
     e.preventDefault();
     let isValid = false;
-    if (validateStoryTitle() == true && validateDate() == true  && validateYoutubeUrls() == true && validateMissionTitle() == true) {
+    if (validateStoryTitle() == true && validateDate() == true && validateYoutubeUrls() == true && validateMissionTitle() == true) {
         isValid = true;
     }
     if (isValid) {
@@ -1049,51 +1051,51 @@ $('#submitButton').click(function (e) {
         isValid = true;
     }
     if (isValid) {
-            var formData = new FormData();
-            var urls = null;
-            var u = $('#videoUrls').val();
-            if (u != null) {
-                urls = u.split('\n');
-                for (var i = 0; i < urls.length; i++) {
-                    formData.append("VideoUrls", urls[i]);
-                }
+        var formData = new FormData();
+        var urls = null;
+        var u = $('#videoUrls').val();
+        if (u != null) {
+            urls = u.split('\n');
+            for (var i = 0; i < urls.length; i++) {
+                formData.append("VideoUrls", urls[i]);
             }
-            else {
-                formData.append("VideoUrls", null);
+        }
+        else {
+            formData.append("VideoUrls", null);
+        }
+
+        for (var i = 0; i < allfiles.length; i++) {
+            formData.append("Images", allfiles[i]);
+        }
+        var StoryDescription = tinymce.get('storyEditor').getContent();
+        formData.append("MissionId", $('#missionTitle').val());
+        formData.append("StoryTitle", $('#StoryTitle').val());
+        formData.append("Date", $('#date').val());
+        formData.append("StoryDescription", StoryDescription);
+
+        $.ajax({
+            url: '/Story/SubmitStory',
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: formData,
+
+            success: function (result) {
+                /* console.log(result.message);*/
+
+                swal.fire({
+                    position: 'top-end',
+                    icon: result.icon,
+                    title: result.message,
+                    showConfirmButton: false,
+                    timer: 4000
+                })
+            },
+            error: function (error) {
+                console.log(error);
             }
 
-            for (var i = 0; i < allfiles.length; i++) {
-                formData.append("Images", allfiles[i]);
-            }
-            var StoryDescription = tinymce.get('storyEditor').getContent();
-            formData.append("MissionId", $('#missionTitle').val());
-            formData.append("StoryTitle", $('#StoryTitle').val());
-            formData.append("Date", $('#date').val());
-            formData.append("StoryDescription", StoryDescription);
-
-            $.ajax({
-                url: '/Story/SubmitStory',
-                type: 'POST',
-                processData: false,
-                contentType: false,
-                data: formData,
-
-                success: function (result) {
-                    /* console.log(result.message);*/
-
-                    swal.fire({
-                        position: 'top-end',
-                        icon: result.icon,
-                        title: result.message,
-                        showConfirmButton: false,
-                        timer: 4000
-                    })
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-
-            });
+        });
     }
 });
 
@@ -1108,7 +1110,9 @@ $('#previewButton').click(function () {
         success: function (result) {
             console.log(result)
             var url = '/Story/StoryDetails?MissionId=' + MissionId + '&UserId=' + UserId;
-            window.location.href = url;
+            /*  window.location.href = url;*/
+            var win = window.open(url, '_blank');
+            win.focus();
             /*window.location.href = "/Story/StoryDetails?UserId=UserId&MissionId=MissionId";*/
         },
         error: function (error) {
@@ -1130,15 +1134,15 @@ function validateYoutubeUrls() {
             $('#videoUrls').focus();
             return false;
         }
-    else if (url.length <= 20) {
-        $("#HelpBlock-urls").text("Maximum 20 URLs are allowed!!");
-        return false;
-    }
-    else {
-        $("#HelpBlock-urls").text(" ");
-        return true;
+        else if (url.length <= 20) {
+            $("#HelpBlock-urls").text("Maximum 20 URLs are allowed!!");
+            return false;
+        }
+        else {
+            $("#HelpBlock-urls").text(" ");
+            return true;
 
-    }
+        }
     }
 
 }
@@ -1234,7 +1238,7 @@ $('#addSkillsToRight').click(function () {
     })
 
     var skillsArray = selectedUserSkills.split("\n");
-/*    console.log(skillsArray);*/
+    /*    console.log(skillsArray);*/
 
     skillsArray.forEach(function (skill, index) {
         var label = $('<label>');
@@ -1255,7 +1259,7 @@ $('#RemoveSkillsFromRight').click(function () {
     })
 
     var skillsArray = selectedUserSkills.split("\n");
-/*    console.log(skillsArray);*/
+    /*    console.log(skillsArray);*/
 
     skillsArray.forEach(function (skill, index) {
         $('.all-skills-label').each(function () {
@@ -1266,9 +1270,17 @@ $('#RemoveSkillsFromRight').click(function () {
     })
 })
 
+//global skills array 
+let skillsArr = []
+$(".selected-skills-list .all-skills-label").each(function () {
+    $(".user-skills-container").append(`<label >` + $(this).text() + `</label>`)
+    skillsArr.push($(this).text());
+});
+$("#UpdatedUserSkills").val(skillsArr.join(','));
+
 //to save skill and display them in the my skills container
 $('#SaveSkillBtn').click(function () {
-    let skillsArr = []
+    skillsArr = []
     $(".user-skills-container").empty();
     $(".selected-skills-list .all-skills-label").each(function () {
         $(".user-skills-container").append(`<label >` + $(this).text() + `</label>`)
@@ -1278,7 +1290,7 @@ $('#SaveSkillBtn').click(function () {
     $("#UpdatedUserSkills").val(skillsArr.join(','));
 })
 
-  //cities based on countries in user profile
+//cities based on countries in user profile
 $("#UserCountrySelect").click(function () {
     var CountryId = $(this).val()
     UserGetCitiesByCountry(CountryId);
@@ -1286,7 +1298,7 @@ $("#UserCountrySelect").click(function () {
 
 //get cities based on countries for filters 
 function UserGetCitiesByCountry(CountryId) {
-    
+
     $.ajax({
         type: "GET",
         url: "/User/GetCitiesByCountry",
@@ -1332,7 +1344,7 @@ function validateNewPassword() {
     //} else if (newPass.length < 8) {
     //    $('#validateNewPass').text("New Password must be 8 characters long!");
     //} else {
-    else { 
+    else {
         $('#validateNewPass').text("");
     }
     return true;
@@ -1397,4 +1409,25 @@ $('.bi-eye-fill').on('click', function () {
     $(this).parent().find('input').attr('type', 'password');
     $(this).addClass('d-none');
     $(this).next().removeClass('d-none');
+})
+
+//contact us form
+$("#ContactUsBtn").on('click', function () {
+    var ContactName = $("#ContactName").val();
+    var ContactEmail = $('#ContactEmail').val();
+    var ContactSubject = $('#ContactSubject').val();
+    var ContactMessage = $('#ContactMessage').val();
+
+    $.ajax({
+        type: "POST",
+        url: "/User/ContactUs",
+        data: { ContactName: ContactName, ContactEmail: ContactEmail, ContactSubject: ContactSubject, ContactMessage: ContactMessage },
+        success: function (result) {
+
+        },
+        error: function (error) {
+
+        },
+    });
+
 })

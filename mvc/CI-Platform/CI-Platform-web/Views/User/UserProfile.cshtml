@@ -72,35 +72,44 @@
             </div>
         </div>
         <div class="col-lg-10 px-2 ps-4 my-4 my-xl-0">
-            <form method="post" enctype="multipart/form-data" >
+            <form method="post" enctype="multipart/form-data">
                 <input type="file" asp-for="UpdatedAvatar" class="d-none" id="profile-image-input" />
 
                 @*basic information*@
                 <div class="my-4 my-xl-0 row g-3">
                     <h2 class="pb-1 border-bottom"><span class="form-underline pb-1"> Basic Information</span></h2>
                     <div class="col-md-6">
-                        <label asp-for="FirstName" class="form-label">Name</label>
-                        <input asp-for="FirstName" type="text" placeholder="Enter your name" class="form-control" id="Name">
+                        <label class="form-label">Name</label>
+                        <input asp-for="FirstName" name="FirstName" type="text" placeholder="Enter your name" class="form-control" id="Name">
+                        <span asp-validation-for="FirstName" class="text-danger validate-text"></span>
                     </div>
                     <div class="col-md-6">
                         <label asp-for="Surname" class="form-label">Surname</label>
                         <input asp-for="Surname" type="text" placeholder="Enter your Surname" class="form-control" id="Surname">
+                        <span asp-validation-for="Surname"></span>
                     </div>
                     <div class="col-md-6">
                         <label asp-for="EmployeeId" for="EmployeeId" class="form-label">Employee Id</label>
                         <input asp-for="EmployeeId" type="text" placeholder="Enter your Employee Id" class="form-control" id="EmployeeId">
+                        <span asp-validation-for="EmployeeId"></span>
                     </div>
                     <div class="col-md-6">
-                        <label for="Manager" class="form-label">Manager</label>
-                        <input type="text" placeholder="Enter your Manager details" class="form-control" id="Manager">
+                        <label asp-for="Manager" class="form-label">Manager</label>
+                        <input asp-for="Manager" type="text" placeholder="Enter your Manager details" class="form-control" id="Manager">
+                        <span asp-validation-for="Manager"></span>
+
                     </div>
                     <div class="col-md-6">
-                        <label for="Title" class="form-label">Title</label>
-                        <input type="text" placeholder="Enter the Title" class="form-control" id="Title">
+                        <label asp-for="Title" class="form-label">Title</label>
+                        <input asp-for="Title" type="text" placeholder="Enter the Title" class="form-control" id="Title">
+                        <span asp-validation-for="Title"></span>
+
                     </div>
                     <div class="col-md-6">
                         <label asp-for="Department" class="form-label">Department</label>
                         <input asp-for="Department" type="text" placeholder="Enter your Department details" class="form-control" id="Department">
+                        <span asp-validation-for="Department"></span>
+
                     </div>
                     <div class="mb-3 col-12">
                         <label asp-for="ProfileText" class="form-label">My  Profile</label>
@@ -123,6 +132,7 @@
                                 <option value="@country.CountryId">@country.Name</option>
                             }
                         </select>
+                        <span asp-validation-for="Countries"></span>
                     </div>
                     <div class="col-md-6">
                         <label for="City" class="form-label ms-1">City</label>
@@ -137,6 +147,8 @@
                             }
 
                         </select>
+                        <span asp-validation-for="Cities"></span>
+
                     </div>
                 </div>
 
@@ -144,16 +156,18 @@
                 <div class="mb-5 row g-3">
                     <h2 class="pb-1 border-bottom"><span class="form-underline pb-1"> Professional Information</span></h2>
                     <div class="col-md-6">
-                        <label for="Avaliability" class="form-label ms-1">Avaliability</label>
-                        <select class="form-select" id="AvaliabilitySelect" aria-label="Select your Avaliability">
-                            <option value="">Daily</option>
-                            <option value="">Weekend</option>
-                            <option value="">Monthly</option>
+                        <label asp-for="Availibility" class="form-label ms-1">Avaliability</label>
+                        <select asp-for="Availibility" class="form-select" id="AvaliabilitySelect" name="Availibility" aria-label="Select your Avaliability">
+                            <option value="daily">daily</option>
+                            <option value="weekly">weekly</option>
+                            <option value="weekend">weekend</option>
+                            <option value="monthly">monthly</option>
                         </select>
                     </div>
                     <div class="col-md-6">
                         <label asp-for="LinkedInUrl" class="form-label">LinkedInUrl</label>
                         <input asp-for="LinkedInUrl" type="url" placeholder="Enter LinkedIn Url" class="form-control" id="LinkedInUrl">
+                        <span asp-validation-for="LinkedInUrl"></span>
                     </div>
                 </div>
 
@@ -161,18 +175,18 @@
                 <div class="mb-2 row g-3">
                     <h2 class="pb-1 border-bottom"><span class="form-underline pb-1"> My Skills</span></h2>
                     <div class="user-skills-container">
-                        @foreach (var skill in Model.UserSkills)
+                        @*  @foreach (var skill in Model.UserSkills)
                         {
 
-                            <label >@skill.Skill.SkillName</label>
-                        }
+                        <label >@skill.Skill.SkillName</label>
+                        }*@
                     </div>
                     <div class="col-12">
                         <button type="button" data-bs-toggle="modal" data-bs-target="#AddSkillsModal" class="btn btn-outline-secondary rounded-pill" data>Add Skills</button>
                     </div>
 
 
-                    <input type="hidden" asp-for="UpdatedUserSkills" id="UpdatedUserSkills"/>
+                    <input type="hidden" asp-for="UpdatedUserSkills" id="UpdatedUserSkills" />
                     <!-- Modal -->
                     <div class="modal fade" id="AddSkillsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
@@ -190,11 +204,11 @@
                                                     if (Model.UserSkills.Select(us => us.SkillId).Contains(skills.SkillId))
                                                     {
 
-                                                        <label  class="all-skills-label highlight">@skills.SkillName</label>
+                                                        <label class="all-skills-label highlight">@skills.SkillName</label>
                                                     }
                                                     else
                                                     {
-                                                        <label  class="all-skills-label">@skills.SkillName</label>
+                                                        <label class="all-skills-label">@skills.SkillName</label>
                                                     }
                                                 }
                                             </div>
@@ -211,7 +225,7 @@
                                                 {
                                                     if (Model.UserSkills.Select(us => us.SkillId).Contains(skills.SkillId))
                                                     {
-                                                        <label  class="all-skills-label">@skills.SkillName</label>
+                                                        <label class="all-skills-label">@skills.SkillName</label>
                                                     }
                                                 }
                                             </div>
@@ -234,3 +248,9 @@
         </div>
     </div>
 </div>
+
+@section scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

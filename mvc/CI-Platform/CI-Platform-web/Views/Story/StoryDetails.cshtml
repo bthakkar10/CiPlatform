@@ -104,7 +104,7 @@
         <div class="col-lg-6 ">
             <div class="d-flex justify-content-between p-4">
                 <div>
-                    <img class="rounded-circle " src="~/images/@Model.GetStoryDetails.User.Avtar" alt="user_icon" />
+                    <img class="rounded-circle " src="~/images/Upload/User/@Model.GetStoryDetails.User.Avtar" alt="user_icon" />
                     <div class="ms-3"> @Model.GetStoryDetails.User.FirstName  @Model.GetStoryDetails.User.LastName</div>
                     <div class="ms-2"> @Model.GetStoryDetails.User.City.CityName,  @Model.GetStoryDetails.User.Country.Name  </div>
                 </div>
@@ -145,12 +145,12 @@
                                                 <span class="me-4 ">@u.FirstName @u.LastName</span>
                                                 @if (u.StoryInviteToUsers.Any(i => i.ToUserId == u.UserId && story_id == i.StoryId))
                                                 {
-                                                    <span style="margin-left : 6%;" mailto:class="invited-@u.UserId"><button class="btn btn-success model-button model-invite-btn-story disabled" data-story-id="@story_id" data-from-user-id="@Id" data-to-user-id="@u.UserId">Already Invited</button></span>
+                                                    <span style="margin-left : 6%;" mailto:class="invited-@u.UserId"><button class="btn btn-success model-button model-invite-btn-story disabled" data-story-id="@story_id" data-from-user-id="@Id" data-to-user-id="@u.UserId" data-mission-id="@Model.GetStoryDetails.MissionId" data-sp-user-id="@Model.GetStoryDetails.User.UserId">Already Invited</button></span>
 
                                                 }
                                                 else
                                                 {
-                                                    <span style="margin-left : 6%;" mailto:class="invited-@u.UserId"><button class="btn btn-outline-primary model-button model-invite-btn-story" data-story-id="@story_id" data-from-user-id="@Id" data-to-user-id="@u.UserId">Invite</button></span>
+                                                    <span style="margin-left : 6%;" mailto:class="invited-@u.UserId"><button class="btn btn-outline-primary model-button model-invite-btn-story" data-story-id="@story_id" data-from-user-id="@Id" data-to-user-id="@u.UserId" data-mission-id="@Model.GetStoryDetails.MissionId" data-sp-user-id="@Model.GetStoryDetails.User.UserId">Invite</button></span>
                                                 }
                                                @* <span style="margin-left : 6%;" mailto:class="invited-@u.UserId"><button class="btn btn-outline-primary model-button model-invite-btn" data-mission-id="@mission_id" data-from-user-id="@Id" data-to-user-id="@u.UserId">Invite</button></span>
                                                 <span style="margin-left : 6%;" mailto:class="invited-@u.UserId"><button class="btn btn-outline-primary model-button model-invite-btn" data-mission-id="@mission_id" data-from-user-id="@Id" data-to-user-id="@u.UserId">Invite</button></span>

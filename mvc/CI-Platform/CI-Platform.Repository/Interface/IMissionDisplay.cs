@@ -13,5 +13,6 @@ namespace CI_Platform.Repository.Interface
        
         public IEnumerable<Mission> DisplayMissionCardsDemo(List<long> MissionIds);
 
+        
     }
 }

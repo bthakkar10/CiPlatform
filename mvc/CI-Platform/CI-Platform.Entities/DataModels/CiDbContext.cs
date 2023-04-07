@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using CI_Platform.Entities.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace CI_Platform.Entities.DataModels;
@@ -63,11 +62,6 @@ public partial class CiDbContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<UserSkill> UserSkills { get; set; }
-
-    public Task SendInvitationToCoWorker(long toUserId, long fromUserId, StoryDetailsViewModel vm)
-    {
-        throw new NotImplementedException();
-    }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Name=ConnectionStrings:DefaultConnection");
@@ -398,6 +392,7 @@ public partial class CiDbContext : DbContext
 
             entity.Property(e => e.MissionApplicationId).HasColumnName("mission_application_id");
             entity.Property(e => e.AppliedAt)
+                .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("applied_at");
             entity.Property(e => e.ApprovalStatus)
@@ -848,6 +843,10 @@ public partial class CiDbContext : DbContext
             entity.HasIndex(e => e.Email, "_user_email_unique").IsUnique();
 
             entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.Availability)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("availability");
             entity.Property(e => e.Avtar)
                 .HasMaxLength(2048)
                 .IsUnicode(false)
@@ -885,6 +884,10 @@ public partial class CiDbContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("linked_in_url");
+            entity.Property(e => e.Manager)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("manager");
             entity.Property(e => e.Password)
                 .HasMaxLength(255)
                 .IsUnicode(false)

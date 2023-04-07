@@ -12,7 +12,7 @@ namespace CI_Platform_web.Controllers
         public UserController(IUserProfile userProfile, IFilter filter)
         {
             _userProfile = userProfile;
-            _filter= filter;    
+            _filter = filter;
         }
         public IActionResult UserProfile()
         {
@@ -25,10 +25,10 @@ namespace CI_Platform_web.Controllers
                 var UserId = HttpContext.Session.GetString("Id");
                 long userId = Convert.ToInt64(UserId);
 
-                UserProfileViewModel vm =_userProfile.GetUserDetails(userId);
+                UserProfileViewModel vm = _userProfile.GetUserDetails(userId);
                 return View(vm);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View(ex);
             }
@@ -51,11 +51,11 @@ namespace CI_Platform_web.Controllers
             bool isPasswordChanged = _userProfile.ChangePassword(userId, oldPass, newPass);
             if (isPasswordChanged)
             {
-                return Ok(new {icon = "success", message= "Password updated successfully!!"});
+                return Ok(new { icon = "success", message = "Password updated successfully!!" });
             }
             else
             {
-                 return Ok(new { icon = "error", message = "Old Password is incorrect!!" });
+                return Ok(new { icon = "error", message = "Old Password is incorrect!!" });
             }
         }
 
@@ -65,9 +65,25 @@ namespace CI_Platform_web.Controllers
             var UserId = HttpContext.Session.GetString("Id");
             long userId = Convert.ToInt64(UserId);
 
-            var viewModal = vm;
-            _userProfile.EditUserProfile(userId, vm);
-            return RedirectToAction("EditUserProfile");
+
+            if (_userProfile.EditUserProfile(userId, vm))
+            {
+                TempData["success"] = "Your Profile is Updated Successfully!!";
+                return RedirectToAction("UserProfile");
+            }
+            else
+            {
+                TempData["error"] = "Something went wrong!! Please try again later!!";
+                return RedirectToAction("UserProfile");
+            }
         }
+
+        [HttpPost]
+        public IActionResult ContactUs()
+        {
+
+        }
+
     }
 }
+

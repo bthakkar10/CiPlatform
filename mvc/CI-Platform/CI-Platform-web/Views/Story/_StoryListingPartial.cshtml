@@ -38,19 +38,19 @@
                         <div class="card-body">
                             <h3 class="card-title">@obj.Title</h3>
                             <p class="card-text align-items-center">
-                          @*  @{
-                                var StoryDes = Html.Raw(obj.Description); 
+                           @{
+                                var StoryDes = obj.Description; 
                                 int maxLength = 100;
-                                    string description = StoryDes.Length > maxLength
+                                  string description = StoryDes.Length > maxLength
                                 ? StoryDes.Substring(0, maxLength) + "..."
                                     : @obj.Description;
-                                }*@
+                                }
 
-                              @Html.Raw(obj.Description)
+                            @description
                      
                             </p>
                             <div class="d-flex">
-                                <img class="rounded-circle story-card-icon" src="~/images/@obj.User.Avtar" />
+                            <img class="rounded-circle story-card-icon" src="~/images/Upload/User/@obj.User.Avtar" />
                                  <div class="story-card-icon-detail">
                                     <p>@obj.User.FirstName @obj.User.LastName</p>
                                     <p>@obj.CreatedAt</p>
