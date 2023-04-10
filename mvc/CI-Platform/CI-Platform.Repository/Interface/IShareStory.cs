@@ -26,5 +26,8 @@ namespace CI_Platform.Repository.Interface
         public bool isPublishedStory(long userId, long missionId);
 
         public void SubmitStory(ShareStoryViewModel vm, long userId);
+
+        public List<DateTime> GetMissionDates(long MissionId, long UserId);
+
     }
 }

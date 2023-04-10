@@ -299,6 +299,7 @@ a,li,button,h3 {
     justify-content: center;
     align-items: center;
     display: flex;
+    cursor: pointer
 }
 
     .card-btn:hover {
@@ -944,6 +945,25 @@ a,li,button,h3 {
     min-height: 100%;
 }
 /*user profile page ends*/
+/*Privacy policy page starts*/
+#PrivacyPolicyList .active {
+    font-weight: bold;
+}
+
+#PrivacyPolicyList a {
+    text-decoration: none;
+    color: #757575 !important;
+    display: flex;
+    justify-content: space-between;
+}
+
+    #PrivacyPolicyList a img {
+        height: 10px;
+        width: auto
+    }
+/*Privacy policy page ends*/
+
+
 @media(max-width: 1000px) {
     #list-view {
             display: none !important;

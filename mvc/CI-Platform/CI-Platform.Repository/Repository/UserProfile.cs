@@ -43,7 +43,7 @@ namespace CI_Platform.Repository.Repository
 
         public bool ChangePassword(long UserId, string oldPassword, string newPassword)
         {
-            var user = _db.Users.FirstOrDefault(u => u.UserId == UserId);
+            User user = _db.Users.FirstOrDefault(u => u.UserId == UserId);
             if (user.Password != oldPassword)
             {
                 return false;
@@ -55,6 +55,26 @@ namespace CI_Platform.Repository.Repository
                 _db.Update(user);
                 _db.SaveChanges();
                 return true;
+            }
+        }
+
+        public bool ContactUs(long UserId, string ContactSubject, string ContactMessage) 
+        {
+            if(ContactSubject != null && ContactMessage != null)
+            {
+                ContactU contact = new ContactU()
+                {
+                    UserId = UserId,
+                    Subject = ContactSubject,
+                    Message = ContactMessage
+                };
+                _db.Add(contact);
+                _db.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 

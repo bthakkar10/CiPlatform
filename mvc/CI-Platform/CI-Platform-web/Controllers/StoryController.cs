@@ -152,8 +152,24 @@ namespace CI_Platform_web.Controllers
             var Id = Convert.ToInt64(ViewBag.UserId);
             var userId = (long)Id;
 
-            Story story = _shareStory.GetDraftedStory(userId, missionId);
-            return Json(story);
+            Story DraftStory = _shareStory.GetDraftedStory(userId, missionId);
+            if (DraftStory != null)
+            {
+                return Json(DraftStory);
+            }
+            else if (_shareStory.isPublishedStory(userId, missionId) == true)
+            {
+                return Ok(new { icon = "error", message = "Volunteers can publish only one story per mission!!" });
+            }
+            else
+            {
+                List<DateTime> dates = _shareStory.GetMissionDates(missionId, userId);
+                return Json(dates);
+            }
+
+
+            //_shareStory.GetMissionDates(missionId, userId);
+
         }
 
         [HttpPost]
@@ -174,12 +190,13 @@ namespace CI_Platform_web.Controllers
             {
                 if (_shareStory.isPublishedStory(userId, viewmodel.MissionId) == true)
                 {
-                    return Ok(new { icon="error", message = "Volunteers can publish only one story per mission!!" });
+
+                    return Ok(new { icon = "error", message = "Volunteers can publish only one story per mission!!" });
                 }
                 else
                 {
                     _shareStory.AddNewStory(viewmodel, userId);
-                    return Ok(new { icon="success", message = "New Story is added successfully in draft mode!!" });
+                    return Ok(new { icon = "success", message = "New Story is added successfully in draft mode!!" });
                 }
             }
             else
@@ -203,7 +220,7 @@ namespace CI_Platform_web.Controllers
             var userId = (long)Id;
 
             _shareStory.SubmitStory(viewmodel, userId);
-            return Ok(new { icon="success", message = "Story is submitted successfully and will be published when admin approves!!" });
+            return Ok(new { icon = "success", message = "Story is submitted successfully and will be published when admin approves!!" });
         }
 
         public IActionResult StoryDetails(long MissionId, long UserId)
@@ -225,7 +242,7 @@ namespace CI_Platform_web.Controllers
             }
             catch (Exception ex)
             {
-               return View(ex);
+                return View(ex);
             }
         }
 
@@ -242,7 +259,7 @@ namespace CI_Platform_web.Controllers
 
             _db.StoryInvites.Add(storyInvite);
 
-            var StoryInviteLink = Url.Action("StoryDetails", "Story", new { MissionId = MissionId , UserId = SPUserId }, Request.Scheme);
+            var StoryInviteLink = Url.Action("StoryDetails", "Story", new { MissionId = MissionId, UserId = SPUserId }, Request.Scheme);
             viewmodel.InviteLink = StoryInviteLink;
 
             await _db.SaveChangesAsync();

@@ -10,14 +10,10 @@
 <div class="container">
     <h2 class="ms-4 mt-3">Share your Story</h2>
     <div id="error-message " class="text-warning"></div>
-    @*    <span id="storyId">@Model.StoryId</span>*@
+    
     <div class="ms-4 mt-5 text-secondary">
         <!-- first row -->
-        @{
-            var date = Model.GetMissionListofUser;
-            var start_date = "";
-            var end_date = "";
-        }
+        
         <div class="row row-cols-lg-3 row-cols-md-3 row-cols-sm-2 row-cols-1">
             <div class="col-md-4 col-sm-12">
                 <label for="" class="form-label ms-1">Select Mission</label>
@@ -28,9 +24,8 @@
 
                         @foreach (var mission_list in Model.GetMissionListofUser)
                         {
-                            start_date = @mission_list.Mission.StartDate.Value.ToShortDateString();
-                            end_date = @mission_list.Mission.EndDate.Value.ToShortDateString();
                             <option value="@mission_list.Mission.MissionId">@mission_list.Mission.Title</option>
+                             
                         }
                     }
                 </select>
@@ -46,9 +41,8 @@
             }
             <div class="col-md-4 col-sm-12">
                 <label asp-for="Date" class="form-label ms-1">Date</label>
-                @start_date
-                @end_date
-                <input asp-for="Date" type="date" id="date" required class="form-control" min="@start_date" max="@end_date">
+                
+                <input asp-for="Date" type="date" id="date" required class="form-control" >
                 <div><small class="text-danger validate-text" id="HelpBlock-date"></small></div>
             </div>
         </div>
@@ -57,7 +51,7 @@
         <label for="" class="form-label ms-1 mt-3">My Story</label>
         <textarea id="storyEditor" asp-for="StoryDescription" name="Description"></textarea>
         <script>
-                tinymce.init({
+            tinymce.init({
                 selector: '#storyEditor',
                 height: 250,
                 plugins: 'lists code emoticons',
@@ -66,54 +60,7 @@
                 content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
             });
         </script>
-        @*<div class="container border bg-light">
-        <div class="options py-2 m-2">
-        <!-- text format options -->
-        <button class="option-button format buttons" type="button" id="bold">
-        <i class="fa-solid fa-bold"></i>
-        </button>
-        <button id="italic" class="option-button format buttons" type="button">
-        <i class="fa-solid fa-italic"></i>
-        </button>
-        <button id="underline" class="option-button format buttons" type="button">
-        <i class="fa-solid fa-underline"></i>
-        </button>
-        <button id="strikethrough" class="option-button format buttons" type="button">
-        <i class="fa-solid fa-strikethrough"></i>
-        </button>
-        <button id="superscript" class="option-button script buttons" type="button">
-        <i class="fa-solid fa-superscript"></i>
-        </button>
-        <button id="subscript" class="option-button script buttons" type="button">
-        <i class="fa-solid fa-subscript"></i>
-        </button>
-        <!-- <button id="textformat" class="option-button format buttons" type="button" onclick="format()">
-        <i class="fa-solid fa-text-slash"></i>
-        </button> -->
-        <!-- end of text format -->
-        <!-- list -->
-        <button id="insertOrderedList" class="option-button buttons" type="button">
-        <div class="fa-solid fa-list-ol"></div>
-        </button>
-        <button id="insertUnorderedList" class="option-button buttons" type="button">
-        <div class="fa-solid fa-list"></div>
-        </button>
-
-        <!-- Undo / redo  -->
-        <button id="undo" class="option-button buttons" type="button">
-        <div class="fa-solid fa-rotate-left"></div>
-        </button>
-        <button id="redo" class="option-button buttons" type="button">
-        <div class="fa-solid fa-rotate-right"></div>
-        </button>
-        </div>
-
-        <!-- text-area -->
-
-        <div id="text-input" contenteditable="true" class="bg-white m-2 editor" style="overflow-y:scroll;"></div>
-        <div class="end"></div>
-        <!-- <div class="end"></div> -->
-        </div>*@
+        
         <div><small class="text-danger validate-text" id="HelpBlock-storyDes"></small></div>
         <!-- end of ckeditor -->
         <!-- video link -->

@@ -42,7 +42,7 @@ namespace CI_Platform.Repository.Repository
         //get the drafted story if there is any
         public Story GetDraftedStory(long userId, long missionId)
         {
-            Story? story =  _db.Stories.Where(s => s.MissionId == missionId && s.UserId == userId && s.Status == "DRAFT").Include(s => s.StoryMedia).FirstOrDefault();
+            Story? story =  _db.Stories.Where(s => s.MissionId == missionId && s.UserId == userId && s.Status == "DRAFT").Include(s => s.StoryMedia).Include(m=>m.Mission).FirstOrDefault();
             return story;
         }
 
@@ -213,6 +213,23 @@ namespace CI_Platform.Repository.Repository
                 AddOrRemoveStoryImages(existingStory.StoryId, vm.Images);
             }
 
+        }
+
+        public List<DateTime> GetMissionDates(long MissionId, long UserId)
+        {
+            List<DateTime> result = new List<DateTime>();
+
+            var mission = _db.Missions.Where(m=>m.MissionId == MissionId).Select(m=> new {m.StartDate, m.EndDate}).FirstOrDefault();
+
+            if(mission.StartDate != null )
+            {
+                result.Add(mission.StartDate.Value);
+            }
+            if(mission.EndDate != null )
+            {
+                result.Add(mission.EndDate.Value);
+            }
+            return result;
         }
     }
 }

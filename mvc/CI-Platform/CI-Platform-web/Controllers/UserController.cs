@@ -79,11 +79,23 @@ namespace CI_Platform_web.Controllers
         }
 
         [HttpPost]
-        public IActionResult ContactUs()
+        public IActionResult ContactUs(string ContactSubject, string ContactMessage)
         {
 
-        }
+            var UserId = HttpContext.Session.GetString("Id");
+            long userId = Convert.ToInt64(UserId);
 
+            //var userId = long.TryParse(HttpContext.Session.GetString("userId"), out var result) ? result : 0;
+            bool isMessageSent = _userProfile.ContactUs(userId, ContactSubject, ContactMessage);
+            if (isMessageSent)
+            {
+                return Ok(new { icon = "success", message = "Your message is sent successfully!!" });
+            }
+            else
+            {
+                return Ok(new { icon = "error", message = "Some error occured!! Please try again later!!" });
+            }
+        }
     }
 }
 

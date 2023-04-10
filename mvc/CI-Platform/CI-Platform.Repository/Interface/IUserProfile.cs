@@ -14,6 +14,9 @@ namespace CI_Platform.Repository.Interface
 
         public bool ChangePassword(long UserId, string oldPassword, string newPassword);
 
+        public bool ContactUs(long UserId, string ContactSubject, string ContactMessage);
+
+
         public bool EditUserProfile(long UserId, UserProfileViewModel vm);
     }
 }

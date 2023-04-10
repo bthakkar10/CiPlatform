@@ -916,8 +916,16 @@ $('#img-input').on('change', function (e) {
 });
 
 
+//change date format 
+function ChangeDateFormat(date) {
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+}
+
 //to show story details when in draft
-$('#missionTitle').click(function () {
+$('#missionTitle').change(function () {
     var missionId = $(this).val();
 
     $.ajax({
@@ -925,14 +933,22 @@ $('#missionTitle').click(function () {
         url: '/Story/GetDraftedStory',
         data: { missionId: missionId },
         success: function (result) {
-            if (result != null) {
+
+            if (result.title != null) {
+
+                var start_date = new Date(result.mission.startDate);
+                var end_date = new Date(result.mission.endDate);
+
+                $('#date').prop('min', ChangeDateFormat(start_date));
+                $('#date').prop('max', ChangeDateFormat(end_date));
+
                 $('#StoryTitle').val(result.title);
 
                 const date = new Date(result.createdAt);
-                const yyyy = date.getFullYear();
-                const mm = String(date.getMonth() + 1).padStart(2, '0');
-                const dd = String(date.getDate()).padStart(2, '0');
-                const formattedDate = `${yyyy}-${mm}-${dd}`;
+                var formattedDate = ChangeDateFormat(date);
+
+
+
 
                 $('#date').val(formattedDate);
                 tinymce.get('storyEditor').setContent(result.description);
@@ -972,12 +988,35 @@ $('#missionTitle').click(function () {
                 $('#previewButton').removeClass('disabled');
                 $('#submitButton').removeClass('disabled');
             }
+            else if (result.icon == "error") {
+                console.log(result)
+                swal.fire({
+                    position: 'top-end',
+                    icon: result.icon,
+                    title: result.message,
+                    showConfirmButton: false,
+                    timer: 4000
+                });
+                $('#previewButton').addClass('disabled');
+                $('#submitButton').addClass('disabled');
+            }
             else {
+
+                console.log(result)
+                var start_date = new Date(result[0]);
+                var end_date = new Date(result[1]);
+
+                $('#date').prop('min', ChangeDateFormat(start_date));
+                $('#date').prop('max', ChangeDateFormat(end_date));
+
+
                 $('#StoryTitle').val(' ');
                 $('#date').val(' ');
                 tinymce.get('storyEditor').setContent('');
                 $('#videoUrls').val(' ');
                 $('#img-output').empty();
+                $('#previewButton').addClass('disabled');
+                $('#submitButton').addClass('disabled');
             }
         },
         error: function (error) {
@@ -1134,14 +1173,13 @@ function validateYoutubeUrls() {
             $('#videoUrls').focus();
             return false;
         }
-        else if (url.length <= 20) {
+        else if (url.length > 20) {
             $("#HelpBlock-urls").text("Maximum 20 URLs are allowed!!");
             return false;
         }
         else {
-            $("#HelpBlock-urls").text(" ");
+            $("#HelpBlock-urls").text("");
             return true;
-
         }
     }
 
@@ -1179,6 +1217,7 @@ function validateStoryTitle() {
 
 $('#date').on('blur', validateDate);
 function validateDate() {
+    
     if ($('#date').val() === '') {
         $("#HelpBlock-date").text("Date is a required field!!");
         $('#date').focus();
@@ -1413,21 +1452,87 @@ $('.bi-eye-fill').on('click', function () {
 
 //contact us form
 $("#ContactUsBtn").on('click', function () {
-    var ContactName = $("#ContactName").val();
-    var ContactEmail = $('#ContactEmail').val();
+    let isValid = false;
+    if (ValidateContactSubject() == true && ValidateContactMessage() == true) {
+        isValid = true;
+    }
+    if (isValid) {
+        var ContactSubject = $('#ContactSubject').val();
+        var ContactMessage = $('#ContactMessage').val();
+        $.ajax({
+            type: "POST",
+            url: "/User/ContactUs",
+            data: { ContactSubject: ContactSubject, ContactMessage: ContactMessage },
+            success: function (result) {
+                swal.fire({
+                    position: 'top-end',
+                    icon: result.icon,
+                    title: result.message,
+                    showConfirmButton: false,
+                    timer: 4000
+                })
+            },
+            error: function (error) {
+                console.log(error);
+            },
+        });
+    }
+})
+//contact us form validations 
+$("#ContactSubject").on('blur', ValidateContactSubject);
+function ValidateContactSubject() {
     var ContactSubject = $('#ContactSubject').val();
+    if (ContactSubject == "" || ContactSubject == null) {
+        $('#validateSubject').text("This is required field");
+        $('#ContactSubject').focus();
+        return false;
+    }
+    else if (ContactSubject.length > 255) {
+        $('#validateSubject').text("Maximum 255 characters are allowed!!");
+        $('#ContactSubject').focus();
+        return false;
+    }
+    else {
+        $('#validateSubject').text("");
+        return true;
+    }
+}
+$("#ContactMessage").on('blur', ValidateContactMessage);
+function ValidateContactMessage() {
     var ContactMessage = $('#ContactMessage').val();
-
+    if (ContactMessage == "" || ContactMessage == null) {
+        $('#ValidateMessage').text("This is required field");
+        $('#ContactMessage').focus();
+        return false;
+    }
+    else if (ContactMessage.length > 255) {
+        $('#ValidateMessage').text("Maximum 6000 characters are allowed!!");
+        $('#ContactMessage').focus();
+        return false;
+    }
+    else {
+        $('#ValidateMessage').text("");
+        return true;
+    }
+}
+//volunteering timesheet add time mission
+$(".TimesheetSelection").change(function () {
+    var MissionId = $(this).val();
     $.ajax({
-        type: "POST",
-        url: "/User/ContactUs",
-        data: { ContactName: ContactName, ContactEmail: ContactEmail, ContactSubject: ContactSubject, ContactMessage: ContactMessage },
+        type: 'GET',
+        url: '/VolunteeringTimesheet/GetDates',
+        data: { MissionId: MissionId },
         success: function (result) {
+            var start_date = new Date(result[0]);
+            var end_date = new Date(result[1]);
 
+            $('#GoalDate').prop('min', ChangeDateFormat(start_date));
+            $('#GoalDate').prop('max', ChangeDateFormat(end_date));
+            $('#TimeDate').prop('min', ChangeDateFormat(start_date));
+            $('#TimeDate').prop('max', ChangeDateFormat(end_date));
         },
         error: function (error) {
-
+            console.log(error);
         },
     });
-
-})
+});

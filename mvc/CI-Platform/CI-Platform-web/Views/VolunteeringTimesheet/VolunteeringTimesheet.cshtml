@@ -1,0 +1,345 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Volunteering Timesheet";
+
+}
+@*@{
+    var UserId = Convert.ToInt64(ViewBag.UserId);
+}*@
+
+@model CI_Platform.Entities.ViewModels.TimesheetViewModel
+<div class="container">
+    <h2 class="mt-5 mb-3 mx-2">Volunteering Timesheet </h2>
+    <div class="row">
+        @* volunteering time timesheet*@
+
+        <div class="col-md-6">
+            <div class="card mt-3" style="min-height:50vh;">
+                <div class="card-body p-2">
+                    <div class="card-title my-4 d-flex justify-content-between ">
+                        <div>Volunteering Hours</div>
+                        <button class="card-btn py-1 px-2" data-bs-toggle="modal"
+                                data-bs-target="#TimeAddEntryModal">
+                            <i class="bi bi-plus"></i>&nbsp;&nbsp;
+                            Add
+                        </button>
+                        <!-- Modal for add time entry modal  -->
+                        <div class="modal fade" id="TimeAddEntryModal" tabindex="-1"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <p class="modal-title fs-5" id="exampleModalLabel">Please Input below Volunteering Hours</p>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post">
+                                            <div class="mb-3">
+                                                <label for="MissionNameLabel" class="form-label">Mission</label>
+                                                <select asp-for="TimeViewModel.MissionId" type="text" class="form-select " id="AddTimeMissionSelect" value="">
+                                                    <option>Select Mission Title</option>
+                                                    @if (Model.GetMissionTitles.Any())
+                                                    {
+                                                        @foreach (var mission_list in Model.GetMissionTitles.Where(m => m.Mission.MissionType == "Time"))
+                                                        {
+                                                            <option  value="@mission_list.Mission.MissionId">@mission_list.Mission.Title</option>
+
+                                                        }
+                                                    }
+
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label asp-for="TimeViewModel.TimeDate" for="" class="form-label">Date Volunteered</label>
+                                                <input asp-for="TimeViewModel.TimeDate" type="date" class="form-control" id="TimeDate" placeholder="Enter Date">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label asp-for="TimeViewModel.TimeHours" for="MissionHours" class="form-label">Hours</label>
+                                                    <input asp-for="TimeViewModel.TimeHours" type="text" class="form-control" placeholder="Enter Spent Hours" aria-label="First name">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label asp-for="TimeViewModel.TimeMinutes" for="MissionMinutes" class="form-label">Hours</label>
+                                                    <input asp-for="TimeViewModel.TimeMinutes" type="text" class="form-control" placeholder="Enter Spent Minutes" aria-label="First name">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label asp-for="TimeViewModel.TimeMessage" for="exampleFormControlTextarea1" class="form-label">Message</label>
+                                                <textarea asp-for="TimeViewModel.TimeMessage" class="form-control" placeholder="Enter Your Message" id="TimeMessageTextarea" rows="3"></textarea>
+                                            </div>
+                                            <div class="mb-3 d-flex justify-content-end">
+                                                <button type="button" class=" me-3 btn rounded-pill btn-outline-secondary"
+                                                        data-bs-dismiss="modal">
+                                                    Cancel
+                                                </button>
+                                                <button type="submit" asp-controller="VolunteeringTimesheet" asp-action="AddTimeMission" class="btn card-btn">Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="time-mission-entry-card table-responsive">
+                        <table id="myTable" class="table  align-middle">
+                            <thead>
+                                <tr>
+                                    <td>Mission</td>
+                                    <td>Date</td>
+                                    <td>Hours</td>
+                                    <td>Minutes</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Environmental Conservation</td>
+                                    <td>22/03/2023</td>
+                                    <td>1hr</td>
+                                    <td>30mins</td>
+                                    <td>
+                                        <i style="color: #F88634;" class="bi bi-pencil-square" data-bs-toggle="modal"
+                                           data-bs-target="#TimeEditEntryModal"></i>
+                                        <!-- Modal for edit time entry modal  -->
+
+                                        <div class="modal fade" id="TimeEditEntryModal" tabindex="-1"
+                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <p class="modal-title fs-5" id="exampleModalLabel">Please Edit below Volunteering Hours</p>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label for="MissionNameLabel" class="form-label">Mission</label>
+                                                            <select type="text" class="form-select" id="MissionName" value="" disabled readonly>
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="" class="form-label">Date Volunteered</label>
+                                                            <input type="date" class="form-control" id="TimeDate" placeholder="Enter Date">
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label for="MissionHours" class="form-label">Hours</label>
+                                                                <input type="text" class="form-control" placeholder="Enter Spent Hours" aria-label="First name">
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="MissionMinutes" class="form-label">Hours</label>
+                                                                <input type="text" class="form-control" placeholder="Enter Spent Minutes" aria-label="First name">
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="exampleFormControlTextarea1" class="form-label">Message</label>
+                                                            <textarea class="form-control" placeholder="Enter Your Message" id="TimeMessageTextarea" rows="3"></textarea>
+                                                        </div>
+                                                        <div class="mb-3 d-flex justify-content-end">
+                                                            <button type="button" class=" me-3 btn rounded-pill btn-outline-secondary"
+                                                                    data-bs-dismiss="modal">
+                                                                Cancel
+                                                            </button>
+                                                            <button type="button" class="btn card-btn">Submit</button>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <i class="bi bi-trash"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        @* volunteering goal timesheet*@
+        <div class="col-md-6">
+            <div class="card mt-3" style="min-height:50vh;">
+                <div class="card-body p-2">
+                    <div class="card-title my-4 d-flex justify-content-between">
+                        <div>Volunteering Goal</div>
+                        <button class="card-btn py-1 px-2" data-bs-toggle="modal"
+                                data-bs-target="#GoalAddEntryModal">
+                            <i class="bi bi-plus"></i>&nbsp;&nbsp;
+                            Add
+                        </button>
+                        <!-- Modal for add goal entry -->
+                        <div class="modal fade" id="GoalAddEntryModal" tabindex="-1"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <p class="modal-title fs-5" id="exampleModalLabel">Please Input below Volunteering Goal</p>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="MissionNameLabel" class="form-label">Mission</label>
+                                            <select type="text" class="form-select TimesheetSelection" id="GoalAddSelection" value="">
+                                                @if (Model.GetMissionTitles.Any())
+                                                {
+                                                    @foreach (var mission_list in Model.GetMissionTitles.Where(m => m.Mission.MissionType == "Goal"))
+                                                    {
+                                                        <option value="@mission_list.Mission.MissionId">@mission_list.Mission.Title</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="GoalActionsLabel" class="form-label">Actions</label>
+                                            <input type="text" class="form-control" id="GoalActions" placeholder="Enter Actions">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="" class="form-label">Date Volunteered</label>
+                                            <input type="date" class="form-control" id="GoalDate" placeholder="Enter Date">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlTextarea1" class="form-label">Message</label>
+                                            <textarea class="form-control" placeholder="Enter Your Message" id="GoalMessageTextarea" rows="3"></textarea>
+                                        </div>
+                                        <div class="mb-3 d-flex justify-content-end">
+                                            <button type="button" class=" me-3 btn rounded-pill btn-outline-secondary"
+                                                    data-bs-dismiss="modal">
+                                                Cancel
+                                            </button>
+                                            <button type="button" class="btn card-btn">Submit</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="goal-mission-entry-card table-responsive ">
+                        <table class="table align-middle">
+                            <thead>
+                                <tr>
+                                    <td>Mission</td>
+                                    <td>Date</td>
+                                    <td>Action</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Plantation</td>
+                                    <td>27/04/2023</td>
+                                    <td>0</td>
+                                    <td>
+                                        <i style="color: #F88634;" class="bi bi-pencil-square" data-bs-toggle="modal"
+                                           data-bs-target="#GoalEditEntryModal"></i>
+
+                                        <!-- Modal for edit  goal entry -->
+
+                                        <div class="modal fade" id="GoalEditEntryModal" tabindex="-1"
+                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <p class="modal-title fs-5" id="exampleModalLabel">Please Edit below Volunteering Goal</p>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label for="MissionNameLabel" class="form-label">Mission</label>
+                                                            <select type="text" class="form-select" id="MissionName" value="" disabled readonly>
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="GoalActionsLabel" class="form-label">Actions</label>
+                                                            <input type="text" class="form-control" id="GoalActions" placeholder="Enter Actions">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="" class="form-label">Date Volunteered</label>
+                                                            <input type="date" class="form-control" id="GoalDate" placeholder="Enter Date">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="exampleFormControlTextarea1" class="form-label">Message</label>
+                                                            <textarea class="form-control" placeholder="Enter Your Message" id="GoalMessageTextarea" rows="3"></textarea>
+                                                        </div>
+                                                        <div class="mb-3 d-flex justify-content-end">
+                                                            <button type="button" class=" me-3 btn rounded-pill btn-outline-secondary"
+                                                                    data-bs-dismiss="modal">
+                                                                Cancel
+                                                            </button>
+                                                            <button type="button" class="btn card-btn">Submit</button>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <i class="bi bi-trash"></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Education</td>
+                                    <td>05/02/2023</td>
+                                    <td>1</td>
+                                    <td>
+                                        <i style="color: #F88634;" class="bi bi-pencil-square" data-bs-toggle="modal"
+                                           data-bs-target="#GoalEditEntryModal"></i>
+                                        <div class="modal fade" id="GoalEditEntryModal" tabindex="-1"
+                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <p class="modal-title fs-5" id="exampleModalLabel">Please Edit below Volunteering Goal</p>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label for="MissionNameLabel" class="form-label">Mission</label>
+                                                            <select type="text" class="form-select" id="MissionName" value="" disabled readonly>
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="GoalActionsLabel" class="form-label">Actions</label>
+                                                            <input type="text" class="form-control" id="GoalActions" placeholder="Enter Actions">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="" class="form-label">Date Volunteered</label>
+                                                            <input type="date" class="form-control" id="GoalDate" placeholder="Enter Date">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="exampleFormControlTextarea1" class="form-label">Message</label>
+                                                            <textarea class="form-control" placeholder="Enter Your Message" id="GoalMessageTextarea" rows="3"></textarea>
+                                                        </div>
+                                                        <div class="mb-3 d-flex justify-content-end">
+                                                            <button type="button" class=" me-3 btn rounded-pill btn-outline-secondary"
+                                                                    data-bs-dismiss="modal">
+                                                                Cancel
+                                                            </button>
+                                                            <button type="button" class="btn card-btn">Submit</button>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <i class="bi bi-trash"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

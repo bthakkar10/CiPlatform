@@ -48,6 +48,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxfUmVjZW50Vm9sdW50ZWVycy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/PrivacyPolicy/PrivacyPolicy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJpdmFjeVBvbGljeVxQcml2YWN5UG9saWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -90,6 +94,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/User/UserProfile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxVc2VyUHJvZmlsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/VolunteeringTimesheet/VolunteeringTimesheet.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVm9sdW50ZWVyaW5nVGltZXNoZWV0XFZvbHVudGVlcmluZ1RpbWVzaGVldC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/_ViewImports.cshtml]
