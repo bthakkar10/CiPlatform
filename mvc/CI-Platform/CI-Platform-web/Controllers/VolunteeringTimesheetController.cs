@@ -18,7 +18,7 @@ namespace CI_Platform_web.Controllers
             _shareStory = shareStory;
         }
 
-        
+
         public IActionResult VolunteeringTimesheet()
         {
             try
@@ -34,6 +34,7 @@ namespace CI_Platform_web.Controllers
                 long UserId = Convert.ToInt64(userId);
                 var vm = new TimesheetViewModel();
                 vm.GetMissionTitles = _timesheet.GetMissionTitles(UserId);
+                vm.GetTimesheetData = _timesheet.GetTimesheetData(UserId);
                 return View(vm);
             }
             catch (Exception ex)
@@ -51,21 +52,163 @@ namespace CI_Platform_web.Controllers
             return Json(dates);
         }
 
-        public IActionResult AddTimeMission(TimeViewModel vm)
+        public IActionResult AddOrUpdateTimesheetData(TimesheetViewModel vm)
         {
             var userId = HttpContext.Session.GetString("Id");
             long UserId = Convert.ToInt64(userId);
 
-            if (_timesheet.AddTimeBasedEntry(vm, UserId))
+            //for time based mission entries 
+            if (vm.TimeViewModel != null)
             {
-                TempData["success"] = "Your Data is entered successfully!!";
-                return RedirectToAction("VolunteeringTimesheet");
+                //to check for today's date validation
+                if (!vm.TimeViewModel.IsValid())
+                    {
+                        TempData["error"] = vm.TimeViewModel.TimeErrorMessage;
+                        return RedirectToAction("VolunteeringTimesheet");
+                    }
+                //to add 
+                if (vm.TimeViewModel.TimesheetId == 0 || vm.TimeViewModel.TimesheetId == null)
+                {
+                    
+                    if (_timesheet.AddTimeBasedEntry(vm.TimeViewModel, UserId) == "success")
+                    {
+                        TempData["success"] = "Your Data is entered successfully!!";
+                        return RedirectToAction("VolunteeringTimesheet");
+                    }
+                    else if(_timesheet.AddTimeBasedEntry(vm.TimeViewModel, UserId) == "Exists")
+                    {
+                        TempData["error"] = "Ypu already have entered timesheet for this date!!";
+                        return RedirectToAction("VolunteeringTimesheet");
+                    }
+                    else
+                    {
+                        TempData["error"] = "Something went wrong!! Please try again later!!";
+                        return RedirectToAction("VolunteeringTimesheet");
+                    }
+                }
+                //to update
+                else
+                {
+                    if (_timesheet.UpdateTimeBasedEntry(vm.TimeViewModel))
+                    {
+                        TempData["success"] = "Your Data is updated successfully!!";
+                        return RedirectToAction("VolunteeringTimesheet");
+                    }
+                    else
+                    {
+                        TempData["error"] = "Something went wrong!! Please try again later!!";
+                        return RedirectToAction("VolunteeringTimesheet");
+                    }
+                }
+            }
+            //for goal based missions timesheet entries
+            else if (vm.GoalViewModel != null)
+            {
+                //to check today's date validation 
+                if (!vm.GoalViewModel.IsValid())
+                {
+                    TempData["error"] = vm.GoalViewModel.TimeErrorMessage;
+                    return RedirectToAction("VolunteeringTimesheet");
+                }
+                //to add 
+                if (vm.GoalViewModel.TimesheetId == 0 || vm.GoalViewModel.TimesheetId == null)
+                {
+
+                    if (_timesheet.AddGoalBasedEntry(vm.GoalViewModel, UserId) == "success")
+                    {
+                        TempData["success"] = "Your Data is entered successfully!!";
+                        return RedirectToAction("VolunteeringTimesheet");
+                    }
+                    else if (_timesheet.AddGoalBasedEntry(vm.GoalViewModel, UserId) == "Exists")
+                    {
+                        TempData["error"] = "You already have entered timesheet for this date!!";
+                        return RedirectToAction("VolunteeringTimesheet");
+                    }
+                    else
+                    {
+                        TempData["error"] = "Something went wrong!! Please try again later!!";
+                        return RedirectToAction("VolunteeringTimesheet");
+                    }
+                }
+                //to update 
+                else
+                {
+                    if (_timesheet.UpdateGoalBasedEntry(vm.GoalViewModel))
+                    {
+                        TempData["success"] = "Your Data is updated successfully!!";
+                        return RedirectToAction("VolunteeringTimesheet");
+                    }
+                    else
+                    {
+                        TempData["error"] = "Something went wrong!! Please try again later!!";
+                        return RedirectToAction("VolunteeringTimesheet");
+                    }
+                }
+            }
+            return RedirectToAction("VolunteeringTimesheet");
+        }
+
+
+
+        //displays the data when edit button is clicked 
+        [HttpGet]
+        public IActionResult GetDataOnEdit(long TimeSheetId)
+        {
+            if (_timesheet.GetDataOnEdit(TimeSheetId) != null)
+            {
+                Timesheet TsData = _timesheet.GetDataOnEdit(TimeSheetId);
+                return Json(TsData);
+            }
+            else
+            {
+                return Ok(new { icon = "error", message = "Some error occured!! Please try again later!!" });
+            }
+        }
+
+        public IActionResult DeleteTimesheetData(long TimeSheetId)
+        {
+            if(TimeSheetId != null)
+            {
+                if (_timesheet.DeleteTimeBasedEntry(TimeSheetId))
+                {
+                    TempData["success"] = "Your Data is deleted successfully!!";
+                    return RedirectToAction("VolunteeringTimesheet");
+                }
+                else
+                {
+                    TempData["error"] = "Something went wrong!! Please try again later!!";
+                    return RedirectToAction("VolunteeringTimesheet");
+                }
             }
             else
             {
                 TempData["error"] = "Something went wrong!! Please try again later!!";
                 return RedirectToAction("VolunteeringTimesheet");
             }
+
+        }
+
+        public IActionResult DeleteGoalTimesheetData(long TimeSheetId)
+        {
+            if (TimeSheetId != null)
+            {
+                if (_timesheet.DeleteGoalBasedEntry(TimeSheetId))
+                {
+                    TempData["success"] = "Your Data is deleted successfully!!";
+                    return RedirectToAction("VolunteeringTimesheet");
+                }
+                else
+                {
+                    TempData["error"] = "Something went wrong!! Please try again later!!";
+                    return RedirectToAction("VolunteeringTimesheet");
+                }
+            }
+            else
+            {
+                TempData["error"] = "Something went wrong!! Please try again later!!";
+                return RedirectToAction("VolunteeringTimesheet");
+            }
+
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

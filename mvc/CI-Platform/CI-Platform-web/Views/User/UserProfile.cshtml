@@ -85,30 +85,30 @@
                     </div>
                     <div class="col-md-6">
                         <label asp-for="Surname" class="form-label">Surname</label>
-                        <input asp-for="Surname" type="text" placeholder="Enter your Surname" class="form-control" id="Surname">
-                        <span asp-validation-for="Surname"></span>
+                        <input asp-for="Surname" name="Surname" type="text" placeholder="Enter your Surname" class="form-control" id="Surname">
+                        <span asp-validation-for="Surname" class="text-danger validate-text"></span>
                     </div>
                     <div class="col-md-6">
                         <label asp-for="EmployeeId" for="EmployeeId" class="form-label">Employee Id</label>
-                        <input asp-for="EmployeeId" type="text" placeholder="Enter your Employee Id" class="form-control" id="EmployeeId">
-                        <span asp-validation-for="EmployeeId"></span>
+                        <input asp-for="EmployeeId" name="EmployeeId" type="text" placeholder="Enter your Employee Id" class="form-control" id="EmployeeId">
+                        <span asp-validation-for="EmployeeId" class="text-danger validate-text"></span>
                     </div>
                     <div class="col-md-6">
                         <label asp-for="Manager" class="form-label">Manager</label>
-                        <input asp-for="Manager" type="text" placeholder="Enter your Manager details" class="form-control" id="Manager">
-                        <span asp-validation-for="Manager"></span>
+                        <input asp-for="Manager" name="Manager" type="text" placeholder="Enter your Manager details" class="form-control" id="Manager">
+                        <span asp-validation-for="Manager" class="text-danger validate-text"></span>
 
                     </div>
                     <div class="col-md-6">
                         <label asp-for="Title" class="form-label">Title</label>
-                        <input asp-for="Title" type="text" placeholder="Enter the Title" class="form-control" id="Title">
-                        <span asp-validation-for="Title"></span>
+                        <input asp-for="Title" name="Title" type="text" placeholder="Enter the Title" class="form-control" id="Title">
+                        <span asp-validation-for="Title" class="text-danger validate-text"></span>
 
                     </div>
                     <div class="col-md-6">
                         <label asp-for="Department" class="form-label">Department</label>
-                        <input asp-for="Department" type="text" placeholder="Enter your Department details" class="form-control" id="Department">
-                        <span asp-validation-for="Department"></span>
+                        <input asp-for="Department" name="Department" type="text" placeholder="Enter your Department details" class="form-control" id="Department">
+                        <span asp-validation-for="Department" class="text-danger validate-text"></span>
 
                     </div>
                     <div class="mb-3 col-12">
@@ -132,7 +132,7 @@
                                 <option value="@country.CountryId">@country.Name</option>
                             }
                         </select>
-                        <span asp-validation-for="Countries"></span>
+                        <span asp-validation-for="Countries" class="text-danger validate-text"></span>
                     </div>
                     <div class="col-md-6">
                         <label for="City" class="form-label ms-1">City</label>
@@ -147,7 +147,7 @@
                             }
 
                         </select>
-                        <span asp-validation-for="Cities"></span>
+                        <span asp-validation-for="Cities" class="text-danger validate-text"></span>
 
                     </div>
                 </div>
@@ -166,8 +166,8 @@
                     </div>
                     <div class="col-md-6">
                         <label asp-for="LinkedInUrl" class="form-label">LinkedInUrl</label>
-                        <input asp-for="LinkedInUrl" type="url" placeholder="Enter LinkedIn Url" class="form-control" id="LinkedInUrl">
-                        <span asp-validation-for="LinkedInUrl"></span>
+                        <input asp-for="LinkedInUrl" name="LinkedInUrl" type="url" placeholder="Enter LinkedIn Url" class="form-control" id="LinkedInUrl">
+                        <span asp-validation-for="LinkedInUrl" class="text-danger validate-text"></span>
                     </div>
                 </div>
 

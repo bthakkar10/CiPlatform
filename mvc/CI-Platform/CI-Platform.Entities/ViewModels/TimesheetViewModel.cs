@@ -13,6 +13,8 @@ namespace CI_Platform.Entities.ViewModels
 
         public TimeViewModel TimeViewModel { get; set; }
         public GoalViewModel GoalViewModel { get; set; }
+
+        public List<Timesheet> GetTimesheetData { get; set; } = null;
        
     }
 

@@ -12,7 +12,23 @@ namespace CI_Platform.Repository.Interface
     {
         public List<MissionApplication> GetMissionTitles(long UserId);
 
-        public bool AddTimeBasedEntry(TimeViewModel vm, long UserId);
+        public string AddTimeBasedEntry(TimeViewModel vm, long UserId);
+
+        public string AddGoalBasedEntry(GoalViewModel vm, long UserId);
+
+        public Timesheet GetDataOnEdit(long TimeSheetId);
+
+        public List<Timesheet> GetTimesheetData(long UserId);
+
+        public bool UpdateGoalBasedEntry(GoalViewModel vm);
+
+        public bool UpdateTimeBasedEntry(TimeViewModel vm);
+
+        public bool DeleteTimeBasedEntry(long TimeSheetId);
+
+        public bool DeleteGoalBasedEntry(long TimeSheetId);
+
+
 
     }
 }

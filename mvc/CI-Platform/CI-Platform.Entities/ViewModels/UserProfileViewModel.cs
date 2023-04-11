@@ -37,7 +37,7 @@ namespace CI_Platform.Entities.ViewModels
 
         public string? WhyIVolunteer { get; set; }
 
-        [Url (ErrorMessage = "Only LinkedIn Urls are allowed!!")]
+        [RegularExpression(@"^https:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9-]+$", ErrorMessage = "Please enter a valid LinkedIn URL.")]
         public string? LinkedInUrl { get; set; }
 
         

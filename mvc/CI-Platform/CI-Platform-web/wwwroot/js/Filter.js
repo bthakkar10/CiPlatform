@@ -948,8 +948,6 @@ $('#missionTitle').change(function () {
                 var formattedDate = ChangeDateFormat(date);
 
 
-
-
                 $('#date').val(formattedDate);
                 tinymce.get('storyEditor').setContent(result.description);
                 /*  $('#storyEditor').text(result.description);*/
@@ -1515,7 +1513,7 @@ function ValidateContactMessage() {
         return true;
     }
 }
-//volunteering timesheet add time mission
+//volunteering timesheet date validations according to mission selection 
 $(".TimesheetSelection").change(function () {
     var MissionId = $(this).val();
     $.ajax({
@@ -1536,3 +1534,66 @@ $(".TimesheetSelection").change(function () {
         },
     });
 });
+
+//timesheet edit button
+$(document).on('click','.EditButtonDataFetch',function ()
+{
+    var TimeSheetId = $(this).data('timesheet-id');
+   
+    $.ajax({
+        type: 'GET',
+        url: '/VolunteeringTimesheet/GetDataOnEdit',
+        data: { TimeSheetId: TimeSheetId },
+        success: function (result) {
+            if (result.mission.title != null) {
+               
+
+                console.log(result)
+                
+                $("#GoalMissionSelectionDropdown").text(result.mission.title)
+                const date = new Date(result.dateVolunteered);
+                var formattedDate = ChangeDateFormat(date);
+                $('#GoalDate').val(formattedDate);
+                $('#GoalActions').val(result.action)
+                $('#GoalMessageTextarea').text(result.notes)
+
+                $("#TimeMissionSelectionDropdown").text(result.mission.title)
+                $('#TimeDate').val(formattedDate);
+                $('#TimeMessageTextarea').text(result.notes);
+                const timeString = result.time;
+                const hours = timeString.split(":")[0];
+                const minutes = timeString.split(":")[1];
+                $('#TimeHours').val(hours);
+                $('#TimeMinutes').val(minutes);
+
+
+                //$("#GetMissionTitle").text(result.mission.title);
+                //const date = new Date(result.dateVolunteered);
+                //var formattedDate = ChangeDateFormat(date);
+                //$('#EditTimeDate').val(formattedDate);
+
+                //const timeString = result.time;
+                //const hours = timeString.split(":")[0];
+                //const minutes = timeString.split(":")[1];
+                //$('#EditMissionHours').val(hours);
+                //$('#EditMissionMinutes').val(minutes);
+                //$('#EditMissionMessage').text(result.notes);
+                /*$("#TimeDate").val();*/
+
+                if (result.mission.missionType == "Goal") {
+                    $("#GoalTimesheetId").val(result.timesheetId);
+                }
+                if (result.mission.missionType == "Time") {
+                    $("#TimeBasedTimesheetId").val(result.timesheetId);
+                }
+            }
+            else {
+                $('#GoalDate').val("");
+            }
+        },
+        error: function (error) {
+            console.log(error);
+        },
+    });
+
+})
