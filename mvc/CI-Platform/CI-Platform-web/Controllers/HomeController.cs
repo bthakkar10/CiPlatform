@@ -46,20 +46,89 @@ namespace CI_Platform_web.Controllers
             var UserId = HttpContext.Session.GetString("Id");
             long userId = Convert.ToInt64(UserId);
 
-            var vm = new MissionListViewModel();
+            var vm = new PageListViewModel();
 
             vm.Country = _filterMission.CountryList();
             vm.Theme = _filterMission.ThemeList();
             vm.Skill = _filterMission.SkillList();
-     
+
 
             return View(vm);
 
         }
 
         //post method for homepage
+        //[HttpPost]
+        //public async Task<IActionResult> HomePage(MissionFilterQueryParams query)
+        //{
+        //    if (HttpContext.Session.GetString("SEmail") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
+        //    {
+        //        ViewBag.email = HttpContext.Session.GetString("SEmail");
+        //        ViewBag.UserId = HttpContext.Session.GetString("Id");
+        //        ViewBag.Username = HttpContext.Session.GetString("Username");
+        //    }
+        //    try
+        //    {
+
+        //        IConfigurationRoot _configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
+
+        //        string connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+        //        using (SqlConnection connection = new SqlConnection(connectionString))
+        //        {
+        //            connection.Open();
+        //            SqlCommand command = new SqlCommand("spFilterSortSearchPagination", connection);
+        //            command.CommandType = CommandType.StoredProcedure;
+        //            command.Parameters.Add("@countryId", SqlDbType.VarChar).Value = countryId != null ? countryId : null;
+        //            command.Parameters.Add("@cityId", SqlDbType.VarChar).Value = cityId != null ? cityId : null;
+        //            command.Parameters.Add("@themeId", SqlDbType.VarChar).Value = themeId != null ? themeId : null;
+        //            command.Parameters.Add("@skillId", SqlDbType.VarChar).Value = skillId != null ? skillId : null;
+        //            command.Parameters.Add("@searchText", SqlDbType.VarChar).Value = searchText;
+        //            command.Parameters.Add("@sortCase", SqlDbType.VarChar).Value = sortCase;
+        //            command.Parameters.Add("@userId", SqlDbType.VarChar).Value = userId;
+        //            command.Parameters.Add("@pageSize", SqlDbType.Int).Value = pagesize;
+        //            command.Parameters.Add("@pageNo", SqlDbType.Int).Value = pageNo;
+        //            SqlDataReader reader = command.ExecuteReader();
+
+        //            List<long> MissionIds = new List<long>();
+        //            while (reader.Read())
+        //            {
+        //                long totalRecords = reader.GetInt32("TotalRecords");
+        //                ViewBag.totalRecords = totalRecords;
+        //            }
+        //            reader.NextResult();
+
+        //            while (reader.Read())
+        //            {
+        //                long missionId = reader.GetInt64("mission_id");
+        //                MissionIds.Add(missionId);
+        //            }
+
+        //            var vm = new MissionListViewModel();
+
+        //            userId = Convert.ToInt64(ViewBag.UserId);
+        //            vm.DisplayMissionCardsDemo = _missionDisplay.DisplayMissionCardsDemo(MissionIds);
+
+        //            if (vm != null && vm.DisplayMissionCardsDemo.Any())
+        //            {
+        //                return PartialView("_MissionDisplayPartial", vm);
+        //            }
+        //            else
+        //            {
+        //                return PartialView("_NoMissionFound");
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return View(ex);
+
+        //    }
+
+        //}
+
         [HttpPost]
-        public async Task<IActionResult> HomePage(string searchText, int? countryId, string? cityId, string? themeId, string? skillId, int? sortCase, long? userId, int? pageNo, int? pagesize)
+        public IActionResult HomePage(MissionFilterQueryParams queryParams)
         {
             if (HttpContext.Session.GetString("SEmail") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
             {
@@ -67,67 +136,16 @@ namespace CI_Platform_web.Controllers
                 ViewBag.UserId = HttpContext.Session.GetString("Id");
                 ViewBag.Username = HttpContext.Session.GetString("Username");
             }
-            try
-            {
+            var userId = HttpContext.Session.GetString("Id");
+            long UserId = Convert.ToInt64(userId);
 
-                IConfigurationRoot _configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
+            var vm = _missionDisplay.FilterOnMission(queryParams, UserId);
 
-                string connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-                    SqlCommand command = new SqlCommand("spFilterSortSearchPagination", connection);
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add("@countryId", SqlDbType.VarChar).Value = countryId != null ? countryId : null;
-                    command.Parameters.Add("@cityId", SqlDbType.VarChar).Value = cityId != null ? cityId : null;
-                    command.Parameters.Add("@themeId", SqlDbType.VarChar).Value = themeId != null ? themeId : null;
-                    command.Parameters.Add("@skillId", SqlDbType.VarChar).Value = skillId != null ? skillId : null;
-                    command.Parameters.Add("@searchText", SqlDbType.VarChar).Value = searchText;
-                    command.Parameters.Add("@sortCase", SqlDbType.VarChar).Value = sortCase;
-                    command.Parameters.Add("@userId", SqlDbType.VarChar).Value = userId;
-                    command.Parameters.Add("@pageSize", SqlDbType.Int).Value = pagesize;
-                    command.Parameters.Add("@pageNo", SqlDbType.Int).Value = pageNo;
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    List<long> MissionIds = new List<long>();
-                    while (reader.Read())
-                    {
-                        long totalRecords = reader.GetInt32("TotalRecords");
-                        ViewBag.totalRecords = totalRecords;
-                    }
-                    reader.NextResult();
-
-                    while (reader.Read())
-                    {
-                        long missionId = reader.GetInt64("mission_id");
-                        MissionIds.Add(missionId);
-                    }
-
-                    var vm = new MissionListViewModel();
-
-                    userId = Convert.ToInt64(ViewBag.UserId);
-                    vm.DisplayMissionCardsDemo = _missionDisplay.DisplayMissionCardsDemo(MissionIds);
-
-                    if (vm != null && vm.DisplayMissionCardsDemo.Any())
-                    {
-                        return PartialView("_MissionDisplayPartial", vm);
-                    }
-                    else
-                    {
-                        return PartialView("_NoMissionFound");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return View(ex);
-
-            }
-
+            return PartialView("_MissionDisplayPartial", vm);
         }
 
-        
+
         //add to favourites
         [HttpPost]
         public IActionResult AddToFavorites(int missionId)
@@ -156,11 +174,11 @@ namespace CI_Platform_web.Controllers
         //get cities based on country filter
         public IActionResult GetCitiesByCountry(int countryId)
         {
-            var vm = new MissionListViewModel();
+            var vm = new PageListViewModel();
             vm.City = _filterMission.CityList(countryId);
             return Json(vm.City);
         }
-        
+
         //get method for mission details page
         public IActionResult MissionDetail(int MissionId)
         {

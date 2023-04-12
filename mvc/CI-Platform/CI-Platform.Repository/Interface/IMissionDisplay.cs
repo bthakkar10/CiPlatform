@@ -13,6 +13,9 @@ namespace CI_Platform.Repository.Interface
        
         public IEnumerable<Mission> DisplayMissionCardsDemo(List<long> MissionIds);
 
-        
+        public PageListViewModel.PageList<MissionListViewModel> FilterOnMission(MissionFilterQueryParams queryParams, long UserId);
+
+
+
     }
 }

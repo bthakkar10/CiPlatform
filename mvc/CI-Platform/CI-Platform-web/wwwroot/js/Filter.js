@@ -41,6 +41,7 @@ allDropdowns.on('change', function () {
 function FilterSortPaginationSearch(pageNo) {
     var CountryId = SelectedCountry;
     var CityId = $('#CityList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
+    console.log(CityId)
     var ThemeId = $('#ThemeList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var SkillId = $('#SkillList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     /* var SearchText = searchText;*/
@@ -48,10 +49,14 @@ function FilterSortPaginationSearch(pageNo) {
     var sortCase = SelectedsortCase;
     var pagesize = 9;
 
+    let queryData = {
+        CountryId: CountryId, CityIds: CityId, ThemeIds: ThemeId, SkillIds: SkillId, SearchText: SearchText, sortCase: sortCase, pageNo: pageNo, pagesize: pagesize
+    }
+
     $.ajax({
         type: 'POST',
         url: '/Home/HomePage',
-        data: { CountryId: CountryId, CityId: CityId, ThemeId: ThemeId, SkillId: SkillId, SearchText: SearchText, sortCase: sortCase, userId: userId, pageNo: pageNo, pagesize: pagesize },
+        data:   queryData ,
         success: function (data) {
             var view = $(".partialViews");
             view.empty();
@@ -1535,6 +1540,13 @@ $(".TimesheetSelection").change(function () {
     });
 });
 
+$(document).on('click', '.AddButtonTimesheet', function ()
+{
+    console.log("kai bhi");
+    $("#GoalFormTimesheet")[0].reset();
+    $("#TimeFormTimesheet")[0].reset();
+})
+
 //timesheet edit button
 $(document).on('click','.EditButtonDataFetch',function ()
 {
@@ -1565,20 +1577,6 @@ $(document).on('click','.EditButtonDataFetch',function ()
                 const minutes = timeString.split(":")[1];
                 $('#TimeHours').val(hours);
                 $('#TimeMinutes').val(minutes);
-
-
-                //$("#GetMissionTitle").text(result.mission.title);
-                //const date = new Date(result.dateVolunteered);
-                //var formattedDate = ChangeDateFormat(date);
-                //$('#EditTimeDate').val(formattedDate);
-
-                //const timeString = result.time;
-                //const hours = timeString.split(":")[0];
-                //const minutes = timeString.split(":")[1];
-                //$('#EditMissionHours').val(hours);
-                //$('#EditMissionMinutes').val(minutes);
-                //$('#EditMissionMessage').text(result.notes);
-                /*$("#TimeDate").val();*/
 
                 if (result.mission.missionType == "Goal") {
                     $("#GoalTimesheetId").val(result.timesheetId);

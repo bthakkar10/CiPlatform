@@ -9,7 +9,12 @@
 }*@
 
 @model CI_Platform.Entities.ViewModels.TimesheetViewModel
-<div class="container">
+@*datatable*@
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.bootstrap5.min.css">
+
+
+<div class="container timesheet">
     <h2 class="mt-5 mb-3 mx-2">Volunteering Timesheet </h2>
     <div class="row">
         @* volunteering time timesheet*@
@@ -19,8 +24,8 @@
                 <div class="card-body p-2">
                     <div class="card-title my-4 d-flex justify-content-between ">
                         <div>Volunteering Hours</div>
-                        <button class="card-btn py-1 px-2 " data-bs-toggle="modal"
-                                data-bs-target="#TimeEntryModal">
+                        <button class="card-btn py-1 px-2 AddButtonTimesheet" data-bs-toggle="modal"
+                                data-bs-target="#TimeEntryModal" >
                             <i class="bi bi-plus"></i>&nbsp;&nbsp;
                             Add
                         </button>
@@ -35,7 +40,7 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="post">
+                                        <form method="post" id="TimeFormTimesheet">
 
                                             <input type="hidden" asp-for="TimeViewModel.TimesheetId" id="TimeBasedTimesheetId" value="" />
 
@@ -95,7 +100,7 @@
                         </div>
                     </div>
                     <div class="time-mission-entry-card table-responsive">
-                        <table id="myTable" class="table  align-middle">
+                        <table id="timeTable" class="table  align-middle">
                             <thead>
                                 <tr>
                                     <td>Mission</td>
@@ -113,8 +118,8 @@
                                     @foreach (var time_missions in Model.GetTimesheetData.Where(m => m.Mission.MissionType == "Time"))
                                     {
                                         <tr>
-                                            <td>@time_missions.Mission.Title</td>
-                                            <td>@time_missions.DateVolunteered.ToShortDateString()</td>
+                                            <td class="scrollable p-0">@time_missions.Mission.Title</td>
+                                            <td >@time_missions.DateVolunteered.ToShortDateString()</td>
                                             <td>@time_missions.Time.Value.ToString("hh")</td>
                                             <td>@time_missions.Time.Value.ToString("mm")</td>
 
@@ -221,7 +226,7 @@
                 <div class="card-body p-2">
                     <div class="card-title my-4 d-flex justify-content-between">
                         <div>Volunteering Goal</div>
-                        <button class="card-btn py-1 px-2" data-bs-toggle="modal"
+                        <button class="card-btn py-1 px-2 AddButtonTimesheet" data-bs-toggle="modal"
                                 data-bs-target="#GoalAddEntryModal">
                             <i class="bi bi-plus"></i>&nbsp;&nbsp;
                             Add
@@ -237,7 +242,7 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="post">
+                                        <form method="post" id="GoalFormTimesheet">
 
                                             <input type="hidden" asp-for="GoalViewModel.TimesheetId" id="GoalTimesheetId" value="" />
 
@@ -293,7 +298,7 @@
                         </div>
                     </div>
                     <div class="goal-mission-entry-card table-responsive ">
-                        <table class="table align-middle">
+                        <table id="goalTable" class="table align-middle">
                             <thead>
                                 <tr>
                                     <td>Mission</td>
@@ -452,6 +457,42 @@
         </div>
     </div>
 </div>
+
+@*datatble*@
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.4.0/js/responsive.bootstrap5.min.js"></script>
+<script>
+    $('#timeTable').DataTable({
+        lengthChange: false,
+        paging: false,
+        searching: false,
+        columnDefs: [
+            { "orderable": false, "targets": 0 },
+            { "orderData": [1] },
+            { "orderData": [2] },
+            { "orderable": false, "targets": 3 },
+            { "orderable": false, "targets": 4 }
+        ],
+        order: [[1, "asc"], [2, "asc"]] // sort by date (column 1) ascending, then by hours (column 2) ascending
+    });
+
+    $('#goalTable').DataTable({
+        lengthChange: false,
+        paging: false,
+        searching: false,
+        columnDefs: [
+            { "orderable": false, "targets": 0 },
+            { "orderData": [1] },
+            { "orderData": [2] },
+            { "orderable": false, "targets": 3 },
+        ],
+        order: [[1, "asc"], [2, "asc"]] // sort by date (column 1) ascending, then by hours (column 2) ascending
+    });
+</script>
 
 @section scripts{
     @{

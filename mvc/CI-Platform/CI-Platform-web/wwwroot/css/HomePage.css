@@ -963,7 +963,30 @@ a,li,button,h3 {
     }
 /*Privacy policy page ends*/
 
+/*datable*/
+table.dataTable td.dataTables_empty, table.dataTable th.dataTables_empty {
+    display: none;
+}
 
+div.dataTables_wrapper div.dataTables_info {
+    display: none;
+}
+
+tbody, td, tfoot, th, thead, tr {
+    border: none;
+}
+
+#timeTable th::after, #timeTable th:before, #goalTable th::after, #goalTable th:before {
+    content: none !important;
+}
+/*datable ends*/
+/*volunteering timesheet*/
+
+ table .scrollable {
+    overflow-x: hidden;
+    max-width: 10vw;
+    white-space: nowrap;
+}
 @media(max-width: 1000px) {
     #list-view {
             display: none !important;

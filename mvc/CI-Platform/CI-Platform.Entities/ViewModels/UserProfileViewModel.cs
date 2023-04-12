@@ -54,6 +54,7 @@ namespace CI_Platform.Entities.ViewModels
         public List<Skill>? Skills { get; set; }
 
         public string? UpdatedUserSkills { get; set; }
+
         [Required(ErrorMessage = "Country is Required!!")]
         public List<Country>? Countries { get; set; }
 
