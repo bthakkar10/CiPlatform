@@ -77,7 +77,7 @@ namespace CI_Platform_web.Controllers
                     }
                     else if(_timesheet.AddTimeBasedEntry(vm.TimeViewModel, UserId) == "Exists")
                     {
-                        TempData["error"] = "Ypu already have entered timesheet for this date!!";
+                        TempData["error"] = "You already have entered timesheet for this date!!";
                         return RedirectToAction("VolunteeringTimesheet");
                     }
                     else

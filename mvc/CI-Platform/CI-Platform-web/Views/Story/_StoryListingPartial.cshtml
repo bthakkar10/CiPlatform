@@ -21,11 +21,11 @@
                                  }
                                 @if(default_img == null)
                                 {
-                                    <img src="~/images/no-image.png" class="card-img-top">
+                                    <img src="~/images/no-image.png" class=" card-img-top">
                                 }
                                 else
-                                { 
-                                    <img src="~/images/Upload/Story/@default_img.Path" class="card-img-top"  alt="img">
+                                {
+                                <img src="~/images/Upload/Story/@default_img.Path" class="  card-img-top" alt="img">
                                 }
                               
                                 <button class="btn-view-details-story rounded-pill px-4 py-2 position-absolute top-50 start-50 translate-middle" onclick="location.href='@Url.Action("StoryDetails","Story", new{MissionId = obj.MissionId, UserId = obj.UserId})' ">

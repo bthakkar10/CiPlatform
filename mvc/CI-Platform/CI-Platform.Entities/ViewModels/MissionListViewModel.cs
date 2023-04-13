@@ -9,32 +9,10 @@ using System.Threading.Tasks;
 namespace CI_Platform.Entities.ViewModels
 {
 
-    //public class PageListViewModel
-    //{
-    //    public List<MissionListViewModel> list { get; set; }
-    //    public List<User> UserList { get; set; } = new List<User>();
-
-    //    public List<Country> Country { get; set; } = null;
-
-    //    public List<City> City { get; set; } = null;
-
-    //    public List<MissionTheme> Theme { get; set; } = null;
-
-    //    public List<Skill> Skill { get; set; } = null;
-    //}
-
-   
-
+    
     public  class MissionListViewModel
     {
-        public List<Country> Country { get; set; } = null;
-
-        public List<City> City { get; set; } = null;
-
-        public List<MissionTheme> Theme { get; set; } = null;
-
-        public List<Skill> Skill { get; set; } = null;
-
+      
         public Mission MissionCard { get; set; }
 
         public string? CityName { get; set; }
@@ -71,17 +49,7 @@ namespace CI_Platform.Entities.ViewModels
 
         public List<FavouriteMission> favouriteMission { get; set; } = new List<FavouriteMission>();
 
-        //public IEnumerable<Mission> DisplayMissionCardsDemo { get; set; } = null;
-       
-        //public List<MissionApplication> Application { get; set; } = null;
-
-        //public List<MissionRating> MissionRatings { get; set; } = null;
-
-
-
-
-        public List<User> UserList { get; set; } = null;
-
+     
         //public string? link { get; set; }
 
 

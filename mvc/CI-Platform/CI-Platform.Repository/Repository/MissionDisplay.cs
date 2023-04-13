@@ -22,30 +22,30 @@ namespace CI_Platform.Repository.Repository
             _db = db;
         }
 
-        public IEnumerable<Mission> DisplayMissionCardsDemo(List<long> MissionIds)
-        {
+        //public IEnumerable<Mission> DisplayMissionCardsDemo(List<long> MissionIds)
+        //{
 
-            return _db.Missions.Where(m => MissionIds.Contains(m.MissionId))
-                    .Include(m => m.City)
-                    .Include(m => m.Country)
-                    .Include(m => m.MissionSkills).ThenInclude(ms => ms.Skill)
-                    .Include(m => m.MissionTheme)
-                    .Include(m => m.MissionRatings)
-                    .Include(m => m.GoalMissions)
-                    .Include(m => m.MissionApplications)
-                    .Include(m => m.FavouriteMissions)
-                    .Include(m => m.MissionMedia)
-                    .ToList().OrderBy(ml => MissionIds.IndexOf(ml.MissionId));
-        }
+        //    return _db.Missions.Where(m => MissionIds.Contains(m.MissionId))
+        //            .Include(m => m.City)
+        //            .Include(m => m.Country)
+        //            .Include(m => m.MissionSkills).ThenInclude(ms => ms.Skill)
+        //            .Include(m => m.MissionTheme)
+        //            .Include(m => m.MissionRatings)
+        //            .Include(m => m.GoalMissions)
+        //            .Include(m => m.MissionApplications)
+        //            .Include(m => m.FavouriteMissions)
+        //            .Include(m => m.MissionMedia)
+        //            .ToList().OrderBy(ml => MissionIds.IndexOf(ml.MissionId));
+        //}
 
 
         public PageListViewModel.PageList<MissionListViewModel> FilterOnMission(MissionFilterQueryParams queryParams, long UserId)
         {
-            List<MissionListViewModel> Mission = new List<MissionListViewModel>();
+
 
             var query = _db.Missions.AsQueryable();
 
-            List<User> user = _db.Users.ToList();
+            // List<User> user = _db.Users.ToList();
 
             if (!string.IsNullOrEmpty(queryParams.CountryId))
             {
@@ -92,11 +92,11 @@ namespace CI_Platform.Repository.Repository
                 createdAt = mission.CreatedAt,
                 startDate = mission.StartDate,
                 skillName = mission.MissionSkills.Select(ms => ms.Skill.SkillName).ToList(),
-                missionMedia = mission.MissionMedia.Select(mm => mm.MediaPath).ToList(),    
+                missionMedia = mission.MissionMedia.Select(mm => mm.MediaPath).ToList(),
                 goalMission = mission.GoalMissions.ToList(),
                 missionInvites = mission.MissionInvites.Where(mi => mi.DeletedAt == null).ToList(),
-                IsOngoing = (mission.StartDate < DateTime.Now) && (mission.EndDate > DateTime.Now) , 
-                HasEndDatePassed = mission.EndDate < DateTime.Now, 
+                IsOngoing = (mission.StartDate < DateTime.Now) && (mission.EndDate > DateTime.Now),
+                HasEndDatePassed = mission.EndDate < DateTime.Now,
                 HasMissionStarted = mission.StartDate < DateTime.Now,
                 HasDeadlinePassed = mission.StartDate.Value.AddDays(-1) < DateTime.Now,
                 //UserList = user,
@@ -134,13 +134,109 @@ namespace CI_Platform.Repository.Repository
 
             var totalRecords = MissionCardQuery.Count();
 
-            var records = MissionCardQuery.Skip((queryParams.pageNo - 1 ) * queryParams.pagesize).Take(queryParams.pagesize).ToList();
+            var records = MissionCardQuery.Skip((queryParams.pageNo - 1) * queryParams.pagesize).Take(queryParams.pagesize).ToList();
 
             //public PageListViewModel.PageList<MissionListViewModel> FilterOnMission(MissionFilterQueryParams queryParams, long UserId)
             return new PageListViewModel.PageList<MissionListViewModel>(records, totalRecords, queryParams.pageNo);
-           
+
         }
 
+        public string AddToFavourites(long MissionId, long UserId)
+        {
+            try
+            {
+
+                if (_db.FavouriteMissions.Any(fm => fm.MissionId == MissionId && fm.UserId == UserId))
+                {
+                    // Mission is already in favorites, return an error message or redirect back to the mission page
+                    var FavouriteMissionId = _db.FavouriteMissions.Where(fm => fm.MissionId == MissionId && fm.UserId == UserId).FirstOrDefault();
+                    _db.FavouriteMissions.Remove(FavouriteMissionId);
+                    _db.SaveChanges();
+                    return "Removed";
+                }
+
+                // Add the mission to favorites for the user
+                var favoriteMission = new FavouriteMission { MissionId = MissionId, UserId = UserId };
+                _db.FavouriteMissions.Add(favoriteMission);
+                _db.SaveChanges();
+                return "Added";
+            }
+            catch (Exception ex)
+            {
+                return "Error";
+            }
+
+        }
+
+        public byte Ratings(byte rating, long MissionId, long UserId)
+        {
+
+            var alreadyRated = _db.MissionRatings.SingleOrDefault(mr => mr.MissionId == MissionId && mr.UserId == UserId);
+
+            if (alreadyRated != null)
+            {
+                alreadyRated.Rating = rating;
+                _db.SaveChanges();
+            }
+            else
+            {
+                var newRating = new MissionRating { UserId = UserId, MissionId = MissionId, Rating = rating };
+                _db.MissionRatings.Add(newRating);
+                _db.SaveChanges();
+            }
+
+            return rating;
+
+
+        }
+
+        public bool AddComment(string comment, long MissionId, long UserId)
+        {
+            try
+            {
+                if (comment != null)
+                {
+                    var newComment = new Comment { UserId = UserId, MissionId = MissionId, CommentText = comment };
+                    _db.Comments.Add(newComment);
+                    _db.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool ApplyToMission(long MissionId, long UserId)
+        {
+            try
+            {
+                MissionApplication AlreadyApplied = _db.MissionApplications.FirstOrDefault(m => m.MissionId == MissionId && m.UserId == UserId);
+                if (AlreadyApplied == null)
+                {
+                    var missionApplication = new MissionApplication()
+                    {
+                        MissionId = MissionId,
+                        UserId = UserId,
+                        AppliedAt = DateTime.Now,
+                        CreatedAt = DateTime.Now,
+                        ApprovalStatus = "PENDING"
+                    };
+                    _db.Add(missionApplication);
+                    _db.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
 
     }
 }

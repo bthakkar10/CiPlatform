@@ -152,23 +152,11 @@ namespace CI_Platform_web.Controllers
         {
             var UserId = HttpContext.Session.GetString("Id");
             long userId = Convert.ToInt64(UserId);
-            if (_db.FavouriteMissions.Any(fm => fm.MissionId == missionId && fm.UserId == userId))
-            {
-                // Mission is already in favorites, return an error message or redirect back to the mission page
-                var FavouriteMissionId = _db.FavouriteMissions.Where(fm => fm.MissionId == missionId && fm.UserId == userId).FirstOrDefault();
-                _db.FavouriteMissions.Remove(FavouriteMissionId);
-                _db.SaveChanges();
-                return Ok();
 
-                //return BadRequest("Mission is already in favorites.");
-            }
-
-            // Add the mission to favorites for the user
-            var favoriteMission = new FavouriteMission { MissionId = missionId, UserId = userId };
-            _db.FavouriteMissions.Add(favoriteMission);
-            _db.SaveChanges();
-
+            _missionDisplay.AddToFavourites(userId, missionId);
+            
             return Ok();
+           
         }
 
         //get cities based on country filter
@@ -236,22 +224,8 @@ namespace CI_Platform_web.Controllers
             var userId = HttpContext.Session.GetString("Id");
             long UserId = Convert.ToInt64(userId);
 
-
-            var alredyRated = _db.MissionRatings.SingleOrDefault(mr => mr.MissionId == missionId && mr.UserId == UserId);
-
-            if (alredyRated != null)
-            {
-                alredyRated.Rating = rating;
-                _db.SaveChanges();
-            }
-            else
-            {
-                var newRating = new MissionRating { UserId = UserId, MissionId = missionId, Rating = rating };
-                _db.MissionRatings.Add(newRating);
-                _db.SaveChanges();
-            }
-
-            return Json(rating);
+            var Updatedrating =  _missionDisplay.Ratings(rating, missionId, UserId);
+            return Json(Updatedrating);
         }
 
         //post comments in mission details
@@ -261,19 +235,13 @@ namespace CI_Platform_web.Controllers
             string Id = HttpContext.Session.GetString("Id");
             long userId = long.Parse(Id);
 
-            //var userId = HttpContext.Session.GetString("Id");
-            //long UserId = Convert.ToInt64(userId);
-
-            if (comment != null)
+            if(_missionDisplay.AddComment(comment, missionId, userId))
             {
-                var newComment = new Comment { UserId = userId, MissionId = missionId, CommentText = comment };
-                _db.Comments.Add(newComment);
-                _db.SaveChanges();
-                return Ok(new {icon="success", message="Comments will be visible after approval!!"});
+                return Ok(new { icon = "success", message = "Comment added successfully and will be displayed after approval!!" });
             }
             else
             {
-                return Ok(new { icon = "error", message = "Please enter a comment!!" });
+                return Ok(new { icon = "error", message = "Something went wrong!! Please try again later!!" });
             }
         }
 
@@ -326,21 +294,7 @@ namespace CI_Platform_web.Controllers
             var userId = HttpContext.Session.GetString("Id");
             long UserId = Convert.ToInt64(userId);
 
-            var AlreadyApplied = _db.MissionApplications.FirstOrDefault(m=>m.MissionId== MissionId && m.UserId == UserId);
-            if(AlreadyApplied == null)
-            {
-                var missionApplication = new MissionApplication()
-                {
-                    MissionId= MissionId,
-                    UserId = UserId,
-                    AppliedAt= DateTime.Now,
-                    CreatedAt= DateTime.Now,
-                    ApprovalStatus = "PENDING"
-                };
-                _db.Add(missionApplication);
-                _db.SaveChanges();
-            }
-
+            _missionDisplay.ApplyToMission(UserId, MissionId);
             return Ok();
         }
 

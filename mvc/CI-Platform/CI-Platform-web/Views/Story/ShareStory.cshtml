@@ -17,8 +17,8 @@
         <div class="row row-cols-lg-3 row-cols-md-3 row-cols-sm-2 row-cols-1">
             <div class="col-md-4 col-sm-12">
                 <label for="" class="form-label ms-1">Select Mission</label>
-                <select class="form-select" id="missionTitle" aria-label="Default select example">
-                    <option asp-for="MissionTitle" selected>Select your mission</option>
+                <select required class="form-select" id="missionTitle" aria-label="Default select example">
+                    <option asp-for="MissionTitle" disabled  selected>Select your mission</option>
                     @if (Model.GetMissionListofUser.Any())
                     {
 
@@ -36,9 +36,7 @@
                 <input asp-for="StoryTitle" type="text" id="StoryTitle" class="form-control" required placeholder="Enter story title">
                 <div><small class="text-danger validate-text" id="HelpBlock-storyTitle"></small></div>
             </div>
-            @{
-
-            }
+        
             <div class="col-md-4 col-sm-12">
                 <label asp-for="Date" class="form-label ms-1">Date</label>
                 
@@ -66,7 +64,7 @@
         <!-- video link -->
         <div class="mt-3">
             <label for="" class="form-label ms-1">Enter Video URL</label>
-            <textarea name="storyTitle" class="form-control videoUrls" id="videoUrls" rows="3" placeholder="Enter your url (Only Youtube URLs are allowed)"></textarea>
+            <textarea name="YoutubeUrls" class="form-control videoUrls" id="videoUrls" rows="3" placeholder="Enter your url (Only Youtube URLs are allowed)"></textarea>
             <div><small class="text-danger validate-text" id="HelpBlock-urls"></small></div>
         </div>
         <!-- video link ends -->

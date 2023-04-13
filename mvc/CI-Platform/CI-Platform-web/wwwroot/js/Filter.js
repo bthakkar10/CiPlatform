@@ -41,7 +41,6 @@ allDropdowns.on('change', function () {
 function FilterSortPaginationSearch(pageNo) {
     var CountryId = SelectedCountry;
     var CityId = $('#CityList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
-    console.log(CityId)
     var ThemeId = $('#ThemeList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var SkillId = $('#SkillList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     /* var SearchText = searchText;*/
@@ -467,6 +466,7 @@ allDropdowns.each(function () {
                 filterPills.children('.closeAll').click(function () {
                     allDropdowns.find('input[type="checkbox"]').prop('checked', false);
                     filterPills.empty();
+                    SelectedCountry = null;
                     if (currentUrl.includes("HomePage")) {
                         FilterSortPaginationSearch();
 
@@ -475,9 +475,6 @@ allDropdowns.each(function () {
                         StoryFilter();
 
                     }
-
-
-
                 });
 
                 //add the pill before the close icon
@@ -654,7 +651,7 @@ $(document).on('click', '.add-on-img', function () {
         url: "/Home/UserList",
         data: { MissionId: MissionId },
         success: function (coworkers) {
-            console.log(coworkers);
+           
             var list = $('.grid-modal-body');
             list.empty();
             var items = " ";
@@ -768,65 +765,65 @@ $(document).on('click', '.model-invite-btn-story', function () {
     });
 });
 
-//for share story page(ck-editor and drag and drop functionality)
-let optionsButtons = document.querySelectorAll(".option-button");
-let writingArea = document.getElementById("text-input");
-let formatButtons = document.querySelectorAll(".format");
-let scriptButtons = document.querySelectorAll(".script");
+////for share story page(ck-editor and drag and drop functionality)
+//let optionsButtons = document.querySelectorAll(".option-button");
+//let writingArea = document.getElementById("text-input");
+//let formatButtons = document.querySelectorAll(".format");
+//let scriptButtons = document.querySelectorAll(".script");
 
 
-// Initial Setting
-const initializer = () => {
-    highlighter(formatButtons, false);
-    highlighter(scriptButtons, true);
-};
+//// Initial Setting
+//const initializer = () => {
+//    highlighter(formatButtons, false);
+//    highlighter(scriptButtons, true);
+//};
 
-// main logic
-const modifyText = (command, defaultUi, value) => {
-    document.execCommand(command, defaultUi, value);
-};
+//// main logic
+//const modifyText = (command, defaultUi, value) => {
+//    document.execCommand(command, defaultUi, value);
+//};
 
-// button operations
-optionsButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        modifyText(button.id, false, null);
-    });
-});
+//// button operations
+//optionsButtons.forEach(button => {
+//    button.addEventListener("click", () => {
+//        modifyText(button.id, false, null);
+//    });
+//});
 
-// function for highlight selected options
-const highlighter = (className, needsRemoval) => {
-    className.forEach((button) => {
-        button.addEventListener("click", () => {
-            if (needsRemoval) {
-                let alreadyActive = false;
+//// function for highlight selected options
+//const highlighter = (className, needsRemoval) => {
+//    className.forEach((button) => {
+//        button.addEventListener("click", () => {
+//            if (needsRemoval) {
+//                let alreadyActive = false;
 
-                // clicked button is active
-                if (button.classList.contains("active")) {
-                    alreadyActive = true;
-                }
+//                // clicked button is active
+//                if (button.classList.contains("active")) {
+//                    alreadyActive = true;
+//                }
 
-                highlighterRemover(className);
-                if (!alreadyActive) {
-                    // highlight clicked button
-                    button.classList.add("active");
-                }
-            }
-            else {
-                // other button can highlighted
-                button.classList.toggle("active");
-            }
-        });
-    });
-};
+//                highlighterRemover(className);
+//                if (!alreadyActive) {
+//                    // highlight clicked button
+//                    button.classList.add("active");
+//                }
+//            }
+//            else {
+//                // other button can highlighted
+//                button.classList.toggle("active");
+//            }
+//        });
+//    });
+//};
 
-// remove highlighter
-const highlighterRemover = (className) => {
-    className.forEach((button) => {
-        button.classList.remove("active");
-    });
-}
+//// remove highlighter
+//const highlighterRemover = (className) => {
+//    className.forEach((button) => {
+//        button.classList.remove("active");
+//    });
+//}
 
-window.onload = initializer();
+/*window.onload = initializer();*/
 
 // drag and drop images in share your story page
 var allfiles = [];
@@ -841,8 +838,21 @@ function handleFiles(e) {
     for (var i = 0; i < files.length; i++) {
         var file = files[i];
         var reader = new FileReader();
+
+        var imageType = /image\/(png|jpeg|jpg)/;
+        if (!file.type.match(imageType)) {
+            alert("Only png, jpg and jpeg image types are allowed.");
+            return false;
+        }
+
+        // Validate image size
+        if (file.size > 4 * 1024 * 1024) {
+            alert("An image should not be greater than 4MB.");
+            return false;
+        }
+
         allfiles.push(files[i]);
-        //formData.append('file', file);
+   
 
         // Create image preview and close icon
         // Create image preview and close icon
@@ -859,15 +869,25 @@ function handleFiles(e) {
                 closeIcon.on('click', function () {
                     item.remove();
                     allfiles.splice(allfiles.indexOf(file), 1);
-
-
                     console.log(allfiles);
+                    if (allfiles.length < 20) {
+                        fileInput.disabled = false;
+                    }
                 });
             };
         })(file);
 
         // Read image file as data URL
         reader.readAsDataURL(file);
+    }
+    if (allfiles.length > 20) {
+        alert("Maximum 20 images can be added.");
+        // Remove the last added file from the list
+        allfiles.splice(-1, 1);
+        // Remove the last added image preview from the list
+        imageList.children().last().remove();
+        //// Disable further file selection
+        fileInput.disabled = true;
     }
     // Create a new DataTransfer object
     var dataTransfer = new DataTransfer();
@@ -918,6 +938,9 @@ dropzone.on('dragleave', function (e) {
 // Handle file input change event
 $('#img-input').on('change', function (e) {
     handleFiles(e);
+    if (allfiles.length >= 20) {
+        fileInput.disabled = true;
+    }
 });
 
 
@@ -958,13 +981,14 @@ $('#missionTitle').change(function () {
                 /*  $('#storyEditor').text(result.description);*/
                 console.log(result.storyMedia);
 
-
+                $('#img-output').empty();
                 var UrlRecords = '';
                 $.each(result.storyMedia, async function (index, item) {
                     if (item.type === "videos") {
                         UrlRecords += item.path + '\n';
                     }
                     else {
+                        
                         var file = result.storyMedia[index];
                         var image = $('<img>').attr('src', '/images/Upload/Story/' + result.storyMedia[index].path);
                         var closebtn = $('<span>').text('x');
@@ -1017,6 +1041,7 @@ $('#missionTitle').change(function () {
                 $('#date').val(' ');
                 tinymce.get('storyEditor').setContent('');
                 $('#videoUrls').val(' ');
+                console.log('#img-output');
                 $('#img-output').empty();
                 $('#previewButton').addClass('disabled');
                 $('#submitButton').addClass('disabled');
@@ -1032,7 +1057,7 @@ $('#missionTitle').change(function () {
 $('#saveStory').click(function (e) {
     e.preventDefault();
     let isValid = false;
-    if (validateStoryTitle() == true && validateDate() == true && validateYoutubeUrls() == true && validateMissionTitle() == true) {
+    if (validateStoryTitle() == true && validateDate() == true && validateStoryDes() == true && validateYoutubeUrls() == true && validateMissionTitle() == true) {
         isValid = true;
     }
     if (isValid) {
@@ -1049,6 +1074,7 @@ $('#saveStory').click(function (e) {
         else {
             formData.append("VideoUrls", null);
         }
+   
         for (var i = 0; i < allfiles.length; i++) {
             formData.append("Images", allfiles[i]);
         }
@@ -1089,7 +1115,7 @@ $('#saveStory').click(function (e) {
 $('#submitButton').click(function (e) {
     e.preventDefault();
     let isValid = false;
-    if (validateStoryTitle() == true && validateDate() == true && validateYoutubeUrls() == true && validateMissionTitle() == true) {
+    if (validateStoryTitle() == true && validateDate() == true && validateStoryDes() == true && validateYoutubeUrls() == true && validateMissionTitle() == true) {
         isValid = true;
     }
     if (isValid) {
@@ -1152,10 +1178,10 @@ $('#previewButton').click(function () {
         success: function (result) {
             console.log(result)
             var url = '/Story/StoryDetails?MissionId=' + MissionId + '&UserId=' + UserId;
-            /*  window.location.href = url;*/
+           
             var win = window.open(url, '_blank');
             win.focus();
-            /*window.location.href = "/Story/StoryDetails?UserId=UserId&MissionId=MissionId";*/
+      
         },
         error: function (error) {
             console.log(error);
@@ -1168,31 +1194,29 @@ $('#previewButton').click(function () {
 $('#videoUrls').on('blur', validateYoutubeUrls);
 function validateYoutubeUrls() {
     var urls = $('#videoUrls').val().split('\n');
+    var numValidated = 0;
+    var youtubeRegex = /(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/;
 
     for (var i = 0; i < urls.length; i++) {
         var url = urls[i].trim();
-        if (url.length > 0 && !isYoutubeUrl(url)) {
+        if (url.length > 0 && youtubeRegex.test(url)) {
+            numValidated++;
+            if (numValidated > 20) {
+                $("#HelpBlock-urls").text("Please enter only 20 urls");
+                $('#videoUrls').focus();
+                return false;
+            }
+        } else if (url.length > 0) {
             $("#HelpBlock-urls").text("Please enter only valid youtube urls");
             $('#videoUrls').focus();
             return false;
         }
-        else if (url.length > 20) {
-            $("#HelpBlock-urls").text("Maximum 20 URLs are allowed!!");
-            return false;
-        }
-        else {
-            $("#HelpBlock-urls").text("");
-            return true;
-        }
     }
-
+    $("#HelpBlock-urls").text("");
+    return true;
 }
-function isYoutubeUrl(url) {
-    var pattern = /^.*(youtube.com\/|youtu.be\/|\/v\/|\/e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/;
-    return pattern.test(url);
-}
-
-$('#missionTitle').on('blur', validateMissionTitle);
+//validate mission titles 
+$('#saveStory').on('click', validateMissionTitle);
 function validateMissionTitle() {
     if ($('#missionTitle').val() === '') {
         $("#HelpBlock-missionTitle").text("Please select the title of the mission!");
@@ -1202,10 +1226,10 @@ function validateMissionTitle() {
     $("#HelpBlock-date").text("");
     return true;
 }
-
+// validate story titles in share story
 $('#StoryTitle').on('blur', validateStoryTitle);
 function validateStoryTitle() {
-    if ($('#StoryTitle').val() === '') {
+    if ($('#StoryTitle').val().trim() === '') {
         $("#HelpBlock-storyTitle").text("Story Title is a required field!!");
         $('#StoryTitle').focus();
         return false;
@@ -1217,7 +1241,7 @@ function validateStoryTitle() {
     $("#HelpBlock-storyTitle").text("");
     return true;
 }
-
+//validate date in share story
 $('#date').on('blur', validateDate);
 function validateDate() {
     
@@ -1230,20 +1254,24 @@ function validateDate() {
     $("#HelpBlock-date").text("");
     return true;
 }
-
-$('#storyEditor').on('blur', validateStoryDes);
+//validate story des in share story
+$('#saveStory').on('click', validateStoryDes);
 function validateStoryDes() {
-    if ($('#text-input').text().trim() === '') {
+    /*tinymce.get('storyEditor').setContent('');*/
+    var content = tinymce.get('storyEditor').getContent();
+    if (content === null || content === "") {
         $("#HelpBlock-storyDes").text("Story Description is a required field!!");
         return false;
     }
-    else if ($('#text-input').text().length > 40000) {
+    else if (tinymce.get('storyEditor').setContent('').length > 40000) {
         $("#HelpBlock-storyDes").text("Maximum 40000 characters are allowed!!");
         return false;
     }
     $("#HelpBlock-storyDes").text("");
     return true;
 }
+//validate img in share story
+
 
 //user-profile-img-change
 $('.edit-icon').click(function () {
@@ -1542,7 +1570,10 @@ $(".TimesheetSelection").change(function () {
 
 $(document).on('click', '.AddButtonTimesheet', function ()
 {
-    console.log("kai bhi");
+    $("#GoalAddSelection").prop('disabled', false)
+    $("#TimeAddSelection").prop('disabled', false);
+    $("#GoalMessageTextarea").empty();
+    $('#TimeMessageTextarea').empty();
     $("#GoalFormTimesheet")[0].reset();
     $("#TimeFormTimesheet")[0].reset();
 })
@@ -1550,8 +1581,7 @@ $(document).on('click', '.AddButtonTimesheet', function ()
 //timesheet edit button
 $(document).on('click','.EditButtonDataFetch',function ()
 {
-    var TimeSheetId = $(this).data('timesheet-id');
-   
+    var TimeSheetId = $(this).data('timesheet-id');  
     $.ajax({
         type: 'GET',
         url: '/VolunteeringTimesheet/GetDataOnEdit',
@@ -1559,21 +1589,29 @@ $(document).on('click','.EditButtonDataFetch',function ()
         success: function (result) {
             if (result.mission.title != null) {
                
-
                 console.log(result)
-                
-                $("#GoalMissionSelectionDropdown").text(result.mission.title)
+                /*$("#GoalAddSelection").empty();*/
+                var start_date = new Date(result.mission.startDate);
+                var end_date = new Date(result.mission.endDate);
+                $('#GoalDate').prop('min', ChangeDateFormat(start_date));
+                $('#GoalDate').prop('max', ChangeDateFormat(end_date));
+                $('#TimeDate').prop('min', ChangeDateFormat(start_date));
+                $('#TimeDate').prop('max', ChangeDateFormat(end_date));
+
+                $("#GoalAddSelection").prop('disabled',true);
+                $("#GoalAddSelection").val(result.missionId)
                 const date = new Date(result.dateVolunteered);
                 var formattedDate = ChangeDateFormat(date);
                 $('#GoalDate').val(formattedDate);
                 $('#GoalActions').val(result.action)
                 $('#GoalMessageTextarea').text(result.notes)
 
-                $("#TimeMissionSelectionDropdown").text(result.mission.title)
+                $("#TimeAddSelection").prop('disabled', true);
+                $("#TimeAddSelection").val(result.missionId)
                 $('#TimeDate').val(formattedDate);
                 $('#TimeMessageTextarea').text(result.notes);
                 const timeString = result.time;
-                const hours = timeString.split(":")[0];
+                const hours = timeString.split(':')[0];
                 const minutes = timeString.split(":")[1];
                 $('#TimeHours').val(hours);
                 $('#TimeMinutes').val(minutes);
@@ -1586,7 +1624,7 @@ $(document).on('click','.EditButtonDataFetch',function ()
                 }
             }
             else {
-                $('#GoalDate').val("");
+              
             }
         },
         error: function (error) {

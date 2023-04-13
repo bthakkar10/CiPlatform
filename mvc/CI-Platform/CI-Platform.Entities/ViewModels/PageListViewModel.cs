@@ -10,7 +10,7 @@ namespace CI_Platform.Entities.ViewModels
     public class PageListViewModel
     {
 
-        public List<User> UserList { get; set; } = new List<User>();
+      
 
         public List<Country> Country { get; set; } = null;
 
@@ -34,11 +34,7 @@ namespace CI_Platform.Entities.ViewModels
                 Records = records ?? new List<MissionListViewModel>();
                 TotalCount = totalCount;
                 CurrentPage = page;
-            }
-
-           
-
-
+            } 
         }
 
 
