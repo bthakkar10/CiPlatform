@@ -163,7 +163,7 @@ namespace CI_Platform.Repository.Repository
             }
             catch (Exception ex)
             {
-                return "Error";
+                return ex.Message;
             }
 
         }

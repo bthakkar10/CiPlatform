@@ -16,6 +16,14 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/Admin/User.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVXNlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/Admin/_AdminLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cX0FkbWluTGF5b3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/Auth/ForgetPass.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxGb3JnZXRQYXNzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

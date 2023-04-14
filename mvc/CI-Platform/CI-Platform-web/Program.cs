@@ -20,7 +20,7 @@ builder.Services.AddScoped<IShareStory, ShareStory>();
 builder.Services.AddScoped<IStoryDetails, StoryDetails>();
 builder.Services.AddScoped<IUserProfile, UserProfile>();
 builder.Services.AddScoped<IVolunteeringTimesheet, VolunteeringTimesheet>();
-
+builder.Services.AddScoped<IAdminUser, AdminUser>();
 
 builder.Services.AddSession();
 builder.Services.AddMemoryCache();
