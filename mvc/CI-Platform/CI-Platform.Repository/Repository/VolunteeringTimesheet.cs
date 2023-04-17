@@ -61,7 +61,7 @@ namespace CI_Platform.Repository.Repository
             }
             catch (Exception ex)
             {
-                
+                return ex.Message;
             }
             return "failed";
         }
@@ -97,7 +97,7 @@ namespace CI_Platform.Repository.Repository
             }
             catch (Exception ex)
             {
-               
+                return ex.Message;
             }
             return "failed";
         }
@@ -156,7 +156,7 @@ namespace CI_Platform.Repository.Repository
                 _db.SaveChanges();
                 return true;
             }
-            catch(Exception ex) 
+            catch(Exception) 
             {
                 return false;
             }

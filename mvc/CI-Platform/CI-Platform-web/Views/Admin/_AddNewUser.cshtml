@@ -1,0 +1,118 @@
+﻿@model CI_Platform.Entities.ViewModels.AdminUserViewModel
+
+<div>
+    <form method="post" class="validateForm">
+        <input  asp-for="UserId" id="UserId" type="hidden" />
+        <div class="border">
+            <div class="FormBox"><h4 class="FormHeading"><span>Add</span></h4></div>
+            <div class="row g-3 p-3">
+                <div class="col-md-6">
+                    <label asp-for="FirstName" class="form-label">First Name</label>
+                    <input asp-for="FirstName" type="text" class="form-control" placeholder="First name" aria-label="First name">
+                    <span asp-validation-for="FirstName" class="validate-text text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Surname" class="form-label">Last Name</label>
+                    <input asp-for="Surname" type="text" class="form-control" placeholder="Last name" aria-label="Last name">
+                    <span asp-validation-for="Surname" class="validate-text text-danger"></span>
+
+                </div>
+            </div>
+            <div class="row g-3 p-3">
+                <div class="col-md-6">
+                    <label asp-for="Email" class="form-label">Email Address</label>
+                    <input asp-for="Email" type="email" class="form-control" placeholder="Email Address">
+                    <span asp-validation-for="Email" class="validate-text text-danger"></span>
+
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Password" class="form-label">Password</label>
+                    <div class="position-relative">
+                    <input asp-for="Password" id="Password" type="password"  placeholder="Enter Password" class="form-control">
+                    <i class="bi bi-eye-fill position-absolute translate-middle-x end-0 top-0 d-none"></i>
+                    <i class="bi bi-eye-slash position-absolute translate-middle-x end-0 top-0 "></i>
+                    </div>
+                    <span asp-validation-for="Password" class="validate-text text-danger"></span>
+                    
+                </div>
+            </div>
+            <div class="row g-3 p-3">
+                <div class="col-md-6">
+                    <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                    <input asp-for="PhoneNumber" type="text" class="form-control" placeholder="Phone Number">
+                    <span asp-validation-for="PhoneNumber" class="validate-text text-danger"></span>
+
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Availibility" class="form-label ms-1">Avaliability</label>
+                    <select asp-for="Availibility" class="form-select" id="AvaliabilitySelect" name="Availibility" aria-label="Select your Avaliability">
+                        <option value="daily">daily</option>
+                        <option value="weekly">weekly</option>
+                        <option value="weekend">weekend</option>
+                        <option value="monthly">monthly</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="row g-3 p-3">
+                <div class="col-md-6 ">
+                    <label  asp-for="EmployeeId" class="form-label">Employee Id</label>
+                    <input asp-for="EmployeeId" type="text" class="form-control" placeholder="Employee Id">
+                    <span asp-validation-for="EmployeeId" class="validate-text text-danger"></span>
+
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Department" class="form-label">Department</label>
+                    <input asp-for="Department" type="text" class="form-control" placeholder="Department">
+                    <span asp-validation-for="Department" class="validate-text text-danger"></span>
+
+                </div>
+            </div>
+            <div class="row g-3 p-3">
+                <div class="col-md-6">
+                    <label for="Country" class="form-label ms-1">Country</label>
+                    <select asp-for="CountryId" class="form-select" id="AdminCountrySelect" aria-label="Enter your Country">
+                        <option selected>Enter your Country</option>
+                        @foreach (var country in Model.Countries)
+                        {
+                        <option value="@country.CountryId">@country.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="CountryId" class="text-danger validate-text"></span>
+                </div>
+                <div class="col-md-6">
+                    <label for="City" class="form-label ms-1">City</label>
+                    <select asp-for="CityId" class="form-select" id="UserCitySelect" aria-label="Enter your City">
+                        
+                       @{
+                        var city = Model.Cities.Where(c => c.CountryId == Model.CountryId);
+                        }
+                        @foreach (var c in city)
+                        {
+                        <option value="@c.CityId">@c.CityName</option>
+                        }
+
+                    </select>
+                    <span asp-validation-for="CityId" class="text-danger validate-text"></span>
+
+                </div>
+            </div>
+            <div class="d-flex flex-wrap justify-content-between m-3">
+                <a class="btn btn-outline-secondary rounded-pill" href="@Url.Action("User", "Admin")">Cancel</a>
+                <button type="submit" class="btn btn-outline-success  rounded-pill addBtn" asp-controller="Admin" asp-action="AddOrUpdateUser">Add</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+@*<script>
+    $('.validateAdminForm').removeData('validator').removeData('unobtrusiveValidation');
+    $.validator.unobtrusive.parse('.validateAdminForm');
+</script>
+@section scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}*@

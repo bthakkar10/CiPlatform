@@ -14,5 +14,8 @@ namespace CI_Platform.Repository.Interface
         public User GetUserEmail(string email);
         void Save();
         public void UpdatePassword(ResetPasswordValidation obj);
+
+        public bool RegisterUser(RegistrationViewModel obj);
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CI_Platform.Entities.DataModels;
+using CI_Platform.Entities.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,12 @@ namespace CI_Platform.Repository.Interface
     {
         public List<User> users();
 
-        public bool IsDeleted(long UserId);
+        public bool IsUserDeleted(long UserId);
 
+        public string IsUserAdded(AdminUserViewModel vm);
 
+        public AdminUserViewModel GetDataOnEdit(long UserId);
+
+        public bool EditUser(AdminUserViewModel vm);
     }
 }

@@ -4,14 +4,30 @@
 }
 @model CI_Platform.Entities.ViewModels.AdminUserViewModel
 
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap5.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.bootstrap5.min.css">
+
 <div class="container-fluid my-5 mx-2">
     <h3 class="pb-1 border-bottom"><span class="heading-underline pb-1"> User </span></h3>
+
+@*    <div class="admin-title">
+    <h2 class="border-bottom"><span class="underline">User</span></h2>*@
+    
+@*</div>*@
+
+@*    add button modal*@
+
+    <div id="AddNewUserForm"></div>
+
     <div class="table-responsive m-3">
       
+     <div class="d-flex my-4">
+        <div class="admin-search-box d-flex align-items-center border">
+            <img class="icon" src="~/images/search.png" alt="search-icon" />
+            <input id="searchUser" class="ms-sm-3" type="text" placeholder="Search" />
+        </div>
      
-        <table id="example"  cellspacing="0" class="display table table-bordered align-middle" style="width:100%">
+        <button id="AddNewUserBtn" class="btn formBtn d-flex align-items-center ms-auto px-4 py-2"><i class="fa-solid fa-plus"></i>&nbsp; Add</button>
+    </div>
+        <table id="example" cellspacing="0" class="display table table-bordered align-middle" style="width:100%">
 
            
             <thead class="gap-2">
@@ -45,7 +61,7 @@
                             }
                         </td>
                         <td>
-                            <button class="btn p-0 EditButtonDataFetch" id="TimeMissionEditBtn"  data-bs-toggle="modal" data-bs-target="#TimeEntryModal">
+                            <button class="btn p-0 EditButtonDataFetch" id="TimeMissionEditBtn"  data-user-id="@users.UserId">
                                 <i style="color: #F88634;" class="bi bi-pencil-square"></i>
                             </button>
 
@@ -74,57 +90,8 @@
                         </td>
                     </tr>
                 }
-
-               
         </table>
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.4.0/js/responsive.bootstrap5.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('#example').DataTable(
-            {
-                responsive: true,
-                language: {
-                    "paginate": {
-                        "previous": "&lt",
-                        "next": "&gt",
-                        "first": "&lt&lt",
-                        "last": "&gt&gt"
-                    }
-                },
 
-                //dom: '<"toolbar">frtip',
-                dom: 'f<"toolbar">rt<p>',
-                pagingType: 'full_numbers',
-                bLengthChange: false,
-                info: false,
-                
-            });
-        $('div.toolbar').html(' <button class="addBtn py-1 px-2" data-bs-toggle="modal" data-bs-target="#TimeEntryModal"><i class="bi bi-plus"></i>&nbsp;&nbsp;Add</button>');
-    });
-</script>
-
-
-
-@*/* Results in:
-<div class="top">
-    {information}
-</div>
-    {processing}
-    {table}
-<div class="bottom">
-    {filter}
-    {length}
-    {pagination}
-</div>
-<div class="clear"></div>
-*/
-$('#example').dataTable( {
-  "dom": '<"top"i>rt<"bottom"flp><"clear">'
-} );*@

@@ -16,8 +16,20 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/Admin/CmsPage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ21zUGFnZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/Admin/User.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVXNlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/Admin/_AddNewUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cX0FkZE5ld1VzZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/Admin/_AddOrUpdateCms.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cX0FkZE9yVXBkYXRlQ21zLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/Admin/_AdminLayout.cshtml]

@@ -15,11 +15,11 @@ namespace CI_Platform.Entities.ViewModels
 
         [Required (ErrorMessage = "First Name is Required!!" )]
         [MaxLength(16, ErrorMessage = "Only 16 characters are allowed!!")]
-        public string? FirstName { get; set; }
+        public string FirstName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Surname is Required!!")]
         [MaxLength(16, ErrorMessage = "Only 16 characters are allowed!!")]
-        public string? Surname { get; set; }
+        public string Surname { get; set; } = string.Empty;
 
         [MaxLength(16, ErrorMessage = "Only 16 characters are allowed!!")]
         public string? EmployeeId  { get; set;}
@@ -49,9 +49,9 @@ namespace CI_Platform.Entities.ViewModels
 
         public string? Availibility { get; set; }
 
-        public List<UserSkill>? UserSkills { get; set; }
+        public List<UserSkill> UserSkills { get; set; } = new List<UserSkill>();    
 
-        public List<Skill>? Skills { get; set; }
+        public List<Skill> Skills { get; set; } = new List<Skill>();
 
         public string? UpdatedUserSkills { get; set; }
 

@@ -10,18 +10,23 @@
             <form class="" method="post">
                 <h2>New Password</h2>
                 <small id="HelpBlock" class="form-text mt-3 mb-3 text-muted">Please enter a new password in the fields below.</small>
-                <div class="mb-3">
+                <div class="mb-3 position-relative">
                     <label asp-for="Password"  class="form-label">New Password</label>
                     <input asp-for="Password" onkeyup="check()" type="password" placeholder="**********" class="form-control form-control-lg" id="Password">
-                    
+                    <i class="bi bi-eye-fill position-absolute translate-middle-x end-0 top-50 d-none"></i>
+                    <i class="bi bi-eye-slash position-absolute translate-middle-x end-0 top-50 "></i>
                 </div>
+                    <span asp-validation-for="Password" class="validate-text text-danger" ></span>
 
-                <div class="mb-3">
+                <div class="mb-3 position-relative">
                     <label for="exampleInputPassword1" class="form-label">Confirm New Password</label>
                     <input type="password" name="ConfirmPassword" onkeyup="check()" placeholder="**********" class="form-control form-control-lg" id="ConfirmPassword">
-                    <span id="cnf-msg"></span>
-
+                    <i class="bi bi-eye-fill position-absolute translate-middle-x end-0 top-50 d-none"></i>
+                    <i class="bi bi-eye-slash position-absolute translate-middle-x end-0 top-50 "></i>
                 </div>
+                    <span id="cnf-msg"></span><br />
+                    <span asp-validation-for="ConfirmPassword" class="validate-text text-danger" ></span>
+
                 <div class="d-grid gap-2 mx-auto p-2 ">
                     <button type="submit">Change Password</button>
                 </div>

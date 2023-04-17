@@ -32,21 +32,6 @@ namespace CI_Platform.Entities.ViewModels
 
         public TimeSpan Time => new TimeSpan(TimeHours, TimeMinutes, 0);
 
-        //public TimeSpan? Time
-        //{
-        //    get
-        //    {
-        //        TimeSpan timeSpanValue;
-        //        if (TimeSpan.TryParseExact($"{TimeHours}:{TimeMinutes}", "h\\:mm", CultureInfo.InvariantCulture, out timeSpanValue))
-        //        {
-        //            return timeSpanValue;
-        //        }
-        //        else
-        //        {
-        //            return null;
-        //        }
-        //    }
-        //}
 
         public string? TimeMessage { get; set; }
 
@@ -67,7 +52,7 @@ namespace CI_Platform.Entities.ViewModels
             }
         }
 
-        public List<Timesheet> GetTimesheetData { get; set; } = null;
+        public List<Timesheet> GetTimesheetData { get; set; } = new List<Timesheet>();  
         public string? TimesheetErrorMessage { get; set; }
 
         public bool IsTimesheetPresent()

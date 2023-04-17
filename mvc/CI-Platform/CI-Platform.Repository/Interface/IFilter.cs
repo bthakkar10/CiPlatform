@@ -16,5 +16,7 @@ namespace CI_Platform.Repository.Interface
         public List<MissionTheme> ThemeList();
 
         public List<Skill> SkillList();
+
+        public List<City> AllCityList();
     }
 }

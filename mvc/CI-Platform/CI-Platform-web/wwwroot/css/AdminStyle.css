@@ -413,6 +413,16 @@ main {
     transition: opacity 0.3s 0s, max-width 0.7s 0s ease-in-out;
 }*/
 /*User crud*/
+
+#searchUser {
+    border: none !important;
+}
+#searchUser :focus {
+     border-color: inherit !important;
+     -webkit-box-shadow: none !important;
+    box-shadow: none !important; 
+
+}
 .shrink .tooltip {
     display: grid;
 }
@@ -458,22 +468,27 @@ main {
 #example_wrapper{
     position:relative;
 }
-.addBtn {
-    background-color: #FFFFFF;
-    border: 2px solid #F88634;
-    border-radius: 24px;
-    opacity: 1;
-    color: #F88634;
+
+.FormBox {
+  box-shadow: 5px 4px 8px 5px #e4e2f5, 5px 6px 20px 5px rgba(0, 0, 0, 0.2);
+   padding:1rem;
+    background-color: #F8F9FC;
+}
+.formBtn {
+    background-color: #FFFFFF !important;
+    border: 2px solid #F88634 !important;
+    border-radius: 24px !important;
+    opacity: 1 !important;
+    color: #F88634 !important;
     justify-content: center;
     align-items: center;
     display: flex;
     cursor: pointer
 }
 
-    .addBtn:hover {
-        color: #FFFFFF;
-        background-color: #F88634;
-        border-color: #F88634;
+    .formBtn:hover {
+        color: #FFFFFF !important;
+        background-color: #F88634 !important;
+        border-color: #F88634 !important;
     }
-
 /*user crud ends*/

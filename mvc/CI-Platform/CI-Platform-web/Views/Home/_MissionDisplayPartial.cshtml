@@ -73,8 +73,6 @@
 
                             @foreach (var img in obj.missionMedia.Take(1))
                             {
-
-
                                 <img src="~/images/@img" class=" card-img-top">
                             }
                         }
@@ -87,15 +85,15 @@
                                 <span>APPLIED</span>
                             </div>
                         }
-                        @if (obj.MissionCard.MissionType.Equals("Time"))
+
+                        @if (obj.HasDeadlinePassed || obj.HasEndDatePassed || obj.seatsLeft <= 0)
                         {
-                            if (obj.HasDeadlinePassed || obj.HasEndDatePassed || obj.seatsLeft <= 0)
-                            {
-                                <div class="applied-pill" style="background:red 0% 0% no-repeat;">
-                                    <span>CLOSED</span>
-                                </div>
-                            }
+                            <div class="applied-pill" style="background:red 0% 0% no-repeat;">
+                                <span>CLOSED</span>
+                            </div>
                         }
+
+
 
                         <div class="location">
                             <img src="~/images/pin1.png">
@@ -117,7 +115,7 @@
                                 <i class="bi bi-heart empty-heart text-light  "></i>
                             </button>
                         }
-
+                        @*recommended to co worker*@
                         <button class="add-on-img" type="submit" data-user-id="@Id" data-mission-id="@obj.MissionCard.MissionId" data-bs-toggle="modal" data-bs-target="#GridViewCoworkerInviteModal">
                             <img style="opacity: 1;" src="~/images/add1.png">
                         </button>
@@ -161,13 +159,23 @@
                         <div class="d-flex justify-content-between">
                             @obj.MissionCard.OrganizationName
                             <div class="stars">
-                                @for (int i = 1; i <= obj.avgRating; i++)
+                                @if (obj.avgRating != null)
                                 {
-                                    <img src="~/images/selected-star.png" />
+                                    @for (int i = 1; i <= obj.avgRating; i++)
+                                    {
+                                        <img src="~/images/selected-star.png" />
+                                    }
+                                    @for (int i = 5; i > obj.avgRating; i--)
+                                    {
+                                        <img src="~/images/star.png" />
+                                    }
                                 }
-                                @for (int i = 5; i > obj.avgRating; i--)
+                                else
                                 {
-                                    <img src="~/images/star.png" />
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <img src="~/images/star.png" />
+                                    }
                                 }
 
                             </div>
@@ -176,7 +184,7 @@
                     </div>
 
 
-                    @if (obj.HasEndDatePassed || obj.Applied || obj.seatsLeft <= 0 || obj.HasDeadlinePassed)
+                    @if (obj.Applied)
                     {
                         <div class=" d-flex pb-3 justify-content-center">
                             <a class="btn btn card-btn" href="@Url.Action("MissionDetail", "Home" , new { MissionId = @obj.MissionCard.MissionId})">
@@ -246,14 +254,26 @@
                             </div>
                         </div>
 
-
-                        <div class=" d-flex pb-3 justify-content-center">
-                            <a class="btn card-btn" href="@Url.Action("MissionDetail", "Home" , new { MissionId = @obj.MissionCard.MissionId})">
-                                Apply  &nbsp;&nbsp;&nbsp;
-                                <img src="~/images/right-arrow.png">
-                                <img src="~/images/right-arrow2.png" />
-                            </a>
-                        </div>
+                        @if (obj.HasEndDatePassed || obj.seatsLeft <= 0 || obj.HasDeadlinePassed)
+                        {
+                            <div class=" d-flex pb-3 justify-content-center">
+                                <a class="btn card-btn" href="@Url.Action("MissionDetail", "Home" , new { MissionId = @obj.MissionCard.MissionId})">
+                                    View Details  &nbsp;&nbsp;&nbsp;
+                                    <img src="~/images/right-arrow.png">
+                                    <img src="~/images/right-arrow2.png" />
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class=" d-flex pb-3 justify-content-center">
+                                <a class="btn card-btn" href="@Url.Action("MissionDetail", "Home" , new { MissionId = @obj.MissionCard.MissionId})">
+                                    Apply  &nbsp;&nbsp;&nbsp;
+                                    <img src="~/images/right-arrow.png">
+                                    <img src="~/images/right-arrow2.png" />
+                                </a>
+                            </div>
+                        }
 
                     }
 
@@ -325,15 +345,14 @@
                                 <span>APPLIED</span>
                             </div>
                         }
-                        @if (obj.MissionCard.MissionType.Equals("Time"))
+
+                        if (obj.HasDeadlinePassed || obj.HasEndDatePassed)
                         {
-                            if (obj.HasDeadlinePassed || obj.HasEndDatePassed)
-                            {
-                                <div class="applied-pill" style="background:red 0% 0% no-repeat;">
-                                    <span>CLOSED</span>
-                                </div>
-                            }
+                        <div class="applied-pill" style="background:red 0% 0% no-repeat;">
+                            <span>CLOSED</span>
+                        </div>
                         }
+
 
                         <div class="location">
                             <img src="~/images/pin1.png">
@@ -396,13 +415,23 @@
                                 <span class="pe-2">@obj.MissionCard.OrganizationName</span>
                             </div>
                             <div>
-                                @for (int i = 1; i <= obj.avgRating; i++)
+                                @if(obj.avgRating != null)
                                 {
-                                    <img src="~/images/selected-star.png" />
+                                    @for (int i = 1; i <= obj.avgRating; i++)
+                                    {
+                                        <img src="~/images/selected-star.png" />
+                                    }
+                                    @for (int i = 5; i > obj.avgRating; i--)
+                                    {
+                                        <img src="~/images/star.png" />
+                                    }
                                 }
-                                @for (int i = 5; i > obj.avgRating; i--)
+                                else
                                 {
-                                    <img src="~/images/star.png" />
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <img src="~/images/selected-star.png" />
+                                    }
                                 }
                             </div>
                         </div>

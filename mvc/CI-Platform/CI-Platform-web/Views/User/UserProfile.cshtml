@@ -221,11 +221,14 @@
                                         </div>
                                         <div class="col-6">
                                             <div class="selected-skills-list">
-                                                @foreach (var skills in Model.Skills)
+                                                @if(Model.UserSkills.Any())
                                                 {
-                                                    if (Model.UserSkills.Select(us => us.SkillId).Contains(skills.SkillId))
+                                                    @foreach (var skills in Model.Skills)
                                                     {
-                                                        <label class="all-skills-label">@skills.SkillName</label>
+                                                        if (Model.UserSkills.Select(us => us.SkillId).Contains(skills.SkillId))
+                                                        {
+                                                            <label class="all-skills-label">@skills.SkillName</label>
+                                                        }
                                                     }
                                                 }
                                             </div>

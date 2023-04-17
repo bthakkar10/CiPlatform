@@ -2,10 +2,7 @@
     Layout = "_AuthLayout";
     ViewData["Title"] = "Login";
 }
-@model CI_Platform.Entities.DataModels.User
-
-
-
+@model CI_Platform.Entities.ViewModels.UserLoginViewModel
 
 <div class="index-right">
     <div class="container">
@@ -14,11 +11,15 @@
                 <div class="mb-3">
                     <label asp-for="Email" class="form-label">Email address</label>
                     <input asp-for="Email" type="email" data-val="true" data-val-required="The email is required" placeholder="evan.donohue@gmail.com" class="form-control form-control-lg w-100z" id="exampleInputEmail1">
+                    <span asp-validation-for="Email" class="text-danger validate-text"></span>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 position-relative">
                     <label asp-for="Password" class="form-label">Password</label>
                     <input asp-for="Password" type="password" placeholder="**********" class="form-control form-control-lg" id="exampleInputPassword1">
+                    <i class="bi bi-eye-fill position-absolute translate-middle-x end-0 top-50 d-none"></i>
+                    <i class="bi bi-eye-slash position-absolute translate-middle-x end-0 top-50 "></i>
                 </div>
+                 <span asp-validation-for="Password" class="text-danger validate-text"></span>
                 <div class="d-grid gap-2 mx-auto p-2 ">
                     <button type="submit">Login</button>
                 </div>

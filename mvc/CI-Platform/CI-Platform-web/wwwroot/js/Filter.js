@@ -681,11 +681,20 @@ $('#ApplyBtnMission').click(function () {
         url: '/Home/ApplyMission',
         data: { MissionId: MissionId },
         success: function (result) {
-
-            var newButton = $('<a>').addClass('btn card-btn disabled text-danger')
-                .append($('<span>').text('Approval Pending')
-                    .append($('<i>').addClass('bi bi-patch-exclamation-fill')));
-            btn.replaceWith(newButton);
+            swal.fire({
+                position: 'top-end',
+                icon: result.icon,
+                title: result.message,
+                showConfirmButton: false,
+                timer: 4000
+            });
+            if (result.icon == "success") {
+                
+                var newButton = $('<a>').addClass('btn card-btn disabled text-danger')
+                    .append($('<span>').text('Approval Pending')
+                        .append($('<i>').addClass('bi bi-patch-exclamation-fill')));
+                btn.replaceWith(newButton);
+            }
         },
         error: function (error) {
             console.log(error);
@@ -1402,6 +1411,7 @@ function validateOldPassword() {
 $('#NewPassword').on('blur', validateNewPassword);
 function validateNewPassword() {
     var newPass = $('#NewPassword').val();
+    var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
     if (newPass === "" || newPass === null) {
         $('#validateNewPass').text("New Password is required!");
         $('#NewPassword').focus();
@@ -1411,9 +1421,10 @@ function validateNewPassword() {
         $('#NewPassword').focus();
         return false;
     }
-    //} else if (newPass.length < 8) {
-    //    $('#validateNewPass').text("New Password must be 8 characters long!");
-    //} else {
+    else if (!regex.test(newPass)) {
+        $('#validateNewPass').text("The password must contain at least 8 characters including at least one uppercase,lowercase,digit and special character!");
+        return false;
+    }
     else {
         $('#validateNewPass').text("");
     }
@@ -1427,7 +1438,7 @@ function validateConfirmPassword() {
         $('#validateConfirmPass').text("Re-enter your New Password!");
         $('#ConfirmPassword').focus();
         return false;
-    } else if (confirmPass !== $('#NewPassword').val()) {
+    } else if (confirmPass != $('#NewPassword').val()) {
         $('#validateConfirmPass').text("New Password and Confirm Password must be same!");
         $('#ConfirmPassword').focus();
         return false;
@@ -1470,16 +1481,16 @@ $('#ChangePasswordBtn').on('click', function () {
 })
 
 //password show and hide in user profile 
-$('.bi-eye-slash').on('click', function () {
-    $(this).parent().find('input').attr('type', 'text');
-    $(this).addClass('d-none');
-    $(this).prev().removeClass('d-none');
-})
-$('.bi-eye-fill').on('click', function () {
-    $(this).parent().find('input').attr('type', 'password');
-    $(this).addClass('d-none');
-    $(this).next().removeClass('d-none');
-})
+//$('.bi-eye-slash').on('click', function () {
+//    $(this).parent().find('input').attr('type', 'text');
+//    $(this).addClass('d-none');
+//    $(this).prev().removeClass('d-none');
+//})
+//$('.bi-eye-fill').on('click', function () {
+//    $(this).parent().find('input').attr('type', 'password');
+//    $(this).addClass('d-none');
+//    $(this).next().removeClass('d-none');
+//})
 
 //contact us form
 $("#ContactUsBtn").on('click', function () {

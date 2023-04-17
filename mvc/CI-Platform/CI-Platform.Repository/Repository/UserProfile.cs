@@ -151,7 +151,7 @@ namespace CI_Platform.Repository.Repository
                 _db.SaveChanges();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

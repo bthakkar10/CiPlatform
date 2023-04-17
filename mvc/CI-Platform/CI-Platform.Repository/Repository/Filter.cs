@@ -34,7 +34,11 @@ namespace CI_Platform.Repository.Repository
         {
             return _db.MissionThemes.ToList();
         }
-
+        
+        public List<City> AllCityList()
+        {
+            return _db.Cities.ToList();
+        }
        
     }
 }

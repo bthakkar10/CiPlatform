@@ -103,7 +103,7 @@ namespace CI_Platform.Repository.Repository
                 favouriteMission = mission.FavouriteMissions.ToList(),
             });
 
-            if (queryParams.sortCase != null || queryParams.sortCase != 0)
+            if ( queryParams.sortCase != 0)
             {
                 switch (queryParams.sortCase)
                 {
@@ -127,7 +127,7 @@ namespace CI_Platform.Repository.Repository
                         MissionCardQuery = MissionCardQuery.Where(q => q.favouriteMission.Any(f => f.UserId == UserId)).OrderByDescending(q => q.favouriteMission.Count(f => f.UserId == UserId));
                         break;
                     default:
-                        MissionCardQuery = MissionCardQuery;
+                        MissionCardQuery = MissionCardQuery.OrderBy(q=>q.MissionCard.MissionId);
                         break;
                 }
             }
@@ -180,7 +180,13 @@ namespace CI_Platform.Repository.Repository
             }
             else
             {
-                var newRating = new MissionRating { UserId = UserId, MissionId = MissionId, Rating = rating };
+
+                MissionRating newRating = new MissionRating
+                { 
+                    UserId = UserId,
+                    MissionId = MissionId, 
+                    Rating = rating 
+                };
                 _db.MissionRatings.Add(newRating);
                 _db.SaveChanges();
             }
@@ -212,7 +218,7 @@ namespace CI_Platform.Repository.Repository
             }
         }
 
-        public bool ApplyToMission(long MissionId, long UserId)
+        public bool ApplyToMission(long UserId, long MissionId)
         {
             try
             {

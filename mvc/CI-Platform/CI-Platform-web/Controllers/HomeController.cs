@@ -294,8 +294,15 @@ namespace CI_Platform_web.Controllers
             var userId = HttpContext.Session.GetString("Id");
             long UserId = Convert.ToInt64(userId);
 
-            _missionDisplay.ApplyToMission(UserId, MissionId);
-            return Ok();
+            if(_missionDisplay.ApplyToMission(UserId, MissionId))
+            {
+                return Ok(new { icon = "success", message = "Applied successfully!!"});
+              
+            }
+            else
+            {
+                return Ok(new { icon = "error", message = "Already Applied!!" });
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

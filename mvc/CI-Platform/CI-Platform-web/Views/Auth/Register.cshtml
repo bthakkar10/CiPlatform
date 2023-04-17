@@ -2,8 +2,8 @@
     ViewData["Title"] = "Register";
     Layout = "_AuthLayout";
 }
-@model CI_Platform.Entities.DataModels.User
-@*@model CI_Platform.Entities.ViewModels.register*@
+@model CI_Platform.Entities.ViewModels.RegistrationViewModel
+
 
 <div class="register-right">
     <div class="container">
@@ -12,31 +12,44 @@
                 <div class="mb-2">
                     <label asp-for="FirstName" class="form-label">First Name</label>
                     <input asp-for="FirstName" type="text" placeholder="evan" class="form-control form-control-lg w-100" id="exampleFirstName1" required>
+                    <span asp-validation-for="FirstName" class="validate-text text-danger"></span>
                 </div>
                 <div class="mb-2">
                     <label asp-for="LastName" class="form-label">Last Name</label>
                     <input asp-for="LastName" type="text" placeholder="donohue" class="form-control form-control-lg w-100" id="exampleLastName1" required>
+                    <span asp-validation-for="LastName" class="validate-text text-danger"></span>
+
                 </div>
                 <div class="mb-2">
                     <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
                     <input asp-for="PhoneNumber" type="number" placeholder="123456789" class="form-control form-control-lg w-100" id="exampleNumber">
+                    <span asp-validation-for="PhoneNumber" class="validate-text text-danger"></span>
+
                 </div>
                 <div class="mb-2">
                     <label asp-for="Email" class="form-label">Email address</label>
                     <input asp-for="Email" type="email" placeholder="evan.donohue@gmail.com" class="form-control form-control-lg w-100" id="exampleInputEmail1">
+                    <span asp-validation-for="Email" class="validate-text text-danger"></span>
+
                 </div>
-                <div class="mb-2">
+                <div class="mb-2 position-relative">
                     <label asp-for="Password" name="Password" class="form-label">Password</label>
-                    <input asp-for="Password"  id="Password" type="password" placeholder="**********" class="form-control form-control-lg" onkeyup="check()">
-                    <span id="cnf-msg"></span>
+                    <input asp-for="Password" id="Password" type="password" placeholder="**********" class="form-control form-control-lg" onkeyup="check()">
+                    <i class="bi bi-eye-fill position-absolute translate-middle-x end-0 top-50 d-none"></i>
+                    <i class="bi bi-eye-slash position-absolute translate-middle-x end-0 top-50 "></i>
                 </div>
-                <div class="mb-2">
-                    <label for="ConfirmPassword" name="ConfirmPassword" class="form-label">Confirm Password</label>
-                    <input type="password" name="ConfirmPassword" id="ConfirmPassword" placeholder="**********" class="form-control form-control-lg" onkeyup="check()">
-                    <span id="cnf-msg"></span>
+                <span asp-validation-for="Password" class="validate-text text-danger"></span>
+                <span id="cnf-msg"></span>
+                <div class="mb-2 position-relative">
+                    <label asp-for="ConfirmPassword" name="ConfirmPassword" class="form-label">Confirm Password</label>
+                    <input asp-for="ConfirmPassword" type="password" name="ConfirmPassword" id="ConfirmPassword" placeholder="**********" class="form-control form-control-lg" onkeyup="check()">
+                    <i class="bi bi-eye-fill position-absolute translate-middle-x end-0 top-50 d-none"></i>
+                    <i class="bi bi-eye-slash position-absolute translate-middle-x end-0 top-50 "></i>
                 </div>
+                 <span asp-validation-for="ConfirmPassword" class="validate-text text-danger"></span>
+                 <span id="cnf-msg"></span>
                 <div class="d-grid gap-2 mx-auto p-2 ">
-                    <button type="submit" >Register</button>
+                    <button type="submit">Register</button>
                 </div>
                 <div class="d-flex p-2 justify-content-center">
                     <a asp-controller="Auth" asp-action="ForgetPass" class="password  password-lost"><b>Lost your Password?</b></a>
@@ -55,9 +68,8 @@
     var check = function () {
         if (document.getElementById('Password').value == document.getElementById('ConfirmPassword').value) {
             document.getElementById('cnf-msg').style.display = 'none';
-        } 
-        else
-        {
+        }
+        else {
             document.getElementById('cnf-msg').style.color = 'red';
             document.getElementById('cnf-msg').innerHTML = 'Password and Confirm Password must be same!!';
         }

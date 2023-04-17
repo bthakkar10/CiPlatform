@@ -34,24 +34,24 @@ namespace CI_Platform_web.Controllers
 
         [HttpPost]
    
-        public IActionResult Index(string Email, string Password, long UserId)
+        public IActionResult Index(UserLoginViewModel obj, long UserId)
         {
             if (ModelState.IsValid)
             {
-                var cursor = _dbUserRepository.GetUserEmail(Email);
-                if (cursor == null)
+                var DoesEmailExists = _dbUserRepository.GetUserEmail(obj.Email);
+                if (DoesEmailExists == null)
                 {
                     TempData["error"] = "User does not exist.Please register first";
                     return View("Register");
                 }
                 else
                 {
-                    if(cursor.Password == Password)
+                    if(DoesEmailExists.Password == obj.Password)
                     {
                         TempData["success"] = "Login Successful!!";
-                        HttpContext.Session.SetString("SEmail", Email);
-                        HttpContext.Session.SetString("Id", cursor.UserId.ToString());
-                        HttpContext.Session.SetString("Username", cursor.FirstName + " " + cursor.LastName);
+                        HttpContext.Session.SetString("SEmail", obj.Email);
+                        HttpContext.Session.SetString("Id", DoesEmailExists.UserId.ToString());
+                        HttpContext.Session.SetString("Username", DoesEmailExists.FirstName + " " + DoesEmailExists.LastName);
 
                         return RedirectToAction("HomePage", "Home");
 
@@ -64,7 +64,7 @@ namespace CI_Platform_web.Controllers
                      
                 }
             }
-            TempData["error"] = "invalid model state";
+            TempData["error"] = "Something went wrong!!";
 
             return View();
         }
@@ -105,23 +105,21 @@ namespace CI_Platform_web.Controllers
 
         [HttpPost]
     
-        public IActionResult Register(User obj, IFormCollection form)
+        public IActionResult Register(RegistrationViewModel obj)
         {
             if (ModelState.IsValid)
             {
                 var UserEmail = _dbUserRepository.GetUserEmail(obj.Email);
                 if (UserEmail == null)
                 {
-                    if (form["ConfirmPassword"] == obj.Password)
+                    if (_dbUserRepository.RegisterUser(obj))
                     {
-                        _db.Users.Add(obj);
-                        _db.SaveChanges();
                         TempData["success"] = "Registeration successful!!";
-                        return RedirectToAction("HomePage", "Home");
+                         return RedirectToAction("Index", "Auth");
                     }
                     else
                     {
-                        TempData["error"] = "Password does not Match!!";
+                        TempData["error"] = "Some error occured!! Please try again later!!";
                         return View(obj);
                     }
                 }
@@ -131,7 +129,7 @@ namespace CI_Platform_web.Controllers
                     return View(obj);
                 }
             }
-            return View(obj);
+            return View();
         }
 
         public IActionResult ResetPass()
@@ -160,7 +158,11 @@ namespace CI_Platform_web.Controllers
         }
         public IActionResult Logout()
         {
+            //_db.SignOutAsync();
+            //System.Web.Security.FormsAuthentication.SignOut();
             HttpContext.Session.Remove("Username");
+            HttpContext.Session.Remove("SEmail");
+            HttpContext.Session.Remove("Id");
             return RedirectToAction("Index");
         }
 
