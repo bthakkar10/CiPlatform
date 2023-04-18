@@ -45,6 +45,7 @@ namespace CI_Platform.Repository.Repository
                         CityId = vm.CityId,
                         Password = vm.Password,
                         Availability = vm.Availibility,
+                        Status = vm.Status, 
                     };
                     _db.Users.Add(user);    
                     _db.SaveChanges();  
@@ -106,6 +107,7 @@ namespace CI_Platform.Repository.Repository
                 user.CityId = vm.CityId;
                 user.Password = vm.Password;
                 user.Availability = vm.Availibility;
+                user.Status = vm.Status;        
                 _db.Users.Update(user);
                 _db.SaveChanges();
                 return true;

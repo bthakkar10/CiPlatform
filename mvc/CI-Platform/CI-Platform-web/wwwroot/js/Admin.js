@@ -59,17 +59,34 @@ function showTooltip() {
 tooltip_elements.forEach((elem) => {
     elem.addEventListener("mouseover", showTooltip);
 });
-//SIDE NAV BAR ENDS
 
-//APPEND PARTIAL VIEW FOR ADD USER  
+//$(".sidebar-links .nav-link").click(function () {
+//    $(".nav-link").removeClass("active");
+//    $(this).addClass("active");
+//});
+//to show active class in sidebar 
+$(".sidebar-links .nav-link").each(function () {
+    var url = $(this).attr('href');
+    if (window.location.href.includes(url)) {
+        $(this).addClass('active')
+    }
+})
+//SIDE NAV BAR ENDS
+//To show date and time in admin panel top header
+function updateTime() {
+var dateTime = new Date();
+var formattedDateTime = dateTime.toLocaleString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true });
+$("#datetime").text(formattedDateTime);
+}
+//set interval will update time every seconds
+setInterval(updateTime, 1000);
+//APPEND PARTIAL VIEW FOR ADD OR EDIT USER  
 $(document).on('click', '#AddNewUserBtn', function () {
     $.ajax({
         url: '/Admin/AddNewuser',
         type: 'GET',
         success: function (result) {
-           
             $('.table-responsive').empty();
-            
             $('#AddNewUserForm').html(result);
         },
         error: function () {
@@ -77,24 +94,31 @@ $(document).on('click', '#AddNewUserBtn', function () {
         }
     });
 });
-$(document).on('click', '.EditButtonDataFetch', function () {
+
+//DATA FETCHING FOR USER EDIT
+$(document).on('click', '#EditBtnUserDataFetch', function () {
     var UserId = $(this).data('user-id');  
     $.ajax({
         url: '/Admin/GetUserData',
         type: 'GET',
         data: { UserId: UserId },
         success: function (result) {
-            var heading = '<h4>Edit</h4>';
-            $('.FormHeading').empty().append($(heading).text("Edit"));
             $('.table-responsive').empty();
             $('#AddNewUserForm').html(result);
+            const isEditMode = true; // or false
+            $('#AddHeader .FormHeading span').text(isEditMode ? 'Edit' : 'Add');
         },
         error: function () {
             alert('Error ');
         }
     });
 });
-//cities based on countries in user profile
+//to get id for delete
+$(document).on('click', '#DeleteUserBtn', function () {
+    var UserId = $(this).data('user-id');
+    $("#HiddenUserId").val(UserId);
+});
+//cities based on countries in admin panel user page
 $(document).on('click', '#AdminCountrySelect', function () {
     var CountryId = $(this).val()
     UserGetCitiesByCountry(CountryId);
@@ -115,18 +139,118 @@ function UserGetCitiesByCountry(CountryId) {
         }
     });
 }
-//cms pages add
+//APPEND PARTIAL VIEW FOR ADD OR EDIT CMS PAGE
 $(document).on('click', '#AddOrUpdateCms', function () {
     $.ajax({
         url: '/Admin/AddOrUpdatePrivacyPages',
         type: 'GET',
         success: function (result) {
             $('.table-responsive').empty();
-            $('#AddNewUserForm').html(result);
             $('#AddOrUpdatePrivacyPages').html(result);
         },
         error: function () {
             alert('Error ');
         }
     });
+});
+//DATA FETCHING FOR CMS PAGE EDIT
+$(document).on('click', '#EditBtnCmsPage', function () {
+    
+    var CmsId = $(this).data('cms-id');
+    $.ajax({
+        url: '/Admin/GetCmsData',
+        type: 'GET',
+        data: { CmsId: CmsId },
+        success: function (result) {
+            $('.table-responsive').empty();
+            $('#AddOrUpdatePrivacyPages').html(result);
+
+            const isEditMode = true; // or false
+            $('#CmsHeader .FormHeading span').text(isEditMode ? 'Edit' : 'Add');
+        },
+        error: function () {
+            alert('Error ');
+        }
+    });
+});
+//to get id for delete
+$(document).on('click', '#DeleteCmsBtn', function () {
+    var CmsId = $(this).data('cms-id');
+    $("#HiddenCmsId").val(CmsId);
+});
+//APPEND PARTIAL VIEW FOR ADD OR EDIT MISSION THEME
+$(document).on('click', '#AddOrUpdateThemeBtn', function () {
+    $.ajax({
+        url: '/Admin/AddOrUpdateTheme',
+        type: 'GET',
+        success: function (result) {
+            $('.table-responsive').empty();
+            $('#AddOrUpdateTheme').html(result);
+        },
+        error: function () {
+            alert('Error ');
+        }
+    });
+});
+//DATA FETCHING FOR THEME EDIT
+$(document).on('click', '#EditBtnTheme', function () {
+
+    var ThemeId = $(this).data('theme-id');
+    $.ajax({
+        url: '/Admin/GetThemeData',
+        type: 'GET',
+        data: { ThemeId: ThemeId },
+        success: function (result) {
+            $('.table-responsive').empty();
+            $('#AddOrUpdateTheme').html(result);
+            const isEditMode = true; // or false
+            $('#ThemeHeader .FormHeading span').text(isEditMode ? 'Edit' : 'Add');
+        },
+        error: function () {
+            alert('Error ');
+        }   
+    });
+});
+//to get id for delete
+$(document).on('click', '#DeleteThemeBtn', function () {
+    var ThemeId = $(this).data('theme-id');
+    $("#HiddenThemeId").val(ThemeId);
+});
+
+//APPEND PARTIAL VIEW FOR ADD OR EDIT SKKILL
+$(document).on('click', '#AddOrUpdateSkillBtn', function () {
+    $.ajax({
+        url: '/Admin/AddOrUpdateSkill',
+        type: 'GET',
+        success: function (result) {
+            $('.table-responsive').empty();
+            $('#AddOrUpdateSkill').html(result);
+        },
+        error: function () {
+            alert('Error ');
+        }
+    });
+});
+//DATA FETCHING FOR Skill PAGE EDIT
+$(document).on('click', '#EditBtnSkill', function () {
+    var SkillId = $(this).data('skill-id');
+    $.ajax({
+        url: '/Admin/GetSkillData',
+        type: 'GET',
+        data: { SkillId: SkillId },
+        success: function (result) {
+            $('.table-responsive').empty();
+            $('#AddOrUpdateSkill').html(result);
+            const isEditMode = true; // or false
+            $('#SkillHeader .FormHeading span').text(isEditMode ? 'Edit' : 'Add');
+        },
+        error: function () {
+            alert('Error ');
+        }
+    });
+});
+//to get id for delete
+$(document).on('click', '#DeleteSkillBtn', function () {
+    var SkillId = $(this).data('skill-id');
+    $("#HiddenSkillId").val(SkillId);
 });

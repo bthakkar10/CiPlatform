@@ -4,7 +4,7 @@
     <form method="post" class="validateForm">
         <input  asp-for="UserId" id="UserId" type="hidden" />
         <div class="border">
-            <div class="FormBox"><h4 class="FormHeading"><span>Add</span></h4></div>
+            <div class="FormBox" id="AddHeader"><h4 class="FormHeading"><span>Add</span></h4></div>
             <div class="row g-3 p-3">
                 <div class="col-md-6">
                     <label asp-for="FirstName" class="form-label">First Name</label>
@@ -72,7 +72,7 @@
                 <div class="col-md-6">
                     <label for="Country" class="form-label ms-1">Country</label>
                     <select asp-for="CountryId" class="form-select" id="AdminCountrySelect" aria-label="Enter your Country">
-                        <option selected>Enter your Country</option>
+                        <option selected disabled>Enter your Country</option>
                         @foreach (var country in Model.Countries)
                         {
                         <option value="@country.CountryId">@country.Name</option>
@@ -96,10 +96,19 @@
                     <span asp-validation-for="CityId" class="text-danger validate-text"></span>
 
                 </div>
+                <div class="g-3 p-3 ">
+                    <label asp-for="Status" class="form-label">Status</label>
+                    <select asp-for="Status" class="form-select" aria-label="Select status">
+                       
+                        <option value="true">Active</option>
+                        <option value="false">In - Active</option>
+                    </select>
+                    <span asp-validation-for="Status" class="validate-text text-danger"></span>
+                </div>
             </div>
             <div class="d-flex flex-wrap justify-content-between m-3">
                 <a class="btn btn-outline-secondary rounded-pill" href="@Url.Action("User", "Admin")">Cancel</a>
-                <button type="submit" class="btn btn-outline-success  rounded-pill addBtn" asp-controller="Admin" asp-action="AddOrUpdateUser">Add</button>
+                <button type="submit" class="btn btn-outline-success  rounded-pill addBtn" asp-controller="Admin" asp-action="AddOrUpdateUser">Save</button>
             </div>
         </div>
     </form>

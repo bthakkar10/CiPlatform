@@ -324,3 +324,10 @@ C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\C
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\CI-Platform-web.pdb
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\CI-Platform-web.genruntimeconfig.cache
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\ref\CI-Platform-web.dll
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\System.Web.Mvc.dll
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\System.Web.Razor.dll
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\System.Web.Helpers.dll
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\System.Web.WebPages.Deployment.dll
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\System.Web.WebPages.Razor.dll
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\System.Web.WebPages.dll
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\Microsoft.Web.Infrastructure.dll

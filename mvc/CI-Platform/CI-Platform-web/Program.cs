@@ -21,6 +21,9 @@ builder.Services.AddScoped<IStoryDetails, StoryDetails>();
 builder.Services.AddScoped<IUserProfile, UserProfile>();
 builder.Services.AddScoped<IVolunteeringTimesheet, VolunteeringTimesheet>();
 builder.Services.AddScoped<IAdminUser, AdminUser>();
+builder.Services.AddScoped<IAdminCms, AdminCms>();  
+builder.Services.AddScoped<IAdminSkills, AdminSkills>();    
+builder.Services.AddScoped<IAdminTheme, AdminTheme>();  
 
 builder.Services.AddSession();
 builder.Services.AddMemoryCache();

@@ -2,25 +2,37 @@
     Layout = "_Layout";
     ViewData["Title"] = "Privacy Policy";
 }
+@model CI_Platform.Entities.ViewModels.PrivacyPolicyViewModel
 
 <div class="container scrollspy-example" @*data-bs-spy="scroll" data-bs-target="#PrivacyPolicyList"*@>
     <h2 class="my-5">Privacy and Cookies Policy</h2>
     <div class="row gap-4 d-flex">
         <div class="col-sm-3">
             <div id="PrivacyPolicyList" class="d-flex flex-column gap-2 simple-list-example-scrollspy text-center">
-                <a class="p-1 rounded" href="#Introduction"><span>Introduction</span><img class="m-2" src="~/images/right-arrow1.png"></a>
+                @foreach(var cms in Model.GetCmsPages)
+                {
+                    <a class="p-1 rounded" href="#@cms.Title"><span>@cms.Title</span><img class="m-2" src="~/images/right-arrow1.png"></a>
+                    <hr />
+                }
+                @*<a class="p-1 rounded" href="#Introduction"><span>Introduction</span><img class="m-2" src="~/images/right-arrow1.png"></a>
                 <hr />
                 <a class="p-1 rounded" href="#UseCookies"><span>How to Use Cookies?</span><img class="my-2" src="~/images/right-arrow1.png"></a>
                 <hr />
                 <a class="p-1 rounded" href="#ManageCookies"><span >How to Manage Your Cookies?</span><img class="my-2" src="~/images/right-arrow1.png"></a>
                 <hr />
-                <a class="p-1 rounded" href="#Preferences"><span> Preferences? </span><img class="my-2" src="~/images/right-arrow1.png"></a>
+                <a class="p-1 rounded" href="#Preferences"><span> Preferences? </span><img class="my-2" src="~/images/right-arrow1.png"></a>*@
 
             </div>
         </div>
         <div class="col-sm-8 ">
             <div data-bs-spy="scroll" data-bs-target="#PrivacyPolicyList" data-bs-offset="0" data-bs-smooth-scroll="true" class="scrollspy-example" tabindex="0">
-                <h4 id="Introduction">Introduction</h4>
+                @foreach(var cms in Model.GetCmsPages)
+                {
+                    <h4 id="@cms.Title">@cms.Slug</h4>
+                    <p>@Html.Raw(cms.Description)</p>
+                 @*   @Html.Raw(Model.GetStoryDetails.Description)*@
+                }
+                @*<h4 id="Introduction">Introduction</h4>
                 <p>Developed by Microsoft, .NET (also known as . NET) is a framework that makes application development a bit easy task for developers. The framework supports the development as well as maintenance of modern-day applications and XML web services. .NET offers a highly consistent object-oriented programming environment to dedicated developers and is used to build applications that can run on multiple platforms. One of the interesting about the .NET framework is that it supports the creation of cross-platform applications that can smoothly run across server platforms such as Windows, Linux, and even MAC. This framework can be used to design, develop, compile, build and deploy a mobile application with its comprehensive range of compilers, code libraries, support programs, and APIs. The varied components of dotNET aid in the development of the customized project. .NET is widely used by developers for the creation of services and apps on multiple devices and operating systems. One of the aspects that make .NET stand out is the range of features offered by the application. 1. Interoperable Apps: dotNET is the perfect option for building interoperable apps that offer flawless user experience across a wide range of platforms. The plethora of features available in this framework enables programmers to create an application that works in sync across multiple platforms. If you want to develop an application using .NET, then you can hire dedicated ASP.NET developers. 2. Gaming: .NET is extremely versatile and thus it is a highly suitable framework for the development of gaming applications. The versatility offered by .NET also allows .NET developers to create seamless web and enterprise-graded applications. 3. Re-Designing: Organizations are not static and their needs are also changing continuously. It is crucial to scale the software according to the growing needs.</p>
                 <h4 id="UseCookies">How to Use Cookies?</h4>
                 <p>Developed by Microsoft, .NET (also known as . NET) is a framework that makes application development a bit easy task for developers. The framework supports the development as well as maintenance of modern-day applications and XML web services. .NET offers a highly consistent object-oriented programming environment to dedicated developers and is used to build applications that can run on multiple platforms. One of the interesting about the .NET framework is that it supports the creation of cross-platform applications that can smoothly run across server platforms such as Windows, Linux, and even MAC. This framework can be used to design, develop, compile, build and deploy a mobile application with its comprehensive range of compilers, code libraries, support programs, and APIs. The varied components of dotNET aid in the development of the customized project. .NET is widely used by developers for the creation of services and apps on multiple devices and operating systems. One of the aspects that make .NET stand out is the range of features offered by the application. 1. Interoperable Apps: dotNET is the perfect option for building interoperable apps that offer flawless user experience across a wide range of platforms. The plethora of features available in this framework enables programmers to create an application that works in sync across multiple platforms. If you want to develop an application using .NET, then you can hire dedicated ASP.NET developers. 2. Gaming: .NET is extremely versatile and thus it is a highly suitable framework for the development of gaming applications. The versatility offered by .NET also allows .NET developers to create seamless web and enterprise-graded applications. 3. Re-Designing: Organizations are not static and their needs are also changing continuously. It is crucial to scale the software according to the growing needs.</p>
@@ -31,7 +43,7 @@
                 <p>...</p>
                 <h4 id="Preferences"> Preferences?</h4>
                 <p>Developed by Microsoft, .NET (also known as . NET) is a framework that makes application development a bit easy task for developers. The framework supports the development as well as maintenance of modern-day applications and XML web services. .NET offers a highly consistent object-oriented programming environment to dedicated developers and is used to build applications that can run on multiple platforms. One of the interesting about the .NET framework is that it supports the creation of cross-platform applications that can smoothly run across server platforms such as Windows, Linux, and even MAC. This framework can be used to design, develop, compile, build and deploy a mobile application with its comprehensive range of compilers, code libraries, support programs, and APIs. The varied components of dotNET aid in the development of the customized project. .NET is widely used by developers for the creation of services and apps on multiple devices and operating systems. One of the aspects that make .NET stand out is the range of features offered by the application. 1. Interoperable Apps: dotNET is the perfect option for building interoperable apps that offer flawless user experience across a wide range of platforms. The plethora of features available in this framework enables programmers to create an application that works in sync across multiple platforms. If you want to develop an application using .NET, then you can hire dedicated ASP.NET developers. 2. Gaming: .NET is extremely versatile and thus it is a highly suitable framework for the development of gaming applications. The versatility offered by .NET also allows .NET developers to create seamless web and enterprise-graded applications. 3. Re-Designing: Organizations are not static and their needs are also changing continuously. It is crucial to scale the software according to the growing needs.</p>
-                <p></p>
+                <p></p>*@
             </div>
         </div>
     </div>

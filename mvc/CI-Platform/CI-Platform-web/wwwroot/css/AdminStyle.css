@@ -412,8 +412,10 @@ main {
     max-width: 0;
     transition: opacity 0.3s 0s, max-width 0.7s 0s ease-in-out;
 }*/
+.bi-pencil-square {
+    color: #F88634;
+}
 /*User crud*/
-
 #searchUser {
     border: none !important;
 }

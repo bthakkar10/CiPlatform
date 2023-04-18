@@ -8,28 +8,23 @@
 <div class="container-fluid my-5 mx-2">
     <h3 class="pb-1 border-bottom"><span class="heading-underline pb-1"> User </span></h3>
 
-@*    <div class="admin-title">
-    <h2 class="border-bottom"><span class="underline">User</span></h2>*@
-    
-@*</div>*@
-
-@*    add button modal*@
+    @*    add button partial view call*@
 
     <div id="AddNewUserForm"></div>
 
     <div class="table-responsive m-3">
-      
-     <div class="d-flex my-4">
-        <div class="admin-search-box d-flex align-items-center border">
-            <img class="icon" src="~/images/search.png" alt="search-icon" />
-            <input id="searchUser" class="ms-sm-3" type="text" placeholder="Search" />
+
+        <div class="d-flex my-4">
+            <div class="admin-search-box d-flex align-items-center border">
+                <img class="icon" src="~/images/search.png" alt="search-icon" />
+                <input id="searchUser" class="ms-sm-3" type="text" placeholder="Search" />
+            </div>
+
+            <button id="AddNewUserBtn" class="btn formBtn d-flex align-items-center ms-auto px-4 py-2"><i class="fa-solid fa-plus"></i>&nbsp; Add</button>
         </div>
-     
-        <button id="AddNewUserBtn" class="btn formBtn d-flex align-items-center ms-auto px-4 py-2"><i class="fa-solid fa-plus"></i>&nbsp; Add</button>
-    </div>
         <table id="example" cellspacing="0" class="display table table-bordered align-middle" style="width:100%">
 
-           
+
             <thead class="gap-2">
                 <tr class="bg-light align-middle">
                     <th>First Name </th>
@@ -61,36 +56,39 @@
                             }
                         </td>
                         <td>
-                            <button class="btn p-0 EditButtonDataFetch" id="TimeMissionEditBtn"  data-user-id="@users.UserId">
-                                <i style="color: #F88634;" class="bi bi-pencil-square"></i>
+                            <button class="btn p-0 " id="EditBtnUserDataFetch" data-user-id="@users.UserId">
+                                <i class="bi bi-pencil-square"></i>
                             </button>
 
-                            <button class="p-0 btn" data-bs-toggle="modal" data-bs-target="#DeleteUser">
+                            <button class="p-0 btn" data-bs-toggle="modal" id="DeleteUserBtn" data-bs-target="#DeleteUser" data-user-id="@users.UserId">
                                 <i class="bi bi-trash"> </i>
                             </button>
 
-                            <div class="modal fade" id="DeleteUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div>Are you sure you want to delete @users.FirstName @users.LastName ?? </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="me-3 btn rounded-pill btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                                            <a class="btn rounded-pill btn-outline-danger" href="@Url.Action("DeleteUser", "Admin", new { UserId = users.UserId })">Delete</a>
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                         </td>
                     </tr>
                 }
         </table>
+        <div class="modal fade" id="DeleteUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <form method="post">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <input name="HiddenUserId" id="HiddenUserId" type="hidden" />
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div>Are you sure you want to delete this user ?? </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="me-3 btn rounded-pill btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button asp-controller="Admin" asp-action="DeleteUser" class="btn rounded-pill btn-outline-danger">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

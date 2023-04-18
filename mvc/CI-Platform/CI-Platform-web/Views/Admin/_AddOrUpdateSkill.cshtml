@@ -1,0 +1,36 @@
+﻿@model CI_Platform.Entities.ViewModels.AdminSkillsViewModel
+<div>
+    <form method="post" class="validateForm">
+
+        <input asp-for="SkillId" id="SkillId" type="hidden" />
+        <div class="border">
+            <div class="FormBox" id="SkillHeader"><h4 class="FormHeading"><span>Add</span></h4></div>
+
+            <div class="m-3 ">
+                <label asp-for="SkillName" class="form-label">Title</label>
+                <input asp-for="SkillName" type="text" class="form-control" placeholder="Enter Skill Name" aria-label="Last name">
+                <span asp-validation-for="SkillName" class="validate-text text-danger"></span>
+            </div>
+
+            <div class="mb-3 mx-3 ">
+                <label asp-for="Status" class="form-label">Status</label>
+                <select asp-for="Status" class="form-select" aria-label="Select status">
+                    <option value="" selected disabled hidden">Select status</option>
+                    <option value="1">Active</option>
+                    <option value="0">In - Active</option>
+                </select>
+                <span asp-validation-for="Status" class="validate-text text-danger"></span>
+
+            </div>
+
+
+            <div class="d-flex flex-wrap justify-content-between m-3">
+                <a class="btn btn-outline-secondary rounded-pill" href="@Url.Action("MissionSkill", "Admin")">Cancel</a>
+                <button type="submit" class="btn btn-outline-success  rounded-pill addBtn" asp-controller="Admin" asp-action="AddOrUpdateSkill">Save</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

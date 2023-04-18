@@ -1,47 +1,53 @@
-﻿
-<script src="https://cdn.jsdelivr.net/npm/tinymce@5/tinymce.min.js"></script>
-<script src="~/js/text-editor.js" asp-append-version="true"></script>
+﻿@using System.Web;
+
+
+
 @model CI_Platform.Entities.ViewModels.AdminCmsViewModel
 <div>
     <form method="post" class="validateForm">
 
-        @* <input asp-for="UserId" id="UserId" type="hidden" />*@
+         <input asp-for="CmsId" id="CmsId" type="hidden" />
         <div class="border">
-            <div class="FormBox"><h4 class="FormHeading"><span>Add</span></h4></div>
+            <div class="FormBox" id="CmsHeader"><h4 class="FormHeading"><span>Add</span></h4></div>
+           @* <div class="FormBox" id="AddHeader"><h4 class="FormHeading"><span>Add</span></h4></div>*@
 
-            <div class="mb-3">
+            <div class="m-3 ">
                 <label asp-for="Title" class="form-label">Title</label>
                 <input asp-for="Title" type="text" class="form-control" placeholder="Enter Title" aria-label="Last name">
                 <span asp-validation-for="Title" class="validate-text text-danger"></span>
             </div>
-
+            <div class="mb-3 mx-3 ">
             <label for="Description" class="form-label ">Description</label>
-            <textarea id="CmsDescriptionEditor" asp-for="CmsDescription" name="Description"></textarea>
+                
+            <textarea id="CmsDescription" asp-for="CmsDescription" name="CmsDescription"> tinyMCE.activeEditor.setContent(`@Html.Raw(HttpUtility.HtmlDecode(Model.CmsDescription))`)</textarea>
             <script>
-
                 tinymce.init({
-                    selector: 'textarea',
-                    height: 250,
-                    plugins: 'lists code emoticons',
-                    toolbar: ' bold italic strikethrough| ' +
-                        'subscript superscript underline| ',
-                    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+                        selector: '#CmsDescription',
+                    height: 500,
+                    plugins: 'lists advlist code emoticons directionality link media ' + ['quickbars'],
+                     quickbars_image_toolbar: 'alignleft aligncenter alignright | rotateleft rotateright | imageoptions',
+
+                        toolbar: ' bold italic  underline strikethrough| subscript superscript|ltr rtl | emoticons numlist bullist |link media |',
+                    
+                    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+                    
                 });
             </script>
+                <span asp-validation-for="CmsDescription" class="validate-text text-danger"></span>
+            </div>
 
-
-            <div class="mb-3 ">
-                <label asp-for="Slug" class="form-label">Employee Id</label>
-                <input asp-for="Slug" type="text" class="form-control" placeholder="Employee Id">
+            <div class="mb-3 mx-3 ">
+                <label asp-for="Slug" class="form-label">Slug</label>
+                <input asp-for="Slug" type="text" class="form-control" placeholder="Enter slug">
                 <span asp-validation-for="Slug" class="validate-text text-danger"></span>
 
             </div>
-            <div class="mb-3">
-                <label asp-for="Status" class="form-label">Department</label>
-
-                <select asp-for="Status" class="form-select" aria-label="Select your Avaliability">
-                    <option value="Active">Active</option>
-                    <option value="In-Active">In - Active</option>
+            <div class="mb-3 mx-3 ">
+                <label asp-for="Status" class="form-label">Status</label>
+                <select asp-for="Status" class="form-select" aria-label="Select status">
+                   
+                    <option value="true">Active</option>
+                    <option value="false">In - Active</option>
                 </select>
                 <span asp-validation-for="Status" class="validate-text text-danger"></span>
 
@@ -49,10 +55,12 @@
 
 
             <div class="d-flex flex-wrap justify-content-between m-3">
-                <a class="btn btn-outline-secondary rounded-pill" href="@Url.Action("User", "Admin")">Cancel</a>
-                <button type="submit" class="btn btn-outline-success  rounded-pill addBtn" asp-controller="Admin" asp-action="AddOrUpdateUser">Add</button>
+                <a class="btn btn-outline-secondary rounded-pill" href="@Url.Action("CmsPage", "Admin")">Cancel</a>
+                <button type="submit" class="btn btn-outline-success  rounded-pill addBtn" asp-controller="Admin" asp-action="AddOrUpdatePrivacyPages">Save</button>
             </div>
         </div>
     </form>
 
 </div>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

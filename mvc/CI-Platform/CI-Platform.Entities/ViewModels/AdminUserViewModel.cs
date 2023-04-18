@@ -10,6 +10,7 @@ namespace CI_Platform.Entities.ViewModels
 {
     public class AdminUserViewModel
     {
+
         public List<User> users = new List<User>();
 
         public User GetUserData { get; set; } = new User();
@@ -32,6 +33,7 @@ namespace CI_Platform.Entities.ViewModels
             CityId = GetUserData?.CityId;   
             CountryId= GetUserData?.CountryId;
             Password = GetUserData.Password;
+            Status = GetUserData.Status;
         }
 
         [Required(ErrorMessage = "First Name is Required!!")]
@@ -74,5 +76,7 @@ namespace CI_Platform.Entities.ViewModels
 
         [Required(ErrorMessage = "City is Required!!")]
         public long? CityId { get; set; }
+
+        public bool? Status { get; set; } 
     }
 }
