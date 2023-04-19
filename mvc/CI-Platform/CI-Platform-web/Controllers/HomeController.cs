@@ -10,7 +10,9 @@ using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Drawing.Printing;
+using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
+//using System.Web.Mvc;
 
 namespace CI_Platform_web.Controllers
 {
@@ -34,17 +36,23 @@ namespace CI_Platform_web.Controllers
 
 
         //get method for homepage
+        [Authorize(Roles = "user")]
         public IActionResult HomePage()
         {
-            if (HttpContext.Session.GetString("SEmail") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
+            var userName = HttpContext.User?.Identity?.Name;
+            
+            var customClaimForUser = HttpContext.User?.FindFirst("CustomClaimForUser")?.Value;
+            if (customClaimForUser != null)
             {
-                ViewBag.email = HttpContext.Session.GetString("SEmail");
-                ViewBag.UserId = HttpContext.Session.GetString("Id");
-                ViewBag.Username = HttpContext.Session.GetString("Username");
+                var UserModel = JsonSerializer.Deserialize<User>(customClaimForUser);
+                if(UserModel != null) 
+                {
+                    ViewBag.email = UserModel.Email!;
+                    ViewBag.UserId = UserModel.UserId!;
+                    ViewBag.Username = UserModel.FirstName + " " + UserModel.LastName;
+                    ViewBag.Avtar = UserModel.Avtar;    
+                }
             }
-
-            var UserId = HttpContext.Session.GetString("Id");
-            long userId = Convert.ToInt64(UserId);
 
             var vm = new PageListViewModel();
 
@@ -57,75 +65,7 @@ namespace CI_Platform_web.Controllers
 
         }
 
-        //post method for homepage
-        //[HttpPost]
-        //public async Task<IActionResult> HomePage(MissionFilterQueryParams query)
-        //{
-        //    if (HttpContext.Session.GetString("SEmail") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
-        //    {
-        //        ViewBag.email = HttpContext.Session.GetString("SEmail");
-        //        ViewBag.UserId = HttpContext.Session.GetString("Id");
-        //        ViewBag.Username = HttpContext.Session.GetString("Username");
-        //    }
-        //    try
-        //    {
-
-        //        IConfigurationRoot _configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
-
-        //        string connectionString = _configuration.GetConnectionString("DefaultConnection");
-
-        //        using (SqlConnection connection = new SqlConnection(connectionString))
-        //        {
-        //            connection.Open();
-        //            SqlCommand command = new SqlCommand("spFilterSortSearchPagination", connection);
-        //            command.CommandType = CommandType.StoredProcedure;
-        //            command.Parameters.Add("@countryId", SqlDbType.VarChar).Value = countryId != null ? countryId : null;
-        //            command.Parameters.Add("@cityId", SqlDbType.VarChar).Value = cityId != null ? cityId : null;
-        //            command.Parameters.Add("@themeId", SqlDbType.VarChar).Value = themeId != null ? themeId : null;
-        //            command.Parameters.Add("@skillId", SqlDbType.VarChar).Value = skillId != null ? skillId : null;
-        //            command.Parameters.Add("@searchText", SqlDbType.VarChar).Value = searchText;
-        //            command.Parameters.Add("@sortCase", SqlDbType.VarChar).Value = sortCase;
-        //            command.Parameters.Add("@userId", SqlDbType.VarChar).Value = userId;
-        //            command.Parameters.Add("@pageSize", SqlDbType.Int).Value = pagesize;
-        //            command.Parameters.Add("@pageNo", SqlDbType.Int).Value = pageNo;
-        //            SqlDataReader reader = command.ExecuteReader();
-
-        //            List<long> MissionIds = new List<long>();
-        //            while (reader.Read())
-        //            {
-        //                long totalRecords = reader.GetInt32("TotalRecords");
-        //                ViewBag.totalRecords = totalRecords;
-        //            }
-        //            reader.NextResult();
-
-        //            while (reader.Read())
-        //            {
-        //                long missionId = reader.GetInt64("mission_id");
-        //                MissionIds.Add(missionId);
-        //            }
-
-        //            var vm = new MissionListViewModel();
-
-        //            userId = Convert.ToInt64(ViewBag.UserId);
-        //            vm.DisplayMissionCardsDemo = _missionDisplay.DisplayMissionCardsDemo(MissionIds);
-
-        //            if (vm != null && vm.DisplayMissionCardsDemo.Any())
-        //            {
-        //                return PartialView("_MissionDisplayPartial", vm);
-        //            }
-        //            else
-        //            {
-        //                return PartialView("_NoMissionFound");
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return View(ex);
-
-        //    }
-
-        //}
+        
 
         [HttpPost]
         public IActionResult HomePage(MissionFilterQueryParams queryParams)

@@ -55,7 +55,7 @@ namespace CI_Platform.Repository.Repository
                 EditDraftStory.Title = vm.StoryTitle;
                 EditDraftStory.Description = vm.StoryDescription;
                 EditDraftStory.Status = StoryStatus.DRAFT.ToString();
-                EditDraftStory.CreatedAt = DateTime.Now;
+                EditDraftStory.PublishedAt = DateTime.Now;
 
                 _db.Update(EditDraftStory);
                 _db.SaveChanges();
@@ -82,7 +82,7 @@ namespace CI_Platform.Repository.Repository
                 Title = vm.StoryTitle,
                 Description = vm.StoryDescription,
                 Status = StoryStatus.DRAFT.ToString(),
-                CreatedAt = DateTime.Now,
+                PublishedAt = DateTime.Now,
             };
             _db.Add(newStory);
             _db.SaveChanges();
@@ -196,7 +196,7 @@ namespace CI_Platform.Repository.Repository
             existingStory.Title = vm.StoryTitle;
             existingStory.Description = vm.StoryDescription;
             existingStory.Status = StoryStatus.PENDING.ToString();
-            existingStory.CreatedAt = vm.Date;
+            existingStory.PublishedAt = vm.Date;
             existingStory.UpdatedAt = DateTime.Now;
 
             // Update the record in the database

@@ -34,6 +34,7 @@ namespace CI_Platform.Entities.ViewModels
             CountryId= GetUserData?.CountryId;
             Password = GetUserData.Password;
             Status = GetUserData.Status;
+            Role = GetUserData.Role;
         }
 
         [Required(ErrorMessage = "First Name is Required!!")]
@@ -78,5 +79,7 @@ namespace CI_Platform.Entities.ViewModels
         public long? CityId { get; set; }
 
         public bool? Status { get; set; } 
+
+        public string Role { get; set;  }
     }
 }

@@ -29,10 +29,17 @@ a{
     text-decoration: none !important;
 }
 
-ul {
-    list-style: none;
+ul,li {
+    list-style: none !important;
 }
-
+.profile-icon {
+    width: 1.5rem;
+    height: 2rem;
+    margin-top: 0.25rem
+}
+.dropdown-toggle::after {
+    display: none;
+}
 nav {
     position: sticky;
     top: 0;

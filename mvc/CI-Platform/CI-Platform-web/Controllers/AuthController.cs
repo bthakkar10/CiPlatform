@@ -8,6 +8,9 @@ using System.Net.Mail;
 using System.Net;
 using CI_Platform.Entities.ViewModels;
 using CI_Platform.Repository.Repository;
+using CI_Platform.Entities.Auth;
+using CI_Platform_web.Auth;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CI_Platform_web.Controllers
 {
@@ -16,45 +19,66 @@ namespace CI_Platform_web.Controllers
         private readonly ILogger<AuthController> _logger;
         private readonly IUserRepository _dbUserRepository;
         private readonly IEmailGeneration _emailGeneration;
+        private readonly IConfiguration _configuration;
         private readonly CiDbContext _db;
 
 
-        public AuthController(ILogger<AuthController> logger, IUserRepository dbUserRepository, IEmailGeneration emailGeneration, CiDbContext db)
+        public AuthController(ILogger<AuthController> logger, IUserRepository dbUserRepository, IEmailGeneration emailGeneration, CiDbContext db, IConfiguration configuration)
         {
             _logger = logger;
             _dbUserRepository = dbUserRepository;
-            _emailGeneration= emailGeneration;
+            _emailGeneration = emailGeneration;
             _db = db;
+            _configuration = configuration;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
+            HttpContext.Session.Remove("Username");
+            HttpContext.Session.Remove("SEmail");
+            HttpContext.Session.Remove("Id");
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
-   
         public IActionResult Index(UserLoginViewModel obj, long UserId)
         {
             if (ModelState.IsValid)
             {
-                var DoesEmailExists = _dbUserRepository.GetUserEmail(obj.Email);
-                if (DoesEmailExists == null)
+                User DoesUserExists = _dbUserRepository.GetUserEmail(obj.Email);
+                if (DoesUserExists == null)
                 {
                     TempData["error"] = "User does not exist.Please register first";
                     return View("Register");
                 }
                 else
                 {
-                    bool DoesPasswordMatch = BCrypt.Net.BCrypt.Verify(obj.Password, DoesEmailExists.Password);
+                    bool DoesPasswordMatch = BCrypt.Net.BCrypt.Verify(obj.Password, DoesUserExists.Password);
                     if (DoesPasswordMatch)
                     {
-                        TempData["success"] = "Login Successful!!";
-                        HttpContext.Session.SetString("SEmail", obj.Email);
-                        HttpContext.Session.SetString("Id", DoesEmailExists.UserId.ToString());
-                        HttpContext.Session.SetString("Username", DoesEmailExists.FirstName + " " + DoesEmailExists.LastName);
+                        var jwtSettings = _configuration.GetSection(nameof(JwtSetting)).Get<JwtSetting>();
 
-                        return RedirectToAction("HomePage", "Home");
+                        var token = JwtTokenHelper.GenerateToken(jwtSettings, DoesUserExists);
+
+                        HttpContext.Session.SetString("Token", token);
+
+
+                        TempData["success"] = "Login Successful!!";
+
+                        HttpContext.Session.SetString("SEmail", obj.Email);
+                        HttpContext.Session.SetString("Id", DoesUserExists.UserId.ToString());
+                        HttpContext.Session.SetString("Username", DoesUserExists.FirstName + " " + DoesUserExists.LastName);
+                       
+                        if(DoesUserExists.Role == "user")
+                        {
+                            return RedirectToAction("HomePage", "Home");
+                        }
+                        else if(DoesUserExists.Role == "admin")
+                        {
+                            return RedirectToAction("User", "Admin");
+                        }
                     }
                     else
                     {
@@ -158,8 +182,7 @@ namespace CI_Platform_web.Controllers
         }
         public IActionResult Logout()
         {
-            //_db.SignOutAsync();
-            //System.Web.Security.FormsAuthentication.SignOut();
+           
             HttpContext.Session.Remove("Username");
             HttpContext.Session.Remove("SEmail");
             HttpContext.Session.Remove("Id");

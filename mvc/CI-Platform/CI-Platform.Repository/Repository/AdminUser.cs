@@ -29,15 +29,15 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                User DoesUserExists = _db.Users.Where(u => u.Email == vm.Email).FirstOrDefault();
+                User DoesUserExists = _db.Users.Where(u => u.Email == vm.Email).FirstOrDefault()!;
                 if(DoesUserExists == null)
                 {
                     User user = new User()
                     {
                         FirstName = vm.FirstName,
                         LastName = vm.Surname,
-                        Email = vm.Email,
-                        PhoneNumber = vm.PhoneNumber,
+                        Email = vm.Email!,
+                        PhoneNumber = vm.PhoneNumber!,
                         EmployeeId = vm.EmployeeId,
                         Department = vm.Department,
                         CreatedAt = DateTime.Now,
@@ -46,6 +46,7 @@ namespace CI_Platform.Repository.Repository
                         Password = vm.Password,
                         Availability = vm.Availibility,
                         Status = vm.Status, 
+                        Role = vm.Role,
                     };
                     _db.Users.Add(user);    
                     _db.SaveChanges();  
@@ -66,7 +67,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                User user = _db.Users.FirstOrDefault(u => u.UserId == UserId);
+                User user = _db.Users.FirstOrDefault(u => u.UserId == UserId)!;
                 if (user != null)
                 {
                     user.DeletedAt = DateTime.Now;
@@ -87,19 +88,19 @@ namespace CI_Platform.Repository.Repository
 
         public AdminUserViewModel GetDataOnEdit(long UserId)
         {
-            User user = _db.Users.Find(UserId);
+            User user = _db.Users.Find(UserId)!;
             AdminUserViewModel vm = new AdminUserViewModel(user);
             return vm;
         }
         public bool EditUser( AdminUserViewModel vm )
         {
-            User user = _db.Users.Find(vm.UserId);
+            User user = _db.Users.Find(vm.UserId)!;
             if(user != null)
             {
                 user.FirstName = vm.FirstName;
                 user.LastName = vm.Surname;
-                user.Email = vm.Email;
-                user.PhoneNumber = vm.PhoneNumber;
+                user.Email = vm.Email!;
+                user.PhoneNumber = vm.PhoneNumber!;
                 user.EmployeeId = vm.EmployeeId;
                 user.Department = vm.Department;
                 user.UpdatedAt = DateTime.Now;
@@ -107,7 +108,8 @@ namespace CI_Platform.Repository.Repository
                 user.CityId = vm.CityId;
                 user.Password = vm.Password;
                 user.Availability = vm.Availibility;
-                user.Status = vm.Status;        
+                user.Status = vm.Status;    
+                user.Role = vm.Role;    
                 _db.Users.Update(user);
                 _db.SaveChanges();
                 return true;

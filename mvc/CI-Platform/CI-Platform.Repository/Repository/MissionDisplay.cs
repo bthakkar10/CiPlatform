@@ -22,21 +22,7 @@ namespace CI_Platform.Repository.Repository
             _db = db;
         }
 
-        //public IEnumerable<Mission> DisplayMissionCardsDemo(List<long> MissionIds)
-        //{
-
-        //    return _db.Missions.Where(m => MissionIds.Contains(m.MissionId))
-        //            .Include(m => m.City)
-        //            .Include(m => m.Country)
-        //            .Include(m => m.MissionSkills).ThenInclude(ms => ms.Skill)
-        //            .Include(m => m.MissionTheme)
-        //            .Include(m => m.MissionRatings)
-        //            .Include(m => m.GoalMissions)
-        //            .Include(m => m.MissionApplications)
-        //            .Include(m => m.FavouriteMissions)
-        //            .Include(m => m.MissionMedia)
-        //            .ToList().OrderBy(ml => MissionIds.IndexOf(ml.MissionId));
-        //}
+        
 
 
         public PageListViewModel.PageList<MissionListViewModel> FilterOnMission(MissionFilterQueryParams queryParams, long UserId)
@@ -85,7 +71,7 @@ namespace CI_Platform.Repository.Repository
                 MissionCard = mission,
                 CityName = mission.City.CityName,
                 ThemeTitle = mission.MissionTheme.Title,
-                Applied = mission.MissionApplications.Any(missionApp => missionApp.UserId == UserId && missionApp.DeletedAt == null),
+                Applied = mission.MissionApplications.Any(missionApp => missionApp.UserId == UserId && missionApp.DeletedAt == null && missionApp.ApprovalStatus == "APPROVE"),
                 favMission = mission.FavouriteMissions.Any(favMission => favMission.UserId == UserId && favMission.DeletedAt == null),
                 avgRating = (float)mission.MissionRatings.Average(r => r.Rating),
                 seatsLeft = mission.TotalSeats - mission.MissionApplications.Count(m => m.ApprovalStatus.Contains("APPROVE")),
@@ -99,6 +85,7 @@ namespace CI_Platform.Repository.Repository
                 HasEndDatePassed = mission.EndDate < DateTime.Now,
                 HasMissionStarted = mission.StartDate < DateTime.Now,
                 HasDeadlinePassed = mission.StartDate.Value.AddDays(-1) < DateTime.Now,
+                IsApplicationPending = mission.MissionApplications.Any(missionApp => missionApp.UserId == UserId && missionApp.DeletedAt == null && missionApp.ApprovalStatus=="Pending"),
                 //UserList = user,
                 favouriteMission = mission.FavouriteMissions.ToList(),
             });
@@ -136,7 +123,7 @@ namespace CI_Platform.Repository.Repository
 
             var records = MissionCardQuery.Skip((queryParams.pageNo - 1) * queryParams.pagesize).Take(queryParams.pagesize).ToList();
 
-            //public PageListViewModel.PageList<MissionListViewModel> FilterOnMission(MissionFilterQueryParams queryParams, long UserId)
+           
             return new PageListViewModel.PageList<MissionListViewModel>(records, totalRecords, queryParams.pageNo);
 
         }
@@ -235,8 +222,18 @@ namespace CI_Platform.Repository.Repository
                     };
                     _db.Add(missionApplication);
                     _db.SaveChanges();
+                    return true;
                 }
-                return true;
+                else
+                {
+                    //if status is declined and user applies again it should be changed to pending again
+                    AlreadyApplied.ApprovalStatus = "PENDING";
+                    AlreadyApplied.UpdatedAt = DateTime.Now;
+                    _db.MissionApplications.Update(AlreadyApplied);
+                    _db.SaveChanges();  
+                    return true;
+                }
+                
             }
             catch (Exception)
             {

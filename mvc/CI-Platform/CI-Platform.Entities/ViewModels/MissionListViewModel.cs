@@ -45,6 +45,8 @@ namespace CI_Platform.Entities.ViewModels
 
         public bool HasDeadlinePassed { get; set; } 
 
+        public bool IsApplicationPending { get; set; }     
+
         public List<string> skillName { get; set; } = new List<string>();
 
         public List<FavouriteMission> favouriteMission { get; set; } = new List<FavouriteMission>();

@@ -254,3 +254,44 @@ $(document).on('click', '#DeleteSkillBtn', function () {
     var SkillId = $(this).data('skill-id');
     $("#HiddenSkillId").val(SkillId);
 });
+
+//to get id of mission application to decline or approve it 
+$(document).on('click', '.ApproveOrDeclineApplication', function () {
+    var MissionApplicationId = $(this).data('application-id');
+    $("#HiddenApplicationId").val(MissionApplicationId);
+});
+
+$(document).on('click', '#ApprovalBtn', function () {
+    var Status = $(this).data('status');
+    $("#HiddenStatus").val(Status);
+    const isDeclineBtn = false; // or false
+    $('#ApplicationModal .modal-body span').text(isDeclineBtn ? 'Are you sure you want to decline this ??' : 'Are you sure you want to approve this ??');
+});
+$(document).on('click', '#DeclineBtn', function () {
+    var Status = $(this).data('status');
+    $("#HiddenStatus").val(Status);
+    const isDeclineBtn = true; // or false
+    $('#ApplicationModal .modal-body span').text(isDeclineBtn ? 'Are you sure you want to decline this ??' : 'Are you sure you want to approve this ??');
+});
+//view story 
+$('#ViewStoryBtn').click(function () {
+    var UserId = $(this).data('user-id');
+    var MissionId = $(this).data('mission-id');
+    $.ajax({
+        method: 'GET',
+        url: '/Story/StoryDetails',
+        data: { UserId: UserId, MissionId: MissionId },
+        success: function (result) {
+            console.log(result)
+            var url = '/Story/StoryDetails?MissionId=' + MissionId + '&UserId=' + UserId;
+
+            var win = window.open(url, '_blank');
+            win.focus();
+
+        },
+        error: function (error) {
+            console.log(error);
+        },
+
+    });
+});

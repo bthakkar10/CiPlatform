@@ -43,14 +43,16 @@ namespace CI_Platform.Repository.Repository
 
         public bool ChangePassword(long UserId, string oldPassword, string newPassword)
         {
-            User user = _db.Users.FirstOrDefault(u => u.UserId == UserId);
+            oldPassword = BCrypt.Net.BCrypt.HashPassword(oldPassword);
+            User user = _db.Users.FirstOrDefault(u => u.UserId == UserId)!;
+            
             if (user.Password != oldPassword)
             {
                 return false;
             }
             else
             {
-                user.Password = newPassword;
+                user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
                 user.UpdatedAt = DateTime.Now;
                 _db.Update(user);
                 _db.SaveChanges();
@@ -82,7 +84,6 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-
                 User user = _db.Users.FirstOrDefault(u => u.UserId == UserId);
 
                 user.FirstName = vm.FirstName;

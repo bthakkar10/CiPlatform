@@ -1,7 +1,10 @@
 ﻿using CI_Platform.Entities.DataModels;
 using CI_Platform.Entities.ViewModels;
 using CI_Platform.Repository.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
+using System.Reflection.Metadata.Ecma335;
 //using System.Web.Mvc;
 
 namespace CI_Platform_web.Controllers
@@ -13,19 +16,22 @@ namespace CI_Platform_web.Controllers
         private readonly IAdminCms _adminCms;
         private readonly IAdminTheme _adminTheme;
         private readonly IAdminSkills _adminSkills;
+        private readonly IAdminApproval _adminApproval;
 
-        public AdminController(IAdminUser adminUser, IFilter filter, IAdminCms adminCms, IAdminTheme adminTheme, IAdminSkills adminSkills)
+        public AdminController(IAdminUser adminUser, IFilter filter, IAdminCms adminCms, IAdminTheme adminTheme, IAdminSkills adminSkills, IAdminApproval adminApproval)
         {
             _adminUser = adminUser;
             _filter = filter;
             _adminCms = adminCms;
             _adminTheme = adminTheme;
             _adminSkills = adminSkills;
+            _adminApproval = adminApproval;
         }
 
         //------------------------------------------  User  Section Starts ---------------------------------------------------------- 
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult User()
         {
             try
@@ -367,6 +373,49 @@ namespace CI_Platform_web.Controllers
         }
         //------------------------------------------  Mission Theme Section Ends ---------------------------------------------------------- 
 
+        //------------------------------------------  Mission Application Section Starts ---------------------------------------------------------- 
+
+        public IActionResult MissionApplication()
+        {
+            AdminApprovalViewModel vm = new AdminApprovalViewModel();
+            vm.MissionApplicationList = _adminApproval.MissionApplicationList();
+            return View(vm);
+        }
+
+        public IActionResult ApproveOrDeclineApplication()
+        {
+            long MissionApplicationId = long.TryParse(Request.Form["HiddenApplicationId"], out long result) ? result : 0;
+            long Status = long.TryParse(Request.Form["HiddenStatus"], out long resultStatus) ? resultStatus : 0;
+
+            if(_adminApproval.ApproveDeclineApplication(MissionApplicationId, Status) == "APPROVE")
+            {
+                TempData["success"] = "Mission Application Approved Successfully";
+                return RedirectToAction("MissionApplication");
+
+            }
+            else if(_adminApproval.ApproveDeclineApplication(MissionApplicationId, Status) == "DECLINE")
+            {
+                TempData["success"] = "Mission Application Declined Successfully";
+                return RedirectToAction("MissionApplication");
+            }
+            else
+            {
+                TempData["error"] = "Something went wrong!! Please try again later!!";
+                return RedirectToAction("MissionApplication");
+            }
+        }
+        //------------------------------------------  Mission Application Section Ends ---------------------------------------------------------- 
+
+        //------------------------------------------  Story Section Starts ---------------------------------------------------------- 
+        public IActionResult Story()
+        {
+            AdminApprovalViewModel vm = new AdminApprovalViewModel();
+            vm.StoryList = _adminApproval.StoryList();
+            return View(vm);
+        }
+
+
+        //------------------------------------------  Story Section Ends ---------------------------------------------------------- 
 
     }
 

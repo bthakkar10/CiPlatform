@@ -93,7 +93,12 @@
                             </div>
                         }
 
-
+                        @if (obj.IsApplicationPending)
+                        {
+                            <div class="applied-pill" style="background:orange 0% 0% no-repeat;">
+                                <span>Approval Pending</span>
+                            </div>
+                        }
 
                         <div class="location">
                             <img src="~/images/pin1.png">
@@ -254,7 +259,7 @@
                             </div>
                         </div>
 
-                        @if (obj.HasEndDatePassed || obj.seatsLeft <= 0 || obj.HasDeadlinePassed)
+                        @if (obj.HasEndDatePassed || obj.seatsLeft <= 0 || obj.HasDeadlinePassed || obj.IsApplicationPending)
                         {
                             <div class=" d-flex pb-3 justify-content-center">
                                 <a class="btn card-btn" href="@Url.Action("MissionDetail", "Home" , new { MissionId = @obj.MissionCard.MissionId})">

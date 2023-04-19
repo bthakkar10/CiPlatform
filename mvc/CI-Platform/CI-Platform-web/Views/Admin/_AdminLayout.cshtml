@@ -81,7 +81,7 @@
                     </a>
                 </li>
                 <li class="tooltip-element" data-tooltip="5">
-                <a href="#" data-active="5" class="nav-link">
+                <a asp-controller="Admin" asp-action="MissionApplication" data-active="5" class="nav-link">
                         <div class="icon">
                             <i class="fa-solid fa-folder"></i>
                         </div>
@@ -89,7 +89,7 @@
                     </a>
                 </li>
                 <li class="tooltip-element" data-tooltip="6">
-                <a href="#" data-active="6" class="nav-link">
+                <a asp-controller="Admin" asp-action="Story" data-active="6" class="nav-link">
                         <div class="icon">
                             <i class="fa-duotone fa-book"></i>
                         </div>
@@ -185,7 +185,8 @@
                 <div id="datetime"></div>
               
                    <div class=" nav-item dropdown">
-                        <a class="nav-link d-flex me-2 align-items-center dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
+                    @await Component.InvokeAsync("UserHeader", "_ProfileSection")
+                        @*<a class="nav-link d-flex me-2 align-items-center dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
                            data-bs-toggle="dropdown" aria-expanded="false">
                             <img class="icon rounded-circle" src="~/images/user1.png"> &nbsp;
                             Evan Donhoue
@@ -199,9 +200,29 @@
                                     Logout
                                 </a>
                             </li>
-                        </ul>
+                        </ul>*@
                    </div>
+                @*<li class="nav-item dropdown">
+                    <a class="nav-link ms-3 pt-2 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
 
+
+                        <img class="icon rounded-circle" src="~/images/Upload/User/@Model.Avtar">
+                        @Model.Username
+                        <span id="user-id d-none"> @Model.UserId </span>
+                        <img src="~/images/drop-down.png">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
+                        <li><a class="dropdown-item" asp-controller="User" asp-action="UserProfile">My Profile</a></li>
+                        <li><a class="dropdown-item" asp-controller="VolunteeringTimesheet" asp-action="VolunteeringTimesheet">Volunteering Timesheet</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li>
+                            <a asp-controller="Auth" asp-action="Logout" class="dropdown-item">
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
+                </li>*@
 
             
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>

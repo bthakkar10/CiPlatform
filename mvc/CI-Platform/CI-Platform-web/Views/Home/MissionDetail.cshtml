@@ -66,7 +66,7 @@
             bool isEndDatePassed = currDate > Model.MissionDetails.EndDate;
             bool isOngoing = currDate > Model.MissionDetails.StartDate;
             bool isAlreadyApplied = Model.MissionDetails.MissionApplications.Any(a => a.UserId == Id && a.ApprovalStatus == "APPROVE");
-
+            bool isApprovalPending = Model.MissionDetails.MissionApplications.Any(a => a.UserId == Id && a.ApprovalStatus == "PENDING");
             double userRate = 0;
             if (Model.MissionDetails.MissionRatings.Where(u => u.UserId == Id).Any())
             {
@@ -75,6 +75,7 @@
             }
             var registered_users = Model.MissionDetails.MissionApplications.Count(m => m.ApprovalStatus.Contains("APPROVE"));
             var seats_left = Model.MissionDetails.TotalSeats - registered_users;
+           
         }
 
 
@@ -275,6 +276,14 @@
                             <a style="width:max-content" class="btn card-btn disabled text-danger">
                                 Closed
 
+                            </a>
+                        </div>
+                    }
+                    else if(isApprovalPending)
+                    {
+                        <div class="d-flex justify-content-center">
+                            <a style="width:max-content" class="btn card-btn disabled text-danger">
+                                Approval Pending
                             </a>
                         </div>
                     }

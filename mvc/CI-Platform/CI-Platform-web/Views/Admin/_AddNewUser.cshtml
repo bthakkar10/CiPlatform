@@ -2,7 +2,7 @@
 
 <div>
     <form method="post" class="validateForm">
-        <input  asp-for="UserId" id="UserId" type="hidden" />
+        <input asp-for="UserId" id="UserId" type="hidden" />
         <div class="border">
             <div class="FormBox" id="AddHeader"><h4 class="FormHeading"><span>Add</span></h4></div>
             <div class="row g-3 p-3">
@@ -28,12 +28,12 @@
                 <div class="col-md-6">
                     <label asp-for="Password" class="form-label">Password</label>
                     <div class="position-relative">
-                    <input asp-for="Password" id="Password" type="password"  placeholder="Enter Password" class="form-control">
-                    <i class="bi bi-eye-fill position-absolute translate-middle-x end-0 top-0 d-none"></i>
-                    <i class="bi bi-eye-slash position-absolute translate-middle-x end-0 top-0 "></i>
+                        <input asp-for="Password" id="Password" type="password" placeholder="Enter Password" class="form-control">
+                        <i class="bi bi-eye-fill position-absolute translate-middle-x end-0 top-0 d-none"></i>
+                        <i class="bi bi-eye-slash position-absolute translate-middle-x end-0 top-0 "></i>
                     </div>
                     <span asp-validation-for="Password" class="validate-text text-danger"></span>
-                    
+
                 </div>
             </div>
             <div class="row g-3 p-3">
@@ -53,10 +53,10 @@
                     </select>
                 </div>
             </div>
-            
+
             <div class="row g-3 p-3">
                 <div class="col-md-6 ">
-                    <label  asp-for="EmployeeId" class="form-label">Employee Id</label>
+                    <label asp-for="EmployeeId" class="form-label">Employee Id</label>
                     <input asp-for="EmployeeId" type="text" class="form-control" placeholder="Employee Id">
                     <span asp-validation-for="EmployeeId" class="validate-text text-danger"></span>
 
@@ -75,7 +75,7 @@
                         <option selected disabled>Enter your Country</option>
                         @foreach (var country in Model.Countries)
                         {
-                        <option value="@country.CountryId">@country.Name</option>
+                            <option value="@country.CountryId">@country.Name</option>
                         }
                     </select>
                     <span asp-validation-for="CountryId" class="text-danger validate-text"></span>
@@ -83,27 +83,38 @@
                 <div class="col-md-6">
                     <label for="City" class="form-label ms-1">City</label>
                     <select asp-for="CityId" class="form-select" id="UserCitySelect" aria-label="Enter your City">
-                        
-                       @{
-                        var city = Model.Cities.Where(c => c.CountryId == Model.CountryId);
+
+                        @{
+                            var city = Model.Cities.Where(c => c.CountryId == Model.CountryId);
                         }
                         @foreach (var c in city)
                         {
-                        <option value="@c.CityId">@c.CityName</option>
+                            <option value="@c.CityId">@c.CityName</option>
                         }
 
                     </select>
                     <span asp-validation-for="CityId" class="text-danger validate-text"></span>
 
                 </div>
-                <div class="g-3 p-3 ">
-                    <label asp-for="Status" class="form-label">Status</label>
-                    <select asp-for="Status" class="form-select" aria-label="Select status">
-                       
-                        <option value="true">Active</option>
-                        <option value="false">In - Active</option>
-                    </select>
-                    <span asp-validation-for="Status" class="validate-text text-danger"></span>
+                <div class="row g-3 p-3 ">
+                    <div class="col-md-6">
+                        <label asp-for="Status" class="form-label">Status</label>
+                        <select asp-for="Status" class="form-select" aria-label="Select status">
+
+                            <option value="true">Active</option>
+                            <option value="false">In - Active</option>
+                        </select>
+                        <span asp-validation-for="Status" class="validate-text text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Role" class="form-label">Role</label>
+                        <select asp-for="Role" class="form-select" aria-label="Select role">
+                            <option value="" selected disabled> Select Role</option>
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                        <span asp-validation-for="Role" class="validate-text text-danger"></span>
+                    </div>
                 </div>
             </div>
             <div class="d-flex flex-wrap justify-content-between m-3">

@@ -1066,7 +1066,7 @@ $('#missionTitle').change(function () {
 $('#saveStory').click(function (e) {
     e.preventDefault();
     let isValid = false;
-    if (validateStoryTitle() == true && validateDate() == true && validateStoryDes() == true && validateYoutubeUrls() == true && validateMissionTitle() == true) {
+    if (validateStoryTitle() == true && validateDate() == true &&  validateYoutubeUrls() == true && validateMissionTitle() == true) {
         isValid = true;
     }
     if (isValid) {
@@ -1124,7 +1124,7 @@ $('#saveStory').click(function (e) {
 $('#submitButton').click(function (e) {
     e.preventDefault();
     let isValid = false;
-    if (validateStoryTitle() == true && validateDate() == true && validateStoryDes() == true && validateYoutubeUrls() == true && validateMissionTitle() == true) {
+    if (validateStoryTitle() == true && validateDate() == true &&  validateYoutubeUrls() == true && validateMissionTitle() == true) {
         isValid = true;
     }
     if (isValid) {
