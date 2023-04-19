@@ -2,8 +2,11 @@
 using CI_Platform.Entities.DataModels;
 using CI_Platform.Repository.Interface;
 using CI_Platform.Repository.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +26,23 @@ builder.Services.AddScoped<IVolunteeringTimesheet, VolunteeringTimesheet>();
 builder.Services.AddScoped<IAdminUser, AdminUser>();
 builder.Services.AddScoped<IAdminCms, AdminCms>();  
 builder.Services.AddScoped<IAdminSkills, AdminSkills>();    
-builder.Services.AddScoped<IAdminTheme, AdminTheme>();  
+builder.Services.AddScoped<IAdminTheme, AdminTheme>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["JwtSetting:Issuer"],
+        ValidAudience = builder.Configuration["JwtSetting:Issuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSetting:Key"]))
+    };
+});
+
+//builder.Services.AddMvc().AddSessionStateTempDataProvider();
 
 builder.Services.AddSession();
 builder.Services.AddMemoryCache();

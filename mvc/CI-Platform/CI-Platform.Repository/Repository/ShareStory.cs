@@ -43,7 +43,7 @@ namespace CI_Platform.Repository.Repository
         public Story GetDraftedStory(long userId, long missionId)
         {
             Story? story =  _db.Stories.Where(s => s.MissionId == missionId && s.UserId == userId && s.Status == "DRAFT").Include(s => s.StoryMedia).Include(m=>m.Mission).FirstOrDefault();
-            return story;
+            return story!;
         }
 
         //to edit the drafted story
@@ -75,7 +75,7 @@ namespace CI_Platform.Repository.Repository
         //to add new story(user is adding a new story)
         public void AddNewStory(ShareStoryViewModel vm, long userId)
         {
-            Story newStory = new Story()
+            Story newStory = new()
             {
                 MissionId = vm.MissionId,
                 UserId = userId,
@@ -219,7 +219,7 @@ namespace CI_Platform.Repository.Repository
         {
             List<DateTime> result = new List<DateTime>();
 
-            var mission = _db.Missions.Where(m=>m.MissionId == MissionId).Select(m=> new {m.StartDate, m.EndDate}).FirstOrDefault();
+            var mission = _db.Missions.Where(m=>m.MissionId == MissionId).Select(m=> new {m.StartDate, m.EndDate}).FirstOrDefault()!;
 
             if(mission.StartDate != null )
             {

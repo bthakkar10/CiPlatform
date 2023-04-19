@@ -151,7 +151,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                Timesheet ts = _db.Timesheets.FirstOrDefault(t=>t.TimesheetId == TimeSheetId);
+                Timesheet ts = _db.Timesheets.FirstOrDefault(t=>t.TimesheetId == TimeSheetId)!;
                 _db.Timesheets.Remove(ts);
                 _db.SaveChanges();
                 return true;
@@ -166,12 +166,12 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                Timesheet ts = _db.Timesheets.FirstOrDefault(t => t.TimesheetId == TimeSheetId);
+                Timesheet ts = _db.Timesheets.FirstOrDefault(t => t.TimesheetId == TimeSheetId)!;
                 _db.Timesheets.Remove(ts);
                 _db.SaveChanges();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

@@ -106,7 +106,13 @@
                 <div>
                     <img class="rounded-circle " src="~/images/Upload/User/@Model.GetStoryDetails.User.Avtar" alt="user_icon" />
                     <div class="ms-3"> @Model.GetStoryDetails.User.FirstName  @Model.GetStoryDetails.User.LastName</div>
-                    <div class="ms-2"> @Model.GetStoryDetails.User.City.CityName,  @Model.GetStoryDetails.User.Country.Name  </div>
+                    @if( @Model.GetStoryDetails.User.Country is not null)
+                    {
+                        @if( @Model.GetStoryDetails.User.City is not null )
+                        {
+                            <div class="ms-2"> @Model.GetStoryDetails.User.City.CityName,  @Model.GetStoryDetails.User.Country.Name  </div>
+                        }
+                    }
                 </div>
                 <div class="align-self-end my-4">
                     <div id="capsule-views">

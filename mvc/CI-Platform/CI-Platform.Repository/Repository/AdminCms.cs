@@ -50,7 +50,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                CmsPage cms = _db.CmsPages.Find(CmsId);
+                CmsPage cms = _db.CmsPages.Find(CmsId)!;
                 if (cms != null)
                 {
                     cms.DeletedAt = DateTime.Now;
@@ -71,14 +71,14 @@ namespace CI_Platform.Repository.Repository
 
         public AdminCmsViewModel GetCmsData(long CmsId)
         {
-            CmsPage cms = _db.CmsPages.Find(CmsId);
+            CmsPage cms = _db.CmsPages.Find(CmsId)!;
             AdminCmsViewModel cmsvm = new AdminCmsViewModel(cms);
             return cmsvm;
         }
 
         public bool EditCms(AdminCmsViewModel cmsvm)
         {
-            CmsPage cms = _db.CmsPages.Find(cmsvm.CmsId);
+            CmsPage cms = _db.CmsPages.Find(cmsvm.CmsId)!;
             if (cms != null)
             {
                 cms.Title= cmsvm.Title;

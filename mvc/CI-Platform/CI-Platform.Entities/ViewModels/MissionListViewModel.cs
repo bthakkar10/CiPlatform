@@ -13,7 +13,7 @@ namespace CI_Platform.Entities.ViewModels
     public  class MissionListViewModel
     {
       
-        public Mission MissionCard { get; set; }
+        public Mission? MissionCard { get; set; }
 
         public string? CityName { get; set; }
 

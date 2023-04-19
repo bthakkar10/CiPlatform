@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 
 namespace CI_Platform.Repository.Repository
 {
@@ -17,9 +18,11 @@ namespace CI_Platform.Repository.Repository
             _db = db;
         }
 
+        String default_avtar = "profile-user.png";
+
         public User GetUserEmail(string email)
         {
-            return _db.Users.FirstOrDefault(u => u.Email == email);
+            return _db.Users.FirstOrDefault(u => u.Email == email)!;
         }
 
         public void Save()
@@ -31,7 +34,8 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                if(obj != null) 
+                //string? passwordHash = "";
+                if (obj != null) 
                 {
                     User user = new User()
                     {
@@ -39,7 +43,9 @@ namespace CI_Platform.Repository.Repository
                         FirstName = obj.FirstName,
                         LastName = obj.LastName,
                         PhoneNumber = obj.PhoneNumber,
-                        Password = obj.Password,
+                        //Password = obj.Password,
+                        Password = BCrypt.Net.BCrypt.HashPassword(obj.Password),
+                        Avtar = default_avtar,
                     };
                     _db.Users.Add(user);
                     _db.SaveChanges();  
@@ -55,8 +61,8 @@ namespace CI_Platform.Repository.Repository
         public void UpdatePassword(ResetPasswordValidation obj)
         {
             PasswordReset LastData = _db.PasswordResets.OrderBy(i => i.Id).Last();
-            User Change = _db.Users.FirstOrDefault(u => u.Email == LastData.Email);
-            Change.Password = obj.Password;
+            User Change = _db.Users.FirstOrDefault(u => u.Email == LastData.Email)!;
+            Change.Password = BCrypt.Net.BCrypt.HashPassword(obj.Password);
             Change.UpdatedAt = DateTime.Now;
             _db.Update(Change);
             _db.SaveChanges();

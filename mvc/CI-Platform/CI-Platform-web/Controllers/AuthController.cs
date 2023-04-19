@@ -46,7 +46,8 @@ namespace CI_Platform_web.Controllers
                 }
                 else
                 {
-                    if(DoesEmailExists.Password == obj.Password)
+                    bool DoesPasswordMatch = BCrypt.Net.BCrypt.Verify(obj.Password, DoesEmailExists.Password);
+                    if (DoesPasswordMatch)
                     {
                         TempData["success"] = "Login Successful!!";
                         HttpContext.Session.SetString("SEmail", obj.Email);
@@ -54,7 +55,6 @@ namespace CI_Platform_web.Controllers
                         HttpContext.Session.SetString("Username", DoesEmailExists.FirstName + " " + DoesEmailExists.LastName);
 
                         return RedirectToAction("HomePage", "Home");
-
                     }
                     else
                     {

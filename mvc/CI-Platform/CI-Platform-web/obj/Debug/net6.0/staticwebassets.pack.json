@@ -221,6 +221,10 @@
       "PackagePath": "staticwebassets\\images\\Upload\\User\\fa71ffdb_volunteer9.png"
     },
     {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\profile-user.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\User\\profile-user.png"
+    },
+    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\user-img-large.png",
       "PackagePath": "staticwebassets\\images\\Upload\\User\\user-img-large.png"
     },

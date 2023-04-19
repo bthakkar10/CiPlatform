@@ -331,3 +331,5 @@ C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\C
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\System.Web.WebPages.Razor.dll
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\System.Web.WebPages.dll
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\Microsoft.Web.Infrastructure.dll
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\BCrypt.Net-Next.dll
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

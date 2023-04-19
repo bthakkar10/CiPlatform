@@ -47,7 +47,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                Skill skill = _db.Skills.Find(SkillId);
+                Skill skill = _db.Skills.Find(SkillId)!;
                 if (skill != null)
                 {
                     skill.DeletedAt = DateTime.Now;
@@ -68,14 +68,14 @@ namespace CI_Platform.Repository.Repository
 
         public AdminSkillsViewModel GetSkills(long SkillId)
         {
-            Skill skill = _db.Skills.Find(SkillId);
+            Skill skill = _db.Skills.Find(SkillId)!;
             AdminSkillsViewModel skillvm = new AdminSkillsViewModel(skill);
             return skillvm;
         }
 
         public bool EditSkill(AdminSkillsViewModel skillvm)
         {
-            Skill skill = _db.Skills.Find(skillvm.SkillId);
+            Skill skill = _db.Skills.Find(skillvm.SkillId)!;
 
             if (skill != null)
             {

@@ -37,8 +37,8 @@ namespace CI_Platform.Entities.ViewModels
         public AdminCmsViewModel(CmsPage GetCmsData)
         {
             CmsId = GetCmsData.CmsPageId;
-            Title = GetCmsData.Title;   
-            CmsDescription = GetCmsData.Description;
+            Title = GetCmsData.Title!;   
+            CmsDescription = GetCmsData.Description!;
             Slug= GetCmsData.Slug;
             Status = GetCmsData.Status;
         }

@@ -62,20 +62,20 @@ namespace CI_Platform_web.Controllers
             {
                 //to check for today's date validation
                 if (!vm.TimeViewModel.IsValid())
-                    {
-                        TempData["error"] = vm.TimeViewModel.TimeErrorMessage;
-                        return RedirectToAction("VolunteeringTimesheet");
-                    }
-                //to add 
-                if (vm.TimeViewModel.TimesheetId == 0 || vm.TimeViewModel.TimesheetId == null)
                 {
-                    
+                    TempData["error"] = vm.TimeViewModel.TimeErrorMessage;
+                    return RedirectToAction("VolunteeringTimesheet");
+                }
+                //to add 
+                if (vm.TimeViewModel.TimesheetId == 0)
+                {
+
                     if (_timesheet.AddTimeBasedEntry(vm.TimeViewModel, UserId) == "success")
                     {
                         TempData["success"] = "Your Data is entered successfully!!";
                         return RedirectToAction("VolunteeringTimesheet");
                     }
-                    else if(_timesheet.AddTimeBasedEntry(vm.TimeViewModel, UserId) == "Exists")
+                    else if (_timesheet.AddTimeBasedEntry(vm.TimeViewModel, UserId) == "Exists")
                     {
                         TempData["error"] = "You already have entered timesheet for this date!!";
                         return RedirectToAction("VolunteeringTimesheet");
@@ -111,7 +111,7 @@ namespace CI_Platform_web.Controllers
                     return RedirectToAction("VolunteeringTimesheet");
                 }
                 //to add 
-                if (vm.GoalViewModel.TimesheetId == 0 || vm.GoalViewModel.TimesheetId == null)
+                if (vm.GoalViewModel.TimesheetId == 0)
                 {
 
                     if (_timesheet.AddGoalBasedEntry(vm.GoalViewModel, UserId) == "success")
@@ -167,48 +167,31 @@ namespace CI_Platform_web.Controllers
 
         public IActionResult DeleteTimesheetData(long TimeSheetId)
         {
-            if(TimeSheetId != null)
+            if (_timesheet.DeleteTimeBasedEntry(TimeSheetId))
             {
-                if (_timesheet.DeleteTimeBasedEntry(TimeSheetId))
-                {
-                    TempData["success"] = "Your Data is deleted successfully!!";
-                    return RedirectToAction("VolunteeringTimesheet");
-                }
-                else
-                {
-                    TempData["error"] = "Something went wrong!! Please try again later!!";
-                    return RedirectToAction("VolunteeringTimesheet");
-                }
+                TempData["success"] = "Your Data is deleted successfully!!";
+                return RedirectToAction("VolunteeringTimesheet");
             }
             else
             {
                 TempData["error"] = "Something went wrong!! Please try again later!!";
                 return RedirectToAction("VolunteeringTimesheet");
             }
-
         }
 
         public IActionResult DeleteGoalTimesheetData(long TimeSheetId)
         {
-            if (TimeSheetId != null)
+
+            if (_timesheet.DeleteGoalBasedEntry(TimeSheetId))
             {
-                if (_timesheet.DeleteGoalBasedEntry(TimeSheetId))
-                {
-                    TempData["success"] = "Your Data is deleted successfully!!";
-                    return RedirectToAction("VolunteeringTimesheet");
-                }
-                else
-                {
-                    TempData["error"] = "Something went wrong!! Please try again later!!";
-                    return RedirectToAction("VolunteeringTimesheet");
-                }
+                TempData["success"] = "Your Data is deleted successfully!!";
+                return RedirectToAction("VolunteeringTimesheet");
             }
             else
             {
                 TempData["error"] = "Something went wrong!! Please try again later!!";
                 return RedirectToAction("VolunteeringTimesheet");
             }
-
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -91,8 +91,8 @@ namespace CI_Platform.Repository.Repository
                 seatsLeft = mission.TotalSeats - mission.MissionApplications.Count(m => m.ApprovalStatus.Contains("APPROVE")),
                 createdAt = mission.CreatedAt,
                 startDate = mission.StartDate,
-                skillName = mission.MissionSkills.Select(ms => ms.Skill.SkillName).ToList(),
-                missionMedia = mission.MissionMedia.Select(mm => mm.MediaPath).ToList(),
+                skillName = mission.MissionSkills.Select(ms => ms.Skill.SkillName).ToList()!,
+                missionMedia = mission.MissionMedia.Select(mm => mm.MediaPath).ToList()!,
                 goalMission = mission.GoalMissions.ToList(),
                 missionInvites = mission.MissionInvites.Where(mi => mi.DeletedAt == null).ToList(),
                 IsOngoing = (mission.StartDate < DateTime.Now) && (mission.EndDate > DateTime.Now),
@@ -149,7 +149,7 @@ namespace CI_Platform.Repository.Repository
                 if (_db.FavouriteMissions.Any(fm => fm.MissionId == MissionId && fm.UserId == UserId))
                 {
                     // Mission is already in favorites, return an error message or redirect back to the mission page
-                    var FavouriteMissionId = _db.FavouriteMissions.Where(fm => fm.MissionId == MissionId && fm.UserId == UserId).FirstOrDefault();
+                    var FavouriteMissionId = _db.FavouriteMissions.Where(fm => fm.MissionId == MissionId && fm.UserId == UserId).FirstOrDefault()!;
                     _db.FavouriteMissions.Remove(FavouriteMissionId);
                     _db.SaveChanges();
                     return "Removed";
@@ -212,7 +212,7 @@ namespace CI_Platform.Repository.Repository
                     return false;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -222,7 +222,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                MissionApplication AlreadyApplied = _db.MissionApplications.FirstOrDefault(m => m.MissionId == MissionId && m.UserId == UserId);
+                MissionApplication AlreadyApplied = _db.MissionApplications.FirstOrDefault(m => m.MissionId == MissionId && m.UserId == UserId)!;
                 if (AlreadyApplied == null)
                 {
                     var missionApplication = new MissionApplication()
@@ -238,7 +238,7 @@ namespace CI_Platform.Repository.Repository
                 }
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

@@ -150,7 +150,6 @@ namespace CI_Platform_web.Controllers
 
         //add or update privacy pages
         [HttpPost]
-        //[Microsoft.AspNetCore.Mvc.DisableRequestValidation]
         [System.Web.Mvc.ValidateInput(false)]
         public IActionResult AddOrUpdatePrivacyPages(AdminCmsViewModel cmsvm)
         {
