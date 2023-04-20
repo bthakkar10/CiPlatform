@@ -73,9 +73,12 @@
                     <label for="Country" class="form-label ms-1">Country</label>
                     <select asp-for="CountryId" class="form-select" id="AdminCountrySelect" aria-label="Enter your Country">
                         <option selected disabled>Enter your Country</option>
-                        @foreach (var country in Model.Countries)
+                        @if (Model.Countries is not null)
                         {
-                            <option value="@country.CountryId">@country.Name</option>
+                            @foreach (var country in Model.Countries)
+                            {
+                                <option value="@country.CountryId">@country.Name</option>
+                            }
                         }
                     </select>
                     <span asp-validation-for="CountryId" class="text-danger validate-text"></span>
@@ -84,12 +87,14 @@
                     <label for="City" class="form-label ms-1">City</label>
                     <select asp-for="CityId" class="form-select" id="UserCitySelect" aria-label="Enter your City">
 
-                        @{
-                            var city = Model.Cities.Where(c => c.CountryId == Model.CountryId);
-                        }
-                        @foreach (var c in city)
+
+                        @if (Model.Cities is not null)
                         {
-                            <option value="@c.CityId">@c.CityName</option>
+                            var city = Model.Cities.Where(c => c.CountryId == Model.CountryId);
+                            @foreach (var c in city)
+                            {
+                                <option value="@c.CityId">@c.CityName</option>
+                            }
                         }
 
                     </select>
@@ -127,12 +132,4 @@
 </div>
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-@*<script>
-    $('.validateAdminForm').removeData('validator').removeData('unobtrusiveValidation');
-    $.validator.unobtrusive.parse('.validateAdminForm');
-</script>
-@section scripts{
-    @{
-        <partial name="_ValidationScriptsPartial" />
-    }
-}*@
+

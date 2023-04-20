@@ -26,12 +26,12 @@ namespace CI_Platform.Entities.ViewModels
             Surname = GetUserData.LastName;
             Email = GetUserData.Email;
             PhoneNumber = GetUserData.PhoneNumber;
-            EmployeeId = GetUserData?.EmployeeId;
-            Department = GetUserData?.Department;
+            EmployeeId = GetUserData.EmployeeId!;
+            Department = GetUserData.Department!;
             Password = GetUserData.Password;
-            Availibility = GetUserData?.Availability;
-            CityId = GetUserData?.CityId;   
-            CountryId= GetUserData?.CountryId;
+            Availibility = GetUserData.Availability!;
+            CityId = GetUserData.CityId;   
+            CountryId= GetUserData.CountryId;
             Password = GetUserData.Password;
             Status = GetUserData.Status;
             Role = GetUserData.Role;
@@ -80,6 +80,6 @@ namespace CI_Platform.Entities.ViewModels
 
         public bool? Status { get; set; } 
 
-        public string Role { get; set;  }
+        public string? Role { get; set;  }
     }
 }

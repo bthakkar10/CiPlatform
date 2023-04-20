@@ -249,7 +249,7 @@ $(document).on('click', '#EditBtnSkill', function () {
         }
     });
 });
-//to get id for delete
+//to get skill id for delete
 $(document).on('click', '#DeleteSkillBtn', function () {
     var SkillId = $(this).data('skill-id');
     $("#HiddenSkillId").val(SkillId);
@@ -260,20 +260,21 @@ $(document).on('click', '.ApproveOrDeclineApplication', function () {
     var MissionApplicationId = $(this).data('application-id');
     $("#HiddenApplicationId").val(MissionApplicationId);
 });
-
+//to fetch data for approval of mission application
 $(document).on('click', '#ApprovalBtn', function () {
     var Status = $(this).data('status');
     $("#HiddenStatus").val(Status);
     const isDeclineBtn = false; // or false
-    $('#ApplicationModal .modal-body span').text(isDeclineBtn ? 'Are you sure you want to decline this ??' : 'Are you sure you want to approve this ??');
+    $('#ApplicationModalBody div').text(isDeclineBtn ? 'Are you sure you want to decline this mission application??' : 'Are you sure you want to approve this mission application??');
 });
+//to fetch data for decline of mission application 
 $(document).on('click', '#DeclineBtn', function () {
     var Status = $(this).data('status');
     $("#HiddenStatus").val(Status);
     const isDeclineBtn = true; // or false
-    $('#ApplicationModal .modal-body span').text(isDeclineBtn ? 'Are you sure you want to decline this ??' : 'Are you sure you want to approve this ??');
+    $('#ApplicationModalBody div').text(isDeclineBtn ? 'Are you sure you want to decline this mission application??' : 'Are you sure you want to approve this mission application??');
 });
-//view story 
+//view story in story page of admin
 $('#ViewStoryBtn').click(function () {
     var UserId = $(this).data('user-id');
     var MissionId = $(this).data('mission-id');
@@ -294,4 +295,284 @@ $('#ViewStoryBtn').click(function () {
         },
 
     });
+});
+//to get story id to decline, approve or delete it 
+$(document).on('click', '.GetStoryIdBtn', function () {
+    var StoryId = $(this).data('story-id');
+    console.log(StoryId)
+    $(".HiddenStoryId").val(StoryId);
+});
+
+//to get id of mission application to decline or approve it 
+//$(document).on('click', '.ApproveOrDeclineApplication', function () {
+//    var MissionApplicationId = $(this).data('application-id');
+//    $("#HiddenApplicationId").val(MissionApplicationId);
+//});
+//to fetch data for approval of story
+$(document).on('click', '#StoryApprovalBtn', function () {
+    var Status = $(this).data('status');
+    $("#HiddenStatus").val(Status);
+    const isDeclineBtn = false; // or false
+    $('#StoryModalBody div').text(isDeclineBtn ? 'Are you sure you want to decline this story??' : 'Are you sure you want to approve this story??');
+});
+//to fetch data for decline of mission application 
+$(document).on('click', '#StoryDeclineBtn', function () {
+    var Status = $(this).data('status');
+    $("#HiddenStatus").val(Status);
+    const isDeclineBtn = true; // or false
+    $('#StoryModalBody div').text(isDeclineBtn ? 'Are you sure you want to decline this story??' : 'Are you sure you want to approve this story??');
+});
+
+//APPEND PARTIAL VIEW FOR ADD OR EDIT Mission  
+$(document).on('click', '#AddOrUpdateMissionBtn', function () {
+    $.ajax({
+        url: '/Admin/AddOrUpdateMission',
+        type: 'GET',
+        success: function (result) {
+            $('.table-responsive').empty();
+            $('#MissionForm').html(result);
+        },
+        error: function () {
+            alert('Error ');
+        }
+    });
+});
+
+// drag and drop images in admin mission page
+var allfiles = [];
+var fileInput = document.getElementById('mission-img-input');
+var fileList;
+function handleFiles(e) {
+    console.log(allfiles)
+
+    // Add dropped images or selected images to the list
+    var files = e.target.files || e.originalEvent.dataTransfer.files;
+
+    // Add selected images to the list
+    for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        var reader = new FileReader();
+
+        var imageType = /image\/(png|jpeg|jpg)/;
+        if (!file.type.match(imageType)) {
+            alert("Only png, jpg and jpeg image types are allowed.");
+            return false;
+        }
+
+        // Validate image size
+        if (file.size > 4 * 1024 * 1024) {
+            alert("An image should not be greater than 4MB.");
+            return false;
+        }
+
+        allfiles.push(files[i]);
+
+
+        // Create image preview and close icon
+        // Create image preview and close icon
+        reader.onload = (function (file) {
+            return function (e) {
+                var image = $('<img>').attr('src', e.target.result);
+                var closeIcon = $('<span>').addClass('close-icon').text('x');
+
+                // Add image and close icon to the list
+                var item = $('<div>').addClass('image').append(image).append(closeIcon);
+                $('#mission-img-output').append(item);
+
+                // Handle close icon click event
+                closeIcon.on('click', function () {
+                    item.remove();
+                    allfiles.splice(allfiles.indexOf(file), 1);
+                    console.log(allfiles);
+                    if (allfiles.length < 20) {
+                        $('mission-img-input').disabled = false;
+                    }
+                });
+            };
+        })(file);
+
+        // Read image file as data URL
+        reader.readAsDataURL(file);
+    }
+    if (allfiles.length > 20) {
+        alert("Maximum 20 images can be added.");
+        // Remove the last added file from the list
+        allfiles.splice(-1, 1);
+        // Remove the last added image preview from the list
+        $('#mission-img-output').children().last().remove();
+        //// Disable further file selection
+        fileInput.disabled = true;
+    }
+    // Create a new DataTransfer object
+    var dataTransfer = new DataTransfer();
+    // Create a new FileList object from the DataTransfer object
+    fileList = dataTransfer.files;
+}
+
+//var allfiles = new DataTransfer().files;
+var dropzone = $('#mission-img-drop-area');
+var imageList = $('#mission-img-output');
+
+// Handle file drop event
+$(document).on('drop', '#mission-img-drop-area', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var dropzone = $('#mission-img-drop-area');
+    // Remove dropzone highlight
+    dropzone.removeClass('dragover');
+    $('.note-dropzone').remove();
+    //$('.note-dropzone-message').remove();
+    handleFiles(e);
+});
+
+$(document).on('click', '#mission-img-drop-area', function () {
+    //e.preventDefault();
+    $('#mission-img-input').click();
+})
+/*$(document).on('change', '#mission-img-input', function () {*/
+// Handle file dragover event
+$(document).on('dragover', '#mission-img-drop-area', function (e) { 
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Highlight dropzone
+    dropzone.addClass('dragover');
+});
+
+// Handle file dragleave event
+$(document).on('dragleave', '#mission-img-drop-area', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Remove dropzone highlight
+    dropzone.removeClass('dragover');
+});
+
+
+// Handle file input change event
+$(document).on('change', '#mission-img-input', function (e) {
+    handleFiles(e);
+    if (allfiles.length >= 20) {
+        fileInput.disabled = true;
+    }
+});
+
+
+// drag and drop documents in  admin mission page
+var allDocfiles = [];
+var DocfileInput = document.getElementById('mission-doc-input');
+var DocfileList;
+function handleFiles(e) {
+    console.log(allDocfiles)
+
+    // Add dropped images or selected images to the list
+    var docfiles = e.target.files || e.originalEvent.dataTransfer.files;
+
+    // Add selected images to the list
+    for (var i = 0; i < docfiles.length; i++) {
+        var docfile = docfiles[i];
+        var reader = new FileReader();
+
+        var doctype = /application\/(pdf)/;
+        if (!docfile.type.match(doctype)) {
+            alert("Only pdf files are allowed.");
+            return false;
+        }
+
+        // Validate image size
+        //if (file.size > 4 * 1024 * 1024) {
+        //    alert("An image should not be greater than 4MB.");
+        //    return false;
+        //}
+
+        allDocfiles.push(docfiles[i]);
+
+
+        // Create image preview and close icon
+        // Create image preview and close icon
+        reader.onload = (function (file) {
+            return function (e) {
+                var doc = $('<div>').addClass('rounded-pill').attr('name', e.target.result);
+                var closeIcon = $('<span>').addClass('close-icon').text('x');
+
+                // Add image and close icon to the list
+                var item = $('<div>').addClass('image').append(doc).append(closeIcon);
+                $('#mission-doc-output').append(item);
+
+                // Handle close icon click event
+                closeIcon.on('click', function () {
+                    item.remove();
+                    allDocfiles.splice(allDocfiles.indexOf(file), 1);
+                    console.log(allDocfiles);
+                    if (allDocfiles.length < 20) {
+                        $('#mission-doc-input').disabled = false;
+                    }
+                });
+            };
+        })(docfile);
+
+        // Read image file as data URL
+        reader.readAsDataURL(docfile);
+    }
+    if (allDocfiles.length > 20) {
+        alert("Maximum 20 images can be added.");
+        // Remove the last added file from the list
+        allDocfiles.splice(-1, 1);
+        // Remove the last added image preview from the list
+        $('#mission-doc-output').children().last().remove();
+        //// Disable further file selection
+        DocfileInput.disabled = true;
+    }
+    // Create a new DataTransfer object
+    var dataTransfer = new DataTransfer();
+    // Create a new FileList object from the DataTransfer object
+    DocfileList = dataTransfer.docfiles;
+}
+
+//var allfiles = new DataTransfer().files;
+var dropzone = $('#mission-doc-drop-area');
+var imageList = $('#mission-doc-output');
+
+// Handle file drop event
+$(document).on('drop', '#mission-doc-drop-area', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var dropzone = $('#mission-doc-drop-area');
+    // Remove dropzone highlight
+    dropzone.removeClass('dragover');
+    $('.note-dropzone').remove();
+    //$('.note-dropzone-message').remove();
+    handleFiles(e);
+});
+
+$(document).on('click', '#mission-doc-drop-area', function () {
+    //e.preventDefault();
+    $('#mission-doc-input').click();
+})
+/*$(document).on('change', '#mission-img-input', function () {*/
+// Handle file dragover event
+$(document).on('dragover', '#mission-doc-drop-area', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Highlight dropzone
+    dropzone.addClass('dragover');
+});
+
+// Handle file dragleave event
+$(document).on('dragleave', '#mission-doc-drop-area', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Remove dropzone highlight
+    dropzone.removeClass('dragover');
+});
+
+
+// Handle file input change event
+$(document).on('change', '#mission-doc-input', function (e) {
+    handleFiles(e);
+    if (allDocfiles.length >= 20) {
+        DocfileInput.disabled = true;
+    }
 });

@@ -22,24 +22,43 @@ namespace CI_Platform.Repository.Repository
             return _db.Skills.Where(skills => skills.DeletedAt == null).ToList();
         }
 
-        public bool SkillsAdd(AdminSkillsViewModel skillvm)
+        public string SkillsAdd(AdminSkillsViewModel skillvm)
         {
             try
             {
-                Skill skill = new Skill()
+                Skill DoesSkillExist = _db.Skills.FirstOrDefault(skill=>skill.SkillName.ToLower() == skillvm.SkillName.ToLower())!;
+                if (DoesSkillExist == null)
                 {
-                    SkillName = skillvm.SkillName,
-                    Status = skillvm.Status,
-                    CreatedAt = DateTime.Now,
-                };
-
-                _db.Skills.Add(skill);
-                _db.SaveChanges();
-                return true;
+                    Skill skill = new Skill()
+                    {
+                        SkillName = skillvm.SkillName,
+                        Status = skillvm.Status,
+                        CreatedAt = DateTime.Now,
+                    };
+                    _db.Skills.Add(skill);
+                    _db.SaveChanges();
+                    return "Added";
+                }
+                else
+                {
+                    if(DoesSkillExist != null && DoesSkillExist.DeletedAt == null)
+                    {
+                        return "Exists";
+                    }
+                    else
+                    {
+                        DoesSkillExist.DeletedAt = null;
+                        DoesSkillExist.UpdatedAt = DateTime.Now;
+                        _db.Update(DoesSkillExist);
+                        _db.SaveChanges();
+                        return "Added";
+                    }
+                   
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                return ex.Message;
             }
         }
 

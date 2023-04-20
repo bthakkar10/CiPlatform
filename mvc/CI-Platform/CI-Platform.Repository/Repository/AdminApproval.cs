@@ -63,5 +63,63 @@ namespace CI_Platform.Repository.Repository
         {
             return _db.Stories.Where(story=>story.DeletedAt == null && story.Status == "PENDING").Include(story=>story.Mission).Include(story=>story.User).ToList();
         }
+
+        public string ApproveDeclineStory(long StoryId, long Status)
+        {
+            try
+            {
+                Story story = _db.Stories.Find(StoryId)!;
+                if (story == null)
+                {
+                    return "error";
+                }
+                else
+                {
+                    if (Status == 1)
+                    {
+                        story.Status = "PUBLISHED";
+                        story.PublishedAt = DateTime.Now;
+                        _db.Stories.Update(story);
+                        _db.SaveChanges();
+                        return story.Status;
+                    }
+                    else
+                    {
+                        story.Status = "DECLINED";
+                        story.UpdatedAt = DateTime.Now;
+                        _db.Stories.Update(story);
+                        _db.SaveChanges();
+                        return story.Status;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public bool IsStoryDeleted(long StoryId)
+        {
+            try
+            {
+                Story story = _db.Stories.Find(StoryId)!;
+                if (story != null)
+                {
+                    story.DeletedAt = DateTime.Now;
+                    _db.Update(story);
+                    _db.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

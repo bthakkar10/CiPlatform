@@ -24,8 +24,9 @@ namespace CI_Platform_web.Auth
             {
                 new Claim(ClaimTypes.Name, user.FirstName + user.LastName),
                 new Claim(ClaimTypes.NameIdentifier, user.Email),
-                new Claim(ClaimTypes.Role, user.Role),
-                new Claim("CustomClaimForUser", JsonSerializer.Serialize(user))  // Additional Claims
+                new Claim(ClaimTypes.Role, user.Role!),
+                new Claim("CustomClaimForUser", JsonSerializer.Serialize(user)),  // Additional Claims
+                new Claim("exp", DateTime.UtcNow.AddMinutes(5).ToString()) // Expiration Time Claim
             };
 
             var token = new JwtSecurityToken(

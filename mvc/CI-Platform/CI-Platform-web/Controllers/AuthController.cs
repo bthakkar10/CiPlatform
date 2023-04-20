@@ -11,6 +11,7 @@ using CI_Platform.Repository.Repository;
 using CI_Platform.Entities.Auth;
 using CI_Platform_web.Auth;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 
 namespace CI_Platform_web.Controllers
 {
@@ -182,14 +183,23 @@ namespace CI_Platform_web.Controllers
         }
         public IActionResult Logout()
         {
-           
+
+            //await HttpContext.SignOutAsync("Bearer");
+
+            Response.Headers.Remove("Authorization");
+            HttpContext.Session.Clear();    
             HttpContext.Session.Remove("Username");
             HttpContext.Session.Remove("SEmail");
             HttpContext.Session.Remove("Id");
             return RedirectToAction("Index");
         }
 
-
+        //to check sesssion
+        public IActionResult SessionStatus()
+        {
+            bool sessionExists = (HttpContext.Session.GetString("Token") != null);
+            return Json(new { sessionExists });
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

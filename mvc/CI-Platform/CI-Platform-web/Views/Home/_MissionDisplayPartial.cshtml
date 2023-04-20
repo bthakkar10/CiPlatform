@@ -28,37 +28,18 @@
 @*grid view*@
 <div class="container my-5" id="grid-view">
     <div class=" row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-sm-1 g-4">
-
+     
         <!-- Card starts from col -->
         @foreach (var obj in Model.Records)
         {
-            @*double avg_rating = 0;
-        if (obj.MissionRatings.Count > 0)
-        { avg_rating = obj.MissionRatings.Average(r => r.Rating); }
-
-        DateTime? currDate = @DateTime.Now;
-        TimeSpan timeSpan = new TimeSpan(1, 0, 0, 0);
-        var deadline = obj.StartDate - timeSpan;
-        bool isDeadlinePassed = currDate > deadline;
-        bool isEndDatePassed = currDate > obj.EndDate;
-        bool isOngoing = currDate > obj.StartDate;
-        bool isAlreadyApplied = obj.MissionApplications.Any(a => a.UserId == Id);
-        var flag = 1;
-        var registered_users = obj.MissionApplications.Count(m => m.ApprovalStatus.Contains("APPROVE"));
-        var seats_left = obj.TotalSeats - registered_users;
-        var mission_id = obj.MissionId;*@
-
+          
+            
             <div class="col card-div ">
                 <div class="card grid-card  h-100 shadow">
                     <span class="d-none"> @obj.MissionCard.MissionId </span>
                     <span class="created-date d-none ">@obj.MissionCard.CreatedAt </span>
 
-                    @*<p class="mission-skill d-none">
-                @foreach (var skill in obj.skillName)
-                {
-                <span class=" skillName">@skill.Skill.SkillName</span>
-                }
-                </p>*@
+                   
                     <span class="mission-country d-none">@obj.MissionCard.CountryId</span>
                     <span> </span>
                     <div class="pill-on-img">
@@ -295,19 +276,7 @@
 <div class="container " id="list-view">
     @foreach (var obj in Model.Records)
     {
-        @*double avg_rating = 0;
-    if (obj.MissionRatings.Count > 0)
-    { avg_rating = obj.MissionRatings.Average(r => r.Rating); }
-    var flag = 1;
-    DateTime? currDate = @DateTime.Now;
-    TimeSpan timeSpan = new TimeSpan(1, 0, 0, 0);
-    var deadline = obj.StartDate - timeSpan;
-    bool isDeadlinePassed = currDate > deadline;
-    bool isEndDatePassed = currDate > obj.EndDate;
-    bool isAlreadyApplied = obj.MissionApplications.Any(a => a.UserId == Id);
-
-    var registered_users = obj.MissionApplications.Count(m => m.ApprovalStatus.Contains("APPROVE"));
-    var seats_left = obj.TotalSeats - registered_users;*@
+   
 
         <div class=" card-div card my-5 ">
             <div class="row g-0 list-card ">
@@ -315,20 +284,7 @@
                 <div class="col-md-4 ">
                     <div class="pill-on-img">
 
-                        @*@if (!obj.MissionMedia.Any())
-                    {
-                    <img src="~/images/no-image.png" class="card-img-top" />
-                    }
-                    else
-                    {
-                    @foreach (var img_mission in obj.MissionMedia)
-                    {
-                    @if (img_mission.Defaultval == true)
-                    {
-                    <img src="~/images/@img_mission.MediaPath" class="card-img-top" alt="@img_mission.MediaName">
-                    }
-                    }
-                    }*@
+                       
 
                         @if (obj.missionMedia.Count() == 0)
                         {
@@ -351,11 +307,17 @@
                             </div>
                         }
 
-                        if (obj.HasDeadlinePassed || obj.HasEndDatePassed)
+                        @if(obj.HasDeadlinePassed || obj.seatsLeft <= 0 || obj.HasEndDatePassed)
                         {
-                        <div class="applied-pill" style="background:red 0% 0% no-repeat;">
-                            <span>CLOSED</span>
-                        </div>
+                            <div class="applied-pill" style="background:red 0% 0% no-repeat;">
+                                <span>CLOSED</span>
+                            </div>
+                        }
+                        @if (obj.IsApplicationPending)
+                        {
+                            <div class="applied-pill" style="background:orange 0% 0% no-repeat;">
+                                <span>Approval Pending</span>
+                            </div>
                         }
 
 
@@ -501,7 +463,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @if (obj.Applied || obj.HasDeadlinePassed || obj.HasEndDatePassed || obj.seatsLeft <= 0)
+                            @if (obj.Applied || obj.HasDeadlinePassed || obj.HasEndDatePassed || obj.seatsLeft <= 0 || obj.IsApplicationPending)
                             {
                                 <div class=" d-flex pb-3 justify-content-center">
                                     <a class="btn card-btn" href="@Url.Action("MissionDetail", "Home" , new { MissionId = @obj.MissionCard.MissionId})">

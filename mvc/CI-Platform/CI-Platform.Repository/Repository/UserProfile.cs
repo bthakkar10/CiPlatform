@@ -84,7 +84,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                User user = _db.Users.FirstOrDefault(u => u.UserId == UserId);
+                User user = _db.Users.FirstOrDefault(u => u.UserId == UserId)!;
 
                 user.FirstName = vm.FirstName;
                 user.LastName = vm.Surname;

@@ -19,7 +19,7 @@
                 <label for="" class="form-label ms-1">Select Mission</label>
                 <select required class="form-select" id="missionTitle" aria-label="Default select example">
                     <option asp-for="MissionTitle" disabled  selected>Select your mission</option>
-                    @if (Model.GetMissionListofUser.Any())
+                    @if (Model.GetMissionListofUser is not null)
                     {
 
                         @foreach (var mission_list in Model.GetMissionListofUser)

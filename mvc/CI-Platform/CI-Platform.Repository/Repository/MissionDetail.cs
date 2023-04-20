@@ -37,7 +37,7 @@ namespace CI_Platform.Repository.Repository
                 .Include(m => m.MissionDocuments)
                 .Include(m => m.Comments)
                 .ThenInclude(u => u.User)
-                .FirstOrDefault(m => m.MissionId == MissionId);
+                .FirstOrDefault(m => m.MissionId == MissionId)!;
 
             return mission;
             
@@ -115,9 +115,9 @@ namespace CI_Platform.Repository.Repository
 
         public async Task SendInvitationToCoWorker(long ToUserId, long FromUserId, MissionDetailViewModel viewmodel)
         {
-            var Email = await _db.Users.Where(u => u.UserId == ToUserId).FirstOrDefaultAsync();
+            var Email = await _db.Users.Where(u => u.UserId == ToUserId).FirstOrDefaultAsync()!;
 
-            var Sender = await _db.Users.Where(su => su.UserId == FromUserId).FirstOrDefaultAsync();
+            var Sender = await _db.Users.Where(su => su.UserId == FromUserId).FirstOrDefaultAsync()!;
 
             var fromEmail = new MailAddress("ciplatformdemo@gmail.com");
             var toEmail = new MailAddress(Email.Email);

@@ -13,7 +13,7 @@ namespace CI_Platform.Repository.Repository
     {
         private readonly CiDbContext _db;
 
-        public AdminTheme(CiDbContext db) 
+        public AdminTheme(CiDbContext db)
         {
             _db = db;
         }
@@ -23,24 +23,43 @@ namespace CI_Platform.Repository.Repository
             return _db.MissionThemes.Where(theme => theme.DeletedAt == null).ToList();
         }
 
-        public bool ThemeAdd(AdminThemeViewModel themevm)
+        public string ThemeAdd(AdminThemeViewModel themevm)
         {
             try
             {
-                MissionTheme theme = new MissionTheme()
+                MissionTheme DoesThemeExists = _db.MissionThemes.FirstOrDefault(theme => theme.Title.ToLower() == themevm.ThemeName.ToLower())!;
+                if (DoesThemeExists == null)
                 {
-                    Title = themevm.ThemeName,
-                    Status = themevm.Status,
-                    CreatedAt = DateTime.Now,
-                };
+                    MissionTheme theme = new MissionTheme()
+                    {
+                        Title = themevm.ThemeName,
+                        Status = themevm.Status,
+                        CreatedAt = DateTime.Now,
+                    };
 
-                _db.MissionThemes.Add(theme);
-                _db.SaveChanges();
-                return true;
+                    _db.MissionThemes.Add(theme);
+                    _db.SaveChanges();
+                    return "Added";
+                }
+                else
+                {
+                    if (DoesThemeExists != null && DoesThemeExists.DeletedAt == null)
+                    {
+                        return "Exists";
+                    }
+                    else
+                    {
+                        DoesThemeExists.DeletedAt = null;
+                        DoesThemeExists.UpdatedAt = DateTime.Now;
+                        _db.Update(DoesThemeExists);
+                        _db.SaveChanges();
+                        return "Added";
+                    }
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                return ex.Message;
             }
         }
 
@@ -48,7 +67,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                MissionTheme theme = _db.MissionThemes.Find(ThemeId);
+                MissionTheme theme = _db.MissionThemes.Find(ThemeId)!;
                 if (theme != null)
                 {
                     theme.DeletedAt = DateTime.Now;
@@ -69,14 +88,14 @@ namespace CI_Platform.Repository.Repository
 
         public AdminThemeViewModel GetThemeData(long ThemeId)
         {
-            MissionTheme theme = _db.MissionThemes.Find(ThemeId);
+            MissionTheme theme = _db.MissionThemes.Find(ThemeId)!;
             AdminThemeViewModel themevm = new AdminThemeViewModel(theme);
             return themevm;
         }
 
         public bool EditTheme(AdminThemeViewModel themevm)
         {
-            MissionTheme theme = _db.MissionThemes.Find(themevm.ThemeId);
+            MissionTheme theme = _db.MissionThemes.Find(themevm.ThemeId)!;
 
             if (theme != null)
             {

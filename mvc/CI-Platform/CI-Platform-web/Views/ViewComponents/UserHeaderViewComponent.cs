@@ -17,7 +17,7 @@ namespace CI_Platform_web.Views.ViewComponents
             var customClaimForUser = HttpContext.User?.FindFirst("CustomClaimForUser")?.Value;
             if (customClaimForUser != null)
             {
-                var UserModel = JsonSerializer.Deserialize<User>(customClaimForUser);
+                User UserModel = JsonSerializer.Deserialize<User>(customClaimForUser);
                 if (UserModel != null)
                 {
                     Email = UserModel.Email!;
@@ -25,6 +25,7 @@ namespace CI_Platform_web.Views.ViewComponents
                     Username = UserModel.FirstName + " " + UserModel.LastName;
                     Avtar = UserModel.Avtar!;
                 }
+                
             }
 
             HeaderViewModel vm = new()

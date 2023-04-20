@@ -17,8 +17,9 @@ namespace CI_Platform_web.Controllers
         private readonly IAdminTheme _adminTheme;
         private readonly IAdminSkills _adminSkills;
         private readonly IAdminApproval _adminApproval;
+        private readonly IAdminMission _adminMission;
 
-        public AdminController(IAdminUser adminUser, IFilter filter, IAdminCms adminCms, IAdminTheme adminTheme, IAdminSkills adminSkills, IAdminApproval adminApproval)
+        public AdminController(IAdminUser adminUser, IFilter filter, IAdminCms adminCms, IAdminTheme adminTheme, IAdminSkills adminSkills, IAdminApproval adminApproval, IAdminMission adminMission)
         {
             _adminUser = adminUser;
             _filter = filter;
@@ -26,6 +27,7 @@ namespace CI_Platform_web.Controllers
             _adminTheme = adminTheme;
             _adminSkills = adminSkills;
             _adminApproval = adminApproval;
+            _adminMission = adminMission;
         }
 
         //------------------------------------------  User  Section Starts ---------------------------------------------------------- 
@@ -246,14 +248,19 @@ namespace CI_Platform_web.Controllers
             //to add
             if (themevm.ThemeId == 0)
             {
-                if (_adminTheme.ThemeAdd(themevm))
+                if (_adminTheme.ThemeAdd(themevm) == "Added")
                 {
                     TempData["success"] = "New Theme Added Successfully!!";
                     return RedirectToAction("MissionTheme");
                 }
+                else if(_adminTheme.ThemeAdd(themevm) == "Exists")
+                {
+                    TempData["error"] = "Theme Already Exists";
+                    return RedirectToAction("MissionTheme");
+                }
                 else
                 {
-                    TempData["error"] = "Something went wrong!!";
+                    TempData["error"] = "Something went wrong!! Please try again later!!";
                     return RedirectToAction("MissionTheme");
                 }
             }
@@ -330,9 +337,14 @@ namespace CI_Platform_web.Controllers
             //to add
             if (skillvm.SkillId == 0)
             {
-                if (_adminSkills.SkillsAdd(skillvm))
+                if (_adminSkills.SkillsAdd(skillvm) == "Added")
                 {
                     TempData["success"] = "New Skill Added Successfully!!";
+                    return RedirectToAction("MissionSKill");
+                }
+                else if(_adminSkills.SkillsAdd(skillvm) == "Exists")
+                {
+                    TempData["error"] = "Skill Already Exists";
                     return RedirectToAction("MissionSKill");
                 }
                 else
@@ -371,7 +383,7 @@ namespace CI_Platform_web.Controllers
                 return RedirectToAction("MissionSKill");
             }
         }
-        //------------------------------------------  Mission Theme Section Ends ---------------------------------------------------------- 
+        //------------------------------------------  Mission Skill Section Ends ---------------------------------------------------------- 
 
         //------------------------------------------  Mission Application Section Starts ---------------------------------------------------------- 
 
@@ -413,9 +425,64 @@ namespace CI_Platform_web.Controllers
             vm.StoryList = _adminApproval.StoryList();
             return View(vm);
         }
+        public IActionResult ApproveOrDeclineStory()
+        {
+            long StoryId = long.TryParse(Request.Form["HiddenStoryId"], out long result) ? result : 0;
+            long Status = long.TryParse(Request.Form["HiddenStatus"], out long resultStatus) ? resultStatus : 0;
 
+            if (_adminApproval.ApproveDeclineStory(StoryId, Status) == "PUBLISHED")
+            {
+                TempData["success"] = "Story Published Successfully";
+                return RedirectToAction("Story");
+
+            }
+            else if (_adminApproval.ApproveDeclineStory(StoryId, Status) == "DECLINED")
+            {
+                TempData["success"] = "Story Declined Successfully";
+                return RedirectToAction("Story");
+            }
+            else
+            {
+                TempData["error"] = "Something went wrong!! Please try again later!!";
+                return RedirectToAction("Story");
+            }
+        }
+
+        public IActionResult DeleteStory()
+        {
+            long StoryId = long.TryParse(Request.Form["HiddenStoryId"], out long result) ? result : 0;
+            if (_adminApproval.IsStoryDeleted(StoryId))
+            {
+                TempData["succes"] = "Skill Deleted Successfully!!";
+                return RedirectToAction("Story");
+            }
+            else
+            {
+                TempData["error"] = "Something went wrong!! Please try again later!!";
+                return RedirectToAction("Story");
+            }
+        }
 
         //------------------------------------------  Story Section Ends ---------------------------------------------------------- 
+
+        //------------------------------------------  Mission Section Starts ---------------------------------------------------------- 
+
+        public IActionResult AdminMission()
+        {
+            AdminMissionViewModel missionvm = new AdminMissionViewModel();
+            missionvm.GetMissionList = _adminMission.MissionList();
+            return View(missionvm);
+        }
+
+        //add or update mission form get method to load the add and edit forms 
+        [HttpGet]
+        public IActionResult AddOrUpdateMission()
+        {
+            AdminMissionViewModel vm = new AdminMissionViewModel();
+            return PartialView("_AddOrUpdateMission", vm);
+        }
+
+        //------------------------------------------  Mission Section Ends ---------------------------------------------------------- 
 
     }
 

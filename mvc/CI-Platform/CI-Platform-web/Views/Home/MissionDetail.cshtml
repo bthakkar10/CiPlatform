@@ -70,7 +70,7 @@
             double userRate = 0;
             if (Model.MissionDetails.MissionRatings.Where(u => u.UserId == Id).Any())
             {
-                var rate = Model.MissionDetails.MissionRatings.Where(r => r.UserId == Id).FirstOrDefault();
+                var rate = Model.MissionDetails.MissionRatings.Where(r => r.UserId == Id).FirstOrDefault()!;
                 userRate = rate.Rating;
             }
             var registered_users = Model.MissionDetails.MissionApplications.Count(m => m.ApprovalStatus.Contains("APPROVE"));
@@ -248,7 +248,10 @@
                                         }
                                         else
                                         {
-                                            <span>From @Model.MissionDetails.StartDate.Value.ToShortDateString() until @Model.MissionDetails.EndDate.Value.ToShortDateString()</span>
+                                            @if (Model.MissionDetails.StartDate != null && Model.MissionDetails.EndDate != null)
+                                            {
+                                                <span>From @Model.MissionDetails.StartDate.Value.ToShortDateString() until @Model.MissionDetails.EndDate.Value.ToShortDateString()</span>
+                                            }
                                         }
 
                                     </span>
@@ -372,7 +375,10 @@
                                             <img class="rounded-circle comments-img d-none d-md-flex" src=~/images/Upload/User/@com.User.Avtar/>
                                             <div class="comments-details">
                                                 <h6>@com.User.FirstName @com.User.LastName</h6>
-                                                <p> @com.CreatedAt.Value.ToString("dddd, MMMM dd, yyyy, h:mm tt")</p>
+                                                @if(com.CreatedAt is not null)
+                                                {
+                                                    <p> @com.CreatedAt.Value.ToString("dddd, MMMM dd, yyyy, h:mm tt")</p>
+                                                }
                                                 <p>@com.CommentText</p>
                                             </div>
                                         </div>
@@ -472,7 +478,7 @@
         <div class="container my-5" id="grid-view">
             <div class=" row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-sm-1   g-4">
                 <!-- Card starts from col -->
-                @if (Model.RelatedMissions.Any())
+                @if (Model.RelatedMissions is not null)
                 {
                     @foreach (var releated in Model.RelatedMissions)
                     {
@@ -545,7 +551,10 @@
                                                 }
                                                 else
                                                 {
-                                                    <span>From @releated.StartDate.Value.ToShortDateString() until @releated.EndDate.Value.ToShortDateString()</span>
+                                                    @if(releated.StartDate != null && releated.EndDate != null)
+                                                    {
+                                                        <span>From @releated.StartDate.Value.ToShortDateString() until @releated.EndDate.Value.ToShortDateString()</span>
+                                                    }
                                                 }
                                             }
                                             else

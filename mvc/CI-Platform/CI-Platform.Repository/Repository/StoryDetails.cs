@@ -38,7 +38,7 @@ namespace CI_Platform.Repository.Repository
             ThenInclude(su => su.City).
             ThenInclude(su => su.Country).
             Where(s => s.MissionId == MissionId && s.UserId == UserId).
-            FirstOrDefault();
+            FirstOrDefault()!;
             return story;
         }
 
@@ -50,7 +50,7 @@ namespace CI_Platform.Repository.Repository
 
         public void IncreaseViewCount(long UserId, long MissionId)
         {
-            Story story = _db.Stories.Where(s => s.MissionId == MissionId && s.UserId == UserId && s.Status == "PUBLISHED").FirstOrDefault();
+            Story story = _db.Stories.Where(s => s.MissionId == MissionId && s.UserId == UserId && s.Status == "PUBLISHED").FirstOrDefault()!;
             if (story != null)
             {
                 story.UserVisits = story.UserVisits++;
@@ -81,9 +81,9 @@ namespace CI_Platform.Repository.Repository
 
         public async Task SendInvitationToCoWorker(long ToUserId, long FromUserId, StoryDetailsViewModel vm)
         {
-            var Email = await _db.Users.Where(u => u.UserId == ToUserId).FirstOrDefaultAsync();
+            var Email = await _db.Users.Where(u => u.UserId == ToUserId).FirstOrDefaultAsync()!;
 
-            var Sender = await _db.Users.Where(su => su.UserId == FromUserId).FirstOrDefaultAsync();
+            var Sender = await _db.Users.Where(su => su.UserId == FromUserId).FirstOrDefaultAsync()!;
 
             var fromEmail = new MailAddress("ciplatformdemo@gmail.com");
             var toEmail = new MailAddress(Email.Email);

@@ -12,7 +12,7 @@ namespace CI_Platform.Repository.Interface
     {
         public List<MissionTheme> ThemeList();
 
-        public bool ThemeAdd(AdminThemeViewModel themevm);
+        public string ThemeAdd(AdminThemeViewModel themevm);
 
         public bool ThemeDelete(long ThemeId);
 

@@ -12,7 +12,7 @@ namespace CI_Platform.Repository.Interface
     {
         public List<Skill> SkillList();
 
-        public bool SkillsAdd(AdminSkillsViewModel skillvm);
+        public string SkillsAdd(AdminSkillsViewModel skillvm);
 
         public bool SkillDelete(long SkillId);
 

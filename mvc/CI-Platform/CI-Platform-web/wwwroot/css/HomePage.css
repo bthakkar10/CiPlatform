@@ -782,7 +782,7 @@ a,li,button,h3 {
             font-size: 28px;
         }
 
-        .drag-card input,
+        
         .drag-card .drag-area .on-drop,
         .drag-card .drag-area.dragover .visible {
             display: none;

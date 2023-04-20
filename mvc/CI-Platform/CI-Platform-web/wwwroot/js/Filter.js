@@ -864,7 +864,7 @@ function handleFiles(e) {
    
 
         // Create image preview and close icon
-        // Create image preview and close icon
+  
         reader.onload = (function (file) {
             return function (e) {
                 var image = $('<img>').attr('src', e.target.result);

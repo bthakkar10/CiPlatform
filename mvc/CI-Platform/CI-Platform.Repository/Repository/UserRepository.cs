@@ -43,7 +43,6 @@ namespace CI_Platform.Repository.Repository
                         FirstName = obj.FirstName,
                         LastName = obj.LastName,
                         PhoneNumber = obj.PhoneNumber,
-                        //Password = obj.Password,
                         Password = BCrypt.Net.BCrypt.HashPassword(obj.Password),
                         Avtar = default_avtar,
                     };
