@@ -21,7 +21,8 @@ namespace CI_Platform.Repository.Repository
             DRAFT ,
             PENDING ,
             PUBLISHED ,
-            DECLINED 
+            DECLINED , 
+            APPROVE
         }
         enum MediaType
         {
@@ -36,13 +37,13 @@ namespace CI_Platform.Repository.Repository
         //get mission titles where user has applied
         public List<MissionApplication> GetMissionListofUser(long userId)
         {
-            return _db.MissionApplications.Where(m => m.UserId == userId && m.ApprovalStatus == "APPROVE").Include(m => m.Mission).ToList();
+            return _db.MissionApplications.Where(m => m.UserId == userId && m.ApprovalStatus == StoryStatus.APPROVE.ToString()).Include(m => m.Mission).ToList();
         }
 
         //get the drafted story if there is any
         public Story GetDraftedStory(long userId, long missionId)
         {
-            Story? story =  _db.Stories.Where(s => s.MissionId == missionId && s.UserId == userId && s.Status == "DRAFT").Include(s => s.StoryMedia).Include(m=>m.Mission).FirstOrDefault();
+            Story? story =  _db.Stories.Where(s => s.MissionId == missionId && s.UserId == userId && s.Status == StoryStatus.DRAFT.ToString() && s.DeletedAt == null).Include(s => s.StoryMedia).Include(m=>m.Mission).FirstOrDefault();
             return story!;
         }
 
@@ -102,7 +103,7 @@ namespace CI_Platform.Repository.Repository
         //for story urls updation
         public void AddOrRemoveStoryUrls(long storyId, string[] url)
         {
-            var media = _db.StoryMedia.Where(sm => sm.StoryId == storyId && sm.Type == "videos");
+            var media = _db.StoryMedia.Where(sm => sm.StoryId == storyId && sm.Type == MediaType.videos.ToString());
             if (media.Any())
             {
                 _db.RemoveRange(media);
@@ -128,18 +129,12 @@ namespace CI_Platform.Repository.Repository
         //for story images updation
         public void AddOrRemoveStoryImages(long storyId, List<IFormFile> Images)
         {
-            var media = _db.StoryMedia.Where(sm => sm.StoryId == storyId && sm.Type == "images");
+            var media = _db.StoryMedia.Where(sm => sm.StoryId == storyId && sm.Type == MediaType.images.ToString());
             //to remove if any 
             foreach (var m in media)
             {
                 if (m != null)
                 {
-                    //var guid = Guid.NewGuid().ToString().Substring(0, 8);
-                    //var fileName = $"{guid}_{m.Path}"; // getting filename
-                    ////var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName); // set filepat
-
-
-
                     var fileName = m.Path;
                     File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Upload/Story", fileName));
                     _db.Remove(m);
@@ -177,19 +172,13 @@ namespace CI_Platform.Repository.Repository
         //to check if the story is already published 
         public bool isPublishedStory(long userId, long missionId)
         {
-            return _db.Stories.Any(s => s.MissionId == missionId && s.UserId == userId && (s.Status == "PUBLISHED" || s.Status == "PENDING"));
+            return _db.Stories.Any(s => s.MissionId == missionId && s.UserId == userId && (s.Status == StoryStatus.PUBLISHED.ToString() || s.Status == StoryStatus.PENDING.ToString()) && s.DeletedAt == null);
         }
 
         public void SubmitStory(ShareStoryViewModel vm, long userId)
         {
             Story existingStory = GetDraftedStory(userId, vm.MissionId);
 
-            // If the story doesn't exist, throw an exception or return an error message
-            //if (existingStory == null)
-            //{
-            //    throw new Exception("Story not found");
-            //    // or return an error message to the caller
-            //}
 
             // Modify the properties of the existing story record
             existingStory.UserId = userId;
@@ -219,7 +208,7 @@ namespace CI_Platform.Repository.Repository
         {
             List<DateTime> result = new List<DateTime>();
 
-            var mission = _db.Missions.Where(m=>m.MissionId == MissionId).Select(m=> new {m.StartDate, m.EndDate}).FirstOrDefault()!;
+            var mission = _db.Missions.Where(m=>m.MissionId == MissionId && m.DeletedAt == null).Select(m=> new {m.StartDate, m.EndDate}).FirstOrDefault()!;
 
             if(mission.StartDate != null )
             {

@@ -29,7 +29,7 @@ namespace CI_Platform.Repository.Repository
         {
 
 
-            var query = _db.Missions.AsQueryable();
+            var query = _db.Missions.Where(m=>m.DeletedAt == null).AsQueryable();
 
             // List<User> user = _db.Users.ToList();
 
@@ -62,7 +62,7 @@ namespace CI_Platform.Repository.Repository
 
             if (!string.IsNullOrEmpty(queryParams.SearchText))
             {
-                query = query.Where(m => m.Title.ToLower().Contains(queryParams.SearchText.ToLower()) || m.OrganizationName.ToLower().Contains(queryParams.SearchText.ToLower()));
+                query = query.Where(m => m.Title.ToLower().Contains(queryParams.SearchText.ToLower()) || m.OrganizationName!.ToLower().Contains(queryParams.SearchText.ToLower()));
             }
 
 
@@ -77,46 +77,39 @@ namespace CI_Platform.Repository.Repository
                 seatsLeft = mission.TotalSeats - mission.MissionApplications.Count(m => m.ApprovalStatus.Contains("APPROVE")),
                 createdAt = mission.CreatedAt,
                 startDate = mission.StartDate,
+                deadline = mission.Deadline,
                 skillName = mission.MissionSkills.Select(ms => ms.Skill.SkillName).ToList()!,
-                missionMedia = mission.MissionMedia.Select(mm => mm.MediaPath).ToList()!,
+                missionMedia = mission.MissionMedia.Where(mm=>mm.Defaultval==true).Select(mm => mm.MediaPath).ToList()!,
                 goalMission = mission.GoalMissions.ToList(),
                 missionInvites = mission.MissionInvites.Where(mi => mi.DeletedAt == null).ToList(),
                 IsOngoing = (mission.StartDate < DateTime.Now) && (mission.EndDate > DateTime.Now),
                 HasEndDatePassed = mission.EndDate < DateTime.Now,
                 HasMissionStarted = mission.StartDate < DateTime.Now,
-                HasDeadlinePassed = mission.StartDate.Value.AddDays(-1) < DateTime.Now,
+                HasDeadlinePassed = mission.Deadline < DateTime.Now,
                 IsApplicationPending = mission.MissionApplications.Any(missionApp => missionApp.UserId == UserId && missionApp.DeletedAt == null && missionApp.ApprovalStatus=="Pending"),
                 //UserList = user,
                 favouriteMission = mission.FavouriteMissions.ToList(),
+                updatedGoalValue = mission.Timesheets.Where(timesheet => timesheet.MissionId == mission.MissionId && timesheet.DeletedAt == null).Sum(timesheet=> timesheet.Action),
             });
 
             if ( queryParams.sortCase != 0)
             {
-                switch (queryParams.sortCase)
+                MissionCardQuery = queryParams.sortCase switch
                 {
-                    case 1: //newest
-                        MissionCardQuery = MissionCardQuery.OrderByDescending(q => q.createdAt);
-                        break;
-                    case 2: //oldest
-                        MissionCardQuery = MissionCardQuery.OrderBy(q => q.createdAt);
-                        break;
-                    case 3: //lowest seats
-                        MissionCardQuery = MissionCardQuery.OrderBy(q => q.seatsLeft);
-                        break;
-                    case 4: //highest seats
-                        MissionCardQuery = MissionCardQuery.OrderByDescending(q => q.seatsLeft);
-                        break;
-                    case 5: //regsitration deadline
-                        MissionCardQuery = MissionCardQuery.OrderBy(q => q.startDate);
-                        break;
-                    case 6: //fav
-                        //MissionCardQuery = MissionCardQuery.OrderByDescending(q=>q.favouriteMission.All(f=>f.UserId == UserId));
-                        MissionCardQuery = MissionCardQuery.Where(q => q.favouriteMission.Any(f => f.UserId == UserId)).OrderByDescending(q => q.favouriteMission.Count(f => f.UserId == UserId));
-                        break;
-                    default:
-                        MissionCardQuery = MissionCardQuery.OrderBy(q=>q.MissionCard.MissionId);
-                        break;
-                }
+                    //newest
+                    1 => MissionCardQuery.OrderByDescending(q => q.createdAt),
+                    //oldest
+                    2 => MissionCardQuery.OrderBy(q => q.createdAt),
+                    //lowest seats
+                    3 => MissionCardQuery.OrderBy(q => q.seatsLeft),
+                    //highest seats
+                    4 => MissionCardQuery.OrderByDescending(q => q.seatsLeft),
+                    //regsitration deadline
+                    5 => MissionCardQuery.OrderBy(q => q.deadline),
+                    //fav
+                    6 => MissionCardQuery.Where(q => q.favouriteMission.Any(f => f.UserId == UserId)).OrderByDescending(q => q.favouriteMission.Count(f => f.UserId == UserId)),
+                    _ => MissionCardQuery.OrderBy(q => q.MissionCard.MissionId),
+                };
             }
 
             var totalRecords = MissionCardQuery.Count();
@@ -158,7 +151,7 @@ namespace CI_Platform.Repository.Repository
         public byte Ratings(byte rating, long MissionId, long UserId)
         {
 
-            var alreadyRated = _db.MissionRatings.SingleOrDefault(mr => mr.MissionId == MissionId && mr.UserId == UserId);
+            var alreadyRated = _db.MissionRatings.SingleOrDefault(mr => mr.MissionId == MissionId && mr.UserId == UserId && mr.DeletedAt == null);
 
             if (alreadyRated != null)
             {
@@ -168,7 +161,7 @@ namespace CI_Platform.Repository.Repository
             else
             {
 
-                MissionRating newRating = new MissionRating
+                MissionRating newRating = new()
                 { 
                     UserId = UserId,
                     MissionId = MissionId, 
@@ -189,7 +182,7 @@ namespace CI_Platform.Repository.Repository
             {
                 if (comment != null)
                 {
-                    var newComment = new Comment { UserId = UserId, MissionId = MissionId, CommentText = comment };
+                    Comment newComment = new() { UserId = UserId, MissionId = MissionId, CommentText = comment };
                     _db.Comments.Add(newComment);
                     _db.SaveChanges();
                     return true;
@@ -209,10 +202,10 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                MissionApplication AlreadyApplied = _db.MissionApplications.FirstOrDefault(m => m.MissionId == MissionId && m.UserId == UserId)!;
+                MissionApplication AlreadyApplied = _db.MissionApplications.FirstOrDefault(m => m.MissionId == MissionId && m.UserId == UserId && m.DeletedAt == null)!;
                 if (AlreadyApplied == null)
                 {
-                    var missionApplication = new MissionApplication()
+                    MissionApplication missionApplication = new()
                     {
                         MissionId = MissionId,
                         UserId = UserId,

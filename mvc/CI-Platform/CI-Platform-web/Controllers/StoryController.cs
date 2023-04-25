@@ -50,72 +50,33 @@ namespace CI_Platform_web.Controllers
 
         //post method for story listing sp
         [HttpPost]
-        public async Task<IActionResult> StoryListing(string? countryId, string? cityId, string? themeId, string? skillId, string searchText, int? pageNo, int? pagesize)
+        public async Task<IActionResult> StoryListing(MissionFilterQueryParams queryParams)
         {
-            if (HttpContext.Session.GetString("SEmail") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
+            //if (HttpContext.Session.GetString("SEmail") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
+            //{
+            //    ViewBag.email = HttpContext.Session.GetString("SEmail");
+            //    ViewBag.UserId = HttpContext.Session.GetString("Id");
+            //    ViewBag.Username = HttpContext.Session.GetString("Username");
+            //}
+
+            var UserId = Convert.ToInt64(ViewBag.UserId);
+            StoryListingViewModel vm = _storyListing.SPStory(queryParams);
+           
+            //vm.DisplayStoryCard = _storyListing.DisplayStoryCard(StoryIds);
+
+            if (vm != null)
             {
-                ViewBag.email = HttpContext.Session.GetString("SEmail");
-                ViewBag.UserId = HttpContext.Session.GetString("Id");
-                ViewBag.Username = HttpContext.Session.GetString("Username");
+                return PartialView("_StoryListingPartial", vm);
             }
-            try
+            else
             {
-                IConfigurationRoot _configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
-
-                string connectionString = _configuration.GetConnectionString("DefaultConnection");
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-                    SqlCommand command = new SqlCommand("spFilterStory", connection);
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add("@countryId", SqlDbType.VarChar).Value = countryId != null ? countryId : null;
-                    command.Parameters.Add("@cityId", SqlDbType.VarChar).Value = cityId != null ? cityId : null;
-                    command.Parameters.Add("@themeId", SqlDbType.VarChar).Value = themeId != null ? themeId : null;
-                    command.Parameters.Add("@skillId", SqlDbType.VarChar).Value = skillId != null ? skillId : null;
-                    command.Parameters.Add("@searchText", SqlDbType.VarChar).Value = searchText;
-
-                    command.Parameters.Add("@pageSize", SqlDbType.Int).Value = pagesize;
-                    command.Parameters.Add("@pageNo", SqlDbType.Int).Value = pageNo;
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    List<long> StoryIds = new List<long>();
-                    while (reader.Read())
-                    {
-                        long totalRecords = reader.GetInt32("TotalRecords");
-                        ViewBag.totalRecords = totalRecords;
-                    }
-                    reader.NextResult();
-
-                    while (reader.Read())
-                    {
-                        long storyId = reader.GetInt64("story_id");
-                        StoryIds.Add(storyId);
-                    }
-
-
-                    var vm = new StoryListingViewModel();
-
-                    var UserId = Convert.ToInt64(ViewBag.UserId);
-                    vm.DisplayStoryCard = _storyListing.DisplayStoryCard(StoryIds);
-
-                    if (vm != null && vm.DisplayStoryCard.Any())
-                    {
-                        return PartialView("_StoryListingPartial", vm);
-                    }
-                    else
-                    {
-                        return PartialView("_NoMissionFound");
-                    }
-                }
+                return PartialView("_NoMissionFound");
             }
-            catch (Exception ex)
-            {
-                return View(ex);
-
-            }
-
         }
+
+
+
+
 
         //get cities by country filter
         public IActionResult GetCitiesByCountry(int countryId)

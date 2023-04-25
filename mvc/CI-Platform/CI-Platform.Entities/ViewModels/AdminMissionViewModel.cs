@@ -40,7 +40,7 @@ namespace CI_Platform.Entities.ViewModels
 
         public DateTime? Deadline { get; set; }
 
-        public int GoalValue { get; set; } = null;
+        public int GoalValue { get; set; }
 
         public string GoalObjectiveText { get; set; } = string.Empty;
 

@@ -72,7 +72,7 @@ namespace CI_Platform.Repository.Repository
         public AdminBannerViewModel GetBannerData(long BannerId)
         {
             Banner banner = _db.Banners.Find(BannerId)!;
-            AdminBannerViewModel bannervm = new AdminBannerViewModel(banner);
+            AdminBannerViewModel bannervm = new(banner);
             return bannervm;
         }
 
@@ -90,17 +90,15 @@ namespace CI_Platform.Repository.Repository
                 {
                     
                     var NewImg = bannervm.UpdatedImg.FileName;
-                    var guid = Guid.NewGuid().ToString().Substring(0, 8);
+                    var guid = Guid.NewGuid().ToString()[..8];
                     var fileName = $"{guid}_{NewImg}"; // getting filename
 
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Upload/Banner", fileName);//for updating new img
 
                     banner.Image = fileName;
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        bannervm.UpdatedImg.CopyTo(stream);
-                    }
+                    using var stream = new FileStream(filePath, FileMode.Create);
+                    bannervm.UpdatedImg.CopyTo(stream);
                 }
 
                 _db.Banners.Update(banner);

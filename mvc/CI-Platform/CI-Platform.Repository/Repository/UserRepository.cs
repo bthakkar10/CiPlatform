@@ -10,15 +10,15 @@ using System.Web.Helpers;
 
 namespace CI_Platform.Repository.Repository
 {
-    public class UserRepository : Repository<User>, IUserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly CiDbContext _db;
-        public UserRepository(CiDbContext db) : base(db) 
+        public UserRepository(CiDbContext db) 
         {
             _db = db;
         }
 
-        String default_avtar = "profile-user.png";
+        readonly String default_avtar = "profile-user.png";
 
         public User GetUserEmail(string email)
         {
@@ -37,7 +37,7 @@ namespace CI_Platform.Repository.Repository
                 //string? passwordHash = "";
                 if (obj != null) 
                 {
-                    User user = new User()
+                    User user = new()
                     {
                         Email = obj.Email,
                         FirstName = obj.FirstName,

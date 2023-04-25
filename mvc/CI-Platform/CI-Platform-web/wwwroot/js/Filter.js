@@ -196,16 +196,20 @@ function totalMission() {
 
 //stories filters stored procedure
 function StoryFilter(pageNo) {
-    var CountryId = SelectedCountry;
+    var CountryId = SelectedCountry != "" ? SelectedCountry : null ;
     var CityId = $('#CityList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var ThemeId = $('.ThemeListMissionFilter input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var SkillId = $('#SkillList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var SearchText = $("#searchText").val();
     var pagesize = 3;
+
+    let queryParams = {
+        CountryId: CountryId, CityIds: CityId, ThemeIds: ThemeId, SkillIds: SkillId, SearchText: SearchText, pageNo: pageNo, pagesize: pagesize
+    }
     $.ajax({
         type: 'POST',
         url: '/Story/StoryListing',
-        data: { CountryId: CountryId, CityId: CityId, ThemeId: ThemeId, SkillId: SkillId, SearchText: SearchText, pageNo: pageNo, pagesize: pagesize },
+        data: queryParams ,
         success: function (data) {
             var view = $(".StorypartialViews");
             view.empty();
@@ -537,7 +541,7 @@ function favourite() {
                             text.empty();
                             text.append("Added To favourites");
                             console.log("added");
-                            /*  alert("Mission added to favourites successfully!!!");*/
+                           
                         }
                         else {
                             $(this).find('i').addClass('bi-heart text-dark')
@@ -545,7 +549,7 @@ function favourite() {
                             text.empty();
                             text.append("Add to favourites");
                             console.log("remove");
-                            /* alert("Mission removed from favourites successfully!!!");*/
+                           
                         }
                     }
                 })
@@ -574,10 +578,10 @@ $('.rating-star i').on('click', function () {
         success: function () {
             selectedIcon.removeClass('bi-star').addClass('bi-star-fill text-warning');
             unselectedIcon.removeClass('bi-star-fill text-warning').addClass('bi-star');
-            /*alert("ratings updated successfully!!");*/
+           
         },
         error: function (error) {
-            /* alert("Sessin Expired.");*/
+           
             if (confirm("Please Login Again And Try Agaion")) {
                 window.location.href = "/Home/Index";
             }
@@ -774,66 +778,6 @@ $(document).on('click', '.model-invite-btn-story', function () {
     });
 });
 
-////for share story page(ck-editor and drag and drop functionality)
-//let optionsButtons = document.querySelectorAll(".option-button");
-//let writingArea = document.getElementById("text-input");
-//let formatButtons = document.querySelectorAll(".format");
-//let scriptButtons = document.querySelectorAll(".script");
-
-
-//// Initial Setting
-//const initializer = () => {
-//    highlighter(formatButtons, false);
-//    highlighter(scriptButtons, true);
-//};
-
-//// main logic
-//const modifyText = (command, defaultUi, value) => {
-//    document.execCommand(command, defaultUi, value);
-//};
-
-//// button operations
-//optionsButtons.forEach(button => {
-//    button.addEventListener("click", () => {
-//        modifyText(button.id, false, null);
-//    });
-//});
-
-//// function for highlight selected options
-//const highlighter = (className, needsRemoval) => {
-//    className.forEach((button) => {
-//        button.addEventListener("click", () => {
-//            if (needsRemoval) {
-//                let alreadyActive = false;
-
-//                // clicked button is active
-//                if (button.classList.contains("active")) {
-//                    alreadyActive = true;
-//                }
-
-//                highlighterRemover(className);
-//                if (!alreadyActive) {
-//                    // highlight clicked button
-//                    button.classList.add("active");
-//                }
-//            }
-//            else {
-//                // other button can highlighted
-//                button.classList.toggle("active");
-//            }
-//        });
-//    });
-//};
-
-//// remove highlighter
-//const highlighterRemover = (className) => {
-//    className.forEach((button) => {
-//        button.classList.remove("active");
-//    });
-//}
-
-/*window.onload = initializer();*/
-
 // drag and drop images in share your story page
 var allfiles = [];
 var fileInput = document.getElementById('img-input');
@@ -850,13 +794,25 @@ function handleFiles(e) {
 
         var imageType = /image\/(png|jpeg|jpg)/;
         if (!file.type.match(imageType)) {
-            alert("Only png, jpg and jpeg image types are allowed.");
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Only png, jpg and jpeg image types are allowed.",
+                showConfirmButton: false,
+                timer: 4000
+            });
             return false;
         }
 
         // Validate image size
         if (file.size > 4 * 1024 * 1024) {
-            alert("An image should not be greater than 4MB.");
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Images should not be greater than 4MB.",
+                showConfirmButton: false,
+                timer: 4000
+            });
             return false;
         }
 
@@ -891,7 +847,13 @@ function handleFiles(e) {
         reader.readAsDataURL(file);
     }
     if (allfiles.length > 20) {
-        alert("Maximum 20 images can be added.");
+        swal.fire({
+            position: 'top-end',
+            icon: "error",
+            title: "Maximum 20 images are allowed!",
+            showConfirmButton: false,
+            timer: 4000
+        });
         // Remove the last added file from the list
         allfiles.splice(-1, 1);
         // Remove the last added image preview from the list
@@ -1290,13 +1252,34 @@ $('.edit-icon').click(function () {
 
 // Add change event listener to profile image file input
 $('#profile-image-input').change(function () {
+    
     // Read image file and display preview
     var reader = new FileReader();
     reader.onload = function (e) {
-        console.log(e.target.result)
         $('.image-edit').find('img').attr('src', e.target.result);
     }
     reader.readAsDataURL(this.files[0]);
+    var imageType = /image\/(png|jpeg|jpg)/;
+    if (!this.files[0].type.match(imageType)) {
+        swal.fire({
+            position: 'top-end',
+            icon: "error",
+            title: "Only png, jpg and jpeg image types are allowed.",
+            showConfirmButton: false,
+            timer: 4000
+        });
+        return false;
+    }
+    if (this.files[0].size > 4 * 1024 * 1024) {
+        swal.fire({
+            position: 'top-end',
+            icon: "error",
+            title: "Images should be less than 4MB!",
+            showConfirmButton: false,
+            timer: 4000
+        });
+        return false;
+    }
 });
 
 // Adding skills to Profile

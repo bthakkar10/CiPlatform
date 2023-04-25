@@ -94,7 +94,13 @@ $(document).on('click', '#AddNewUserBtn', function () {
             $('#AddNewUserForm').html(result);
         },
         error: function () {
-            alert('Error ');
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Something went wrong!!!",
+                showConfirmButton: false,
+                timer: 4000
+            });
         }
     });
 });
@@ -113,7 +119,13 @@ $(document).on('click', '#EditBtnUserDataFetch', function () {
             $('#AddHeader .FormHeading span').text(isEditMode ? 'Edit' : 'Add');
         },
         error: function () {
-            alert('Error ');
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Something went wrong!!",
+                showConfirmButton: false,
+                timer: 4000
+            });
         }
     });
 });
@@ -153,7 +165,13 @@ $(document).on('click', '#AddOrUpdateCms', function () {
             $('#AddOrUpdatePrivacyPages').html(result);
         },
         error: function () {
-            alert('Error ');
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Something went wrong!!",
+                showConfirmButton: false,
+                timer: 4000
+            });
         }
     });
 });
@@ -173,7 +191,13 @@ $(document).on('click', '#EditBtnCmsPage', function () {
             $('#CmsHeader .FormHeading span').text(isEditMode ? 'Edit' : 'Add');
         },
         error: function () {
-            alert('Error ');
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Something went wrong!!",
+                showConfirmButton: false,
+                timer: 4000
+            });
         }
     });
 });
@@ -192,7 +216,13 @@ $(document).on('click', '#AddOrUpdateThemeBtn', function () {
             $('#AddOrUpdateTheme').html(result);
         },
         error: function () {
-            alert('Error ');
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Something went wrong!!",
+                showConfirmButton: false,
+                timer: 4000
+            });
         }
     });
 });
@@ -211,7 +241,13 @@ $(document).on('click', '#EditBtnTheme', function () {
             $('#ThemeHeader .FormHeading span').text(isEditMode ? 'Edit' : 'Add');
         },
         error: function () {
-            alert('Error ');
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Something went wrong!!",
+                showConfirmButton: false,
+                timer: 4000
+            });
         }
     });
 });
@@ -231,7 +267,13 @@ $(document).on('click', '#AddOrUpdateSkillBtn', function () {
             $('#AddOrUpdateSkill').html(result);
         },
         error: function () {
-            alert('Error ');
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Something went wrong!!",
+                showConfirmButton: false,
+                timer: 4000
+            });
         }
     });
 });
@@ -249,7 +291,13 @@ $(document).on('click', '#EditBtnSkill', function () {
             $('#SkillHeader .FormHeading span').text(isEditMode ? 'Edit' : 'Add');
         },
         error: function () {
-            alert('Error ');
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Something went wrong!!!",
+                showConfirmButton: false,
+                timer: 4000
+            });
         }
     });
 });
@@ -333,53 +381,31 @@ $(document).on('click', '#AddOrUpdateMissionBtn', function () {
             $('#AddOrEditMissionForm').html(result);
         },
         error: function () {
-            alert('Error ');
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Something went wrong!!!",
+                showConfirmButton: false,
+                timer: 4000
+            });
         }
     });
 });
-
-//disable based on time or goal mission
-$(document).on('change', '#MissionTypeSelection', function () {
-    var MissionType = $(this).val();
-    console.log(MissionType)
-    if (MissionType === "Time") {
-        // Show/hide input elements
-        $("#TimeBased").show();
-        $("#GoalBased").hide();
-
-        // Disable/enable input elements
-        $("#MissionDeadline").prop('disabled', false);
-        $("#TotalSeats").prop('disabled', false);
-        $("#GoalValue").prop('disabled', true);
-        $("#GoalObjectiveText").prop('disabled', true);
-    }
-    else if (MissionType === "Goal") {
-        // Show/hide input elements
-        $("#TimeBased").hide();
-        $("#GoalBased").show();
-
-        // Disable/enable input elements
-        $("#MissionDeadline").prop('disabled', true);
-        $("#TotalSeats").prop('disabled', true);
-        $("#GoalValue").prop('disabled', false);
-        $("#GoalObjectiveText").prop('disabled', false);
-    }
-});
-
 //start end and registration dates validations
 $(document).ready(function () {
     $("#MissionEndDate").prop('disabled', true);
+    $("#MissionDeadline").prop('disabled', true);
 })
 // Add event listener to StartDate input
 $(document).on('change', '#StartDate', function () {
     // Get selected value of StartDate
     var startDate = $(this).val();
-
     // Set min attribute of EndDate to startDate + 1 day
-    $("#MissionEndDate").prop('min', addDays(startDate, 1));
-    $("#MissionDeadline").prop('max', addDays(startDate, -1));
+    $("#MissionEndDate").attr('min', addDays(startDate, 1));
+    $("#MissionDeadline").attr('max', addDays(startDate, -1));
     // Enable EndDate
     $("#MissionEndDate").prop('disabled', false);
+    $("#MissionDeadline").attr('disabled', false);
 });
 // Function to add days to a date
 function addDays(dateString, days) {
@@ -387,7 +413,32 @@ function addDays(dateString, days) {
     date.setDate(date.getDate() + days);
     return date.toISOString().slice(0, 10);
 }
+//disable based on time or goal mission
+$(document).on('change', '#MissionTypeSelection', function () {
+    var MissionType = $(this).val();
+    if (MissionType === "Time") {
+        // Show/hide input elements
+        $("#TimeBased").show();
+        $("#GoalBased").hide();
 
+        // Disable/enable input elements
+        $("#MissionDeadline").attr('disabled', false);
+        $("#TotalSeats").attr('disabled', false);
+        $("#GoalValue").attr('disabled', true);
+        $("#GoalObjectiveText").attr('disabled', true);
+    }
+    else if (MissionType === "Goal") {
+        // Show/hide input elements
+        $("#TimeBased").hide();
+        $("#GoalBased").show();
+
+        // Disable/enable input elements
+        $("#MissionDeadline").attr('disabled', true);
+        $("#TotalSeats").attr('disabled', true);
+        $("#GoalValue").attr('disabled', false);
+        $("#GoalObjectiveText").attr('disabled', false);
+    }
+});
 
 // drag and drop images in admin mission page
 let DefaultImage = null;
@@ -407,13 +458,25 @@ function handleFiles(e) {
 
         var imageType = /image\/(png|jpeg|jpg)/;
         if (!file.type.match(imageType)) {
-            alert("Only png, jpg and jpeg image types are allowed.");
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Only png, jpg and jpeg image types are allowed.",
+                showConfirmButton: false,
+                timer: 4000
+            });
             return false;
         }
 
         // Validate image size
         if (file.size > 4 * 1024 * 1024) {
-            alert("An image should not be greater than 4MB.");
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Images should be less than 4MB!",
+                showConfirmButton: false,
+                timer: 4000
+            });
             return false;
         }
 
@@ -478,7 +541,13 @@ function handleFiles(e) {
         reader.readAsDataURL(file);
     }
     if (allfiles.length > 20) {
-        alert("Maximum 20 images can be added.");
+        swal.fire({
+            position: 'top-end',
+            icon: "error",
+            title: "Maximum 20 images can be added!!",
+            showConfirmButton: false,
+            timer: 4000
+        });
         // Remove the last added file from the list
         allfiles.splice(-1, 1);
         // Remove the last added image preview from the list
@@ -558,15 +627,27 @@ function handleDocFiles(e) {
 
         var doctype = /application\/(pdf)/;
         if (!docfile.type.match(doctype)) {
-            alert("Only pdf files are allowed.");
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Only pdf files are allowed!!",
+                showConfirmButton: false,
+                timer: 4000
+            });
             return false;
         }
 
-        // Validate image size
-        //if (file.size > 4 * 1024 * 1024) {
-        //    alert("An image should not be greater than 4MB.");
-        //    return false;
-        //}
+         //Validate doc size
+        if (docfile.size > 4 * 1024 * 1024) {
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "pdfs should not be greater than 4MB!!",
+                showConfirmButton: false,
+                timer: 4000
+            });
+            return false;
+        }
 
         allDocfiles.push(docfiles[i]);
         console.log(" file name" + docfiles[i].name)
@@ -593,7 +674,7 @@ function handleDocFiles(e) {
                     item.remove();
                     allDocfiles.splice(allDocfiles.indexOf(file), 1);
                     console.log(allDocfiles);
-                    if (allDocfiles.length < 20) {
+                    if (allDocfiles.length < 5) {
                         $('#mission-doc-input').disabled = false;
                     }
                 });
@@ -604,8 +685,14 @@ function handleDocFiles(e) {
         // Read image file as data URL
         reader.readAsDataURL(docfile);
     }
-    if (allDocfiles.length > 20) {
-        alert("Maximum 20 images can be added.");
+    if (allDocfiles.length > 5) {
+        swal.fire({
+            position: 'top-end',
+            icon: "error",
+            title: "Maximum 5 files are allowed!!",
+            showConfirmButton: false,
+            timer: 4000
+        });
         // Remove the last added file from the list
         allDocfiles.splice(-1, 1);
         // Remove the last added image preview from the list
@@ -662,7 +749,7 @@ $(document).on('dragleave', '#mission-doc-drop-area', function (e) {
 // Handle file input change event
 $(document).on('change', '#mission-doc-input', function (e) {
     handleDocFiles(e);
-    if (allDocfiles.length >= 20) {
+    if (allDocfiles.length >= 5) {
         DocfileInput.disabled = true;
     }
 });
@@ -686,13 +773,6 @@ $(document).on('submit', '#MissionForm', function (e) {
             MissionFormData.append('DocumentList', allDocfiles[i]);
         }
 
-        //let isDefaultExist = true;
-        //$('#mission-doc-output').each(function () {
-        //    if (!$(this).hasClass('default-img')) {
-        //        isDefaultExist = false;
-        //        DefaultImage = null;
-        //    }
-        //});
         if (DefaultImage != null) {
             MissionFormData.append('DefaultMissionImg', DefaultImage);
         }
@@ -731,6 +811,12 @@ $(document).on('submit', '#MissionForm', function (e) {
 //DATA FETCHING FOR MISSION EDIT
 $(document).on('click', '#EditBtnMissionDataFetch', function () {
     var MissionId = $(this).data('mission-id');
+  
+    $("#MissionEndDate").attr('disabled', false);
+    $("#MissionDeadline").attr('disabled', false);
+    $("#TotalSeats").attr('disabled', false)
+    $("#GoalValue").attr('disabled', false);
+    $("#GoalObjectiveText").attr('disabled', false);
     $.ajax({
         url: '/Admin/GetMissionData',
         type: 'GET',
@@ -740,12 +826,15 @@ $(document).on('click', '#EditBtnMissionDataFetch', function () {
             $('#AddOrEditMissionForm').html(result);
             const isEditMode = true; // or false
             $('#AddHeader .FormHeading span').text(isEditMode ? 'Edit' : 'Add');
+
             //for images 
             $('#mission-img-output').empty();
             var imageArr = $('.mission-img-edit').map(function () {
                 return $(this).val();
             }).get();
             var defaultimg = $('.mission-img-edit-default').val();
+            //DefaultImage = file;
+            //console.log(DefaultImage);
             $.each(imageArr, async function (index, item) {
                 var file = imageArr[index];
                 var image = $('<img>').attr('src', '/images/Upload/Mission/' + imageArr[index]);
@@ -758,8 +847,10 @@ $(document).on('click', '#EditBtnMissionDataFetch', function () {
                 const files = new File([blob], file, { type: blob.type });
                 if (defaultimg === imageArr[index]) {
                     item.addClass('default-img');
+                    DefaultImage = files;
                 }
-
+               
+                
                 item.on('click', function () {
                     if ($(this).hasClass('default-img')) {
                         // remove default image class from clicked image
@@ -788,15 +879,18 @@ $(document).on('click', '#EditBtnMissionDataFetch', function () {
 
                 allfiles.push(files);
             });
-            ////for youtube urls
-            //var UrlRecords = '';
-            //$('.mission-url-edit').each(function () {
-            //    var urlValue = $(this).val();
-            //    if (urlValue.includes("youtube.com") || urlValue.includes("youtu.be")) {
-            //        UrlRecords += urlValue + '\n';
-            //    }
-            //});
-            //for documents
+            var url = '';
+           
+            var UrlRecords = $('.mission-url-edit').map(function () {
+                return $(this).val();
+            }).get();
+            console.log(UrlRecords)
+            $.each(UrlRecords, async function (index, item) {
+                url += item + '\n';
+            });
+            console.log(url)
+            $('#MissionYoutubeUrl').append(url);
+
             $('#mission-doc-output').empty();
             var docArr = $('.mission-doc-edit').map(function () {
                 return $(this).val();
@@ -819,37 +913,28 @@ $(document).on('click', '#EditBtnMissionDataFetch', function () {
                     console.log(allDocfiles);
                     item.remove();
                 });
-
                 allDocfiles.push(docfiles);
             });
 
 
-            //var doc = $('<div>').addClass('rounded-pill').attr('target', '_blank').text(docfile);
-
-            ///* doc.append(docfiles.name);*/
-            //var closeIcon = $('<span>').addClass('close-icon').text('x');
-
-            //// Add document and close icon to the list
-            //var item = $('<div>').addClass('document').append(doc).append(file.name).append(closeIcon);
-
-            //$('#mission-doc-output').append(item);
-
-            //// Handle close icon click event
-            //closeIcon.on('click', function () {
-            //    item.remove();
-            //    allDocfiles.splice(allDocfiles.indexOf(file), 1);
-            //    console.log(allDocfiles);
-            //    if (allDocfiles.length < 20) {
-            //        $('#mission-doc-input').disabled = false;
-            //    }
-            //});
         },
         error: function () {
-            alert('Error ');
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Something went wrong!!!",
+                showConfirmButton: false,
+                timer: 4000
+            });
         }
     });
 });
 
+//to get mission id for delete
+$(document).on('click', '#DeleteMissionBtn', function () {
+    var MissionId = $(this).data('mission-id');
+    $("#HiddenMissionId").val(MissionId);
+});
 
 //banner-img-change
 $(document).on('click', '.edit-icon', function () {
@@ -868,8 +953,8 @@ $(document).on('change', '#BannerImg', function () {
     reader.readAsDataURL(this.files[0]);
 });
 
-//APPEND PARTIAL VIEW FOR ADD OR EDIT CMS PAGE
-$(document).on('click', '#AddOrUpdateCms', function () {
+//APPEND PARTIAL VIEW FOR ADD OR EDIT banner PAGE
+$(document).on('click', '#AddOrUpdateBanner', function () {
     $.ajax({
         url: '/Admin/AddOrUpdateBanner',
         type: 'GET',
@@ -878,11 +963,17 @@ $(document).on('click', '#AddOrUpdateCms', function () {
             $('#AddOrUpdateBanner').html(result);
         },
         error: function () {
-            alert('Error ');
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Something went wrong!!!",
+                showConfirmButton: false,
+                timer: 4000
+            });
         }
     });
 });
-//DATA FETCHING FOR CMS PAGE EDIT
+//DATA FETCHING FOR banner PAGE EDIT
 $(document).on('click', '#EditBtnBanner', function () {
     var BannerId = $(this).data('banner-id');
     $.ajax({
@@ -897,7 +988,13 @@ $(document).on('click', '#EditBtnBanner', function () {
             $('#BannerHeader .FormHeading span').text(isEditMode ? 'Edit' : 'Add');
         },
         error: function () {
-            alert('Error ');
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Something went wrong!!!",
+                showConfirmButton: false,
+                timer: 4000
+            });
         }
     });
 });

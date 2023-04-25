@@ -23,11 +23,12 @@ namespace CI_Platform.Repository.Repository
         }
         public Mission MissionDetails(long MissionId)
         {
-            Mission mission = _db.Missions
+            Mission mission = _db.Missions.Where(mission=>mission.DeletedAt == null)
                 .Include(m => m.Country)
                 .Include(m => m.City)
                 .Include(m => m.MissionRatings)
                 .Include(m => m.MissionTheme)
+                .Include(m=>m.Timesheets)
                 .Include(m => m.MissionSkills)
                 .ThenInclude(m => m.Skill)
                 .Include(m => m.MissionApplications)
@@ -61,11 +62,11 @@ namespace CI_Platform.Repository.Repository
 
         public List<Mission> GetRelatedMissions(long MissionId)
         {
-            var mission = _db.Missions.Where(m => m.MissionId == MissionId).FirstOrDefault();
+            var mission = _db.Missions.Where(m => m.MissionId == MissionId && m.DeletedAt == null).FirstOrDefault()!;
 
             var relatedMissions = new List<Mission>();
 
-            relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.CityId == mission.CityId)
+            relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.CityId == mission.CityId && m.DeletedAt == null)
                 .Include(m => m.Country)
                 .Include(m => m.City)
                 .Include(m => m.MissionRatings)
@@ -78,7 +79,7 @@ namespace CI_Platform.Repository.Repository
 
             if (relatedMissions.Count < 3)
             {
-                relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.CountryId == mission.CountryId)
+                relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.CountryId == mission.CountryId && m.DeletedAt == null)
                 .Include(m => m.Country)
                 .Include(m => m.City)
                 .Include(m => m.MissionRatings)
@@ -92,7 +93,7 @@ namespace CI_Platform.Repository.Repository
 
             if (relatedMissions.Count < 3)
             {
-                relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.MissionThemeId == mission.MissionThemeId)
+                relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.MissionThemeId == mission.MissionThemeId && m.DeletedAt == null )
                 .Include(m => m.Country)
                 .Include(m => m.City)
                 .Include(m => m.MissionRatings)
@@ -115,13 +116,13 @@ namespace CI_Platform.Repository.Repository
 
         public async Task SendInvitationToCoWorker(long ToUserId, long FromUserId, MissionDetailViewModel viewmodel)
         {
-            var Email = await _db.Users.Where(u => u.UserId == ToUserId).FirstOrDefaultAsync()!;
+            var Email = await _db.Users.Where(u => u.UserId == ToUserId && u.DeletedAt == null).FirstOrDefaultAsync()!;
 
-            var Sender = await _db.Users.Where(su => su.UserId == FromUserId).FirstOrDefaultAsync()!;
+            var Sender = await _db.Users.Where(su => su.UserId == FromUserId && su.DeletedAt == null).FirstOrDefaultAsync()!;
 
             var fromEmail = new MailAddress("ciplatformdemo@gmail.com");
             var toEmail = new MailAddress(Email.Email);
-            var fromEmailPassword = "oretveqrckcgcoog";
+            var fromEmailPassword = "pdckerdmuutmdzhz";
             string subject = "Mission Invitation";
             string body = "You Have Reciever Mission Invitation From " + Sender.FirstName + " " + Sender.LastName + " For:\n\n" + viewmodel.link;
 

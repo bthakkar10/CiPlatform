@@ -26,10 +26,10 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                Skill DoesSkillExist = _db.Skills.FirstOrDefault(skill=>skill.SkillName.ToLower() == skillvm.SkillName.ToLower())!;
+                Skill DoesSkillExist = _db.Skills.FirstOrDefault(skill=>skill.SkillName!.ToLower() == skillvm.SkillName.ToLower())!;
                 if (DoesSkillExist == null)
                 {
-                    Skill skill = new Skill()
+                    Skill skill = new()
                     {
                         SkillName = skillvm.SkillName,
                         Status = skillvm.Status,
@@ -88,7 +88,7 @@ namespace CI_Platform.Repository.Repository
         public AdminSkillsViewModel GetSkills(long SkillId)
         {
             Skill skill = _db.Skills.Find(SkillId)!;
-            AdminSkillsViewModel skillvm = new AdminSkillsViewModel(skill);
+            AdminSkillsViewModel skillvm = new(skill);
             return skillvm;
         }
 

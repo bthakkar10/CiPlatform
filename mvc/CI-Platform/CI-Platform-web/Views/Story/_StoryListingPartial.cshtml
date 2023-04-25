@@ -1,7 +1,7 @@
 ﻿@model CI_Platform.Entities.ViewModels.StoryListingViewModel
 
 @{
-    var totalRecords = ViewBag.totalRecords;
+    var totalRecords = Model.totalRecords;
 }
 <span id="storyCount" class="d-none">@totalRecords</span>
 <!-- Card start for GridView -->

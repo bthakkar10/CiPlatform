@@ -12,7 +12,9 @@ namespace CI_Platform.Entities.ViewModels
     
     public  class MissionListViewModel
     {
-      
+        public DateTime? deadline;
+        public int? updatedGoalValue;
+
         public Mission MissionCard { get; set; } = null!;
 
         public string? CityName { get; set; }

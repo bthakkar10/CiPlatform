@@ -7,7 +7,13 @@
     ////var mission_id = ViewBag.MissionId;
     var mission_id = Model.MissionDetails.MissionId;
 }
-
+@functions {
+    public string GetEmbededUrl(string url)
+    {
+        var videoId = url.Split("v=")[1];
+        return $"https://www.youtube.com/embed/{videoId}";
+    }
+}
 <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
 
@@ -24,9 +30,24 @@
                     {
                         @foreach (var slider_img in Model.MissionDetails.MissionMedia.Where(m => m.MissionId == mission_id))
                         {
-                            <div class="swiper-slide">
-                                <img src="~/images/@slider_img.MediaPath" />
-                            </div>
+                            @if (slider_img.MediaType != "vid")
+                            {
+                                <div class="swiper-slide">
+                                    <img src="~/images/Upload/Mission/@slider_img.MediaPath" />
+                                </div>
+                            }
+                            else
+                            {
+                                @if (!string.IsNullOrEmpty(slider_img.MediaPath))
+                                {
+                                    <div class="swiper-slide">
+                                        <div class="iframe-wrapper">
+                                            <iframe width="500" height="300" src="@GetEmbededUrl(@slider_img.MediaPath)" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                                        </div>
+                                    </div>
+
+                                }
+                            }
                         }
                     }
                 </div>
@@ -37,9 +58,25 @@
                 <div class="swiper-wrapper">
                     @foreach (var slider_img in Model.MissionDetails.MissionMedia.Where(m => m.MissionId == mission_id))
                     {
-                        <div class="swiper-slide">
-                            <img src="~/images/@slider_img.MediaPath" />
-                        </div>
+                        @if (slider_img.MediaType != "vid")
+                        {
+                            <div class="swiper-slide">
+                                <img src="~/images/Upload/Mission/@slider_img.MediaPath" />
+                            </div>
+                        }
+                        else
+                        {
+                            @if (!string.IsNullOrEmpty(slider_img.MediaPath))
+                            {
+                                <div class="swiper-slide">
+                                    <div class="iframe-wrapper">
+                                        <iframe style="width:100%; height:100%" src="@GetEmbededUrl(@slider_img.MediaPath)" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+
+                            }
+                        }
+
                     }
                 </div>
 
@@ -61,8 +98,8 @@
             }
             DateTime? currDate = @DateTime.Now;
             TimeSpan timeSpan = new TimeSpan(1, 0, 0, 0);
-            var deadline = Model.MissionDetails.StartDate - timeSpan;
-            bool isDeadlinePassed = currDate > deadline;
+
+            bool isDeadlinePassed = currDate > Model.MissionDetails.Deadline;
             bool isEndDatePassed = currDate > Model.MissionDetails.EndDate;
             bool isOngoing = currDate > Model.MissionDetails.StartDate;
             bool isAlreadyApplied = Model.MissionDetails.MissionApplications.Any(a => a.UserId == Id && a.ApprovalStatus == "APPROVE");
@@ -75,7 +112,7 @@
             }
             var registered_users = Model.MissionDetails.MissionApplications.Count(m => m.ApprovalStatus.Contains("APPROVE"));
             var seats_left = Model.MissionDetails.TotalSeats - registered_users;
-           
+            int? updatedGoalValue = Model.MissionDetails.Timesheets.Where(timesheet => timesheet.MissionId == mission_id && timesheet.DeletedAt == null).Sum(timesheet => timesheet.Action);
         }
 
 
@@ -104,7 +141,8 @@
                                 }
                                 else
                                 {
-                                    <span>From @Model.MissionDetails.StartDate.Value.ToShortDateString() until @Model.MissionDetails.EndDate.Value.ToShortDateString()</span>
+
+                                    <span>From @Model.MissionDetails.StartDate!.Value.ToShortDateString() until @Model.MissionDetails.EndDate!.Value.ToShortDateString()</span>
                                 }
                             }
                             else
@@ -119,28 +157,34 @@
                     </div>
 
 
-                    <div class="row pb-3 gutter mt-4 ">
-                        <div class="col  card-detail mission-card-detail">
-                            <img class="my-2" src="~/images/Seats-left.png"
-                                 alt="star">
-                            <div class="card-detail-text">
-                                <p>@seats_left</p>
-                                <span>Seats left</span>
-                            </div>
-                        </div>
-
-                        @foreach (var goal_mission in Model.MissionDetails.GoalMissions)
+                    <div class="row pb-3 gutter mt-4 align-content-center ">
+                        @if (Model.MissionDetails.MissionType.Equals("Time"))
                         {
-                            <div class="col card-detail mission-card-detail">
-                                <img class="icon-detail my-2" src="~/images/achieved.png" alt="achieved">
+                            <div class="col  card-detail mission-card-detail">
+                                <img class="my-2" src="~/images/Seats-left.png"
+                                 alt="star">
                                 <div class="card-detail-text">
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" aria-label="Warning example" style="background-color: #F88634; width:@goal_mission.GoalValue%" aria - valuenow="@goal_mission.GoalValue" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <span>@goal_mission.GoalValue achieved</span>
+                                    <p>@seats_left</p>
+                                    <span>Seats left</span>
                                 </div>
                             </div>
                         }
+                        else
+                        {
+                            @foreach (var goal_mission in Model.MissionDetails.GoalMissions)
+                            {
+                                <div class="col card-detail mission-card-detail">
+                                    <img class="icon-detail my-2" src="~/images/achieved.png" alt="achieved">
+                                    <div class="card-detail-text">
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" aria-label="Warning example" style="background-color: #F88634; width:@updatedGoalValue%" aria-valuenow="@updatedGoalValue" aria-valuemin="0" aria-valuemax="@goal_mission.GoalValue%"></div>
+                                        </div>
+                                        <span> @updatedGoalValue achieved</span>
+                                    </div>
+                                </div>
+                            }
+                        }
+
 
 
 
@@ -282,7 +326,7 @@
                             </a>
                         </div>
                     }
-                    else if(isApprovalPending)
+                    else if (isApprovalPending)
                     {
                         <div class="d-flex justify-content-center">
                             <a style="width:max-content" class="btn card-btn disabled text-danger">
@@ -325,7 +369,7 @@
                 <div id="Mission" class="container tab-pane active">
                     <br>
                     <h3>Introduction</h3>
-                    <p>@Model.MissionDetails.Description</p>
+                    <p>@Html.Raw(Model.MissionDetails.Description)</p>
                     <h3>Challenge</h3>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                     <h3>Documents</h3>
@@ -357,7 +401,7 @@
                 <div id="Comments" class="container tab-pane fade">
                     <br>
                     <h3>Comments</h3>
-                    <div >
+                    <div>
                         <div class="">
                             <textarea class=" form-control my-2 newComment" placeholder="Leave a comment here..." rows="3"></textarea>
                             @* <label for="floatingTextarea2">Enter your Comments here...</label>*@
@@ -372,10 +416,10 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="d-flex">
-                                            <img class="rounded-circle comments-img d-none d-md-flex" src=~/images/Upload/User/@com.User.Avtar/>
+                                            <img class="rounded-circle comments-img d-none d-md-flex" src=~/images/Upload/User/@com.User.Avtar />
                                             <div class="comments-details">
                                                 <h6>@com.User.FirstName @com.User.LastName</h6>
-                                                @if(com.CreatedAt is not null)
+                                                @if (com.CreatedAt is not null)
                                                 {
                                                     <p> @com.CreatedAt.Value.ToString("dddd, MMMM dd, yyyy, h:mm tt")</p>
                                                 }
@@ -443,9 +487,9 @@
                     </tbody>
                 </table>
             </div>
-         @*   <span id="MissionId"> @mission_id</span>*@
+            @*   <span id="MissionId"> @mission_id</span>*@
             <input type="hidden" value="@Model.totalVolunteers" id="totalVolunteers" />
-            <input type="hidden" value=@mission_id  id="MissionId" />
+            <input type="hidden" value=@mission_id id="MissionId" />
             <div class="container volunteers-images-div ">
                 <h5>Recent Volunteers</h5>
                 <hr />
@@ -455,7 +499,7 @@
                 <a class=" flex-start border-end prevVolunteersBtn">
                     <img class="pe-2" src="~/images/left.png" />
                 </a>
-                @if(Model.totalVolunteers == 0)
+                @if (Model.totalVolunteers == 0)
                 {
                     <span>0 of 0 Recent Volunteers</span>
                 }
@@ -463,7 +507,7 @@
                 {
                     <span class="pagination-vol-info"></span>
                 }
-                
+
 
                 <a class=" border-start flex-end ">
                     <img class="ps-2" src="~/images/right-arrow1.png" />
@@ -495,7 +539,7 @@
                                         {
                                             @if (img_mission.Defaultval == true)
                                             {
-                                                <img src="~/images/@img_mission.MediaPath" class="card-img-top" alt="@img_mission.MediaName">
+                                                <img src="~/images/Upload/Mission/@img_mission.MediaPath" class="card-img-top" alt="@img_mission.MediaName">
                                             }
                                         }
                                     }
@@ -551,7 +595,7 @@
                                                 }
                                                 else
                                                 {
-                                                    @if(releated.StartDate != null && releated.EndDate != null)
+                                                    @if (releated.StartDate != null && releated.EndDate != null)
                                                     {
                                                         <span>From @releated.StartDate.Value.ToShortDateString() until @releated.EndDate.Value.ToShortDateString()</span>
                                                     }
@@ -579,7 +623,7 @@
                                                 <div class="col card-detail">
                                                     <img class="icon-detail my-2" src="~/images/deadline.png" alt="deadline">
                                                     <div class="card-detail-text ">
-                                                        <p class="deadline">@releated.StartDate.Value.AddDays(-1).ToShortDateString()</p>
+                                                        <p class="deadline">@Model.MissionDetails.Deadline</p>
                                                         <span>Deadline</span>
                                                     </div>
                                                 </div>
@@ -592,9 +636,9 @@
                                                         <img class="icon-detail my-2" src="~/images/achieved.png" alt="deadline">
                                                         <div class="card-detail-text">
                                                             <div class="progress">
-                                                                <div class="progress-bar" role="progressbar" aria-label="Warning example" style="background-color: #F88634; width:@goal_mission.GoalValue%" aria - valuenow="@goal_mission.GoalValue" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                <div class="progress-bar" role="progressbar" aria-label="Warning example" style="background-color: #F88634; width:@updatedGoalValue%" aria-valuenow="@updatedGoalValue" aria-valuemin="0" aria-valuemax="@goal_mission.GoalValue%"></div>
                                                             </div>
-                                                            <span>@goal_mission.GoalValue achieved</span>
+                                                            <span> @updatedGoalValue achieved</span>
                                                         </div>
                                                     </div>
                                                 }

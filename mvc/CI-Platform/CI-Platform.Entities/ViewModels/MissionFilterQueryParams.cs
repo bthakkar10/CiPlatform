@@ -8,15 +8,15 @@ namespace CI_Platform.Entities.ViewModels
 {
     public  class MissionFilterQueryParams
     {
-        public string CountryId { get; set; } = string.Empty;
+        public string CountryId { get; set; } = null!;
 
-        public string CityIds { get; set; } = string.Empty;
+        public string CityIds { get; set; } = null!;
 
-        public string ThemeIds { get; set; } = string.Empty;
+        public string ThemeIds { get; set; } = null!;
 
-        public string SkillIds { get; set; } = string.Empty;
+        public string SkillIds { get; set; } = null!;
 
-        public string SearchText { get; set; } = string.Empty;
+        public string SearchText { get; set; } = null!;
 
         public int sortCase { get; set; }
 

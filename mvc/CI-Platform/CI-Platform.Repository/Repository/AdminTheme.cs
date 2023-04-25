@@ -27,7 +27,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                MissionTheme DoesThemeExists = _db.MissionThemes.FirstOrDefault(theme => theme.Title.ToLower() == themevm.ThemeName.ToLower())!;
+                MissionTheme DoesThemeExists = _db.MissionThemes.FirstOrDefault(theme => theme.Title!.ToLower() == themevm.ThemeName!.ToLower())!;
                 if (DoesThemeExists == null)
                 {
                     MissionTheme theme = new MissionTheme()
@@ -49,7 +49,7 @@ namespace CI_Platform.Repository.Repository
                     }
                     else
                     {
-                        DoesThemeExists.DeletedAt = null;
+                        DoesThemeExists.DeletedAt = null!;
                         DoesThemeExists.UpdatedAt = DateTime.Now;
                         _db.Update(DoesThemeExists);
                         _db.SaveChanges();

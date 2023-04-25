@@ -511,21 +511,24 @@ namespace CI_Platform_web.Controllers
                     return RedirectToAction("AdminMission");
                 }
             }
-            return RedirectToAction("AdminMission");
-            // to Update 
-            //else
-            //{
-            //    if (_adminMission.EditMission(missionvm))
-            //    {
-            //        TempData["success"] = "User Updated Successfully!!";
-            //        return RedirectToAction("User");
-            //    }
-            //    else
-            //    {
-            //        TempData["error"] = "Something went wrong!!";
-            //        return RedirectToAction("User");
-            //    }
-            //}
+            else
+            {
+                if (_adminMission.MissionEdit(missionvm) == "Updated")
+                {
+                    TempData["success"] = "Mission Updated Successfully!!";
+                    return RedirectToAction("AdminMission");
+                }
+                else if(_adminMission.MissionEdit(missionvm) == "Exists")
+                {
+                    TempData["error"] = "Mission Already Exists!!";
+                    return RedirectToAction("AdminMission");
+                }
+                else
+                {
+                    TempData["error"] = "Something went wrong!!";
+                    return RedirectToAction("AdminMission");
+                }
+            }
         }
 
         //fetching user data on edit 
@@ -540,6 +543,22 @@ namespace CI_Platform_web.Controllers
             missionvm.MissionSkills = _filter.MissionSkillList().ToList();
      
             return PartialView("_AddOrUpdateMission", missionvm);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteMission()
+        {
+            long MissionId = long.TryParse(Request.Form["HiddenMissionId"], out long result) ? result : 0;
+            if (_adminMission.MissionDelete(MissionId))
+            {
+                TempData["succes"] = "Mission Deleted Successfully!!";
+                return RedirectToAction("AdminMission");
+            }
+            else
+            {
+                TempData["error"] = "Something went wrong!! Please try again later!!";
+                return RedirectToAction("AdminMission");
+            }
         }
 
         //------------------------------------------  Mission Section Ends ---------------------------------------------------------- 

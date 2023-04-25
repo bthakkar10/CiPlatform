@@ -22,24 +22,24 @@ namespace CI_Platform.Repository.Repository
 
         public List<MissionApplication> GetMissionTitles(long UserId)
         {
-            return _db.MissionApplications.Where(ms => ms.UserId == UserId && ms.ApprovalStatus == "APPROVE").Include(m => m.Mission).ToList();
+            return _db.MissionApplications.Where(ms => ms.UserId == UserId && ms.ApprovalStatus == "APPROVE" && ms.DeletedAt==null).Include(m => m.Mission).ToList();
         }
 
         public List<Timesheet> GetTimesheetData(long UserId)
         {
-            return _db.Timesheets.Where(ms => ms.UserId == UserId).Include(m => m.Mission).ToList();
+            return _db.Timesheets.Where(ms => ms.UserId == UserId && ms.DeletedAt == null).Include(m => m.Mission).ToList();
         }
 
         public string AddTimeBasedEntry(TimeViewModel vm, long UserId)
         {
             try
             {
-                List<Timesheet> timesheet = _db.Timesheets.Where(t=>t.UserId == UserId && t.MissionId == vm.MissionId).ToList();
+                List<Timesheet> timesheet = _db.Timesheets.Where(t=>t.UserId == UserId && t.MissionId == vm.MissionId && t.DeletedAt == null).ToList();
                 foreach(var ts in timesheet)
                 {
                     if(ts.DateVolunteered != vm.TimeDate)
                     {
-                        Timesheet TimeTs = new Timesheet()
+                        Timesheet TimeTs = new()
                         {
                             MissionId = vm.MissionId,
                             UserId = UserId,
@@ -70,7 +70,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                List<Timesheet> timesheet = _db.Timesheets.Where(t => t.UserId == UserId && t.MissionId == vm.MissionId).ToList();
+                List<Timesheet> timesheet = _db.Timesheets.Where(t => t.UserId == UserId && t.MissionId == vm.MissionId && t.DeletedAt == null ).ToList();
                 foreach (var ts in timesheet)
                 {
                     if (ts.DateVolunteered != vm.TimeDate)
@@ -104,7 +104,7 @@ namespace CI_Platform.Repository.Repository
 
         public Timesheet GetDataOnEdit(long TimeSheetId)
         {
-            return _db.Timesheets.Include(m => m.Mission).FirstOrDefault(t => t.TimesheetId == TimeSheetId);
+            return _db.Timesheets.Include(m => m.Mission).Where(m=>m.DeletedAt==null).FirstOrDefault(t => t.TimesheetId == TimeSheetId)!;
         }
 
         public bool UpdateGoalBasedEntry(GoalViewModel vm)
@@ -151,7 +151,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                Timesheet ts = _db.Timesheets.FirstOrDefault(t=>t.TimesheetId == TimeSheetId)!;
+                Timesheet ts = _db.Timesheets.FirstOrDefault(t=>t.TimesheetId == TimeSheetId && t.DeletedAt == null)!;
                 _db.Timesheets.Remove(ts);
                 _db.SaveChanges();
                 return true;
@@ -166,7 +166,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                Timesheet ts = _db.Timesheets.FirstOrDefault(t => t.TimesheetId == TimeSheetId)!;
+                Timesheet ts = _db.Timesheets.FirstOrDefault(t => t.TimesheetId == TimeSheetId && t.DeletedAt == null)!;
                 _db.Timesheets.Remove(ts);
                 _db.SaveChanges();
                 return true;

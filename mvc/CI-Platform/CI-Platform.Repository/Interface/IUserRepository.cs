@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace CI_Platform.Repository.Interface
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IUserRepository
     {
         public User GetUserEmail(string email);
-        void Save();
+       
         public void UpdatePassword(ResetPasswordValidation obj);
 
         public bool RegisterUser(RegistrationViewModel obj);

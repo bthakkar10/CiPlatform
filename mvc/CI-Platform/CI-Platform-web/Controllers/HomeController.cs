@@ -70,12 +70,7 @@ namespace CI_Platform_web.Controllers
         [HttpPost]
         public IActionResult HomePage(MissionFilterQueryParams queryParams)
         {
-            if (HttpContext.Session.GetString("SEmail") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
-            {
-                ViewBag.email = HttpContext.Session.GetString("SEmail");
-                ViewBag.UserId = HttpContext.Session.GetString("Id");
-                ViewBag.Username = HttpContext.Session.GetString("Username");
-            }
+            
             var userId = HttpContext.Session.GetString("Id");
             long UserId = Convert.ToInt64(userId);
 

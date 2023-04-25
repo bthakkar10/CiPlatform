@@ -118,31 +118,31 @@
                 </select>
             </div>
 
-            <div class="row g-3 m-3 hidden" id="TimeBased">
+            <div class="row g-3 m-3" id="TimeBased">
                 <div class="col-md-6 ">
                     <label asp-for="Deadline" class="form-label  ms-1">Registration Deadline</label>
-                    <input asp-for="Deadline" type="date" id="MissionDeadline" class="form-control">
+                    <input asp-for="Deadline" type="date" id="MissionDeadline" class="form-control" disabled>
                     <span asp-validation-for="Deadline" class="validate-text text-danger"></span>
                 </div>
 
                 <div class="col-md-6 ">
                     <label asp-for="TotalSeats" class="form-label  ms-1">Total Seats</label>
-                    <input asp-for="TotalSeats" type="text" id="TotalSeats" class="form-control">
+                    <input asp-for="TotalSeats" type="text" id="TotalSeats" class="form-control" disabled>
                     <span asp-validation-for="TotalSeats" class="validate-text text-danger"></span>
 
                 </div>
             </div>
 
-            <div class="row g-3 m-3 hidden" id="GoalBased">
+            <div class="row g-3 m-3 " id="GoalBased">
                 <div class="col-md-6">
                     <label asp-for="GoalValue" class="form-label ms-1">Goal Value</label>
-                    <input asp-for="GoalValue" type="text" id="GoalValue" class="form-control">
+                    <input asp-for="GoalValue" type="text" id="GoalValue" class="form-control" disabled>
                     <span asp-validation-for="GoalValue" class="validate-text text-danger"></span>
                 </div>
 
                 <div class="col-md-6">
                     <label asp-for="GoalObjectiveText" class="form-label ms-1">Goal Objective Text</label>
-                    <input asp-for="GoalObjectiveText" type="text" id="GoalObjectiveText" class="form-control">
+                    <input asp-for="GoalObjectiveText" type="text" id="GoalObjectiveText" class="form-control" disabled>
                     <span asp-validation-for="GoalObjectiveText" class="validate-text text-danger"></span>
                 </div>
             </div>
@@ -204,14 +204,14 @@
             <div class="m-3">
                 <label asp-for="YoutubeUrl" class="form-label">Enter Video Urls</label>
                 <textarea  class="form-control" id="MissionYoutubeUrl" rows="3">
-                    @if (Model.MissionUrlLinks != null)
-                    {
-                        @foreach (var url in Model.MissionUrlLinks)
-                        {
-                            @url
-                        }
-                    }
                 </textarea>
+                @if (Model.MissionUrlLinks != null)
+                {
+                    @foreach (var url in Model.MissionUrlLinks)
+                    {
+                        <input class="mission-url-edit" value="@url"  type="hidden"/>
+                    }
+                }
                 <span asp-validation-for="YoutubeUrl" class="validate-text text-danger"></span>
             </div>
 

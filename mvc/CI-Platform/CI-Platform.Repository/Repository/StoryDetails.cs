@@ -19,19 +19,17 @@ namespace CI_Platform.Repository.Repository
     public class StoryDetails : IStoryDetails
     {
         private readonly CiDbContext _db;
-        //private readonly HttpRequest _httpRequest;
-        //private readonly UrlHelper _urlHelper;
+        
 
-        public StoryDetails(CiDbContext db /*HttpRequest httpRequest, UrlHelper urlHelper*/)
+        public StoryDetails(CiDbContext db )
         {
             _db = db;
-           //_httpRequest = httpRequest;
-           // _urlHelper = urlHelper;
+           
         }
 
         public Story GetStoryDetails(long MissionId,long UserId)
         {
-            Story story =  _db.Stories.
+            Story story =  _db.Stories.Where(s=>s.DeletedAt == null).
             Include(s => s.StoryMedia).
             Include(s => s.StoryInvites).
             Include(s => s.User).
@@ -44,13 +42,12 @@ namespace CI_Platform.Repository.Repository
 
         public List<User> UserList(long UserId)
         {
-            return _db.Users.Where(u => u.UserId != UserId).ToList();
-            //return _db.Users.Where(u => u.UserId != UserId && !u.MissionApplications.Any(m => m.MissionId == MissionId && m.ApprovalStatus == "APPROVE")).ToList();
+            return _db.Users.Where(u => u.UserId != UserId && u.DeletedAt == null).ToList();
         }
 
         public void IncreaseViewCount(long UserId, long MissionId)
         {
-            Story story = _db.Stories.Where(s => s.MissionId == MissionId && s.UserId == UserId && s.Status == "PUBLISHED").FirstOrDefault()!;
+            Story story = _db.Stories.Where(s => s.MissionId == MissionId && s.UserId == UserId && s.Status == "PUBLISHED" && s.DeletedAt == null).FirstOrDefault()!;
             if (story != null)
             {
                 story.UserVisits = story.UserVisits++;
@@ -60,30 +57,13 @@ namespace CI_Platform.Repository.Repository
             }
         }
 
-        //public async void StoryInvite(long ToUserId, long StoryId, long FromUserId,StoryDetailsViewModel vm)
-        //{
-        //    var StoryInvite = new StoryInvite()
-        //    {
-        //        ToUserId = ToUserId, 
-        //        FromUserId = FromUserId,            
-        //        StoryId = StoryId,
-        //    };
-
-        //    _db.StoryInvites.Add(StoryInvite);
-
-        //    var StoryInviteLink = _urlHelper.Action("StoryDetails", "Story", new { StoryId = StoryId }/*, _httpRequest.Scheme*/);
-        //    vm.InviteLink = StoryInviteLink;
-
-        //    await _db.SaveChangesAsync();
-
-        //    await _db.SendInvitationToCoWorker(ToUserId, FromUserId, vm);
-        //}
+        
 
         public async Task SendInvitationToCoWorker(long ToUserId, long FromUserId, StoryDetailsViewModel vm)
         {
-            var Email = await _db.Users.Where(u => u.UserId == ToUserId).FirstOrDefaultAsync()!;
+            var Email = await _db.Users.Where(u => u.UserId == ToUserId && u.DeletedAt == null).FirstOrDefaultAsync()!;
 
-            var Sender = await _db.Users.Where(su => su.UserId == FromUserId).FirstOrDefaultAsync()!;
+            var Sender = await _db.Users.Where(su => su.UserId == FromUserId && su.DeletedAt == null).FirstOrDefaultAsync()!;
 
             var fromEmail = new MailAddress("ciplatformdemo@gmail.com");
             var toEmail = new MailAddress(Email.Email);

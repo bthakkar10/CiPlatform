@@ -54,6 +54,11 @@ namespace CI_Platform_web.Controllers
                     TempData["error"] = "User does not exist.Please register first";
                     return View("Register");
                 }
+                else if(DoesUserExists.Status != true && DoesUserExists.DeletedAt == null)
+                {
+                    TempData["error"] = "User is inactive or deleted!!";
+                    return View();
+                }
                 else
                 {
                     bool DoesPasswordMatch = BCrypt.Net.BCrypt.Verify(obj.Password, DoesUserExists.Password);
@@ -71,8 +76,8 @@ namespace CI_Platform_web.Controllers
                         HttpContext.Session.SetString("SEmail", obj.Email);
                         HttpContext.Session.SetString("Id", DoesUserExists.UserId.ToString());
                         HttpContext.Session.SetString("Username", DoesUserExists.FirstName + " " + DoesUserExists.LastName);
-                       
-                        if(DoesUserExists.Role == "user")
+
+                        if (DoesUserExists.Role == "user")
                         {
                             return RedirectToAction("HomePage", "Home");
                         }
@@ -128,8 +133,8 @@ namespace CI_Platform_web.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
-    
         public IActionResult Register(RegistrationViewModel obj)
         {
             if (ModelState.IsValid)

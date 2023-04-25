@@ -18,31 +18,31 @@ namespace CI_Platform.Repository.Repository
 
         public List<Country> CountryList()
         {
-            return _db.Countries.ToList();
+            return _db.Countries.Where(country=> country.DeletedAt == null).ToList();
         }
 
         public List<City> CityList(int CountryId)
         {
-            return _db.Cities.Where(c => c.CountryId == CountryId).ToList();
+            return _db.Cities.Where(c => c.CountryId == CountryId && c.DeletedAt == null).ToList();
         }
         public List<Skill> SkillList()
         {
-            return _db.Skills.ToList();
+            return _db.Skills.Where(skills => skills.DeletedAt == null).ToList();
         }
 
         public List<MissionTheme> ThemeList()
         {
-            return _db.MissionThemes.ToList();
+            return _db.MissionThemes.Where(theme => theme.DeletedAt == null).ToList();
         }
         
         public List<City> AllCityList()
         {
-            return _db.Cities.ToList();
+            return _db.Cities.Where(city => city.DeletedAt == null).ToList();
         }
 
         public List<MissionSkill> MissionSkillList()
         {
-            return _db.MissionSkills.ToList();  
+            return _db.MissionSkills.Where(skills => skills.DeletedAt == null).ToList();  
         }
 
     }

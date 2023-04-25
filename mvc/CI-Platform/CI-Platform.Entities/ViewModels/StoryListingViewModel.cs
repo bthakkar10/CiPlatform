@@ -19,6 +19,8 @@ namespace CI_Platform.Entities.ViewModels
 
         public List<Story> DisplayStoryCard { get; set; } = null!; 
 
+        public long? totalRecords { get; set; } 
+
 
     }
 }

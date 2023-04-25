@@ -1,4 +1,5 @@
 ﻿using CI_Platform.Entities.DataModels;
+using CI_Platform.Entities.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace CI_Platform.Repository.Interface
 {
     public interface IStoryListing
     {
-        public List<Story> DisplayStoryCard(List<long> StoryIds);
+      
+        public StoryListingViewModel SPStory(MissionFilterQueryParams queryParams);
     }
 }

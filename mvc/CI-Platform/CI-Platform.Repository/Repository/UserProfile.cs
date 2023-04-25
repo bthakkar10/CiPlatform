@@ -19,8 +19,8 @@ namespace CI_Platform.Repository.Repository
         }
         public UserProfileViewModel GetUserDetails(long UserId)
         {
-            User user = _db.Users.Where(u => u.UserId == UserId).Include(u => u.UserSkills).ThenInclude(us => us.Skill).FirstOrDefault();
-            var vm = new UserProfileViewModel()
+            User user = _db.Users.Where(u => u.UserId == UserId && u.DeletedAt == null).Include(u => u.UserSkills).ThenInclude(us => us.Skill).FirstOrDefault()!;
+            UserProfileViewModel vm = new()
             {
                 FirstName = user.FirstName,
                 Surname = user.LastName,
@@ -64,7 +64,7 @@ namespace CI_Platform.Repository.Repository
         {
             if(ContactSubject != null && ContactMessage != null)
             {
-                ContactU contact = new ContactU()
+                ContactU contact = new()
                 {
                     UserId = UserId,
                     Subject = ContactSubject,
@@ -84,7 +84,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                User user = _db.Users.FirstOrDefault(u => u.UserId == UserId)!;
+                User user = _db.Users.FirstOrDefault(u => u.UserId == UserId && u.DeletedAt == null)!;
 
                 user.FirstName = vm.FirstName;
                 user.LastName = vm.Surname;
