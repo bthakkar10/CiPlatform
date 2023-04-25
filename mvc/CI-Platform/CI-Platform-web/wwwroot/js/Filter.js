@@ -865,6 +865,7 @@ function handleFiles(e) {
 
         // Create image preview and close icon
   
+
         reader.onload = (function (file) {
             return function (e) {
                 var image = $('<img>').attr('src', e.target.result);
@@ -1017,7 +1018,6 @@ $('#missionTitle').change(function () {
                             console.log(allfiles);
                         });
                     }
-
                 });
 
                 $('#videoUrls').val(UrlRecords);

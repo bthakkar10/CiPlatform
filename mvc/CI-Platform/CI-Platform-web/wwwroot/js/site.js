@@ -11,7 +11,7 @@ $(document).on('click', '.bi-eye-fill', function () {
 })
 
 //to check session has expired or not 
-setInterval(checkSessionStatus, 30000);
+setInterval(checkSessionStatus, 1800000);
 function checkSessionStatus() {
 
     $.ajax({

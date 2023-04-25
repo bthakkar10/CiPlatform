@@ -1,4 +1,8 @@
-﻿//SIDE NAV BAR
+﻿//$('.validateAdminForm').removeData('validator').removeData('unobtrusiveValidation');
+//$.validator.unobtrusive.parse('.validateAdminForm');
+
+
+//SIDE NAV BAR
 const shrink_btn = document.querySelector(".shrink-btn");
 const search = document.querySelector(".search");
 const sidebar_links = document.querySelectorAll(".sidebar-links a");
@@ -74,9 +78,9 @@ $(".sidebar-links .nav-link").each(function () {
 //SIDE NAV BAR ENDS
 //To show date and time in admin panel top header
 function updateTime() {
-var dateTime = new Date();
-var formattedDateTime = dateTime.toLocaleString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true });
-$("#datetime").text(formattedDateTime);
+    var dateTime = new Date();
+    var formattedDateTime = dateTime.toLocaleString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true });
+    $("#datetime").text(formattedDateTime);
 }
 //set interval will update time every seconds
 setInterval(updateTime, 1000);
@@ -97,7 +101,7 @@ $(document).on('click', '#AddNewUserBtn', function () {
 
 //DATA FETCHING FOR USER EDIT
 $(document).on('click', '#EditBtnUserDataFetch', function () {
-    var UserId = $(this).data('user-id');  
+    var UserId = $(this).data('user-id');
     $.ajax({
         url: '/Admin/GetUserData',
         type: 'GET',
@@ -155,7 +159,7 @@ $(document).on('click', '#AddOrUpdateCms', function () {
 });
 //DATA FETCHING FOR CMS PAGE EDIT
 $(document).on('click', '#EditBtnCmsPage', function () {
-    
+
     var CmsId = $(this).data('cms-id');
     $.ajax({
         url: '/Admin/GetCmsData',
@@ -208,7 +212,7 @@ $(document).on('click', '#EditBtnTheme', function () {
         },
         error: function () {
             alert('Error ');
-        }   
+        }
     });
 });
 //to get id for delete
@@ -303,11 +307,7 @@ $(document).on('click', '.GetStoryIdBtn', function () {
     $(".HiddenStoryId").val(StoryId);
 });
 
-//to get id of mission application to decline or approve it 
-//$(document).on('click', '.ApproveOrDeclineApplication', function () {
-//    var MissionApplicationId = $(this).data('application-id');
-//    $("#HiddenApplicationId").val(MissionApplicationId);
-//});
+
 //to fetch data for approval of story
 $(document).on('click', '#StoryApprovalBtn', function () {
     var Status = $(this).data('status');
@@ -330,7 +330,7 @@ $(document).on('click', '#AddOrUpdateMissionBtn', function () {
         type: 'GET',
         success: function (result) {
             $('.table-responsive').empty();
-            $('#MissionForm').html(result);
+            $('#AddOrEditMissionForm').html(result);
         },
         error: function () {
             alert('Error ');
@@ -338,7 +338,59 @@ $(document).on('click', '#AddOrUpdateMissionBtn', function () {
     });
 });
 
+//disable based on time or goal mission
+$(document).on('change', '#MissionTypeSelection', function () {
+    var MissionType = $(this).val();
+    console.log(MissionType)
+    if (MissionType === "Time") {
+        // Show/hide input elements
+        $("#TimeBased").show();
+        $("#GoalBased").hide();
+
+        // Disable/enable input elements
+        $("#MissionDeadline").prop('disabled', false);
+        $("#TotalSeats").prop('disabled', false);
+        $("#GoalValue").prop('disabled', true);
+        $("#GoalObjectiveText").prop('disabled', true);
+    }
+    else if (MissionType === "Goal") {
+        // Show/hide input elements
+        $("#TimeBased").hide();
+        $("#GoalBased").show();
+
+        // Disable/enable input elements
+        $("#MissionDeadline").prop('disabled', true);
+        $("#TotalSeats").prop('disabled', true);
+        $("#GoalValue").prop('disabled', false);
+        $("#GoalObjectiveText").prop('disabled', false);
+    }
+});
+
+//start end and registration dates validations
+$(document).ready(function () {
+    $("#MissionEndDate").prop('disabled', true);
+})
+// Add event listener to StartDate input
+$(document).on('change', '#StartDate', function () {
+    // Get selected value of StartDate
+    var startDate = $(this).val();
+
+    // Set min attribute of EndDate to startDate + 1 day
+    $("#MissionEndDate").prop('min', addDays(startDate, 1));
+    $("#MissionDeadline").prop('max', addDays(startDate, -1));
+    // Enable EndDate
+    $("#MissionEndDate").prop('disabled', false);
+});
+// Function to add days to a date
+function addDays(dateString, days) {
+    var date = new Date(dateString);
+    date.setDate(date.getDate() + days);
+    return date.toISOString().slice(0, 10);
+}
+
+
 // drag and drop images in admin mission page
+let DefaultImage = null;
 var allfiles = [];
 var fileInput = document.getElementById('mission-img-input');
 var fileList;
@@ -368,27 +420,58 @@ function handleFiles(e) {
         allfiles.push(files[i]);
 
 
+
         // Create image preview and close icon
-        // Create image preview and close icon
-        reader.onload = (function (file) {
+        reader.onload = (function (file, index) {
             return function (e) {
-                var image = $('<img>').attr('src', e.target.result);
-                var closeIcon = $('<span>').addClass('close-icon').text('x');
+                const image = $('<img>').attr('src', e.target.result);
+                const closeIcon = $('<span>').addClass('close-icon').text('x');
 
                 // Add image and close icon to the list
-                var item = $('<div>').addClass('image').append(image).append(closeIcon);
+                const item = $('<div>').addClass('image').append(image).append(closeIcon).data('file', file);
+                /* item.data('file-index', index); // store index in data attribute*/
                 $('#mission-img-output').append(item);
+
+                item.on('click', function () {
+                    if ($(this).hasClass('default-img')) {
+                        // remove default image class from clicked image
+                        $(this).removeClass('default-img');
+                        // remove it from DefaultImage variable
+                        DefaultImage = null;
+                    } else {
+                        // remove default image class from all other images
+                        $(".image.default-img").removeClass('default-img');
+                        // set default image class to clicked image
+                        $(this).addClass('default-img');
+                        // set it as DefaultImage variable
+                        DefaultImage = file;
+                    }
+                });
 
                 // Handle close icon click event
                 closeIcon.on('click', function () {
-                    item.remove();
-                    allfiles.splice(allfiles.indexOf(file), 1);
+                    const removedFile = $(this).closest('.image').data('file');
+
+                    //// Get the index of the associated file in the allfiles array
+                    //const index = item.data('file-index');
+                    // Remove the file from the allfiles array
+                    allfiles.splice(allfiles.indexOf(removedFile), 1);
                     console.log(allfiles);
+
+                    item.remove();
+
+                    if (removedFile === DefaultImage) {
+                        DefaultImage = null;
+                    }
+
                     if (allfiles.length < 20) {
-                        $('mission-img-input').disabled = false;
+                        $('#mission-img-input').prop('disabled', false);
                     }
                 });
             };
+            console.log(allfiles)
+            console.log(DefaultImage)
+
         })(file);
 
         // Read image file as data URL
@@ -431,7 +514,7 @@ $(document).on('click', '#mission-img-drop-area', function () {
 })
 /*$(document).on('change', '#mission-img-input', function () {*/
 // Handle file dragover event
-$(document).on('dragover', '#mission-img-drop-area', function (e) { 
+$(document).on('dragover', '#mission-img-drop-area', function (e) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -462,7 +545,7 @@ $(document).on('change', '#mission-img-input', function (e) {
 var allDocfiles = [];
 var DocfileInput = document.getElementById('mission-doc-input');
 var DocfileList;
-function handleFiles(e) {
+function handleDocFiles(e) {
     console.log(allDocfiles)
 
     // Add dropped images or selected images to the list
@@ -486,17 +569,23 @@ function handleFiles(e) {
         //}
 
         allDocfiles.push(docfiles[i]);
-
+        console.log(" file name" + docfiles[i].name)
+        var docFileName = docfiles[i].name;
+        console.log(docFileName)
 
         // Create image preview and close icon
         // Create image preview and close icon
-        reader.onload = (function (file) {
+        reader.onload = (function (file, name) {
             return function (e) {
-                var doc = $('<div>').addClass('rounded-pill').attr('name', e.target.result);
+
+                var doc = $('<a>').addClass('rounded-pill').attr('href', URL.createObjectURL(file)).attr('target', '_blank').text(file.name);
+
+                /* doc.append(docfiles.name);*/
                 var closeIcon = $('<span>').addClass('close-icon').text('x');
 
-                // Add image and close icon to the list
-                var item = $('<div>').addClass('image').append(doc).append(closeIcon);
+                // Add document and close icon to the list
+                var item = $('<div>').addClass('document').append(doc).append(closeIcon);
+
                 $('#mission-doc-output').append(item);
 
                 // Handle close icon click event
@@ -508,8 +597,9 @@ function handleFiles(e) {
                         $('#mission-doc-input').disabled = false;
                     }
                 });
+
             };
-        })(docfile);
+        })(docfile, docFileName);
 
         // Read image file as data URL
         reader.readAsDataURL(docfile);
@@ -542,7 +632,7 @@ $(document).on('drop', '#mission-doc-drop-area', function (e) {
     dropzone.removeClass('dragover');
     $('.note-dropzone').remove();
     //$('.note-dropzone-message').remove();
-    handleFiles(e);
+    handleDocFiles(e);
 });
 
 $(document).on('click', '#mission-doc-drop-area', function () {
@@ -571,8 +661,248 @@ $(document).on('dragleave', '#mission-doc-drop-area', function (e) {
 
 // Handle file input change event
 $(document).on('change', '#mission-doc-input', function (e) {
-    handleFiles(e);
+    handleDocFiles(e);
     if (allDocfiles.length >= 20) {
         DocfileInput.disabled = true;
     }
+});
+
+$(document).on('submit', '#MissionForm', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if ($(this).valid()) {
+
+        var myform = document.getElementById("MissionForm");
+        var MissionFormData = new FormData(myform);
+        console.log(MissionFormData)
+
+
+        for (let i = 0; i < allfiles.length; i++) {
+            MissionFormData.append('ImageList', allfiles[i]);
+        }
+        console.log(allfiles)
+        for (let i = 0; i < allDocfiles.length; i++) {
+            MissionFormData.append('DocumentList', allDocfiles[i]);
+        }
+
+        //let isDefaultExist = true;
+        //$('#mission-doc-output').each(function () {
+        //    if (!$(this).hasClass('default-img')) {
+        //        isDefaultExist = false;
+        //        DefaultImage = null;
+        //    }
+        //});
+        if (DefaultImage != null) {
+            MissionFormData.append('DefaultMissionImg', DefaultImage);
+        }
+        console.log(DefaultImage)
+
+        let urls = null;
+        let u = $('#MissionYoutubeUrl').val();
+        if (u != null) {
+            urls = u.split('\n');
+            for (var i = 0; i < urls.length; i++) {
+                MissionFormData.append("YoutubeUrl", urls[i]);
+            }
+        }
+        else {
+            MissionFormData.append("YoutubeUrl", null);
+        }
+        let SelectedSkills = $('#MissionSkillList input[type="checkbox"][name="MissionSkill"]:checked ').map(function () { return $(this).val(); }).get().join();
+        MissionFormData.append("UpdatedMissionSKills", SelectedSkills);
+        console.log(MissionFormData)
+        $.ajax({
+            url: '/Admin/AddOrUpdateMissionPost',
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: MissionFormData,
+            success: function (result) {
+
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+})
+
+//DATA FETCHING FOR MISSION EDIT
+$(document).on('click', '#EditBtnMissionDataFetch', function () {
+    var MissionId = $(this).data('mission-id');
+    $.ajax({
+        url: '/Admin/GetMissionData',
+        type: 'GET',
+        data: { MissionId: MissionId },
+        success: function (result) {
+            $('.table-responsive').empty();
+            $('#AddOrEditMissionForm').html(result);
+            const isEditMode = true; // or false
+            $('#AddHeader .FormHeading span').text(isEditMode ? 'Edit' : 'Add');
+            //for images 
+            $('#mission-img-output').empty();
+            var imageArr = $('.mission-img-edit').map(function () {
+                return $(this).val();
+            }).get();
+            var defaultimg = $('.mission-img-edit-default').val();
+            $.each(imageArr, async function (index, item) {
+                var file = imageArr[index];
+                var image = $('<img>').attr('src', '/images/Upload/Mission/' + imageArr[index]);
+                var closebtn = $('<span>').text('x');
+                var item = $('<div>').addClass('image').append(image).append(closebtn);
+                $('#mission-img-output').append(item);
+
+                const response = await fetch('/images/Upload/Mission/' + file);
+                const blob = await response.blob();
+                const files = new File([blob], file, { type: blob.type });
+                if (defaultimg === imageArr[index]) {
+                    item.addClass('default-img');
+                }
+
+                item.on('click', function () {
+                    if ($(this).hasClass('default-img')) {
+                        // remove default image class from clicked image
+                        $(this).removeClass('default-img');
+                        // remove it from DefaultImage variable
+                        DefaultImage = null;
+                    } else {
+                        // remove default image class from all other images
+                        $(".image.default-img").removeClass('default-img');
+                        // set default image class to clicked image
+                        $(this).addClass('default-img');
+                        // set it as DefaultImage variable
+                        DefaultImage = file;
+                    }
+                });
+                // Handle close icon click event
+                closebtn.on('click', function () {
+                    const removedFile = $(this).closest('.image').data('file');
+                    allfiles.splice(allfiles.indexOf(removedFile), 1);
+                    console.log(allfiles);
+                    item.remove();
+                    if (removedFile === DefaultImage) {
+                        DefaultImage = null;
+                    }
+                });
+
+                allfiles.push(files);
+            });
+            ////for youtube urls
+            //var UrlRecords = '';
+            //$('.mission-url-edit').each(function () {
+            //    var urlValue = $(this).val();
+            //    if (urlValue.includes("youtube.com") || urlValue.includes("youtu.be")) {
+            //        UrlRecords += urlValue + '\n';
+            //    }
+            //});
+            //for documents
+            $('#mission-doc-output').empty();
+            var docArr = $('.mission-doc-edit').map(function () {
+                return $(this).val();
+            }).get();
+            $.each(docArr, async function (index, item) {
+                var docfile = docArr[index];
+                var link = $('<a>').addClass('rounded-pill').attr('href', '/documents/' + docfile).attr('target', '_blank').text(docfile);
+                var closebtn = $('<span>').addClass('close-icon').text('x');
+                var item = $('<div>').addClass('document').append(link).append(closebtn);
+                $('#mission-doc-output').append(item);
+
+                const response = await fetch('/documents/' + docfile);
+                const blob = await response.blob();
+                const docfiles = new File([blob], docfile, { type: blob.type });
+                console.log(docfiles)
+                // Handle close icon click event
+                closebtn.on('click', function () {
+                  /* const removedFile = $(this).closest('.document').data('file');*/
+                    allDocfiles.splice(allDocfiles.indexOf(docfiles), 1);
+                    console.log(allDocfiles);
+                    item.remove();
+                });
+
+                allDocfiles.push(docfiles);
+            });
+
+
+            //var doc = $('<div>').addClass('rounded-pill').attr('target', '_blank').text(docfile);
+
+            ///* doc.append(docfiles.name);*/
+            //var closeIcon = $('<span>').addClass('close-icon').text('x');
+
+            //// Add document and close icon to the list
+            //var item = $('<div>').addClass('document').append(doc).append(file.name).append(closeIcon);
+
+            //$('#mission-doc-output').append(item);
+
+            //// Handle close icon click event
+            //closeIcon.on('click', function () {
+            //    item.remove();
+            //    allDocfiles.splice(allDocfiles.indexOf(file), 1);
+            //    console.log(allDocfiles);
+            //    if (allDocfiles.length < 20) {
+            //        $('#mission-doc-input').disabled = false;
+            //    }
+            //});
+        },
+        error: function () {
+            alert('Error ');
+        }
+    });
+});
+
+
+//banner-img-change
+$(document).on('click', '.edit-icon', function () {
+    // Open file input dialog
+    $('#BannerImg').click();
+});
+
+// Add change event listener to profile image file input
+$(document).on('change', '#BannerImg', function () {
+    // Read image file and display preview
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        console.log(e.target.result)
+        $('.image-edit').find('img').attr('src', e.target.result);
+    }
+    reader.readAsDataURL(this.files[0]);
+});
+
+//APPEND PARTIAL VIEW FOR ADD OR EDIT CMS PAGE
+$(document).on('click', '#AddOrUpdateCms', function () {
+    $.ajax({
+        url: '/Admin/AddOrUpdateBanner',
+        type: 'GET',
+        success: function (result) {
+            $('.table-responsive').empty();
+            $('#AddOrUpdateBanner').html(result);
+        },
+        error: function () {
+            alert('Error ');
+        }
+    });
+});
+//DATA FETCHING FOR CMS PAGE EDIT
+$(document).on('click', '#EditBtnBanner', function () {
+    var BannerId = $(this).data('banner-id');
+    $.ajax({
+        url: '/Admin/GetBannerData',
+        type: 'GET',
+        data: { BannerId: BannerId },
+        success: function (result) {
+            $('.table-responsive').empty();
+            $('#AddOrUpdateBanner').html(result);
+
+            const isEditMode = true; // or false
+            $('#BannerHeader .FormHeading span').text(isEditMode ? 'Edit' : 'Add');
+        },
+        error: function () {
+            alert('Error ');
+        }
+    });
+});
+//to get id for delete
+$(document).on('click', '#DeleteBannerBtn', function () {
+    var BannerId = $(this).data('banner-id');
+    $("#HiddenBannerId").val(BannerId);
 });

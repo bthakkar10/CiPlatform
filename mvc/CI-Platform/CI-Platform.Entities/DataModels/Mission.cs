@@ -42,6 +42,8 @@ public partial class Mission
 
     public int? TotalSeats { get; set; }
 
+    public DateTime? Deadline { get; set; }
+
     public virtual City City { get; set; } = null!;
 
     public virtual ICollection<Comment> Comments { get; } = new List<Comment>();
@@ -69,6 +71,6 @@ public partial class Mission
     [JsonIgnore]
     public virtual ICollection<Story> Stories { get; } = new List<Story>();
 
-    [JsonIgnore]
+    [JsonIgnore]    
     public virtual ICollection<Timesheet> Timesheets { get; } = new List<Timesheet>();
 }

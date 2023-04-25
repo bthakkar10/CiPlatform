@@ -18,5 +18,7 @@ namespace CI_Platform.Repository.Interface
         public List<Skill> SkillList();
 
         public List<City> AllCityList();
+
+        public List<MissionSkill> MissionSkillList();
     }
 }

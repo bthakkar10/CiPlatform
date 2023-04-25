@@ -127,9 +127,7 @@ namespace CI_Platform.Repository.Repository
                 if (vm.UpdatedUserSkills != null)
                 {
                     SkillsArr = vm.UpdatedUserSkills.Split(',');
-
                 }
-
                 List<UserSkill> existingSkills = _db.UserSkills.Where(u => u.UserId == UserId).ToList();
                 var SkillsToAdd = _db.Skills.Where(s => SkillsArr.Contains(s.SkillName)).Select(s => s.SkillId).ToList();
                 var SkillsToRemove = existingSkills.Where(us => !SkillsToAdd.Contains(us.SkillId)).ToList();

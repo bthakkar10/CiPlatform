@@ -47,7 +47,7 @@ public partial class User
 
     public string? Manager { get; set; }
 
-    public string? Role { get; set; } = null!;
+    public string? Role { get; set; }
 
     public virtual City? City { get; set; }
 

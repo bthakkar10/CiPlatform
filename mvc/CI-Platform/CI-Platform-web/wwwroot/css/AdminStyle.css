@@ -426,11 +426,12 @@ main {
 #searchUser {
     border: none !important;
 }
-#searchUser :focus {
-     border-color: inherit !important;
+#searchUser :hover{
+     /*border-color: inherit !important;
      -webkit-box-shadow: none !important;
     box-shadow: none !important; 
-
+    outline:none!important;*/
+     border:none!important;
 }
 .shrink .tooltip {
     display: grid;
@@ -756,3 +757,96 @@ main {
         left : 40%;
     }
 /* end drag drop css */
+
+
+/*for doc drag and drop*/
+
+    .drag-card .container-doc {
+        width: 100% !important;
+        height: auto !important;
+        display: flex !important;
+        justify-content: flex-start !important;
+        align-items: flex-start !important;
+        flex-wrap: wrap !important;
+        max-height: 400px !important;
+        overflow-y: auto !important;
+    }
+
+        .drag-card .container-doc .document {
+            width: max-content;
+            height: max-content;
+            margin-top: 30px !important;
+            margin-right: 30px !important;
+            background-color: #FFFFFF !important;
+            border: 2px solid #c8c9dd !important;
+            border-radius: 24px !important;
+            padding: 0.5rem 1.5rem 0.5rem 0.5rem;
+            position: relative !important;
+            display: inline-block;
+        }
+
+           /* .drag-card .container-doc .document .rounded-pill {
+                background-color: #eee;
+                border-radius: 20px;
+                padding: 10px 30px 10px 15px;
+                position: relative;
+                display: inline-block;
+            }*/
+
+            .drag-card .container-doc .document .close-icon {
+                position: absolute !important;
+                bottom: 10%;
+                padding-left: 0.5rem;
+                font-size: 25px !important;
+                cursor: pointer !important;
+                z-index: 1;
+            }
+.default-img{
+    border: 5px solid green;
+    
+}
+/*position: absolute;
+top: 5px;
+right: 5px;
+color: #999;
+font-size: 16px;
+cursor: pointer;
+z-index: 1;*/
+
+/*banner section*/
+.banner-img-section {
+    border: 1px solid #D9D9D9;
+    border-radius: 3px;
+    padding: 1rem;
+}
+
+    .banner-img-section img {
+        width: 400px;
+        height: 300px;
+        border: none;
+        
+    }
+
+.image-edit {
+    position: relative;
+}
+
+    .image-edit:hover img {
+        filter: brightness(0.5);
+    }
+
+    .image-edit:hover .edit-icon {
+        display: block;
+    }
+
+.edit-icon {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    padding: 3px 6px;
+    cursor: pointer;
+}

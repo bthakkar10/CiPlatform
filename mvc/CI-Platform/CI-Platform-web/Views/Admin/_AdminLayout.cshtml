@@ -7,16 +7,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
 
-    <link rel="stylesheet" href="~/css/AdminStyle.css" asp-append-version="true">
+       <link rel="stylesheet" href="~/css/AdminStyle.css" asp-append-version="true">
+
+   @* bootstrap*@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    @*bootstrap and font awesome icons*@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+        @*  toastr notification*@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+    @*datatables*@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.bootstrap5.min.css">
 
+ 
 
 </head>
 
@@ -31,14 +40,11 @@
             <h4 class="hide">Navigation</h4>
         </div>
 
-        <!-- <div class="search">
-          <i class='bx bx-search'></i>
-          <input type="text" class="hide" placeholder="Quick Search ...">
-        </div> -->
+    
 
         <div class="sidebar-links">
             <ul>
-                <!-- <div class="active-tab"></div> -->
+      
                 <li class="tooltip-element" data-tooltip="0">
                     <a asp-controller="Admin" asp-action="User" class="nav-link" data-active="0">
                         <div class="icon">
@@ -97,7 +103,7 @@
                     </a>
                 </li>
                 <li class="tooltip-element" data-tooltip="7">
-                <a href="#" data-active="7" class="nav-link">
+                <a asp-controller="Admin" asp-action="Banner" data-active="7" class="nav-link">
                         <div class="icon">
                             <i class="bi bi-card-heading"></i>
                         </div>
@@ -117,64 +123,7 @@
             </ul>
         </div>
 
-        <!-- <h4 class="hide">Shortcuts</h4>
-
-          <ul>
-            <li class="tooltip-element" data-tooltip="0">
-              <a href="#" data-active="4">
-                <div class="icon">
-                  <i class='bx bx-notepad'></i>
-                  <i class='bx bxs-notepad'></i>
-                </div>
-                <span class="link hide">Tasks</span>
-              </a>
-            </li>
-            <li class="tooltip-element" data-tooltip="1">
-              <a href="#" data-active="5">
-                <div class="icon">
-                  <i class='bx bx-help-circle'></i>
-                  <i class='bx bxs-help-circle'></i>
-                </div>
-                <span class="link hide">Help</span>
-              </a>
-            </li>
-            <li class="tooltip-element" data-tooltip="2">
-              <a href="#" data-active="6">
-                <div class="icon">
-                  <i class='bx bx-cog'></i>
-                  <i class='bx bxs-cog'></i>
-                </div>
-                <span class="link hide">Settings</span>
-              </a>
-            </li>
-            <div class="tooltip">
-              <span class="show">Tasks</span>
-              <span>Help</span>
-              <span>Settings</span>
-            </div>
-          </ul>
-        </div> -->
-        <!-- <div class="sidebar-footer">
-          <a href="#" class="account tooltip-element" data-tooltip="0">
-            <i class='bx bx-user'></i>
-          </a>
-          <div class="admin-user tooltip-element" data-tooltip="1">
-            <div class="admin-profile hide">
-              <img src="./img/face-1.png" alt="">
-              <div class="admin-info">
-                <h3>John Doe</h3>
-                <h5>Admin</h5>
-              </div>
-            </div>
-            <a href="#" class="log-out">
-              <i class='bx bx-log-out'></i>
-            </a>
-          </div>
-          <div class="tooltip">
-            <span class="show">John Doe</span>
-            <span>Logout</span>
-          </div>
-        </div> -->
+       
     </nav>
 
 <body>
@@ -186,43 +135,9 @@
               
                    <div class=" nav-item dropdown">
                     @await Component.InvokeAsync("UserHeader", "_ProfileSection")
-                        @*<a class="nav-link d-flex me-2 align-items-center dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            <img class="icon rounded-circle" src="~/images/user1.png"> &nbsp;
-                            Evan Donhoue
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
-                            <li><a class="dropdown-item" >My Profile</a></li>
-                            <li><a class="dropdown-item" >Volunteering Timesheet</a></li>
-                            <li class="dropdown-divider"></li>
-                            <li>
-                                <a  class="dropdown-item">
-                                    Logout
-                                </a>
-                            </li>
-                        </ul>*@
+                       
                    </div>
-                @*<li class="nav-item dropdown">
-                    <a class="nav-link ms-3 pt-2 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-
-
-                        <img class="icon rounded-circle" src="~/images/Upload/User/@Model.Avtar">
-                        @Model.Username
-                        <span id="user-id d-none"> @Model.UserId </span>
-                        <img src="~/images/drop-down.png">
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
-                        <li><a class="dropdown-item" asp-controller="User" asp-action="UserProfile">My Profile</a></li>
-                        <li><a class="dropdown-item" asp-controller="VolunteeringTimesheet" asp-action="VolunteeringTimesheet">Volunteering Timesheet</a></li>
-                        <li class="dropdown-divider"></li>
-                        <li>
-                            <a asp-controller="Auth" asp-action="Logout" class="dropdown-item">
-                                Logout
-                            </a>
-                        </li>
-                    </ul>
-                </li>*@
+              
 
             
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
@@ -231,9 +146,19 @@
         </header>
         <partial name="_Notification" />
         @RenderBody()
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        <partial name="_ValidationScriptsPartial" />
     </main>
+  
 
+    @*sweetalert script*@
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+ @*   tinymce text editor*@
     <script src="https://cdn.jsdelivr.net/npm/tinymce@5/tinymce.min.js"></script>
+
+
 @*    datatable*@
    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
@@ -273,12 +198,20 @@
       
     </script>
     @*    datatable ends*@
+
+@*    bootstrap cdn*@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
             crossorigin="anonymous"></script>
-    
+
+  
+
+
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/Admin.js" asp-append-version="true"></script>
+
+     
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -119,6 +119,9 @@ public partial class CiDbContext : DbContext
             entity.Property(e => e.DeletedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("deleted_at");
+            entity.Property(e => e.Description)
+                .HasColumnType("text")
+                .HasColumnName("description");
             entity.Property(e => e.Image)
                 .HasMaxLength(512)
                 .IsUnicode(false)
@@ -359,6 +362,9 @@ public partial class CiDbContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
+            entity.Property(e => e.Deadline)
+                .HasColumnType("date")
+                .HasColumnName("deadline");
             entity.Property(e => e.DeletedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("deleted_at");

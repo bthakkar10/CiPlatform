@@ -39,6 +39,11 @@ namespace CI_Platform.Repository.Repository
         {
             return _db.Cities.ToList();
         }
-       
+
+        public List<MissionSkill> MissionSkillList()
+        {
+            return _db.MissionSkills.ToList();  
+        }
+
     }
 }

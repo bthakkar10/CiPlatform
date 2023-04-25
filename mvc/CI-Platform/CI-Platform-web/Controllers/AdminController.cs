@@ -18,8 +18,9 @@ namespace CI_Platform_web.Controllers
         private readonly IAdminSkills _adminSkills;
         private readonly IAdminApproval _adminApproval;
         private readonly IAdminMission _adminMission;
+        private readonly IAdminBanner _adminBanner;
 
-        public AdminController(IAdminUser adminUser, IFilter filter, IAdminCms adminCms, IAdminTheme adminTheme, IAdminSkills adminSkills, IAdminApproval adminApproval, IAdminMission adminMission)
+        public AdminController(IAdminUser adminUser, IFilter filter, IAdminCms adminCms, IAdminTheme adminTheme, IAdminSkills adminSkills, IAdminApproval adminApproval, IAdminMission adminMission, IAdminBanner adminBanner)
         {
             _adminUser = adminUser;
             _filter = filter;
@@ -28,6 +29,7 @@ namespace CI_Platform_web.Controllers
             _adminSkills = adminSkills;
             _adminApproval = adminApproval;
             _adminMission = adminMission;
+            _adminBanner = adminBanner;
         }
 
         //------------------------------------------  User  Section Starts ---------------------------------------------------------- 
@@ -478,12 +480,145 @@ namespace CI_Platform_web.Controllers
         [HttpGet]
         public IActionResult AddOrUpdateMission()
         {
-            AdminMissionViewModel vm = new AdminMissionViewModel();
-            return PartialView("_AddOrUpdateMission", vm);
+            AdminMissionViewModel missionvm = new AdminMissionViewModel();
+            missionvm.CityList = _filter.AllCityList().ToList();
+            missionvm.CountryList = _filter.CountryList().ToList();
+            missionvm.ThemeList = _filter.ThemeList().ToList();
+            missionvm.SkillsList = _filter.SkillList().ToList();
+
+            return PartialView("_AddOrUpdateMission", missionvm);
+        }
+
+        [HttpPost]
+        public IActionResult AddOrUpdateMissionPost(AdminMissionViewModel missionvm)
+        {
+            //to add
+            if (missionvm.MissionId == 0)
+            {
+                if (_adminMission.MissionAdd(missionvm) == "Added")
+                {
+                    TempData["success"] = "Mission Added Successfully!!";
+                    return RedirectToAction("AdminMission");
+                }
+                else if (_adminMission.MissionAdd(missionvm) == "Exists")
+                {
+                    TempData["error"] = "Mission Already Exists!!";
+                    return RedirectToAction("AdminMission");
+                }
+                else
+                {
+                    TempData["error"] = "Something went wrong!!";
+                    return RedirectToAction("AdminMission");
+                }
+            }
+            return RedirectToAction("AdminMission");
+            // to Update 
+            //else
+            //{
+            //    if (_adminMission.EditMission(missionvm))
+            //    {
+            //        TempData["success"] = "User Updated Successfully!!";
+            //        return RedirectToAction("User");
+            //    }
+            //    else
+            //    {
+            //        TempData["error"] = "Something went wrong!!";
+            //        return RedirectToAction("User");
+            //    }
+            //}
+        }
+
+        //fetching user data on edit 
+        [HttpGet]
+        public IActionResult GetMissionData(long MissionId)
+        {
+            AdminMissionViewModel missionvm = _adminMission.GetMission(MissionId);
+            missionvm.CityList = _filter.AllCityList().ToList();
+            missionvm.CountryList = _filter.CountryList().ToList();
+            missionvm.ThemeList = _filter.ThemeList().ToList();
+            missionvm.SkillsList = _filter.SkillList().ToList();
+            missionvm.MissionSkills = _filter.MissionSkillList().ToList();
+     
+            return PartialView("_AddOrUpdateMission", missionvm);
         }
 
         //------------------------------------------  Mission Section Ends ---------------------------------------------------------- 
 
+
+        //------------------------------------------  Banner Section Starts ---------------------------------------------------------- 
+
+        public IActionResult Banner()
+        {
+            AdminBannerViewModel bannervm = new AdminBannerViewModel();
+            bannervm.BannerList = _adminBanner.BannerList();
+            return View(bannervm);
+        }
+
+        //fetching banner data on edit button click 
+        public IActionResult GetBannerData(long BannerId)
+        {
+            AdminBannerViewModel bannervm = _adminBanner.GetBannerData(BannerId);
+            return PartialView("_AddOrUpdateBanner", bannervm);
+        }
+
+        //add or update banner form get method to load the add and edit forms 
+        [HttpGet]
+        public IActionResult AddOrUpdateBanner()
+        {
+            AdminBannerViewModel bannervm = new AdminBannerViewModel();
+            return PartialView("_AddOrUpdateBanner", bannervm);
+        }
+
+        //add or update privacy pages
+        [HttpPost]
+        [System.Web.Mvc.ValidateInput(false)]
+        public IActionResult AddOrUpdateBanner(AdminBannerViewModel bannervm)
+        {
+            //to add
+            if (bannervm.BannerId == 0)
+            {
+                if (_adminBanner.BannerAdd(bannervm))
+                {
+                    TempData["success"] = "Banner Added Successfully!!";
+                    return RedirectToAction("Banner");
+                }
+                else
+                {
+                    TempData["error"] = "Something went wrong!!";
+                    return RedirectToAction("Banner");
+                }
+            }
+            // to Update 
+            else
+            {
+                if (_adminBanner.EditBanner(bannervm))
+                {
+                    TempData["success"] = "Banner Updated Successfully!!";
+                    return RedirectToAction("Banner");
+                }
+                else
+                {
+                    TempData["error"] = "Something went wrong!!";
+                    return RedirectToAction("Banner");
+                }
+            }
+        }
+        [HttpPost]
+        public IActionResult DeleteBanner()
+        {
+            long BannerId = long.TryParse(Request.Form["HiddenBannerId"], out long result) ? result : 0;
+            if (_adminBanner.BannerDelete(BannerId))
+            {
+                TempData["succes"] = "Banner Deleted Successfully!!";
+                return RedirectToAction("Banner");
+            }
+            else
+            {
+                TempData["error"] = "Something went wrong!! Please try again later!!";
+                return RedirectToAction("Banner");
+            }
+        }
+        //------------------------------------------  Cms  Section Ends ---------------------------------------------------------- 
     }
 
 }

@@ -107,7 +107,7 @@ namespace CI_Platform_web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _dbUserRepository.GetUserEmail(obj.Email);
+                User user = _dbUserRepository.GetUserEmail(obj.Email);
                 if (user == null)
                 {
                     TempData["error"] = "User does not exists!!";
@@ -197,7 +197,7 @@ namespace CI_Platform_web.Controllers
         //to check sesssion
         public IActionResult SessionStatus()
         {
-            bool sessionExists = (HttpContext.Session.GetString("Token") != null);
+            bool sessionExists = (HttpContext.Session.GetString("Token") == null);
             return Json(new { sessionExists });
         }
 

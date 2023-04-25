@@ -2,20 +2,20 @@
 @model CI_Platform.Entities.ViewModels.AdminMissionViewModel
 
 <div>
-    <form method="post" class="validateForm">
-        @*  <input asp-for="MissionId" id="MissionId" type="hidden" />*@
+    <form class="validateForm" id="MissionForm" method="post">
+         <input asp-for="MissionId" id="MissionId" type="hidden" />
         <div class="border">
             <div class="FormBox" id="AddHeader"><h4 class="FormHeading"><span>Add</span></h4></div>
 
             <div class="m-3">
                 <label asp-for="MissionTitle" class="form-label">Mission Title </label>
-                <input asp-for="MissionTitle" type="text" class="form-control" placeholder="Enter Mission Title" aria-label="First name">
+                <input asp-for="MissionTitle" type="text" class="form-control" name="MissionTitle" placeholder="Enter Mission Title" aria-label="First name">
                 <span asp-validation-for="MissionTitle" class="validate-text text-danger"></span>
             </div>
 
             <div class="m-3">
                 <label asp-for="ShortDescription" class="form-label">Short Description</label>
-                <textarea asp-for="ShortDescription" class="form-control" rows="3"></textarea>
+                <textarea asp-for="ShortDescription" class="form-control" name="ShortDescription" rows="3"></textarea>
                 <span asp-validation-for="ShortDescription" class="validate-text text-danger"></span>
             </div>
             <div class="m-3 ">
@@ -42,13 +42,13 @@
                     <label for="Country" class="form-label ms-1">Country</label>
                     <select asp-for="CountryId" class="form-select" id="AdminCountrySelect" aria-label="Enter your Country">
                         <option selected disabled>Enter your Country</option>
-                        @*@if (Model.Countries is not null)
+                        @if (Model.CountryList is not null)
                         {
-                        @foreach (var country in Model.Countries)
-                        {
-                        <option value="@country.CountryId">@country.Name</option>
+                            @foreach (var country in Model.CountryList)
+                            {
+                                <option value="@country.CountryId">@country.Name</option>
+                            }
                         }
-                        }*@
                     </select>
                     <span asp-validation-for="CountryId" class="text-danger validate-text"></span>
                 </div>
@@ -57,15 +57,15 @@
                     <select asp-for="CityId" class="form-select" id="UserCitySelect" aria-label="Enter your City">
 
 
-                        @* @if (Model.Cities is not null)
+                        @if (Model.CityList is not null)
                         {
-                        var city = Model.Cities.Where(c => c.CountryId == Model.CountryId);
-                        @foreach (var c in city)
-                        {
-                        <option value="@c.CityId">@c.CityName</option>
+                            var city = Model.CityList.Where(c => c.CountryId == Model.CountryId);
+                            @foreach (var c in city)
+                            {
+                                <option value="@c.CityId">@c.CityName</option>
+                            }
                         }
-                        }
-                        *@
+
                     </select>
                     <span asp-validation-for="CityId" class="text-danger validate-text"></span>
 
@@ -104,85 +104,114 @@
                 </div>
                 <div class="col-md-6">
                     <label asp-for="EndDate" class="form-label ms-1">End Date</label>
-                    <input asp-for="EndDate" type="date" id="EndDate" required class="form-control">
+                    <input asp-for="EndDate" type="date" id="MissionEndDate" required class="form-control" disabled>
                     <span asp-validation-for="EndDate" class="validate-text text-danger"></span>
                 </div>
             </div>
 
             <div class="m-3">
                 <label asp-for="MissionType" class="form-label ms-1">Mission Type</label>
-                <select asp-for="MissionType" class="form-select" id="MissionType" name="MissionType" aria-label="Select Mission Type">
+                <select asp-for="MissionType" class="form-select" id="MissionTypeSelection" name="MissionType" aria-label="Select Mission Type">
                     <option selected disabled> Select Mission Type </option>
                     <option value="Time">Time</option>
                     <option value="Goal">Goal</option>
                 </select>
             </div>
 
-            <div class="row g-3 m-3">
-                <div class="col-md-6">
-                    <label asp-for="Deadline" class="form-label ms-1">Registration Deadline</label>
-                    <input asp-for="Deadline" type="date" id="Deadline" class="form-control">
+            <div class="row g-3 m-3 hidden" id="TimeBased">
+                <div class="col-md-6 ">
+                    <label asp-for="Deadline" class="form-label  ms-1">Registration Deadline</label>
+                    <input asp-for="Deadline" type="date" id="MissionDeadline" class="form-control">
                     <span asp-validation-for="Deadline" class="validate-text text-danger"></span>
                 </div>
 
-                <div class="col-md-6">
-                    <label asp-for="TotalSeats" class="form-label ms-1">Total Seats</label>
+                <div class="col-md-6 ">
+                    <label asp-for="TotalSeats" class="form-label  ms-1">Total Seats</label>
                     <input asp-for="TotalSeats" type="text" id="TotalSeats" class="form-control">
                     <span asp-validation-for="TotalSeats" class="validate-text text-danger"></span>
 
                 </div>
             </div>
 
-            <div class="row g-3 m-3">
+            <div class="row g-3 m-3 hidden" id="GoalBased">
                 <div class="col-md-6">
                     <label asp-for="GoalValue" class="form-label ms-1">Goal Value</label>
-                    <input asp-for="GoalValue" type="text" id="Deadline" class="form-control">
+                    <input asp-for="GoalValue" type="text" id="GoalValue" class="form-control">
                     <span asp-validation-for="GoalValue" class="validate-text text-danger"></span>
                 </div>
 
                 <div class="col-md-6">
                     <label asp-for="GoalObjectiveText" class="form-label ms-1">Goal Objective Text</label>
-                    <input asp-for="GoalObjectiveText" type="text" id="TotalSeats" class="form-control">
+                    <input asp-for="GoalObjectiveText" type="text" id="GoalObjectiveText" class="form-control">
                     <span asp-validation-for="GoalObjectiveText" class="validate-text text-danger"></span>
                 </div>
             </div>
 
-            <div class="m-3">
-                <label asp-for="Avaliablity" class="form-label ms-1">Avaliability</label>
-                <select asp-for="Avaliablity" class="form-select" id="AvaliabilitySelect" name="Avaliablity" aria-label="Select your Avaliability">
-                    <option value="daily">daily</option>
-                    <option value="weekly">weekly</option>
-                    <option value="weekend">weekend</option>
-                    <option value="monthly">monthly</option>
-                </select>
+            <div class=" row g-3 m-3">
+                <div class="col-md-6">
+                    <label asp-for="Avaliablity" class="form-label ms-1">Avaliability</label>
+                    <select asp-for="Avaliablity" class="form-select" id="AvaliabilitySelect" name="Avaliablity" aria-label="Select your Avaliability">
+                        <option value="daily">daily</option>
+                        <option value="weekly">weekly</option>
+                        <option value="weekend">weekend</option>
+                        <option value="monthly">monthly</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Status" class="form-label">Status</label>
+                    <select asp-for="Status" class="form-select" aria-label="Select status">
+                        <option value="" selected disabled hidden">Select status</option>
+                        <option value="true">Active</option>
+                        <option value="false">In - Active</option>
+                    </select>
+                    <span asp-validation-for="Status" class="validate-text text-danger"></span>
+                </div>
             </div>
 
             <div class="m-3">
                 <label for="Theme" class="form-label ms-1"> Select Theme</label>
                 <select asp-for="ThemeId" class="form-select" id="AdminCountrySelect" aria-label="Enter your Theme">
                     <option selected disabled>Enter your Theme</option>
-                    @*@if (Model.Countries is not null)
+                    @if (Model.ThemeList is not null)
                     {
-                    @foreach (var country in Model.Countries)
-                    {
-                    <option value="@country.CountryId">@country.Name</option>
+                        @foreach (var theme in Model.ThemeList)
+                        {
+                            <option value="@theme.MissionThemeId">@theme.Title</option>
+                        }
                     }
-                    }*@
                 </select>
                 <span asp-validation-for="ThemeId" class="text-danger validate-text"></span>
             </div>
+            <div class="m-3">
+                <label class="form-label ms-1"> Select Skills</label>
+                <div class="border form-check p-2" id="MissionSkillList">
+                    @if (Model.SkillsList is not null)
+                    {
+                        @foreach (var skill in Model.SkillsList)
+                        {
+                            <div class="form-check">
+                                <input name="MissionSkill" class="form-check-input" type="checkbox" value="@skill.SkillName" @(Model.MissionSkills != null && Model.MissionSkills.Any(ms => ms.SkillId == skill.SkillId && ms.MissionId == Model.MissionId) ? "checked" : "") />
+                                <label class="form-check-label" for="skill_@skill.SkillId">
+                                    @skill.SkillName
+                                </label>
+                            </div>
+                        }
+                    }
 
-            <div class="m-3  border form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                <label class="form-check-label" for="flexCheckDefault">
-                    Default checkbox
-                </label>
-                
+                </div>
             </div>
 
             <div class="m-3">
                 <label asp-for="YoutubeUrl" class="form-label">Enter Video Urls</label>
-                <textarea asp-for="YoutubeUrl" class="form-control" rows="3"></textarea>
+                <textarea  class="form-control" id="MissionYoutubeUrl" rows="3">
+                    @if (Model.MissionUrlLinks != null)
+                    {
+                        @foreach (var url in Model.MissionUrlLinks)
+                        {
+                            @url
+                        }
+                    }
+                </textarea>
                 <span asp-validation-for="YoutubeUrl" class="validate-text text-danger"></span>
             </div>
 
@@ -196,9 +225,19 @@
                     </span>
                     <span class="on-drop">Drop images here</span>
                 </div>
-                <input type="file"  name="img-file" accept=".png,.jpg,.jpeg" class="file" multiple id="mission-img-input" />
+                <input asp-for="ImageList" type="file" name="img-file" accept=".png,.jpg,.jpeg" class="file" multiple id="mission-img-input" />
                 <!-- IMAGE PREVIEW CONTAINER -->
-                <div class="container-img mt-3" id="mission-img-output"> </div>
+                <div class="container-img mt-3" id="mission-img-output">
+                   
+                </div>
+                @if (Model.MissionImagesList != null)
+                {
+                    @foreach (var img in Model.MissionImagesList)
+                    {
+                        <input class="mission-img-edit" value="@img" />
+                    }
+                }
+                <input class="mission-img-edit-default" value="@Model.MissionDefaultImage"/>
             </div>
             <!--  -->
             <!-- darg and drop -->
@@ -212,14 +251,27 @@
                     <span class="on-drop">Drop documents here</span>
                 </div>
                 <input type="file" name="doc-file" accept=".pdf" class="file" multiple id="mission-doc-input" />
-                <!-- IMAGE PREVIEW CONTAINER -->
-                <div class="container-img mt-3" id="mission-doc-output"> </div>
+                <!-- doc PREVIEW CONTAINER -->
+                <div class="container-doc mt-3" id="mission-doc-output"> </div>
+                @if (Model.MissionDocumentsList != null)
+                {
+                    @foreach (var doc in Model.MissionDocumentsList)
+                    {
+                        <input class="mission-doc-edit" value="@doc" />
+                    }
+                }
             </div>
             <!--  -->
-
+            <div class="d-flex flex-wrap justify-content-between m-3">
+                <a class="btn btn-outline-secondary rounded-pill" href="@Url.Action("AdminMission", "Admin")">Cancel</a>
+                <button type="submit" id="MissionAddOrEditBtn" class="btn btn-outline-success rounded-pill addBtn">Save</button>
+            </div>
         </div>
     </form>
 
 </div>
+
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+

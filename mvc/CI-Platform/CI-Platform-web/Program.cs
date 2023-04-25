@@ -29,6 +29,7 @@ builder.Services.AddScoped<IAdminSkills, AdminSkills>();
 builder.Services.AddScoped<IAdminTheme, AdminTheme>();
 builder.Services.AddScoped<IAdminApproval, AdminApproval>();    
 builder.Services.AddScoped<IAdminMission, AdminMission>();  
+builder.Services.AddScoped<IAdminBanner, AdminBanner>();  
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
