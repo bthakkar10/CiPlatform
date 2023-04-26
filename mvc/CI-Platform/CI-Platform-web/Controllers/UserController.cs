@@ -1,12 +1,16 @@
 ﻿using CI_Platform.Entities.DataModels;
 using CI_Platform.Entities.ViewModels;
 using CI_Platform.Repository.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace CI_Platform_web.Controllers
 {
+    [Authorize(Roles = "user")]
     public class UserController : Controller
     {
+        
         private readonly IUserProfile _userProfile;
         private readonly IFilter _filter;
         public UserController(IUserProfile userProfile, IFilter filter)
@@ -24,7 +28,7 @@ namespace CI_Platform_web.Controllers
                 }
                 var UserId = HttpContext.Session.GetString("Id");
                 long userId = Convert.ToInt64(UserId);
-
+                ViewBag.UserId = userId;
                 UserProfileViewModel vm = _userProfile.GetUserDetails(userId);
                 return View(vm);
             }
@@ -64,11 +68,16 @@ namespace CI_Platform_web.Controllers
         {
             var UserId = HttpContext.Session.GetString("Id");
             long userId = Convert.ToInt64(UserId);
+            
 
-
-            if (_userProfile.EditUserProfile(userId, vm))
+            if (_userProfile.EditUserProfile(userId, vm) == "Updated")
             {
                 TempData["success"] = "Your Profile is Updated Successfully!!";
+                return RedirectToAction("UserProfile");
+            }
+            else if(_userProfile.EditUserProfile(userId, vm) == "Exists")
+            {
+                TempData["error"] = "User with same EmploeeId Already Exists!!";
                 return RedirectToAction("UserProfile");
             }
             else

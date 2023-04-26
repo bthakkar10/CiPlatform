@@ -16,12 +16,6 @@ namespace CI_Platform.Entities.ViewModels
 
         public string Email { get; set; } = String.Empty;
 
-        //public string? Title { get; set; }
-
-        //public string? Description { get; set; }
-
-        //public int? SortOrder{ get; set; }   
-
-        //public string? BannerImg { get; set; }  
+        public string Role { get; set; } = String.Empty;
     }
 }

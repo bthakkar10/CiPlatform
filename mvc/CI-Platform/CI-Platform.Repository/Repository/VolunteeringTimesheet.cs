@@ -22,89 +22,81 @@ namespace CI_Platform.Repository.Repository
 
         public List<MissionApplication> GetMissionTitles(long UserId)
         {
-            return _db.MissionApplications.Where(ms => ms.UserId == UserId && ms.ApprovalStatus == "APPROVE" && ms.DeletedAt==null).Include(m => m.Mission).ToList();
+            return _db.MissionApplications.Where(ms => ms.UserId == UserId && ms.ApprovalStatus == "APPROVE" && ms.DeletedAt == null).Include(m => m.Mission).ToList();
         }
 
         public List<Timesheet> GetTimesheetData(long UserId)
         {
-            return _db.Timesheets.Where(ms => ms.UserId == UserId && ms.DeletedAt == null).Include(m => m.Mission).ToList();
+            return _db.Timesheets.Where(ms => ms.UserId == UserId && ms.DeletedAt == null && ms.Status == "PENDING").Include(m => m.Mission).ToList();
         }
 
         public string AddTimeBasedEntry(TimeViewModel vm, long UserId)
         {
             try
             {
-                List<Timesheet> timesheet = _db.Timesheets.Where(t=>t.UserId == UserId && t.MissionId == vm.MissionId && t.DeletedAt == null).ToList();
-                foreach(var ts in timesheet)
+                List<Timesheet> timesheet = _db.Timesheets.Where(t => t.UserId == UserId && t.MissionId == vm.MissionId && t.DeletedAt == null).ToList();
+                foreach (var ts in timesheet)
                 {
-                    if(ts.DateVolunteered != vm.TimeDate)
-                    {
-                        Timesheet TimeTs = new()
-                        {
-                            MissionId = vm.MissionId,
-                            UserId = UserId,
-                            Time = vm.Time,
-                            DateVolunteered = vm.TimeDate,
-                            Notes = vm.TimeMessage,
-                            CreatedAt = DateTime.Now,
-
-                        };
-                        _db.Add(TimeTs);
-                        _db.SaveChanges();
-                        return "success";
-                    }
-                    else
+                    if (ts.DateVolunteered != vm.TimeDate)
                     {
                         return "Exists";
                     }
                 }
+                Timesheet TimeTs = new()
+                {
+                    MissionId = vm.MissionId,
+                    UserId = UserId,
+                    Time = vm.Time,
+                    DateVolunteered = vm.TimeDate,
+                    Notes = vm.TimeMessage,
+                    CreatedAt = DateTime.Now,
+
+                };
+                _db.Add(TimeTs);
+                _db.SaveChanges();
+                return "success";
             }
             catch (Exception ex)
             {
                 return ex.Message;
             }
-            return "failed";
         }
 
         public string AddGoalBasedEntry(GoalViewModel vm, long UserId)
         {
             try
             {
-                List<Timesheet> timesheet = _db.Timesheets.Where(t => t.UserId == UserId && t.MissionId == vm.MissionId && t.DeletedAt == null ).ToList();
+                List<Timesheet> timesheet = _db.Timesheets.Where(t => t.UserId == UserId && t.MissionId == vm.MissionId && t.DeletedAt == null).ToList();
                 foreach (var ts in timesheet)
                 {
-                    if (ts.DateVolunteered != vm.TimeDate)
-                    {
-                        Timesheet TimeTs = new Timesheet()
-                        {
-                            MissionId = vm.MissionId,
-                            UserId = UserId,
-                            Action = vm.Action,
-                            DateVolunteered = vm.TimeDate,
-                            Notes = vm.TimeMessage,
-                            CreatedAt = DateTime.Now,
-
-                        };
-                        _db.Add(TimeTs);
-                        _db.SaveChanges();
-                        return "success";
-                    }
-                    else
+                    if (ts.DateVolunteered == vm.TimeDate)
                     {
                         return "Exists";
                     }
                 }
+                Timesheet TimeTs = new()
+                {
+                    MissionId = vm.MissionId,
+                    UserId = UserId,
+                    Action = vm.Action,
+                    DateVolunteered = vm.TimeDate,
+                    Notes = vm.TimeMessage,
+                    CreatedAt = DateTime.Now,
+
+                };
+                _db.Add(TimeTs);
+                _db.SaveChanges();
+                return "success";
             }
             catch (Exception ex)
             {
                 return ex.Message;
             }
-            return "failed";
         }
 
         public Timesheet GetDataOnEdit(long TimeSheetId)
         {
-            return _db.Timesheets.Include(m => m.Mission).Where(m=>m.DeletedAt==null).FirstOrDefault(t => t.TimesheetId == TimeSheetId)!;
+            return _db.Timesheets.Include(m => m.Mission).Where(m => m.DeletedAt == null).FirstOrDefault(t => t.TimesheetId == TimeSheetId)!;
         }
 
         public bool UpdateGoalBasedEntry(GoalViewModel vm)
@@ -151,12 +143,17 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                Timesheet ts = _db.Timesheets.FirstOrDefault(t=>t.TimesheetId == TimeSheetId && t.DeletedAt == null)!;
-                _db.Timesheets.Remove(ts);
-                _db.SaveChanges();
-                return true;
+                Timesheet ts = _db.Timesheets.FirstOrDefault(t => t.TimesheetId == TimeSheetId && t.DeletedAt == null)!;
+                if (ts != null)
+                {
+                    ts.DeletedAt = DateTime.Now;
+                    _db.Update(ts);
+                    _db.SaveChanges();
+                    return true;
+                }
+                return false;
             }
-            catch(Exception) 
+            catch (Exception)
             {
                 return false;
             }
@@ -167,9 +164,14 @@ namespace CI_Platform.Repository.Repository
             try
             {
                 Timesheet ts = _db.Timesheets.FirstOrDefault(t => t.TimesheetId == TimeSheetId && t.DeletedAt == null)!;
-                _db.Timesheets.Remove(ts);
-                _db.SaveChanges();
-                return true;
+                if (ts != null)
+                {
+                    ts.DeletedAt = DateTime.Now;
+                    _db.Update(ts);
+                    _db.SaveChanges();
+                    return true;
+                }
+                return false;
             }
             catch (Exception)
             {

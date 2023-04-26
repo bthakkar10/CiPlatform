@@ -17,6 +17,6 @@ namespace CI_Platform.Repository.Interface
         public bool ContactUs(long UserId, string ContactSubject, string ContactMessage);
 
 
-        public bool EditUserProfile(long UserId, UserProfileViewModel vm);
+        public string EditUserProfile(long UserId, UserProfileViewModel vm);
     }
 }

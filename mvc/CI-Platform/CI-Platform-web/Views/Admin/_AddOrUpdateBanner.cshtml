@@ -1,13 +1,10 @@
-﻿@using System.Web;
-
-@model CI_Platform.Entities.ViewModels.AdminBannerViewModel
+﻿@model CI_Platform.Entities.ViewModels.AdminBannerViewModel
 <div>
-    <form method="post" class="validateForm" enctype="multipart/form-data">
-        <input asp-for="UpdatedImg" type="file" class="d-none" id="BannerImg" />
+    <form method="post" enctype="multipart/form-data">
+        
         <input asp-for="BannerId" id="BannerId" type="hidden" />
         <div class="border">
             <div class="FormBox" id="BannerHeader"><h4 class="FormHeading"><span>Add</span></h4></div>
-            @* <div class="FormBox" id="AddHeader"><h4 class="FormHeading"><span>Add</span></h4></div>*@
 
             <div class="m-3 ">
                 <label asp-for="Title" class="form-label">Title</label>
@@ -16,53 +13,50 @@
             </div>
             <div class="mb-3 mx-3 ">
                 <label for="Description" class="form-label ">Description</label>
+                <textarea id="Description" class="form-control" asp-for="Description" name="Description" rows="5"> @*tinyMCE.activeEditor.setContent(`@Html.Raw(HttpUtility.HtmlDecode(Model.Description))`)*@</textarea>
+                @*<script>
+                tinymce.init({
+                selector: '#Description',
+                height: 500,
+                plugins: 'lists advlist code emoticons directionality  ',
 
-                <textarea id="Description" asp-for="Description" name="Description"> tinyMCE.activeEditor.setContent(`@Html.Raw(HttpUtility.HtmlDecode(Model.Description))`)</textarea>
-                <script>
-                    tinymce.init({
-                        selector: '#Description',
-                        height: 500,
-                        plugins: 'lists advlist code emoticons directionality  ',
+                toolbar: ' bold italic  underline strikethrough| subscript superscript|ltr rtl | numlist bullist  |',
 
-                        toolbar: ' bold italic  underline strikethrough| subscript superscript|ltr rtl | emoticons numlist bullist  |',
+                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
 
-                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
-
-                    });
-                </script>
+                });
+                </script>*@
                 <span asp-validation-for="Description" class="validate-text text-danger"></span>
             </div>
 
 
             <div class="mb-3 mx-3 ">
                 <label asp-for="sortOrder" class="form-label">Sort Order</label>
-                <select asp-for="sortOrder" class="form-select" aria-label="Select order">
-                    <option selected disabled>Select Sort Order</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                   
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select>
+                <input type="text" asp-for="sortOrder" class="form-control" placeholder="Enter Sort Order" aria-label="Sort Order" />
                 <span asp-validation-for="sortOrder" class="validate-text text-danger"></span>
-
             </div>
+
 
             <div class="mb-3 mx-3 banner-img-section">
-                <div class="image-edit">
-                    @if (Model.Image != null)
-                    {
-                        <img src="~/images/Upload/Banner/@Model.Image" class="img-thumbnail mx-auto d-block my-2 " alt="...">
-                    }
+                <input asp-for="UpdatedImg" type="file" class="d-none" id="BannerImg" />
+               <div class="image-edit">
+              
+                @if (Model.Image != null)
+                {
+                    <img src="~/images/Upload/Banner/@Model.Image" class="img-thumbnail mx-auto d-block my-2 " alt="...">
+                }
                 <div class="edit-icon"><i class="bi bi-pencil-fill"></i></div>
-                </div>
             </div>
 
-            <div class="d-flex flex-wrap justify-content-between m-3">
-                <a class="btn btn-outline-secondary rounded-pill" href="@Url.Action("Banner", "Admin")">Cancel</a>
-                <button type="submit" class="btn btn-outline-success  rounded-pill addBtn" asp-controller="Admin" asp-action="AddOrUpdateBanner">Save</button>
             </div>
+            
         </div>
+
+        <div class="d-flex flex-wrap justify-content-end m-3">
+            <a class="btn btn-outline-secondary me-3 rounded-pill" href="@Url.Action("Banner", "Admin")">Cancel</a>
+            <button type="submit" class="btn btn-outline-success  rounded-pill addBtn" asp-controller="Admin" asp-action="AddOrUpdateBanner">Save</button>
+        </div>
+
     </form>
 
 </div>

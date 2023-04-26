@@ -2,11 +2,14 @@
 using CI_Platform.Entities.ViewModels;
 using CI_Platform.Repository.Interface;
 using CI_Platform.Repository.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.Diagnostics;
 
 namespace CI_Platform_web.Controllers
 {
+    [Authorize(Roles = "user")]
     public class VolunteeringTimesheetController : Controller
     {
         private readonly IVolunteeringTimesheet _timesheet;
@@ -113,7 +116,6 @@ namespace CI_Platform_web.Controllers
                 //to add 
                 if (vm.GoalViewModel.TimesheetId == 0)
                 {
-
                     if (_timesheet.AddGoalBasedEntry(vm.GoalViewModel, UserId) == "success")
                     {
                         TempData["success"] = "Your Data is entered successfully!!";

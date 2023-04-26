@@ -59,8 +59,6 @@ namespace CI_Platform.Entities.ViewModels
         [MaxLength(16, ErrorMessage = "Only 16 characters are allowed!!")]
         public string  Department { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Password is Required!!")]
-        //[DataType(DataType.Password)]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$",
         ErrorMessage = "The password must contain at least 8 characters including at least one uppercase letter, one lowercase letter, one digit and one special character!!")]
         public string Password { get; set; } = string.Empty;

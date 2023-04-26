@@ -1,11 +1,14 @@
 ﻿using CI_Platform.Entities.DataModels;
 using CI_Platform.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace CI_Platform.Repository.Repository
 {
@@ -16,11 +19,35 @@ namespace CI_Platform.Repository.Repository
         {
             _db = db;
         }
+        enum ApplicationApprovalStatus
+        {
+            APPROVE,
+            DECLINE,
+            PENDING
+        }
 
-       
+        enum StoryApprovalStatus
+        {
+            PENDING,
+            PUBLISHED,
+            DECLINED
+        }
+
+        enum CommentApprovalStatus
+        {
+            PENDING,
+            PUBLISHED,
+            DECLINED
+        }
+        enum TimesheetApprovalStatus
+        {
+            PENDING,
+            APPROVED,
+            DECLINED
+        }
         public List<MissionApplication> MissionApplicationList()
         {
-            return _db.MissionApplications.Where(missionapplication=> missionapplication.DeletedAt == null && missionapplication.ApprovalStatus == "PENDING").Include(missionapplication=> missionapplication.Mission).Include(missionapplication => missionapplication.User).ToList();    
+            return _db.MissionApplications.Where(missionapplication => missionapplication.DeletedAt == null && missionapplication.ApprovalStatus == ApplicationApprovalStatus.PENDING.ToString()).Include(missionapplication => missionapplication.Mission).Include(missionapplication => missionapplication.User).ToList();
         }
 
         public string ApproveDeclineApplication(long MissionApplicationId, long Status)
@@ -34,17 +61,17 @@ namespace CI_Platform.Repository.Repository
                 }
                 else
                 {
-                    if(Status == 1)
+                    if (Status == 1)
                     {
-                        missionApplication.ApprovalStatus = "APPROVE";
-                        missionApplication.UpdatedAt= DateTime.Now; 
+                        missionApplication.ApprovalStatus = ApplicationApprovalStatus.APPROVE.ToString();
+                        missionApplication.UpdatedAt = DateTime.Now;
                         _db.MissionApplications.Update(missionApplication);
                         _db.SaveChanges();
                         return missionApplication.ApprovalStatus;
                     }
                     else
                     {
-                        missionApplication.ApprovalStatus = "DECLINE";
+                        missionApplication.ApprovalStatus = ApplicationApprovalStatus.DECLINE.ToString();
                         missionApplication.UpdatedAt = DateTime.Now;
                         _db.MissionApplications.Update(missionApplication);
                         _db.SaveChanges();
@@ -52,7 +79,7 @@ namespace CI_Platform.Repository.Repository
                     }
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return ex.Message;
             }
@@ -61,7 +88,7 @@ namespace CI_Platform.Repository.Repository
 
         public List<Story> StoryList()
         {
-            return _db.Stories.Where(story=>story.DeletedAt == null && story.Status == "PENDING").Include(story=>story.Mission).Include(story=>story.User).ToList();
+            return _db.Stories.Where(story => story.DeletedAt == null && story.Status == StoryApprovalStatus.PENDING.ToString()).Include(story => story.Mission).Include(story => story.User).ToList();
         }
 
         public string ApproveDeclineStory(long StoryId, long Status)
@@ -77,7 +104,7 @@ namespace CI_Platform.Repository.Repository
                 {
                     if (Status == 1)
                     {
-                        story.Status = "PUBLISHED";
+                        story.Status = StoryApprovalStatus.PUBLISHED.ToString();
                         story.PublishedAt = DateTime.Now;
                         _db.Stories.Update(story);
                         _db.SaveChanges();
@@ -85,7 +112,7 @@ namespace CI_Platform.Repository.Repository
                     }
                     else
                     {
-                        story.Status = "DECLINED";
+                        story.Status = StoryApprovalStatus.DECLINED.ToString();
                         story.UpdatedAt = DateTime.Now;
                         _db.Stories.Update(story);
                         _db.SaveChanges();
@@ -119,6 +146,86 @@ namespace CI_Platform.Repository.Repository
             catch (Exception)
             {
                 return false;
+            }
+        }
+
+        public List<Comment> CommentList()
+        {
+            return _db.Comments.Where(comment => comment.DeletedAt == null && comment.ApprovalStatus == CommentApprovalStatus.PENDING.ToString()).Include(comment => comment.Mission).Include(comment => comment.User).ToList();
+        }
+
+        public string ApproveDeclineComments(long CommentId, long Status)
+        {
+            try
+            {
+                Comment comment = _db.Comments.Find(CommentId)!;
+                if (comment == null)
+                {
+                    return "error";
+                }
+                else
+                {
+                    if (Status == 1)
+                    {
+                        comment.ApprovalStatus = CommentApprovalStatus.PUBLISHED.ToString();
+                        comment.UpdatedAt = DateTime.Now;
+                        _db.Comments.Update(comment);
+                        _db.SaveChanges();
+                        return comment.ApprovalStatus;
+                    }
+                    else
+                    {
+                        comment.ApprovalStatus = CommentApprovalStatus.DECLINED.ToString();
+                        comment.UpdatedAt = DateTime.Now;
+                        _db.Comments.Update(comment);
+                        _db.SaveChanges();
+                        return comment.ApprovalStatus;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public List<Timesheet> TimesheetList()
+        {
+            return _db.Timesheets.Where(timesheet => timesheet.DeletedAt == null && timesheet.Status == TimesheetApprovalStatus.PENDING.ToString()).Include(timesheet => timesheet.Mission).Include(timesheet => timesheet.User).ToList();
+        }
+
+        public string ApproveDeclineTimesheets(long TimesheetId, long Status)
+        {
+            try
+            {
+                Timesheet timesheet = _db.Timesheets.Find(TimesheetId)!;
+                if (timesheet == null)
+                {
+                    return "error";
+                }
+                else
+                {
+                    if (Status == 1)
+                    {
+                        timesheet.Status = TimesheetApprovalStatus.APPROVED.ToString();
+                        timesheet.UpdatedAt = DateTime.Now;
+                        _db.Timesheets.Update(timesheet);
+                        _db.SaveChanges();
+                        return timesheet.Status;
+                    }
+                    else
+                    {
+                        timesheet.Status = TimesheetApprovalStatus.DECLINED.ToString();
+                        timesheet.UpdatedAt = DateTime.Now;
+                        _db.Timesheets.Update(timesheet);
+                        _db.SaveChanges();
+                        return timesheet.Status;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
             }
         }
     }

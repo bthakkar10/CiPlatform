@@ -12,7 +12,7 @@ namespace CI_Platform.Repository.Interface
     {
         public List<Banner> BannerList();
 
-        public bool BannerAdd(AdminBannerViewModel bannervm);
+        public string BannerAdd(AdminBannerViewModel bannervm);
 
         public bool BannerDelete(long BannerId);
 

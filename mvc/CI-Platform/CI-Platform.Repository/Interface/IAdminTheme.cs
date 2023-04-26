@@ -18,7 +18,7 @@ namespace CI_Platform.Repository.Interface
 
         public AdminThemeViewModel GetThemeData(long ThemeId);
 
-        public bool EditTheme(AdminThemeViewModel themevm);
+        public string EditTheme(AdminThemeViewModel themevm);
 
 
     }

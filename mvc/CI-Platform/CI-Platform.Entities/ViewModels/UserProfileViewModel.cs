@@ -13,6 +13,7 @@ namespace CI_Platform.Entities.ViewModels
     {
         public User? GetUserDetails { get; set; }
 
+
         [Required (ErrorMessage = "First Name is Required!!" )]
         [MaxLength(16, ErrorMessage = "Only 16 characters are allowed!!")]
         public string FirstName { get; set; } = string.Empty;
@@ -39,13 +40,10 @@ namespace CI_Platform.Entities.ViewModels
 
         [RegularExpression(@"^https:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9-]+$", ErrorMessage = "Please enter a valid LinkedIn URL.")]
         public string? LinkedInUrl { get; set; }
-
         
         public long? CountryId { get; set;}
 
-        
         public long? CityId { get; set; }
-
 
         public string? Availibility { get; set; }
 
@@ -64,5 +62,7 @@ namespace CI_Platform.Entities.ViewModels
         public string? Avatar { get; set; }
 
         public IFormFile? UpdatedAvatar { get; set; }   
+
+        public long UserId { get; set; }       
     }
 }

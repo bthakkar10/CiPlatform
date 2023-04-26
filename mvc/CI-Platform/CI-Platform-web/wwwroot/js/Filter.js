@@ -564,7 +564,7 @@ function favourite() {
 }
 
 //to add or update ratings
-$('.rating-star i').on('click', function () {
+$('.rating-mission-detail').on('click', function () {
     var rating = $(this).index() + 1;
     var missionId = $(this).data('mission-id');
     var selectedIcon = $(this).prevAll().addBack();
@@ -1582,8 +1582,6 @@ $(document).on('click','.EditButtonDataFetch',function ()
         data: { TimeSheetId: TimeSheetId },
         success: function (result) {
             if (result.mission.title != null) {
-               
-                console.log(result)
                 /*$("#GoalAddSelection").empty();*/
                 var start_date = new Date(result.mission.startDate);
                 var end_date = new Date(result.mission.endDate);
@@ -1604,16 +1602,16 @@ $(document).on('click','.EditButtonDataFetch',function ()
                 $("#TimeAddSelection").val(result.missionId)
                 $('#TimeDate').val(formattedDate);
                 $('#TimeMessageTextarea').text(result.notes);
-                const timeString = result.time;
-                const hours = timeString.split(':')[0];
-                const minutes = timeString.split(":")[1];
-                $('#TimeHours').val(hours);
-                $('#TimeMinutes').val(minutes);
-
+                
                 if (result.mission.missionType == "Goal") {
                     $("#GoalTimesheetId").val(result.timesheetId);
                 }
                 if (result.mission.missionType == "Time") {
+                    const timeString = result.time;
+                    const hours = timeString.split(':')[0];
+                    const minutes = timeString.split(":")[1];
+                    $('#TimeHours').val(hours);
+                    $('#TimeMinutes').val(minutes);
                     $("#TimeBasedTimesheetId").val(result.timesheetId);
                 }
             }

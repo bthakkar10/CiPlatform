@@ -1,6 +1,7 @@
 ﻿using CI_Platform.Entities.DataModels;
 using CI_Platform.Entities.ViewModels;
 using CI_Platform.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                Skill DoesSkillExist = _db.Skills.FirstOrDefault(skill=>skill.SkillName!.ToLower() == skillvm.SkillName.ToLower())!;
+                Skill DoesSkillExist = _db.Skills.FirstOrDefault(skill => skill.SkillName!.ToLower() == skillvm.SkillName.ToLower())!;
                 if (DoesSkillExist == null)
                 {
                     Skill skill = new()
@@ -41,7 +42,7 @@ namespace CI_Platform.Repository.Repository
                 }
                 else
                 {
-                    if(DoesSkillExist != null && DoesSkillExist.DeletedAt == null)
+                    if (DoesSkillExist != null && DoesSkillExist.DeletedAt == null)
                     {
                         return "Exists";
                     }
@@ -53,7 +54,7 @@ namespace CI_Platform.Repository.Repository
                         _db.SaveChanges();
                         return "Added";
                     }
-                   
+
                 }
             }
             catch (Exception ex)
@@ -92,24 +93,33 @@ namespace CI_Platform.Repository.Repository
             return skillvm;
         }
 
-        public bool EditSkill(AdminSkillsViewModel skillvm)
+        public string EditSkill(AdminSkillsViewModel skillvm)
         {
-            Skill skill = _db.Skills.Find(skillvm.SkillId)!;
-
-            if (skill != null)
+            try
             {
-                skill.SkillName = skillvm.SkillName;
-                skill.Status = skillvm.Status;
-                skill.UpdatedAt = DateTime.Now;
-                _db.Skills.Update(skill);
-                _db.SaveChanges();
-                return true;
+                if (_db.Skills.FirstOrDefault(skill => skill.SkillName!.ToLower() == skillvm.SkillName!.ToLower() && skill.SkillId != skillvm.SkillId) != null)
+                {
+                    return "Exists";
+                }
+                Skill skill = _db.Skills.Find(skillvm.SkillId)!;
+                if (skill != null)
+                {
+                    skill.SkillName = skillvm.SkillName;
+                    skill.Status = skillvm.Status;
+                    skill.UpdatedAt = DateTime.Now;
+                    _db.Skills.Update(skill);
+                    _db.SaveChanges();
+                    return "Updated";
+                }
+                else
+                {
+                    return "Error";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return false;
+                return ex.Message;
             }
-
         }
     }
 }

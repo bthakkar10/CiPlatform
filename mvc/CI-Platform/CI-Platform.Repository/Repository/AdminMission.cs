@@ -98,7 +98,18 @@ namespace CI_Platform.Repository.Repository
                 }
                 else
                 {
-                    return "Exists";
+                    if (DoesMissionExist != null && DoesMissionExist.DeletedAt == null)
+                    {
+                        return "Exists";
+                    }
+                    else
+                    {
+                        DoesMissionExist.DeletedAt = null;
+                        DoesMissionExist.UpdatedAt = DateTime.Now;
+                        _db.Update(DoesMissionExist);
+                        _db.SaveChanges();
+                        return "Added";
+                    }
                 }
             }
             catch (Exception ex)
@@ -302,12 +313,15 @@ namespace CI_Platform.Repository.Repository
 
         public AdminMissionViewModel GetMission(long MissionId)
         {
-            Mission mission = _db.Missions.Find(MissionId)!;
-            AdminMissionViewModel missionvm = new AdminMissionViewModel(mission);
-            missionvm.MissionUrlLinks = _db.MissionMedia.Where(missionMedia => missionMedia.MediaType == "vid" && missionMedia.MissionId == MissionId).Select(m => m.MediaPath).ToArray()!;
-            missionvm.MissionImagesList = _db.MissionMedia.Where(missionMedia => missionMedia.MediaType != "vid" && missionMedia.MissionId == MissionId).Select(m => m.MediaPath).ToArray()!;
-            missionvm.MissionDefaultImage = _db.MissionMedia.FirstOrDefault(missionMedia => missionMedia.MissionId == MissionId && missionMedia.Defaultval == true)?.MediaPath;
-            missionvm.MissionDocumentsList = _db.MissionDocuments.Where(missionDocuments => missionDocuments.MissionId == MissionId).Select(m => m.DocumentPath).ToArray()!;
+            Mission mission = _db.Missions.FirstOrDefault(m=>m.MissionId == MissionId && m.DeletedAt == null)!;
+            GoalMission goalMission = _db.GoalMissions.FirstOrDefault(m => m.MissionId == MissionId && m.DeletedAt == null)!;
+            AdminMissionViewModel missionvm = new(mission, goalMission)
+            {
+                MissionUrlLinks = _db.MissionMedia.Where(missionMedia => missionMedia.MediaType == "vid" && missionMedia.MissionId == MissionId).Select(m => m.MediaPath).ToArray()!,
+                MissionImagesList = _db.MissionMedia.Where(missionMedia => missionMedia.MediaType != "vid" && missionMedia.MissionId == MissionId).Select(m => m.MediaPath).ToArray()!,
+                MissionDefaultImage = _db.MissionMedia.FirstOrDefault(missionMedia => missionMedia.MissionId == MissionId && missionMedia.Defaultval == true)?.MediaPath,
+                MissionDocumentsList = _db.MissionDocuments.Where(missionDocuments => missionDocuments.MissionId == MissionId).Select(m => m.DocumentPath).ToArray()!
+            };
             return missionvm;
         }
 

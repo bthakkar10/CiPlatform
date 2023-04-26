@@ -18,6 +18,6 @@ namespace CI_Platform.Repository.Interface
 
         public AdminUserViewModel GetDataOnEdit(long UserId);
 
-        public bool EditUser(AdminUserViewModel vm);
+        public string EditUser(AdminUserViewModel vm);
     }
 }

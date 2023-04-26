@@ -2,6 +2,7 @@
 using CI_Platform.Entities.ViewModels;
 using CI_Platform.Repository.Interface;
 using CI_Platform.Repository.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -10,8 +11,10 @@ using System.Drawing.Printing;
 
 namespace CI_Platform_web.Controllers
 {
+    [Authorize(Roles = "user")]
     public class StoryController : Controller
     {
+       
         private readonly CiDbContext _db;
         private readonly IFilter _filterMission;
         private readonly IStoryListing _storyListing;
@@ -52,13 +55,7 @@ namespace CI_Platform_web.Controllers
         [HttpPost]
         public async Task<IActionResult> StoryListing(MissionFilterQueryParams queryParams)
         {
-            //if (HttpContext.Session.GetString("SEmail") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
-            //{
-            //    ViewBag.email = HttpContext.Session.GetString("SEmail");
-            //    ViewBag.UserId = HttpContext.Session.GetString("Id");
-            //    ViewBag.Username = HttpContext.Session.GetString("Username");
-            //}
-
+           
             var UserId = Convert.ToInt64(ViewBag.UserId);
             StoryListingViewModel vm = _storyListing.SPStory(queryParams);
            
@@ -184,6 +181,7 @@ namespace CI_Platform_web.Controllers
             return Ok(new { icon = "success", message = "Story is submitted successfully and will be published when admin approves!!" });
         }
 
+        [AllowAnonymous]
         public IActionResult StoryDetails(long MissionId, long UserId)
         {
             try
@@ -194,7 +192,7 @@ namespace CI_Platform_web.Controllers
                 }
                 long userId = Convert.ToInt64(HttpContext.Session.GetString("Id"));
 
-                StoryDetailsViewModel vm = new StoryDetailsViewModel();
+                StoryDetailsViewModel vm = new();
 
                 vm.GetStoryDetails = _storyDetails.GetStoryDetails(MissionId, UserId);
                 vm.UserList = _storyDetails.UserList(userId);

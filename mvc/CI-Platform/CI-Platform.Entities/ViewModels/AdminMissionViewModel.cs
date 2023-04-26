@@ -40,13 +40,15 @@ namespace CI_Platform.Entities.ViewModels
 
         public DateTime? Deadline { get; set; }
 
-        public int GoalValue { get; set; }
+        public int GoalValue { get; set; } = 0;
 
-        public string GoalObjectiveText { get; set; } = string.Empty;
+        public string? GoalObjectiveText { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Organization Name is Required!!")]
+        [MaxLength(255, ErrorMessage = "Maximum 255 characters are allowed!!")]
         public string? OrganizationName { get; set; } = string.Empty;
 
+        [MaxLength(40000, ErrorMessage = "Maximum 40000 characters are allowed!!")]
         [Required(ErrorMessage = "Organization Detail is Required!!")]
         public string? OrganizationDetail { get; set; } = string.Empty;
 
@@ -90,6 +92,8 @@ namespace CI_Platform.Entities.ViewModels
 
         public Mission GetMissionData { get; set; } = new Mission();
 
+        public GoalMission GoalMissionData { get; set; } = new GoalMission();
+
         public string[]? MissionUrlLinks { get; set; }
 
         public string[]? MissionImagesList{ get; set; }
@@ -98,7 +102,7 @@ namespace CI_Platform.Entities.ViewModels
 
         public string? MissionDefaultImage { get; set; } 
 
-    public AdminMissionViewModel(Mission GetMissionData)
+        public AdminMissionViewModel(Mission GetMissionData, GoalMission GoalMissionData)
         {
             MissionId = GetMissionData.MissionId;
             MissionTitle = GetMissionData.Title;
@@ -116,9 +120,12 @@ namespace CI_Platform.Entities.ViewModels
             ThemeId = GetMissionData.MissionThemeId;
             MissionType= GetMissionData.MissionType;
             Avaliablity = GetMissionData.Availability;
-            
-            //ImageList = GetMissionData.MissionMedia.
-            
+            if (GoalMissionData != null)
+            {
+                GoalValue = GoalMissionData.GoalValue;
+                GoalObjectiveText = GoalMissionData.GoalObjectiveText;
+            }
+
         }
     }
 }

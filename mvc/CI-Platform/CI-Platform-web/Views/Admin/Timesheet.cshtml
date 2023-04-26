@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "TimeSheet ";
+    Layout = "_AdminLayout";
+}
+@model CI_Platform.Entities.ViewModels.AdminApprovalViewModel
+<div class="container-fluid my-5 mx-2">
+    <h3 class="pb-1 border-bottom"><span class="heading-underline pb-1"> Mission Comments </span></h3>
+
+    @*    add button partial view call*@
+
+    <div class="table-responsive m-3">
+        <div class="d-flex my-4">
+            <div class="admin-search-box d-flex align-items-center border">
+                <img class="icon" src="~/images/search.png" alt="search-icon" />
+                <input id="searchUser" class="ms-sm-3" type="text" placeholder="Search" />
+            </div>
+
+
+        </div>
+
+        <table id="example" cellspacing="0" class="display table table-bordered align-middle" style="width:100%">
+
+
+            <thead class="gap-2">
+                <tr class="bg-light align-middle">
+                    <th>User Name</th>
+                    <th>Mission Title</th>
+                    <th>Goal Action</th>
+                    <th> Time Spent </th>
+                    <th>Date Volunteered </th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var timesheet in Model.TimesheetsList)
+                {
+                    <tr class="align-middle">
+                        <td>@timesheet.User.FirstName  @timesheet.User.LastName</td>
+                        <td>@timesheet.Mission.Title</td>
+                        <td>@timesheet.Action</td>
+                        <td>@timesheet.Time</td>
+                        <td>@timesheet.DateVolunteered</td>
+
+                        <td>
+                            <button class="p-0 btn ApproveOrDeclineTimesheet" id="TimesheetApprovalBtn" data-bs-toggle="modal" data-bs-target="#ApproveOrDeclineModal" data-timesheet-id="@timesheet.TimesheetId" data-status="1">
+                                <i class="fa-regular fa-circle-check" style="color: #00ff00;"></i>
+                            </button>
+
+                            <button class="btn p-0 ApproveOrDeclineTimesheet" id="TimesheetDeclineBtn" data-bs-target="#ApproveOrDeclineModal" data-bs-toggle="modal" data-timesheet-id="@timesheet.TimesheetId" data-status="0">
+                                <i class="fa-regular fa-circle-xmark" style="color: #ff0000;"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+        </table>
+        <div class="modal fade" id="ApproveOrDeclineModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <form method="post">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <input name="HiddenTimesheetId" id="HiddenTimesheetId" type="hidden" />
+                            <input name="HiddenStatus" id="HiddenStatus" type="hidden" />
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body" id="TimesheetModalBody">
+                            <div></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="me-3 btn rounded-pill btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" asp-controller="Admin" asp-action="ApproveOrDeclineTimesheet" class="btn rounded-pill btn-outline-success">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

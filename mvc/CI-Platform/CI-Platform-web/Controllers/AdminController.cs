@@ -9,6 +9,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace CI_Platform_web.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         private readonly IAdminUser _adminUser;
@@ -35,7 +36,7 @@ namespace CI_Platform_web.Controllers
         //------------------------------------------  User  Section Starts ---------------------------------------------------------- 
 
         [HttpGet]
-        [Authorize(Roles = "admin")]
+        
         public IActionResult User()
         {
             try
@@ -98,7 +99,7 @@ namespace CI_Platform_web.Controllers
                 }
                 else if (_adminUser.IsUserAdded(vm) == "Exists")
                 {
-                    TempData["error"] = "User Already Exists!!";
+                    TempData["error"] = "User with same Email or Employee Id Already Exists!!";
                     return RedirectToAction("User");
                 }
                 else
@@ -110,9 +111,14 @@ namespace CI_Platform_web.Controllers
             // to Update 
             else
             {
-                if (_adminUser.EditUser(vm))
+                if (_adminUser.EditUser(vm) == "Updated")
                 {
                     TempData["success"] = "User Updated Successfully!!";
+                    return RedirectToAction("User");
+                }
+                else if(_adminUser.EditUser(vm) == "Exists")
+                {
+                    TempData["error"] = "User with same Email or Employee Id Already Exists!!";
                     return RedirectToAction("User");
                 }
                 else
@@ -269,14 +275,19 @@ namespace CI_Platform_web.Controllers
             // to Update 
             else
             {
-                if (_adminTheme.EditTheme(themevm))
+                if (_adminTheme.EditTheme(themevm) == "Updated")
                 {
                     TempData["success"] = "Theme Updated Successfully!!";
                     return RedirectToAction("MissionTheme");
                 }
+                else if(_adminTheme.EditTheme(themevm) == "Exists")
+                {
+                    TempData["error"] = "Theme Already Exists";
+                    return RedirectToAction("MissionTheme");
+                }
                 else
                 {
-                    TempData["error"] = "Something went wrong!!";
+                    TempData["error"] = "Something went wrong!! Please try again later!!";
                     return RedirectToAction("MissionTheme");
                 }
             }
@@ -358,9 +369,14 @@ namespace CI_Platform_web.Controllers
             // to Update 
             else
             {
-                if (_adminSkills.EditSkill(skillvm))
+                if (_adminSkills.EditSkill(skillvm) == "Updated")
                 {
                     TempData["success"] = "Skill Updated Successfully!!";
+                    return RedirectToAction("MissionSKill");
+                }
+                else if(_adminSkills.EditSkill(skillvm) == "Exists")
+                {
+                    TempData["error"] = "Skill Already Exists!!";
                     return RedirectToAction("MissionSKill");
                 }
                 else
@@ -497,36 +513,39 @@ namespace CI_Platform_web.Controllers
             {
                 if (_adminMission.MissionAdd(missionvm) == "Added")
                 {
-                    TempData["success"] = "Mission Added Successfully!!";
-                    return RedirectToAction("AdminMission");
+                    return Ok(new { icon = "success", message = "Mission Added Successfully!!" });
+                    //return RedirectToAction("AdminMission");
                 }
                 else if (_adminMission.MissionAdd(missionvm) == "Exists")
                 {
-                    TempData["error"] = "Mission Already Exists!!";
-                    return RedirectToAction("AdminMission");
+                    return Ok(new { icon = "error", message = "Mission Already Exists!!"});
                 }
                 else
                 {
-                    TempData["error"] = "Something went wrong!!";
-                    return RedirectToAction("AdminMission");
+                    return Ok(new { icon = "error", message = "Something went wrong!!" });
+                    //TempData["error"] = "Something went wrong!!";
+                    //return RedirectToAction("AdminMission");
                 }
             }
             else
             {
                 if (_adminMission.MissionEdit(missionvm) == "Updated")
                 {
-                    TempData["success"] = "Mission Updated Successfully!!";
-                    return RedirectToAction("AdminMission");
+                    return Ok(new { icon = "success", message = "Mission Updated Successfully!!" });
+                    //TempData["success"] = "Mission Updated Successfully!!";
+                    //return RedirectToAction("AdminMission");
                 }
                 else if(_adminMission.MissionEdit(missionvm) == "Exists")
                 {
-                    TempData["error"] = "Mission Already Exists!!";
-                    return RedirectToAction("AdminMission");
+                    return Ok(new { icon = "error", message = "Mission Already Exists!!" });
+                    //TempData["error"] = "Mission Already Exists!!";
+                    //return RedirectToAction("AdminMission");
                 }
                 else
                 {
-                    TempData["error"] = "Something went wrong!!";
-                    return RedirectToAction("AdminMission");
+                    return Ok(new { icon = "error", message = "Something went wrong!!" });
+                    //TempData["error"] = "Something went wrong!!";
+                    //return RedirectToAction("AdminMission");
                 }
             }
         }
@@ -565,7 +584,6 @@ namespace CI_Platform_web.Controllers
 
 
         //------------------------------------------  Banner Section Starts ---------------------------------------------------------- 
-
         public IActionResult Banner()
         {
             AdminBannerViewModel bannervm = new AdminBannerViewModel();
@@ -596,9 +614,14 @@ namespace CI_Platform_web.Controllers
             //to add
             if (bannervm.BannerId == 0)
             {
-                if (_adminBanner.BannerAdd(bannervm))
+                if (_adminBanner.BannerAdd(bannervm) == "Added")
                 {
                     TempData["success"] = "Banner Added Successfully!!";
+                    return RedirectToAction("Banner");
+                }
+                else if(_adminBanner.BannerAdd(bannervm) == "Exists")
+                {
+                    TempData["error"] = "Sort Order Already Exists!!";
                     return RedirectToAction("Banner");
                 }
                 else
@@ -637,7 +660,77 @@ namespace CI_Platform_web.Controllers
                 return RedirectToAction("Banner");
             }
         }
-        //------------------------------------------  Cms  Section Ends ---------------------------------------------------------- 
+        //------------------------------------------  Banner  Section Ends ---------------------------------------------------------- 
+
+        //------------------------------------------  Comment Section Starts ---------------------------------------------------------- 
+
+        public IActionResult MissionComments()
+        {
+            AdminApprovalViewModel vm = new()
+            {
+                CommentsList = _adminApproval.CommentList()
+            };
+            return View(vm);
+        }
+
+        public IActionResult ApproveOrDeclineComment()
+        {
+            long CommentId = long.TryParse(Request.Form["HiddenCommentId"], out long result) ? result : 0;
+            long Status = long.TryParse(Request.Form["HiddenStatus"], out long resultStatus) ? resultStatus : 0;
+
+            if (_adminApproval.ApproveDeclineComments(CommentId, Status) == "PUBLISHED")
+            {
+                TempData["success"] = "Comment Approved Successfully";
+                return RedirectToAction("MissionComments");
+
+            }
+            else if (_adminApproval.ApproveDeclineComments(CommentId, Status) == "DECLINED")
+            {
+                TempData["success"] = "Comment Declined Successfully";
+                return RedirectToAction("MissionComments");
+            }
+            else
+            {
+                TempData["error"] = "Something went wrong!! Please try again later!!";
+                return RedirectToAction("MissionComments");
+            }
+        }
+        //------------------------------------------  Comment Section Ends ---------------------------------------------------------- 
+
+        //------------------------------------------  Timesheet Section Starts ---------------------------------------------------------- 
+
+        public IActionResult Timesheet()
+        {
+            AdminApprovalViewModel vm = new()
+            {
+                TimesheetsList = _adminApproval.TimesheetList()
+            };
+            return View(vm);
+        }
+
+        public IActionResult ApproveOrDeclineTimesheet()
+        {
+            long TimesheetId = long.TryParse(Request.Form["HiddenTimesheetId"], out long result) ? result : 0;
+            long Status = long.TryParse(Request.Form["HiddenStatus"], out long resultStatus) ? resultStatus : 0;
+
+            if (_adminApproval.ApproveDeclineTimesheets(TimesheetId, Status) == "APPROVED")
+            {
+                TempData["success"] = "Timesheet Approved Successfully";
+                return RedirectToAction("Timesheet");
+
+            }
+            else if (_adminApproval.ApproveDeclineTimesheets(TimesheetId, Status) == "DECLINED")
+            {
+                TempData["success"] = "Timesheet Declined Successfully";
+                return RedirectToAction("Timesheet");
+            }
+            else
+            {
+                TempData["error"] = "Something went wrong!! Please try again later!!";
+                return RedirectToAction("Timesheet");
+            }
+        }
+        //------------------------------------------  Timesheet Section Ends ---------------------------------------------------------- 
     }
 
 }

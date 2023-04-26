@@ -18,5 +18,13 @@ namespace CI_Platform.Repository.Interface
         public string ApproveDeclineStory(long StoryId, long Status);
 
         public bool IsStoryDeleted(long StoryId);
+
+        public List<Comment> CommentList();
+
+        public string ApproveDeclineComments(long CommentId, long Status);
+
+        public List<Timesheet> TimesheetList();
+
+        public string ApproveDeclineTimesheets(long TimesheetId, long Status);
     }
 }

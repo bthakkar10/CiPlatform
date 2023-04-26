@@ -254,14 +254,24 @@
                     <div class="mission-detail-border position-relative">
                         <div class="rounded-pill capsule-transparent stars">
                             <div class="rating-star m-2">
-                                @for (var i = 1; i <= @userRate; i++)
+                                @if(isAlreadyApplied)
                                 {
-                                    <i class="bi bi-star-fill text-warning m-2" data-mission-Id="@mission_id"></i>
+                                    @for (var i = 1; i <= @userRate; i++)
+                                    {
+                                        <i class="bi  bi-star-fill text-warning m-2 rating-mission-detail" data-mission-Id="@mission_id"></i>
 
+                                    }
+                                    @for (var i = 5; i > @userRate; i--)
+                                    {
+                                        <i class="bi  bi-star m-2 rating-mission-detail" data-mission-Id="@mission_id"></i>
+                                    }
                                 }
-                                @for (var i = 5; i > @userRate; i--)
+                                else
                                 {
-                                    <i class="bi bi-star m-2" data-mission-Id="@mission_id"></i>
+                                    @for(var i=0; i<5; i++)
+                                    {
+                                        <i class="bi bi-star m-2"></i>
+                                    }
                                 }
 
                             </div>

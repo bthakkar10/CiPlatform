@@ -16,8 +16,10 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CI_Platform_web.Controllers
 {
+    [Authorize(Roles = "user")]
     public class HomeController : Controller
     {
+       
         private readonly ILogger<HomeController> _logger;
         private readonly IFilter _filterMission;
         private readonly IMissionDisplay _missionDisplay;
@@ -36,7 +38,7 @@ namespace CI_Platform_web.Controllers
 
 
         //get method for homepage
-        [Authorize(Roles = "user")]
+       
         public IActionResult HomePage()
         {
             var userName = HttpContext.User?.Identity?.Name;

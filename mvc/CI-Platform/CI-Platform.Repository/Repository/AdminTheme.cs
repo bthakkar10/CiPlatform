@@ -93,24 +93,33 @@ namespace CI_Platform.Repository.Repository
             return themevm;
         }
 
-        public bool EditTheme(AdminThemeViewModel themevm)
+        public string EditTheme(AdminThemeViewModel themevm)
         {
-            MissionTheme theme = _db.MissionThemes.Find(themevm.ThemeId)!;
-
-            if (theme != null)
+            try
             {
-                theme.Title = themevm.ThemeName;
-                theme.Status = themevm.Status;
-                theme.UpdatedAt = DateTime.Now;
-                _db.MissionThemes.Update(theme);
-                _db.SaveChanges();
-                return true;
+                if (_db.MissionThemes.FirstOrDefault(missiontheme => missiontheme.Title!.ToLower() == themevm.ThemeName!.ToLower() && missiontheme.MissionThemeId != themevm.ThemeId) != null)
+                {
+                    return "Exists";
+                }
+                MissionTheme theme = _db.MissionThemes.Find(themevm.ThemeId)!;
+                if (theme != null)
+                {
+                    theme.Title = themevm.ThemeName;
+                    theme.Status = themevm.Status;
+                    theme.UpdatedAt = DateTime.Now;
+                    _db.MissionThemes.Update(theme);
+                    _db.SaveChanges();
+                    return "Updated";
+                }
+                else
+                {
+                    return "Error";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return false;
+                return ex.Message;
             }
-
         }
     }
 }

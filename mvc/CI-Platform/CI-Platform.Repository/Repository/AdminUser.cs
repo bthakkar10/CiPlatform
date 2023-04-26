@@ -29,7 +29,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                User DoesUserExists = _db.Users.Where(u => u.Email == vm.Email).FirstOrDefault()!;
+                User DoesUserExists = _db.Users.Where(u => u.Email == vm.Email || u.EmployeeId == vm.EmployeeId).FirstOrDefault()!;
                 if(DoesUserExists == null)
                 {
                     User user = new User()
@@ -54,7 +54,18 @@ namespace CI_Platform.Repository.Repository
                 }
                 else
                 {
-                    return "Exists";
+                    if (DoesUserExists != null && DoesUserExists.DeletedAt == null)
+                    {
+                        return "Exists";
+                    }
+                    else
+                    {
+                        DoesUserExists.DeletedAt = null!;
+                        DoesUserExists.UpdatedAt = DateTime.Now;
+                        _db.Update(DoesUserExists);
+                        _db.SaveChanges();
+                        return "Added";
+                    }
                 }
             }
             catch(Exception ex)
@@ -92,33 +103,45 @@ namespace CI_Platform.Repository.Repository
             AdminUserViewModel vm = new AdminUserViewModel(user);
             return vm;
         }
-        public bool EditUser( AdminUserViewModel vm )
+
+
+        public string EditUser( AdminUserViewModel vm )
         {
-            User user = _db.Users.Find(vm.UserId)!;
-            if(user != null)
+            try
             {
-                user.FirstName = vm.FirstName;
-                user.LastName = vm.Surname;
-                user.Email = vm.Email!;
-                user.PhoneNumber = vm.PhoneNumber!;
-                user.EmployeeId = vm.EmployeeId;
-                user.Department = vm.Department;
-                user.UpdatedAt = DateTime.Now;
-                user.CountryId = vm.CountryId;
-                user.CityId = vm.CityId;
-                user.Password = vm.Password;
-                user.Availability = vm.Availibility;
-                user.Status = vm.Status;    
-                user.Role = vm.Role;    
-                _db.Users.Update(user);
-                _db.SaveChanges();
-                return true;
+                if (_db.Users.FirstOrDefault(user=> (user.Email == vm.Email || user.EmployeeId == vm.EmployeeId) && user.UserId != vm.UserId) != null)
+                {
+                    return "Exists";
+                }
+                User user = _db.Users.Find(vm.UserId)!;
+                if (user != null)
+                {
+                    user.FirstName = vm.FirstName;
+                    user.LastName = vm.Surname;
+                    user.Email = vm.Email!;
+                    user.PhoneNumber = vm.PhoneNumber!;
+                    user.EmployeeId = vm.EmployeeId;
+                    user.Department = vm.Department;
+                    user.UpdatedAt = DateTime.Now;
+                    user.CountryId = vm.CountryId;
+                    user.CityId = vm.CityId;
+                    user.Password = vm.Password;
+                    user.Availability = vm.Availibility;
+                    user.Status = vm.Status;
+                    user.Role = vm.Role;
+                    _db.Users.Update(user);
+                    _db.SaveChanges();
+                    return "Updated";
+                }
+                else
+                {
+                    return "Error";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return false;
+                return ex.Message;
             }
-            
 
         }
     }

@@ -102,7 +102,7 @@
                     <input asp-for="StartDate" type="date" id="StartDate" required class="form-control">
                     <span asp-validation-for="StartDate" class="validate-text text-danger"></span>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" id="EndDateDiv" >
                     <label asp-for="EndDate" class="form-label ms-1">End Date</label>
                     <input asp-for="EndDate" type="date" id="MissionEndDate" required class="form-control" disabled>
                     <span asp-validation-for="EndDate" class="validate-text text-danger"></span>
@@ -119,28 +119,27 @@
             </div>
 
             <div class="row g-3 m-3" id="TimeBased">
-                <div class="col-md-6 ">
+                <div class="col-md-6" >
                     <label asp-for="Deadline" class="form-label  ms-1">Registration Deadline</label>
                     <input asp-for="Deadline" type="date" id="MissionDeadline" class="form-control" disabled>
                     <span asp-validation-for="Deadline" class="validate-text text-danger"></span>
                 </div>
 
-                <div class="col-md-6 ">
+                <div class="col-md-6 " >
                     <label asp-for="TotalSeats" class="form-label  ms-1">Total Seats</label>
                     <input asp-for="TotalSeats" type="text" id="TotalSeats" class="form-control" disabled>
                     <span asp-validation-for="TotalSeats" class="validate-text text-danger"></span>
-
                 </div>
             </div>
 
             <div class="row g-3 m-3 " id="GoalBased">
-                <div class="col-md-6">
+                <div class="col-md-6" >
                     <label asp-for="GoalValue" class="form-label ms-1">Goal Value</label>
                     <input asp-for="GoalValue" type="text" id="GoalValue" class="form-control" disabled>
                     <span asp-validation-for="GoalValue" class="validate-text text-danger"></span>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-6" >
                     <label asp-for="GoalObjectiveText" class="form-label ms-1">Goal Objective Text</label>
                     <input asp-for="GoalObjectiveText" type="text" id="GoalObjectiveText" class="form-control" disabled>
                     <span asp-validation-for="GoalObjectiveText" class="validate-text text-danger"></span>
@@ -262,8 +261,8 @@
                 }
             </div>
             <!--  -->
-            <div class="d-flex flex-wrap justify-content-between m-3">
-                <a class="btn btn-outline-secondary rounded-pill" href="@Url.Action("AdminMission", "Admin")">Cancel</a>
+            <div class="d-flex flex-wrap justify-content-end m-3">
+                <a class="btn btn-outline-secondary me-3 rounded-pill" href="@Url.Action("AdminMission", "Admin")">Cancel</a>
                 <button type="submit" id="MissionAddOrEditBtn" class="btn btn-outline-success rounded-pill addBtn">Save</button>
             </div>
         </div>

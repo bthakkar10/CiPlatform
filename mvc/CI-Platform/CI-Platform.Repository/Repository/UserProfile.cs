@@ -1,6 +1,7 @@
 ﻿using CI_Platform.Entities.DataModels;
 using CI_Platform.Entities.ViewModels;
 using CI_Platform.Repository.Interface;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,11 @@ namespace CI_Platform.Repository.Repository
     public class UserProfile : IUserProfile
     {
         private readonly CiDbContext _db;
-        public UserProfile(CiDbContext db)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public UserProfile(CiDbContext db, IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
+            _httpContextAccessor = httpContextAccessor;
         }
         public UserProfileViewModel GetUserDetails(long UserId)
         {
@@ -80,10 +83,14 @@ namespace CI_Platform.Repository.Repository
             }
         }
 
-        public bool EditUserProfile(long UserId, UserProfileViewModel vm)
+        public string EditUserProfile(long UserId, UserProfileViewModel vm)
         {
             try
             {
+                if (_db.Users.FirstOrDefault(user => user.EmployeeId == vm.EmployeeId && user.UserId != vm.UserId) != null)
+                {
+                    return "Exists";
+                }
                 User user = _db.Users.FirstOrDefault(u => u.UserId == UserId && u.DeletedAt == null)!;
 
                 user.FirstName = vm.FirstName;
@@ -104,24 +111,21 @@ namespace CI_Platform.Repository.Repository
                 {
                     //var OldImg = user.Avtar;
                     var NewImg = vm.UpdatedAvatar.FileName;
-                    var guid = Guid.NewGuid().ToString().Substring(0, 8);
+                    var guid = Guid.NewGuid().ToString()[..8];
                     var fileName = $"{guid}_{NewImg}"; // getting filename
 
-                    //if (OldImg != null)
-                    //{
-                    //    File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Upload/User", fileName));// for deleting old img
-                    //}
-
+                    
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Upload/User", fileName);//for updating new img
 
                     user.Avtar = fileName;
+                    _httpContextAccessor.HttpContext.Session.SetString("Avatar", fileName);
+                    using var stream = new FileStream(filePath, FileMode.Create);
+                    vm.UpdatedAvatar.CopyTo(stream);
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        vm.UpdatedAvatar.CopyTo(stream);
-                    }
+                    //_httpContextAccessor.HttpContext.Session.SetString("Avtar", vm.UpdatedAvatar.FileName);
+                    //var Avtar = HttpContext.User?.FindFirst("CustomClaimForUser")?.Value;
+
                 }
-
                 //for skills
                 string[] SkillsArr = new string[0];
                 if (vm.UpdatedUserSkills != null)
@@ -148,11 +152,11 @@ namespace CI_Platform.Repository.Repository
                 }
                 _db.Update(user);
                 _db.SaveChanges();
-                return true;
+                return "Updated";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                return ex.Message;
             }
 
         }

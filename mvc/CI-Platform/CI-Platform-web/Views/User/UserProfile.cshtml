@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "_Layout";
     ViewData["Title"] = "User Profile";
+   
 }
 @model CI_Platform.Entities.ViewModels.UserProfileViewModel
 <div class="container py-5">
@@ -74,7 +75,7 @@
         <div class="col-lg-10 px-2 ps-4 my-4 my-xl-0">
             <form method="post" enctype="multipart/form-data">
                 <input type="file" asp-for="UpdatedAvatar" class="d-none" id="profile-image-input" />
-
+                <input  asp-for="UserId" value="@ViewBag.userId" class="d-none"/>
                 @*basic information*@
                 <div class="my-4 my-xl-0 row g-3">
                     <h2 class="pb-1 border-bottom"><span class="form-underline pb-1"> Basic Information</span></h2>
@@ -175,11 +176,7 @@
                 <div class="mb-2 row g-3">
                     <h2 class="pb-1 border-bottom"><span class="form-underline pb-1"> My Skills</span></h2>
                     <div class="user-skills-container">
-                        @*  @foreach (var skill in Model.UserSkills)
-                        {
-
-                        <label >@skill.Skill.SkillName</label>
-                        }*@
+                        
                     </div>
                     <div class="col-12">
                         <button type="button" data-bs-toggle="modal" data-bs-target="#AddSkillsModal" class="btn btn-outline-secondary rounded-pill" data>Add Skills</button>

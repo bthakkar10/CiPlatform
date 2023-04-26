@@ -393,19 +393,17 @@ $(document).on('click', '#AddOrUpdateMissionBtn', function () {
 });
 //start end and registration dates validations
 $(document).ready(function () {
-    $("#MissionEndDate").prop('disabled', true);
-    $("#MissionDeadline").prop('disabled', true);
+    $('#EndDateDiv').hide();
 })
 // Add event listener to StartDate input
 $(document).on('change', '#StartDate', function () {
     // Get selected value of StartDate
     var startDate = $(this).val();
+    $("#MissionDeadline").attr('disabled', false);
+    $("#MissionEndDate").attr('disabled', false);
     // Set min attribute of EndDate to startDate + 1 day
     $("#MissionEndDate").attr('min', addDays(startDate, 1));
     $("#MissionDeadline").attr('max', addDays(startDate, -1));
-    // Enable EndDate
-    $("#MissionEndDate").prop('disabled', false);
-    $("#MissionDeadline").attr('disabled', false);
 });
 // Function to add days to a date
 function addDays(dateString, days) {
@@ -637,7 +635,7 @@ function handleDocFiles(e) {
             return false;
         }
 
-         //Validate doc size
+        //Validate doc size
         if (docfile.size > 4 * 1024 * 1024) {
             swal.fire({
                 position: 'top-end',
@@ -753,17 +751,20 @@ $(document).on('change', '#mission-doc-input', function (e) {
         DocfileInput.disabled = true;
     }
 });
-
+//submitting mission form
 $(document).on('submit', '#MissionForm', function (e) {
     e.preventDefault();
     e.stopPropagation();
-
+    $('#MissionDeadline').prop('disabled', false);
+    $('#TotalSeats').prop('disabled', false);
+    $('#GoalValue').prop('disabled', false);
+    $('#GoalObjectiveText').prop('disabled', false);
+    $("#MissionEndDate").prop('disabled', false);
     if ($(this).valid()) {
 
         var myform = document.getElementById("MissionForm");
         var MissionFormData = new FormData(myform);
         console.log(MissionFormData)
-
 
         for (let i = 0; i < allfiles.length; i++) {
             MissionFormData.append('ImageList', allfiles[i]);
@@ -776,7 +777,6 @@ $(document).on('submit', '#MissionForm', function (e) {
         if (DefaultImage != null) {
             MissionFormData.append('DefaultMissionImg', DefaultImage);
         }
-        console.log(DefaultImage)
 
         let urls = null;
         let u = $('#MissionYoutubeUrl').val();
@@ -799,6 +799,13 @@ $(document).on('submit', '#MissionForm', function (e) {
             contentType: false,
             data: MissionFormData,
             success: function (result) {
+                swal.fire({
+                    position: 'top-end',
+                    icon: result.icon,
+                    title: result.message,
+                    showConfirmButton: false,
+                    timer: 4000
+                });
 
             },
             error: function (error) {
@@ -811,12 +818,6 @@ $(document).on('submit', '#MissionForm', function (e) {
 //DATA FETCHING FOR MISSION EDIT
 $(document).on('click', '#EditBtnMissionDataFetch', function () {
     var MissionId = $(this).data('mission-id');
-  
-    $("#MissionEndDate").attr('disabled', false);
-    $("#MissionDeadline").attr('disabled', false);
-    $("#TotalSeats").attr('disabled', false)
-    $("#GoalValue").attr('disabled', false);
-    $("#GoalObjectiveText").attr('disabled', false);
     $.ajax({
         url: '/Admin/GetMissionData',
         type: 'GET',
@@ -833,8 +834,7 @@ $(document).on('click', '#EditBtnMissionDataFetch', function () {
                 return $(this).val();
             }).get();
             var defaultimg = $('.mission-img-edit-default').val();
-            //DefaultImage = file;
-            //console.log(DefaultImage);
+
             $.each(imageArr, async function (index, item) {
                 var file = imageArr[index];
                 var image = $('<img>').attr('src', '/images/Upload/Mission/' + imageArr[index]);
@@ -849,8 +849,8 @@ $(document).on('click', '#EditBtnMissionDataFetch', function () {
                     item.addClass('default-img');
                     DefaultImage = files;
                 }
-               
-                
+
+
                 item.on('click', function () {
                     if ($(this).hasClass('default-img')) {
                         // remove default image class from clicked image
@@ -879,18 +879,17 @@ $(document).on('click', '#EditBtnMissionDataFetch', function () {
 
                 allfiles.push(files);
             });
+            //for youtubeurls 
             var url = '';
-           
+            $('#MissionYoutubeUrl').empty();
             var UrlRecords = $('.mission-url-edit').map(function () {
                 return $(this).val();
             }).get();
-            console.log(UrlRecords)
             $.each(UrlRecords, async function (index, item) {
                 url += item + '\n';
             });
-            console.log(url)
             $('#MissionYoutubeUrl').append(url);
-
+            //for documents 
             $('#mission-doc-output').empty();
             var docArr = $('.mission-doc-edit').map(function () {
                 return $(this).val();
@@ -905,18 +904,13 @@ $(document).on('click', '#EditBtnMissionDataFetch', function () {
                 const response = await fetch('/documents/' + docfile);
                 const blob = await response.blob();
                 const docfiles = new File([blob], docfile, { type: blob.type });
-                console.log(docfiles)
                 // Handle close icon click event
                 closebtn.on('click', function () {
-                  /* const removedFile = $(this).closest('.document').data('file');*/
                     allDocfiles.splice(allDocfiles.indexOf(docfiles), 1);
-                    console.log(allDocfiles);
                     item.remove();
                 });
                 allDocfiles.push(docfiles);
             });
-
-
         },
         error: function () {
             swal.fire({
@@ -954,7 +948,7 @@ $(document).on('change', '#BannerImg', function () {
 });
 
 //APPEND PARTIAL VIEW FOR ADD OR EDIT banner PAGE
-$(document).on('click', '#AddOrUpdateBanner', function () {
+$(document).on('click', '#AddOrUpdateBannerBtn', function () {
     $.ajax({
         url: '/Admin/AddOrUpdateBanner',
         type: 'GET',
@@ -1002,4 +996,44 @@ $(document).on('click', '#EditBtnBanner', function () {
 $(document).on('click', '#DeleteBannerBtn', function () {
     var BannerId = $(this).data('banner-id');
     $("#HiddenBannerId").val(BannerId);
+});
+
+//to get id of comment to decline or approve it 
+$(document).on('click', '.ApproveOrDeclineComment', function () {
+    var CommentId = $(this).data('comment-id');
+    $("#HiddenCommentId").val(CommentId);
+});
+//to fetch data for approval of comment
+$(document).on('click', '#CommentApprovalBtn', function () {
+    var Status = $(this).data('status');
+    $("#HiddenStatus").val(Status);
+    const isDeclineBtn = false; // or false
+    $('#CommentModalBody div').text(isDeclineBtn ? 'Are you sure you want to decline this Comment??' : 'Are you sure you want to approve this Comment??');
+});
+//to fetch data for decline of comment
+$(document).on('click', '#CommentDeclineBtn', function () {
+    var Status = $(this).data('status');
+    $("#HiddenStatus").val(Status);
+    const isDeclineBtn = true; // or false
+    $('#CommentModalBody div').text(isDeclineBtn ? 'Are you sure you want to decline this Comment??' : 'Are you sure you want to approve this Comment??');
+});
+
+//to get id of timesheet to decline or approve it 
+$(document).on('click', '.ApproveOrDeclineTimesheet', function () {
+    var TimesheetId = $(this).data('timesheet-id');
+    $("#HiddenTimesheetId").val(TimesheetId);
+});
+//to fetch data for approval of timesheet
+$(document).on('click', '#TimesheetApprovalBtn', function () {
+    var Status = $(this).data('status');
+    $("#HiddenStatus").val(Status);
+    const isDeclineBtn = false; // or false
+    $('#TimesheetModalBody div').text(isDeclineBtn ? 'Are you sure you want to decline this Timesheet??' : 'Are you sure you want to approve this Timesheet??');
+});
+//to fetch data for decline of timesheet
+$(document).on('click', '#TimesheetDeclineBtn', function () {
+    var Status = $(this).data('status');
+    $("#HiddenStatus").val(Status);
+    const isDeclineBtn = true; // or false
+    $('#TimesheetModalBody div').text(isDeclineBtn ? 'Are you sure you want to decline this Timesheet??' : 'Are you sure you want to approve this Timesheet??');
 });

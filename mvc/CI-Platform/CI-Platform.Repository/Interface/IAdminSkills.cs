@@ -18,6 +18,6 @@ namespace CI_Platform.Repository.Interface
 
         public AdminSkillsViewModel GetSkills(long SkillId);
 
-        public bool EditSkill(AdminSkillsViewModel skillvm);
+        public string EditSkill(AdminSkillsViewModel skillvm);
     }
 }

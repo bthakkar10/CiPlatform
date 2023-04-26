@@ -103,20 +103,7 @@
                 </a>
                 @*navbar starts*@
                 <div class="d-flex d-none d-md-flex">
-                    <a class="nav-item nav-link " href="#">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="text-dark p-2">Explore</span>
-                                <img src="~/images/drop-down.png">
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </li>
-                    </a>
+                    
 
 
                     <a class="nav-item nav-link " href="#">
@@ -133,14 +120,7 @@
                             </a>
                         </li>
                     </a>
-                    <a class="nav-item nav-link " href="#">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="text-dark p-2">News</span>
-                            </a>
-                        </li>
-                    </a>
+                   
                     <a class="nav-item nav-link " href="#">
                         <li class="nav-item dropdown">
                             <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
@@ -149,9 +129,10 @@
                                 <img src="~/images/drop-down.png">
                             </a>
                             <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                <li><a class="dropdown-item"  asp-controller="PrivacyPolicy" asp-action="PrivacyPolicy">Introduction</a></li>
+                                <li><a class="dropdown-item" asp-controller="PrivacyPolicy" asp-action="PrivacyPolicy">How we use Cookies?</a></li>
+                                <li><a class="dropdown-item" asp-controller="PrivacyPolicy" asp-action="PrivacyPolicy">Manage Cookies</a></li>
+                                <li><a class="dropdown-item" asp-controller="PrivacyPolicy" asp-action="PrivacyPolicy">Cookies Preferences</a></li>
                             </ul>
                         </li>
                     </a>

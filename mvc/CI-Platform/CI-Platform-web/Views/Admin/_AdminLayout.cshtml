@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
 
-       <link rel="stylesheet" href="~/css/AdminStyle.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/AdminStyle.css" asp-append-version="true">
 
-   @* bootstrap*@
+    @* bootstrap*@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 
@@ -18,131 +18,150 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        @*  toastr notification*@
+    @*  toastr notification*@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
     @*datatables*@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.bootstrap5.min.css">
 
- 
+
 
 </head>
 
 
 
-    <nav>
-        <div class="sidebar-top">
-            <span class="shrink-btn">
-                <i class="fa-solid fa-angle-left"></i>
-            </span>
+<nav>
+    <div class="sidebar-top">
+        <span class="shrink-btn">
+            <i class="fa-solid fa-angle-left"></i>
+        </span>
 
-            <h4 class="hide">Navigation</h4>
-        </div>
+        <h4 class="hide">Navigation</h4>
+    </div>
 
-    
 
-        <div class="sidebar-links">
-            <ul>
-      
-                <li class="tooltip-element" data-tooltip="0">
-                    <a asp-controller="Admin" asp-action="User" class="nav-link" data-active="0">
-                        <div class="icon">
-                            <i class="fa-solid fa-user"></i>
 
-                        </div>
-                        <span class="link hide">User</span>
-                    </a>
-                </li>
-                <li class="tooltip-element" data-tooltip="1">
-                    <a asp-controller="Admin" asp-action="CmsPage" class="nav-link"  data-active="1">
-                        <div class="icon">
-                            <i class="fa-solid fa-file-lines"></i>
-                        </div>
-                        <span class="link hide">CMS Page</span>
-                    </a>
-                </li>
-                <li class="tooltip-element" data-tooltip="2">
-                    <a asp-controller="Admin" asp-action="AdminMission" data-active="2" class="nav-link">
-                        <div class="icon">
-                            <i class="bi bi-bullseye"></i>
-                        </div>
-                        <span class="link hide">Mission</span>
-                    </a>
-                </li>
-                <li class="tooltip-element" data-tooltip="3">
-                    <a asp-controller="Admin" asp-action="MissionTheme" data-active="3" class="nav-link">
-                        <div class="icon">
-                            <i class="bi bi-wallet-fill"></i>
-                        </div>
-                        <span class="link hide">Mission Theme</span>
-                    </a>
-                </li>
-                <li class="tooltip-element" data-tooltip="4">
-                    <a asp-controller="Admin" asp-action="MissionSkill" data-active="4" class="nav-link">
-                        <div class="icon">
-                            <i class="fa-sharp fa-solid fa-screwdriver-wrench"></i>
-                        </div>
-                        <span class="link hide">Mission Skills</span>
-                    </a>
-                </li>
-                <li class="tooltip-element" data-tooltip="5">
-                    <a asp-controller="Admin" asp-action="MissionApplication" data-active="5" class="nav-link">
-                        <div class="icon">
-                            <i class="fa-solid fa-folder"></i>
-                        </div>
-                        <span class="link hide">Mission Applications</span>
-                    </a>
-                </li>
-                <li class="tooltip-element" data-tooltip="6">
-                    <a asp-controller="Admin" asp-action="Story" data-active="6" class="nav-link">
-                        <div class="icon">
-                            <i class="fa-duotone fa-book"></i>
-                        </div>
-                        <span class="link hide">Story</span>
-                    </a>
-                </li>
-                <li class="tooltip-element" data-tooltip="7">
+    <div class="sidebar-links">
+        <ul>
+
+            <li class="tooltip-element" data-tooltip="0">
+                <a asp-controller="Admin" asp-action="User" class="nav-link" data-active="0">
+                    <div class="icon">
+                        <i class="fa-solid fa-user"></i>
+
+                    </div>
+                    <span class="link hide">User</span>
+                </a>
+            </li>
+            <li class="tooltip-element" data-tooltip="1">
+                <a asp-controller="Admin" asp-action="CmsPage" class="nav-link" data-active="1">
+                    <div class="icon">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </div>
+                    <span class="link hide">CMS Page</span>
+                </a>
+            </li>
+            <li class="tooltip-element" data-tooltip="2">
+                <a asp-controller="Admin" asp-action="AdminMission" data-active="2" class="nav-link">
+                    <div class="icon">
+                        <i class="bi bi-bullseye"></i>
+                    </div>
+                    <span class="link hide">Mission</span>
+                </a>
+            </li>
+            <li class="tooltip-element" data-tooltip="3">
+                <a asp-controller="Admin" asp-action="MissionTheme" data-active="3" class="nav-link">
+                    <div class="icon">
+                        <i class="bi bi-wallet-fill"></i>
+                    </div>
+                    <span class="link hide">Mission Theme</span>
+                </a>
+            </li>
+            <li class="tooltip-element" data-tooltip="4">
+                <a asp-controller="Admin" asp-action="MissionSkill" data-active="4" class="nav-link">
+                    <div class="icon">
+                        <i class="fa-sharp fa-solid fa-screwdriver-wrench"></i>
+                    </div>
+                    <span class="link hide">Mission Skills</span>
+                </a>
+            </li>
+            <li class="tooltip-element" data-tooltip="5">
+                <a asp-controller="Admin" asp-action="MissionApplication" data-active="5" class="nav-link">
+                    <div class="icon">
+                        <i class="fa-solid fa-folder"></i>
+                    </div>
+                    <span class="link hide">Mission Applications</span>
+                </a>
+            </li>
+            <li class="tooltip-element" data-tooltip="6">
+                <a asp-controller="Admin" asp-action="Story" data-active="6" class="nav-link">
+                    <div class="icon">
+                        <i class="fa-solid fa-book"></i>
+                    </div>
+                    <span class="link hide">Story</span>
+                </a>
+            </li>
+            <li class="tooltip-element" data-tooltip="7">
                 <a asp-controller="Admin" asp-action="Banner" data-active="7" class="nav-link">
-                        <div class="icon">
-                            <i class="bi bi-card-heading"></i>
-                        </div>
-                        <span class="link hide">Banner Management</span>
-                    </a>
-                </li>
-                <div class="tooltip">
-                    <span class="show">User</span>
-                    <span>CMS Page</span>
-                    <span>Mission</span>
-                    <span>Theme</span>
-                    <span>Skills</span>
-                    <span> Applications</span>
-                    <span>Story</span>
-                    <span>Banner</span>
-                </div>
-            </ul>
-        </div>
+                    <div class="icon">
+                        <i class="bi bi-card-heading"></i>
+                    </div>
+                    <span class="link hide">Banner Management</span>
+                </a>
+            </li>
+            <li class="tooltip-element" data-tooltip="8">
+                <a asp-controller="Admin" asp-action="MissionComments" data-active="8" class="nav-link">
+                    <div class="icon">
+                        <i class="fa-solid fa-comment"></i>
+                    </div>
+                    <span class="link hide">Mission Comments</span>
+                </a>
+            </li>
+            <li class="tooltip-element" data-tooltip="9">
+                <a asp-controller="Admin" asp-action="Timesheet" data-active="9" class="nav-link">
+                    <div class="icon">
+                        <i class="fa-thin fa-file-lines"></i>
+                    </div>
+                    <span class="link hide">Timesheet</span>
+                </a>
+            </li>
 
-       
-    </nav>
+            <div class="tooltip">
+                <span class="show">User</span>
+                <span>CMS Page</span>
+                <span>Mission</span>
+                <span>Theme</span>
+                <span>Skills</span>
+                <span> Applications</span>
+                <span>Story</span>
+                <span>Banner</span>
+                <span>Comments</span>
+                <span>Timesheet</span>
+            </div>
+        </ul>
+    </div>
+
+
+</nav>
 
 <body>
     <main role="main">
 
         <header class="container-fluid">
-          <div class=" header-box ">
+            <div class=" header-box ">
                 <div id="datetime"></div>
-              
-                   <div class=" nav-item dropdown">
-                    @await Component.InvokeAsync("UserHeader", "_ProfileSection")
-                       
-                   </div>
-              
 
-            
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-          </div>
-           
+                <div class=" nav-item dropdown">
+                    @await Component.InvokeAsync("UserHeader", "_ProfileSection")
+
+                </div>
+
+
+
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+            </div>
+
         </header>
         <partial name="_Notification" />
         @RenderBody()
@@ -150,67 +169,67 @@
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
         <partial name="_ValidationScriptsPartial" />
     </main>
-  
+
 
     @*sweetalert script*@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
- @*   tinymce text editor*@
+    @*   tinymce text editor*@
     <script src="https://cdn.jsdelivr.net/npm/tinymce@5/tinymce.min.js"></script>
 
 
-@*    datatable*@
-   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.4.0/js/responsive.bootstrap5.min.js"></script>
+    @*    datatable*@
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.0/js/responsive.bootstrap5.min.js"></script>
     <script>
-            let dataTable = $('#example').DataTable(
-                {
-                    responsive: true,
-                    language: {
-                        "paginate": {
-                            "previous": "&lt",
-                            "next": "&gt",
-                            "first": "&lt&lt",
-                            "last": "&gt&gt"
-                        }
-                    },
+        let dataTable = $('#example').DataTable(
+            {
+                responsive: true,
+                language: {
+                    "paginate": {
+                        "previous": "&lt",
+                        "next": "&gt",
+                        "first": "&lt&lt",
+                        "last": "&gt&gt"
+                    }
+                },
 
-                    searching : true,
-                    dom: '<"">rt<p>',
-                    pagingType: 'full_numbers',
-                    lengthChange: false,
-                    info: false,
+                searching: true,
+                dom: '<"">rt<p>',
+                pagingType: 'full_numbers',
+                lengthChange: false,
+                info: false,
                 columnDefs: [{ orderable: false, targets: -1 }]
-                });
-            $('#searchUser').on('keyup', function () {
-                dataTable.search($(this).val()).draw();
-                var dataTableEmpty = $('.dataTables_empty');
-                if (dataTableEmpty.length > 0 && dataTableEmpty.is(':visible')) {
-                    $('example_paginate pagination').hide();
-                }
-                else {
-                    $('example_paginate').show();
-                }
             });
-      
+        $('#searchUser').on('keyup', function () {
+            dataTable.search($(this).val()).draw();
+            var dataTableEmpty = $('.dataTables_empty');
+            if (dataTableEmpty.length > 0 && dataTableEmpty.is(':visible')) {
+                $('example_paginate pagination').hide();
+            }
+            else {
+                $('example_paginate').show();
+            }
+        });
+
     </script>
     @*    datatable ends*@
 
-@*    bootstrap cdn*@
+    @*    bootstrap cdn*@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
             crossorigin="anonymous"></script>
 
-  
+
 
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/Admin.js" asp-append-version="true"></script>
 
-     
+
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

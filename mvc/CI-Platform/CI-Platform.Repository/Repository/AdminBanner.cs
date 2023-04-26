@@ -23,26 +23,35 @@ namespace CI_Platform.Repository.Repository
             return _db.Banners.Where(banner => banner.DeletedAt == null).ToList();
         }
 
-        public bool BannerAdd(AdminBannerViewModel bannervm)
+        public string BannerAdd(AdminBannerViewModel bannervm)
         {
             try
             {
-                Banner banner = new()
+                Banner DoesSortOrderExist = _db.Banners.FirstOrDefault(banner => banner.SortOrder ==  banner.SortOrder)!;
+                if(DoesSortOrderExist == null)
                 {
-                    Title = bannervm.Title,
-                    Description = bannervm.Description,
-                    SortOrder = bannervm.sortOrder,
-                    Image = bannervm.Image, 
-                    CreatedAt = DateTime.Now,
-                };
+                    Banner banner = new()
+                    {
+                        Title = bannervm.Title,
+                        Description = bannervm.Description,
+                        SortOrder = bannervm.sortOrder,
+                        Image = bannervm.Image,
+                        CreatedAt = DateTime.Now,
+                    };
 
-                _db.Banners.Add(banner);
-                _db.SaveChanges();
-                return true;
+                    _db.Banners.Add(banner);
+                    _db.SaveChanges();
+                    return "Added";
+                }
+                else
+                {
+                    return "Exists";
+                }
             }
-            catch (Exception)
+                
+            catch (Exception ex)
             {
-                return false;
+                return ex.Message;
             }
         }
 
@@ -88,7 +97,6 @@ namespace CI_Platform.Repository.Repository
 
                 if (bannervm.UpdatedImg != null)
                 {
-                    
                     var NewImg = bannervm.UpdatedImg.FileName;
                     var guid = Guid.NewGuid().ToString()[..8];
                     var fileName = $"{guid}_{NewImg}"; // getting filename
