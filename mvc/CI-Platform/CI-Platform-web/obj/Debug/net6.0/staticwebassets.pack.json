@@ -181,6 +181,10 @@
       "PackagePath": "staticwebassets\\images\\Seats-left.png"
     },
     {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Banner\\6ee549d7_xfb5z6.jpg",
+      "PackagePath": "staticwebassets\\images\\Upload\\Banner\\6ee549d7_xfb5z6.jpg"
+    },
+    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Banner\\74e9bba6_626352.jpg",
       "PackagePath": "staticwebassets\\images\\Upload\\Banner\\74e9bba6_626352.jpg"
     },
@@ -189,28 +193,12 @@
       "PackagePath": "staticwebassets\\images\\Upload\\Banner\\82317.jpg"
     },
     {
-      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Banner\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-5.png",
-      "PackagePath": "staticwebassets\\images\\Upload\\Banner\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-5.png"
-    },
-    {
-      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Banner\\Grow-Trees-On-the-path-to-environment-sustainability-4.png",
-      "PackagePath": "staticwebassets\\images\\Upload\\Banner\\Grow-Trees-On-the-path-to-environment-sustainability-4.png"
-    },
-    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Banner\\img.jpg",
       "PackagePath": "staticwebassets\\images\\Upload\\Banner\\img.jpg"
     },
     {
-      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Banner\\img.png",
-      "PackagePath": "staticwebassets\\images\\Upload\\Banner\\img.png"
-    },
-    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Banner\\img1.jpg",
       "PackagePath": "staticwebassets\\images\\Upload\\Banner\\img1.jpg"
-    },
-    {
-      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Banner\\img22.png",
-      "PackagePath": "staticwebassets\\images\\Upload\\Banner\\img22.png"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\2ad99987_5e657ef8_Feed-the-homeless.jpg",
@@ -411,6 +399,10 @@
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\e812aa5d_volunteer7.png",
       "PackagePath": "staticwebassets\\images\\Upload\\User\\e812aa5d_volunteer7.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\e97eb371_volunteer3.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\User\\e97eb371_volunteer3.png"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\eff1338b_volunteer3.png",

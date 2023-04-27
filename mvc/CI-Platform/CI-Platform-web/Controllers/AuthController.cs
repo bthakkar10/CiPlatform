@@ -12,6 +12,7 @@ using CI_Platform.Entities.Auth;
 using CI_Platform_web.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CI_Platform_web.Controllers
 {
@@ -44,7 +45,7 @@ namespace CI_Platform_web.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Index(UserLoginViewModel obj, long UserId)
+        public IActionResult Index(UserLoginViewModel obj, long UserId, string? returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +80,19 @@ namespace CI_Platform_web.Controllers
 
                         if (DoesUserExists.Role == "user")
                         {
-                            return RedirectToAction("HomePage", "Home");
+                            if(!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                            {
+                                return Redirect(returnUrl);
+                            }
+                            else if ((DoesUserExists.CountryId == 0 || DoesUserExists.CountryId == null) && (DoesUserExists.CityId == 0 || DoesUserExists.CityId == null))
+                            {
+                                TempData["success"] = "Please enter your name, email, country and city first!!!";
+                                return RedirectToAction("UserProfile", "User", new {UserId = DoesUserExists.UserId});
+                            }
+                            else
+                            {
+                                return RedirectToAction("HomePage", "Home");
+                            }
                         }
                         else if(DoesUserExists.Role == "admin")
                         {

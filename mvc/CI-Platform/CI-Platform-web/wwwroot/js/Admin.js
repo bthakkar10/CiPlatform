@@ -938,13 +938,30 @@ $(document).on('click', '.edit-icon', function () {
 
 // Add change event listener to profile image file input
 $(document).on('change', '#BannerImg', function () {
-    // Read image file and display preview
-    var reader = new FileReader();
-    reader.onload = function (e) {
-        console.log(e.target.result)
-        $('.image-edit').find('img').attr('src', e.target.result);
+    if (this.files.length > 0) {
+        // Read image file and display preview
+        var file = this.files[0];
+        var reader = new FileReader();
+        var imageType = /image\/(png|jpeg|jpg)/;
+        if (!file.type.match(imageType)) {
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Only png, jpg and jpeg image types are allowed.",
+                showConfirmButton: false,
+                timer: 4000
+            });
+            return false;
+        }
+        reader.onload = function (e) {
+            $('.image-edit').find('img').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(file);
+        $('.image-edit').show();
+    } else {
+        // No file selected, hide image container
+        $('.image-edit').hide();
     }
-    reader.readAsDataURL(this.files[0]);
 });
 
 //APPEND PARTIAL VIEW FOR ADD OR EDIT banner PAGE

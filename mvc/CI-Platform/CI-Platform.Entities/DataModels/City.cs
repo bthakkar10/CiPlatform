@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CI_Platform.Entities.DataModels;
 
@@ -17,6 +18,7 @@ public partial class City
 
     public string? CityName { get; set; }
 
+    [JsonIgnore]
     public virtual Country? Country { get; set; }
 
     public virtual ICollection<Mission> Missions { get; } = new List<Mission>();

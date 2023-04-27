@@ -52,8 +52,9 @@ namespace CI_Platform.Entities.ViewModels
         public List<string> skillName { get; set; } = new List<string>();
 
         public List<FavouriteMission> favouriteMission { get; set; } = new List<FavouriteMission>();
+        public List<User>? CoWorkersList { get; set; }
 
-     
+
         //public string? link { get; set; }
 
 

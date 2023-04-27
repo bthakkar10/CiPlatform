@@ -3,6 +3,7 @@ using CI_Platform.Entities.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Common;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Text.Json;
 
@@ -10,7 +11,13 @@ namespace CI_Platform_web.Views.ViewComponents
 {
     public class UserHeaderViewComponent : ViewComponent
     {
-      
+
+        private readonly CiDbContext _db;
+
+        public UserHeaderViewComponent(CiDbContext db)
+        {
+            _db= db;    
+        }
         public async Task<IViewComponentResult> InvokeAsync(string viewName)
         {
             string Username = "";
@@ -19,9 +26,12 @@ namespace CI_Platform_web.Views.ViewComponents
             string Email = "";
             string Role = "";
             var customClaimForUser = HttpContext.User?.FindFirst("CustomClaimForUser")?.Value;
-            if (customClaimForUser != null)
+            var customClaimValue = JsonSerializer.Deserialize<User>(customClaimForUser);
+            UserId = customClaimValue.UserId;
+
+            if (UserId != 0)
             {
-                User UserModel = JsonSerializer.Deserialize<User>(customClaimForUser);
+                User UserModel = _db.Users.Find(UserId)!;
                 if (UserModel != null)
                 {
                     Email = UserModel.Email!;
@@ -29,11 +39,8 @@ namespace CI_Platform_web.Views.ViewComponents
                     Username = UserModel.FirstName + " " + UserModel.LastName;
                     Avtar = UserModel.Avtar!;
                     Role = UserModel.Role!;
-                  
-                   
                 }
             }
-
             HeaderViewModel vm = new()
             {
                 Username = Username,

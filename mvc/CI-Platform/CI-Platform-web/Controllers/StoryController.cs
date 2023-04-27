@@ -186,7 +186,12 @@ namespace CI_Platform_web.Controllers
         {
             try
             {
-                if (HttpContext.Session.GetString("Id") != null)
+                if (HttpContext.Session.GetString("Id") == null)
+                {
+                    string returnUrl = Url.Action("StoryDetail", "Story", new { MissionId = MissionId, UserId = UserId })!;
+                    return RedirectToAction("Index", "Account", new { returnUrl });
+                }
+               else
                 {
                     ViewBag.UserId = HttpContext.Session.GetString("Id");
                 }

@@ -27,7 +27,7 @@ namespace CI_Platform.Repository.Repository
 
         public List<Timesheet> GetTimesheetData(long UserId)
         {
-            return _db.Timesheets.Where(ms => ms.UserId == UserId && ms.DeletedAt == null && ms.Status == "PENDING").Include(m => m.Mission).ToList();
+            return _db.Timesheets.Where(ms => ms.UserId == UserId && ms.DeletedAt == null).Include(m => m.Mission).ToList();
         }
 
         public string AddTimeBasedEntry(TimeViewModel vm, long UserId)
@@ -80,7 +80,7 @@ namespace CI_Platform.Repository.Repository
                     UserId = UserId,
                     Action = vm.Action,
                     DateVolunteered = vm.TimeDate,
-                    Notes = vm.TimeMessage,
+                    Notes = vm.GoalMessage,
                     CreatedAt = DateTime.Now,
 
                 };
@@ -105,7 +105,7 @@ namespace CI_Platform.Repository.Repository
             if (ts != null)
             {
                 ts.Action = vm.Action;
-                ts.Notes = vm.TimeMessage;
+                ts.Notes = vm.GoalMessage;
                 ts.DateVolunteered = vm.TimeDate;
                 ts.UpdatedAt = DateTime.Now;
 

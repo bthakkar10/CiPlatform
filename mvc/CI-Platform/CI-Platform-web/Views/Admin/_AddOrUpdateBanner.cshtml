@@ -1,7 +1,7 @@
 ﻿@model CI_Platform.Entities.ViewModels.AdminBannerViewModel
 <div>
     <form method="post" enctype="multipart/form-data">
-        
+
         <input asp-for="BannerId" id="BannerId" type="hidden" />
         <div class="border">
             <div class="FormBox" id="BannerHeader"><h4 class="FormHeading"><span>Add</span></h4></div>
@@ -14,18 +14,18 @@
             <div class="mb-3 mx-3 ">
                 <label for="Description" class="form-label ">Description</label>
                 <textarea id="Description" class="form-control" asp-for="Description" name="Description" rows="5"> @*tinyMCE.activeEditor.setContent(`@Html.Raw(HttpUtility.HtmlDecode(Model.Description))`)*@</textarea>
-                @*<script>
-                tinymce.init({
-                selector: '#Description',
-                height: 500,
-                plugins: 'lists advlist code emoticons directionality  ',
+                <script>
+                    tinymce.init({
+                        selector: '#Description',
+                        height: 500,
+                        plugins: 'lists advlist code emoticons directionality  ',
 
-                toolbar: ' bold italic  underline strikethrough| subscript superscript|ltr rtl | numlist bullist  |',
+                        toolbar: ' bold italic  underline strikethrough| subscript superscript|ltr rtl | numlist bullist  |',
 
-                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
 
-                });
-                </script>*@
+                    });
+                </script>
                 <span asp-validation-for="Description" class="validate-text text-danger"></span>
             </div>
 
@@ -38,18 +38,20 @@
 
 
             <div class="mb-3 mx-3 banner-img-section">
-                <input asp-for="UpdatedImg" type="file" class="d-none" id="BannerImg" />
-               <div class="image-edit">
-              
-                @if (Model.Image != null)
-                {
-                    <img src="~/images/Upload/Banner/@Model.Image" class="img-thumbnail mx-auto d-block my-2 " alt="...">
-                }
-                <div class="edit-icon"><i class="bi bi-pencil-fill"></i></div>
+                <input asp-for="UpdatedImg" type="file" id="BannerImg" style="color:transparent;"/>
+                <div class="image-edit">
+                    @if (Model.Image != null)
+                    {
+                        <img src="~/images/Upload/Banner/@Model.Image" class="img-thumbnail mx-auto d-block my-2 " alt="...">
+                    }
+                    else
+                    {
+                        <img  class="img-thumbnail mx-auto d-block my-2" />
+                    }
+                    <div class="edit-icon"><i class="bi bi-pencil-fill"></i></div>
+                </div>
             </div>
 
-            </div>
-            
         </div>
 
         <div class="d-flex flex-wrap justify-content-end m-3">

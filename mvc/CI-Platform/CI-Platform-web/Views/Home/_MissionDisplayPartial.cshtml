@@ -6,7 +6,7 @@
     //var email = ViewBag.email;
     //var Username = ViewBag.Username;
 
-    var Id = Convert.ToInt64(ViewBag.UserId);
+    var Id = ViewBag.UserId;
     //var totalRecords = ViewBag.totalRecords;
 }
 
@@ -102,7 +102,7 @@
                             </button>
                         }
                         @*recommended to co worker*@
-                        <button class="add-on-img" type="submit" data-user-id="@Id" data-mission-id="@obj.MissionCard.MissionId" data-bs-toggle="modal" data-bs-target="#GridViewCoworkerInviteModal">
+                        <button class="add-on-img" type="submit"@* data-user-id="@Id" data-mission-id="@obj.MissionCard.MissionId"*@ data-bs-toggle="modal" data-bs-target="#GridViewCoworkerInviteModal">
                             <img style="opacity: 1;" src="~/images/add1.png">
                         </button>
 
@@ -115,7 +115,27 @@
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <div class="grid-modal-body">
+                                    <div class="grid-modal-body p-2">
+                                       @* .Where(u => u.UserId != UserId && !u.MissionApplications.Any(ma => ma.MissionId == mission.MissionId && ma.ApprovalStatus == "APPROVE")*@
+                                        @foreach (var coworker in obj.CoWorkersList)
+                                        {
+                                            <div class="mt-2" style="display : flex; justify-content : space-between;">
+
+                                                <span class="me-4 ">@coworker.FirstName @coworker.LastName</span>
+                                               
+                                               @* @if(coworker.MissionInviteToUsers.Any(i => i.ToUserId == coworker.UserId && obj.MissionCard.MissionId == i.MissionId))
+                                                {
+                                                    <span style="margin-left : 6%;" mailto:class="invited-@coworker.UserId"><button class="btn btn-success model-button model-invite-btn disabled" data-mission-id="@obj.MissionCard.MissionId" data-from-user-id="@Id" data-to-user-id="@coworker.UserId">Already Invited</button></span>
+                                                }
+                                                else
+                                                {*@
+                                                    <span style="margin-left : 6%;" mailto:class="invited-@coworker.UserId"><button class="btn btn-outline-primary model-button model-invite-btn" data-mission-id="@obj.MissionCard.MissionId" data-from-user-id="@ViewBag.UserId" data-to-user-id="@coworker.UserId">Invite</button></span>
+
+                                              @*  }*@
+
+                                            </div>
+                                        }
+
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

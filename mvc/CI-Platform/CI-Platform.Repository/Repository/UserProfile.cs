@@ -14,11 +14,11 @@ namespace CI_Platform.Repository.Repository
     public class UserProfile : IUserProfile
     {
         private readonly CiDbContext _db;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public UserProfile(CiDbContext db, IHttpContextAccessor httpContextAccessor)
+       
+        public UserProfile(CiDbContext db)
         {
             _db = db;
-            _httpContextAccessor = httpContextAccessor;
+            
         }
         public UserProfileViewModel GetUserDetails(long UserId)
         {
@@ -118,12 +118,8 @@ namespace CI_Platform.Repository.Repository
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Upload/User", fileName);//for updating new img
 
                     user.Avtar = fileName;
-                    _httpContextAccessor.HttpContext.Session.SetString("Avatar", fileName);
                     using var stream = new FileStream(filePath, FileMode.Create);
                     vm.UpdatedAvatar.CopyTo(stream);
-
-                    //_httpContextAccessor.HttpContext.Session.SetString("Avtar", vm.UpdatedAvatar.FileName);
-                    //var Avtar = HttpContext.User?.FindFirst("CustomClaimForUser")?.Value;
 
                 }
                 //for skills

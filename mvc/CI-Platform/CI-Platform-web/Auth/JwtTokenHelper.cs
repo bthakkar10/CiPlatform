@@ -1,4 +1,5 @@
-﻿using CI_Platform.Entities.Auth;
+﻿using Azure.Core;
+using CI_Platform.Entities.Auth;
 using CI_Platform.Entities.DataModels;
 using CI_Platform.Entities.ViewModels;
 using Microsoft.IdentityModel.Tokens;
@@ -20,6 +21,10 @@ namespace CI_Platform_web.Auth
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSetting.Key));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
+
+            
+
+
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, user.FirstName + user.LastName),
@@ -33,7 +38,7 @@ namespace CI_Platform_web.Auth
                 jwtSetting.Issuer,
                 jwtSetting.Audience,
                 claims,
-                expires: DateTime.UtcNow.AddMinutes(15), // Default 5 mins, max 1 day
+                expires: DateTime.UtcNow.AddMinutes(5), // Default 5 mins, max 1 day
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

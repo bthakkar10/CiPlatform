@@ -22,6 +22,7 @@ namespace CI_Platform.Entities.ViewModels
         public string? Description { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Sort Order is Required!!")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Sort Order should contain only digits!!")]
         public int? sortOrder { get; set; }  
 
         public IFormFile? UpdatedImg { get; set; } 

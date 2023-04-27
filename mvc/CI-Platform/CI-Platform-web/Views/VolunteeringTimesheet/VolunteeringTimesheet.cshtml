@@ -83,6 +83,7 @@
                                             <div class="mb-3">
                                                 <label asp-for="TimeViewModel.TimeMessage" for="exampleFormControlTextarea1" class="form-label">Message</label>
                                                 <textarea asp-for="TimeViewModel.TimeMessage" class="form-control" placeholder="Enter Your Message" id="TimeMessageTextarea" rows="3"></textarea>
+                                                <span class="text-danger validate-text" asp-validation-for="TimeViewModel.TimeMessage"></span>
 
                                             </div>
                                             <div class="mb-3 d-flex justify-content-end">
@@ -90,7 +91,7 @@
                                                         data-bs-dismiss="modal">
                                                     Cancel
                                                 </button>
-                                                <button type="submit" asp-controller="VolunteeringTimesheet" asp-action="AddOrUpdateTimesheetData" class="btn card-btn">Submit</button>
+                                                <button type="submit"  asp-controller="VolunteeringTimesheet" asp-action="AddOrUpdateTimesheetData" class="btn card-btn TimesheetSubmitBtn">Submit</button>
                                             </div>
                                         </form>
                                     </div>
@@ -124,13 +125,22 @@
                                             <td>@time_missions.Time.Value.ToString("mm")</td>
 
                                             <td>
+                                                @if(time_missions.Status == "PENDING")
+                                                {
                                                 <button class="btn p-0 EditButtonDataFetch" id="TimeMissionEditBtn" data-timesheet-id="@time_missions.TimesheetId" data-bs-toggle="modal" data-bs-target="#TimeEntryModal">
                                                     <i style="color: #F88634;" class="bi bi-pencil-square"></i>
                                                 </button>
 
-                                                <button class="p-0 btn" data-bs-toggle="modal" data-bs-target="#DeleteTimeEntry">
+                                                    <button class="p-0 btn" data-bs-toggle="modal" data-bs-target="#DeleteTimeEntry">
                                                     <i class="bi bi-trash"> </i>
-                                                </button>
+                                                    </button>
+                                                }
+                                                else if (time_missions.Status == "APPROVED" || time_missions.Status == "DECLINED")
+                                                {
+                                                    <button class="ViewButtonDataFetch card-btn " data-bs-toggle="modal" data-bs-target="#TimeEntryModal" data-timesheet-id="@time_missions.TimesheetId">
+                                                        View
+                                                    </button>
+                                                }
 
                                                 <!-- Modal -->
                                                 <div class="modal fade" id="DeleteTimeEntry" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -146,7 +156,7 @@
                                                             <div class="modal-footer">
                                                                 <button type="button" class="me-3 btn rounded-pill btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                                                                 <a class="btn rounded-pill btn-outline-danger" href="@Url.Action("DeleteTimesheetData", "VolunteeringTimesheet", new { TimesheetId = time_missions.TimesheetId })">Delete</a>
-                                                                @*href="@Url.Action("MissionDetail", "Home", new{MissionId = Model.GetStoryDetails.MissionId })*@
+                                                        
                                                             </div>
                                                         </div>
                                                     </div>
@@ -231,9 +241,9 @@
 
                                             </div>
                                             <div class="mb-3">
-                                                <label asp-for="GoalViewModel.TimeMessage" for="exampleFormControlTextarea1" class="form-label">Message</label>
-                                                <textarea asp-for="GoalViewModel.TimeMessage" class="form-control" placeholder="Enter Your Message" id="GoalMessageTextarea" rows="3"></textarea>
-                                                <span class="text-danger validate-text" asp-validation-for="GoalViewModel.TimeErrorMessage"></span>
+                                                <label asp-for="GoalViewModel.GoalMessage" for="exampleFormControlTextarea1" class="form-label">Message</label>
+                                                <textarea asp-for="GoalViewModel.GoalMessage" class="form-control" placeholder="Enter Your Message" id="GoalMessageTextarea" rows="3"></textarea>
+                                                <span class="text-danger validate-text" asp-validation-for="GoalViewModel.GoalMessage"></span>
 
                                             </div>
                                             <div class="mb-3 d-flex justify-content-end">
@@ -241,7 +251,7 @@
                                                         data-bs-dismiss="modal">
                                                     Cancel
                                                 </button>
-                                                <button type="submit" asp-controller="VolunteeringTimesheet" asp-action="AddOrUpdateTimesheetData" class="btn card-btn">Submit</button>
+                                                <button type="submit" asp-controller="VolunteeringTimesheet" asp-action="AddOrUpdateTimesheetData" class="btn card-btn TimesheetSubmitBtn">Submit</button>
                                             </div>
                                         </form>
                                     </div>
@@ -264,21 +274,37 @@
                                 @if (Model.GetTimesheetData.Any())
                                 {
 
-                                    @foreach (var time_missions in Model.GetTimesheetData.Where(m => m.Mission.MissionType == "Goal"))
+                                    @foreach (var goal_missions in Model.GetTimesheetData.Where(m => m.Mission.MissionType == "Goal"))
                                     {
                                         <tr>
-                                            <td>@time_missions.Mission.Title</td>
-                                            <td>@time_missions.DateVolunteered.ToShortDateString()</td>
-                                            <td>@time_missions.Action</td>
+                                            <td>@goal_missions.Mission.Title</td>
+                                            <td>@goal_missions.DateVolunteered.ToShortDateString()</td>
+                                            <td>@goal_missions.Action</td>
 
                                             <td>
-                                                <button class="btn p-0 EditButtonDataFetch" id="EditButtonDataFetch" data-timesheet-id="@time_missions.TimesheetId" data-bs-toggle="modal" data-bs-target="#GoalAddEntryModal">
+                                                @if (goal_missions.Status == "PENDING")
+                                                {
+                                                    <button class="btn p-0 EditButtonDataFetch" id="EditButtonDataFetch" data-timesheet-id="@goal_missions.TimesheetId" data-bs-toggle="modal" data-bs-target="#GoalAddEntryModal">
+                                                        <i style="color: #F88634;" class="bi bi-pencil-square"></i>
+                                                    </button>
+
+                                                    <button class="p-0 btn" data-bs-toggle="modal" data-bs-target="#DeleteGoalEntry">
+                                                        <i class="bi bi-trash"> </i>
+                                                    </button>
+                                                }
+                                                else if (goal_missions.Status == "APPROVED" || goal_missions.Status == "DECLINED")
+                                                {
+                                                    <button class="ViewButtonDataFetch card-btn " data-bs-toggle="modal" data-bs-target="#GoalAddEntryModal" data-timesheet-id="@goal_missions.TimesheetId">
+                                                        View
+                                                    </button>
+                                                }
+                                               @* <button class="btn p-0 EditButtonDataFetch"  data-timesheet-id="@goal_missions.TimesheetId" data-bs-toggle="modal" data-bs-target="#GoalAddEntryModal">
                                                     <i style="color: #F88634;" class="bi bi-pencil-square"></i>
                                                 </button>
 
                                                 <button class="p-0 btn" data-bs-toggle="modal" data-bs-target="#DeleteGoalEntry">
                                                     <i class="bi bi-trash"> </i>
-                                                </button>
+                                                </button>*@
 
                                                 <!-- Modal -->
                                                 <div class="modal fade" id="DeleteGoalEntry" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -289,11 +315,11 @@
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <div>Are you sure you want to delete "@time_missions.Mission.Title" entered by you on @time_missions.CreatedAt??  </div>
+                                                                <div>Are you sure you want to delete "@goal_missions.Mission.Title" entered by you on @goal_missions.CreatedAt??  </div>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="me-3 btn rounded-pill btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                                <a class="btn rounded-pill btn-outline-danger" href="@Url.Action("DeleteGoalTimesheetData", "VolunteeringTimesheet", new { TimesheetId = time_missions.TimesheetId })">Delete</a>
+                                                                <a class="btn rounded-pill btn-outline-danger" href="@Url.Action("DeleteGoalTimesheetData", "VolunteeringTimesheet", new { TimesheetId = goal_missions.TimesheetId })">Delete</a>
                                                               
                                                             </div>
                                                         </div>

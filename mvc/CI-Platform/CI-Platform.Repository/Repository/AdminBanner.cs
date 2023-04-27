@@ -27,7 +27,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                Banner DoesSortOrderExist = _db.Banners.FirstOrDefault(banner => banner.SortOrder ==  banner.SortOrder)!;
+                Banner DoesSortOrderExist = _db.Banners.FirstOrDefault(banner => banner.SortOrder ==  bannervm.sortOrder);
                 if(DoesSortOrderExist == null)
                 {
                     Banner banner = new()
@@ -35,9 +35,22 @@ namespace CI_Platform.Repository.Repository
                         Title = bannervm.Title,
                         Description = bannervm.Description,
                         SortOrder = bannervm.sortOrder,
-                        Image = bannervm.Image,
                         CreatedAt = DateTime.Now,
+
                     };
+                    if (bannervm.UpdatedImg != null)
+                    {
+                        var NewImg = bannervm.UpdatedImg.FileName;
+                        var guid = Guid.NewGuid().ToString()[..8];
+                        var fileName = $"{guid}_{NewImg}"; // getting filename
+
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Upload/Banner", fileName);//for updating new img
+
+                        banner.Image = fileName;
+
+                        using var stream = new FileStream(filePath, FileMode.Create);
+                        bannervm.UpdatedImg.CopyTo(stream);
+                    }
 
                     _db.Banners.Add(banner);
                     _db.SaveChanges();

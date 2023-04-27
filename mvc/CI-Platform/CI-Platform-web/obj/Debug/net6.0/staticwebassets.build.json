@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "WJScx8+idWft1q6OgsNEl5OBtoclvwQCHhQeagMy5q0=",
+  "Hash": "9jNM85eCsTVdr/pXkBUoqhfGj4NuvHeUoaQERaKRjYo=",
   "Source": "CI-Platform-web",
   "BasePath": "_content/CI-Platform-web",
   "Mode": "Default",
@@ -2227,6 +2227,23 @@
       "OriginalItemSpec": "wwwroot\\images\\up.png"
     },
     {
+      "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Banner\\6ee549d7_xfb5z6.jpg",
+      "SourceId": "CI-Platform-web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\",
+      "BasePath": "_content/CI-Platform-web",
+      "RelativePath": "images/Upload/Banner/6ee549d7_xfb5z6.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Upload\\Banner\\6ee549d7_xfb5z6.jpg"
+    },
+    {
       "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Banner\\74e9bba6_626352.jpg",
       "SourceId": "CI-Platform-web",
       "SourceType": "Discovered",
@@ -2261,40 +2278,6 @@
       "OriginalItemSpec": "wwwroot\\images\\Upload\\Banner\\82317.jpg"
     },
     {
-      "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Banner\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-5.png",
-      "SourceId": "CI-Platform-web",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\",
-      "BasePath": "_content/CI-Platform-web",
-      "RelativePath": "images/Upload/Banner/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-5.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\Upload\\Banner\\CSR-initiative-stands-for-Coffee--and-Farmer-Equity-5.png"
-    },
-    {
-      "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Banner\\Grow-Trees-On-the-path-to-environment-sustainability-4.png",
-      "SourceId": "CI-Platform-web",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\",
-      "BasePath": "_content/CI-Platform-web",
-      "RelativePath": "images/Upload/Banner/Grow-Trees-On-the-path-to-environment-sustainability-4.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\Upload\\Banner\\Grow-Trees-On-the-path-to-environment-sustainability-4.png"
-    },
-    {
       "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Banner\\img.jpg",
       "SourceId": "CI-Platform-web",
       "SourceType": "Discovered",
@@ -2312,23 +2295,6 @@
       "OriginalItemSpec": "wwwroot\\images\\Upload\\Banner\\img.jpg"
     },
     {
-      "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Banner\\img.png",
-      "SourceId": "CI-Platform-web",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\",
-      "BasePath": "_content/CI-Platform-web",
-      "RelativePath": "images/Upload/Banner/img.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\Upload\\Banner\\img.png"
-    },
-    {
       "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Banner\\img1.jpg",
       "SourceId": "CI-Platform-web",
       "SourceType": "Discovered",
@@ -2344,23 +2310,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\Upload\\Banner\\img1.jpg"
-    },
-    {
-      "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Banner\\img22.png",
-      "SourceId": "CI-Platform-web",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\",
-      "BasePath": "_content/CI-Platform-web",
-      "RelativePath": "images/Upload/Banner/img22.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\Upload\\Banner\\img22.png"
     },
     {
       "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\2ad99987_5e657ef8_Feed-the-homeless.jpg",
@@ -3211,6 +3160,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\Upload\\User\\e812aa5d_volunteer7.png"
+    },
+    {
+      "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\e97eb371_volunteer3.png",
+      "SourceId": "CI-Platform-web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\",
+      "BasePath": "_content/CI-Platform-web",
+      "RelativePath": "images/Upload/User/e97eb371_volunteer3.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Upload\\User\\e97eb371_volunteer3.png"
     },
     {
       "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\eff1338b_volunteer3.png",

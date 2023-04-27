@@ -647,34 +647,34 @@ $(document).on('click', '.model-invite-btn', function () {
 });
 
 //recommend to co-worker invite for mission page through get function which will fetch user list here and go to above function again
-$(document).on('click', '.add-on-img', function () {
-    var MissionId = $(this).data('mission-id');
-    var UserId = $(this).data('user-id');
-    $.ajax({
-        type: "GET",
-        url: "/Home/UserList",
-        data: { MissionId: MissionId },
-        success: function (coworkers) {
-           
-            var list = $('.grid-modal-body');
-            list.empty();
-            var items = " ";
-            $(coworkers).each(function (index, coworker) {
-                items +=
-                    ` <div class="mt-2" style="display : flex; justify-content : space-between;">
-                        <span class="mx-4 "> ` + coworker.firstName + ` ` + coworker.lastName + `</span>
-                        <span  mailto:class="invited- `+ coworker.UserId + `"><button class="btn mx-3 btn-outline-primary model-button model-invite-btn" data-mission-id=" ` + MissionId + `" data-from-user-id=" ` + UserId + `" data-to-user-id=" ` + coworker.userId + `">Invite</button></span>
+//$(document).on('click', '.add-on-img', function () {
+//    var MissionId = $(this).data('mission-id');
+//    var UserId = $(this).data('user-id');
+//    $.ajax({
+//        type: "GET",
+//        url: "/Home/UserList",
+//        data: { MissionId: MissionId },
+//        success: function (coworkers) {
+//            console.log(coworkers)
+//            var list = $('.grid-modal-body');
+//            list.empty();
+//            var items = " ";
+//            $(coworkers).each(function (index, coworker) {
+//                items +=
+//                    ` <div class="mt-2" style="display : flex; justify-content : space-between;">
+//                        <span class="mx-4 "> ` + coworker.firstName + ` ` + coworker.lastName + `</span>
+//                        <span  mailto:class="invited- `+ coworker.UserId + `"><button class="btn mx-3 btn-outline-primary model-button model-invite-btn" data-mission-id=" ` + MissionId + `" data-from-user-id=" ` + UserId + `" data-to-user-id=" ` + coworker.userId + `">Invite</button></span>
 
-                    </div>`
+//                    </div>`
 
-            });
-            list.html(items);
-        },
-        error: function (error) {
-            console.log(error);
-        }
-    });
-});
+//            });
+//            list.html(items);
+//        },
+//        error: function (error) {
+//            console.log(error);
+//        }
+//    });
+//});
 
 //apply in mission button 
 $('#ApplyBtnMission').click(function () {
@@ -693,7 +693,6 @@ $('#ApplyBtnMission').click(function () {
                 timer: 4000
             });
             if (result.icon == "success") {
-                
                 var newButton = $('<a>').addClass('btn card-btn disabled text-danger')
                     .append($('<span>').text('Approval Pending')
                         .append($('<i>').addClass('bi bi-patch-exclamation-fill')));
@@ -1564,8 +1563,9 @@ $(".TimesheetSelection").change(function () {
 
 $(document).on('click', '.AddButtonTimesheet', function ()
 {
-    $("#GoalAddSelection").prop('disabled', false)
-    $("#TimeAddSelection").prop('disabled', false);
+    $('.TimesheetSubmitBtn').text('Submit').removeClass('btn-success btn-danger').addClass('card-btn');
+    $("#TimeFormTimesheet :input").prop("disabled", false);
+    $("#GoalFormTimesheet :input").prop("disabled", false);
     $("#GoalMessageTextarea").empty();
     $('#TimeMessageTextarea').empty();
     $("#GoalFormTimesheet")[0].reset();
@@ -1575,6 +1575,9 @@ $(document).on('click', '.AddButtonTimesheet', function ()
 //timesheet edit button
 $(document).on('click','.EditButtonDataFetch',function ()
 {
+    $('.TimesheetSubmitBtn').text('Submit').removeClass('btn-success btn-danger').addClass('card-btn');
+    $("#TimeFormTimesheet :input").prop("disabled", false);
+    $("#GoalFormTimesheet :input").prop("disabled", false);
     var TimeSheetId = $(this).data('timesheet-id');  
     $.ajax({
         type: 'GET',
@@ -1582,7 +1585,7 @@ $(document).on('click','.EditButtonDataFetch',function ()
         data: { TimeSheetId: TimeSheetId },
         success: function (result) {
             if (result.mission.title != null) {
-                /*$("#GoalAddSelection").empty();*/
+               
                 var start_date = new Date(result.mission.startDate);
                 var end_date = new Date(result.mission.endDate);
                 $('#GoalDate').prop('min', ChangeDateFormat(start_date));
@@ -1623,5 +1626,47 @@ $(document).on('click','.EditButtonDataFetch',function ()
             console.log(error);
         },
     });
-
+})
+//view button data fetch
+$(document).on('click', '.ViewButtonDataFetch', function () {
+    var TimeSheetId = $(this).data('timesheet-id');
+    $.ajax({
+        type: 'GET',
+        url: '/VolunteeringTimesheet/GetDataOnEdit',
+        data: { TimeSheetId: TimeSheetId },
+        success: function (result) {
+            console.log(result)
+            if (result.mission.title != null) {
+                $("#TimeFormTimesheet :input").prop("disabled", true);
+                $("#GoalFormTimesheet :input").prop("disabled", true);
+                $("#GoalAddSelection").val(result.missionId)
+                const date = new Date(result.dateVolunteered);
+                var formattedDate = ChangeDateFormat(date);
+                $('#GoalDate').val(formattedDate);
+                $('#GoalActions').val(result.action)
+                $('#GoalMessageTextarea').text(result.notes)
+               
+                $("#TimeAddSelection").val(result.missionId)
+                $('#TimeDate').val(formattedDate);
+                $('#TimeMessageTextarea').text(result.notes);
+               
+                if (result.mission.missionType == "Time") {
+                    const timeString = result.time;
+                    const hours = timeString.split(':')[0];
+                    const minutes = timeString.split(":")[1];
+                    $('#TimeHours').val(hours);
+                    $('#TimeMinutes').val(minutes);
+                }
+                if (result.status === "APPROVED") {
+                    $('.TimesheetSubmitBtn').text('APPROVED').removeClass('card-btn btn-danger').addClass('btn-success');
+                }
+                else if (result.status === "DECLINED") { $('.TimesheetSubmitBtn').text('DECLINED').removeClass('card-btn btn-success').addClass('btn-danger'); }
+            }
+            else {
+            }
+        },
+        error: function (error) {
+            console.log(error);
+        },
+    });
 })

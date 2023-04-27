@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CI_Platform.Entities.DataModels;
 
@@ -23,5 +24,6 @@ public partial class MissionApplication
 
     public virtual Mission Mission { get; set; } = null!;
 
+  
     public virtual User User { get; set; } = null!;
 }

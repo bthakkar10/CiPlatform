@@ -42,7 +42,7 @@ namespace CI_Platform.Repository.Repository
 
         public List<User> UserList(long UserId)
         {
-            return _db.Users.Where(u => u.UserId != UserId && u.DeletedAt == null).ToList();
+            return _db.Users.Where(u => u.UserId != UserId && u.DeletedAt == null && u.Status == true).ToList();
         }
 
         public void IncreaseViewCount(long UserId, long MissionId)

@@ -110,7 +110,7 @@ namespace CI_Platform.Repository.Repository
 
         public List<User> UserList(long UserId, long MissionId)
         {
-            return _db.Users.Where(u => u.UserId != UserId && !u.MissionApplications.Any(m => m.MissionId == MissionId && m.ApprovalStatus == "APPROVE")).Include(m=>m.MissionInviteFromUsers).Include(m=>m.MissionInviteToUsers).ToList();
+            return _db.Users.Where(u => u.UserId != UserId && u.DeletedAt==null && u.Status==true && !u.MissionApplications.Any(m => m.MissionId == MissionId && m.ApprovalStatus == "APPROVE")).Include(m=>m.MissionInviteFromUsers).Include(m=>m.MissionInviteToUsers).ToList();
         }
 
 

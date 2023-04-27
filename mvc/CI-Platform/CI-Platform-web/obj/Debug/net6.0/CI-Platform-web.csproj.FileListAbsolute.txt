@@ -332,3 +332,7 @@ C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\C
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\CI-Platform-web.pdb
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\CI-Platform-web.genruntimeconfig.cache
 C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\ref\CI-Platform-web.dll
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\obj\Debug\net6.0\CI-Platform-web.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\pct127\Desktop\CI-Platform-perfect\CI-Platform-master\mvc\CI-Platform\CI-Platform-web\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll

@@ -38,24 +38,27 @@ namespace CI_Platform_web.Controllers
 
 
         //get method for homepage
-       
+        [CountryCityValidationFilter]
         public IActionResult HomePage()
         {
-            var userName = HttpContext.User?.Identity?.Name;
+            //var userName = HttpContext.User?.Identity?.Name;
             
-            var customClaimForUser = HttpContext.User?.FindFirst("CustomClaimForUser")?.Value;
-            if (customClaimForUser != null)
-            {
-                var UserModel = JsonSerializer.Deserialize<User>(customClaimForUser);
-                if(UserModel != null) 
-                {
-                    ViewBag.email = UserModel.Email!;
-                    ViewBag.UserId = UserModel.UserId!;
-                    ViewBag.Username = UserModel.FirstName + " " + UserModel.LastName;
-                    ViewBag.Avtar = UserModel.Avtar;    
-                }
-            }
+            //var customClaimForUser = HttpContext.User?.FindFirst("CustomClaimForUser")?.Value;
+            //if (customClaimForUser != null)
+            //{
+            //    var UserModel = JsonSerializer.Deserialize<User>(customClaimForUser);
+            //    if(UserModel != null) 
+            //    {
+            //        ViewBag.email = UserModel.Email!;
+            //        ViewBag.UserId = UserModel.UserId!;
+            //        ViewBag.Username = UserModel.FirstName + " " + UserModel.LastName;
+            //        ViewBag.Avtar = UserModel.Avtar;    
+            //    }
+            //}
+            var userId = HttpContext.Session.GetString("Id");
+            long UserId = Convert.ToInt64(userId);
 
+            ViewBag.UserId = UserId;
             var vm = new PageListViewModel();
 
             vm.Country = _filterMission.CountryList();
@@ -75,7 +78,7 @@ namespace CI_Platform_web.Controllers
             
             var userId = HttpContext.Session.GetString("Id");
             long UserId = Convert.ToInt64(userId);
-
+            ViewBag.UserId = UserId;
             var vm = _missionDisplay.FilterOnMission(queryParams, UserId);
 
 
@@ -105,28 +108,35 @@ namespace CI_Platform_web.Controllers
         }
 
         //get method for mission details page
+        [AllowAnonymous]
         public IActionResult MissionDetail(int MissionId)
         {
             try
             {
+                if (HttpContext.Session.GetString("Id") == null)
+                {
+                    string returnUrl = Url.Action("MissionDetail", "Home", new { MissionId = MissionId })!;
+                    return RedirectToAction("Index", "Auth", new { returnUrl });
+                }
                 if (HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
                 {
                     ViewBag.UserId = HttpContext.Session.GetString("Id");
                     ViewBag.UserId = HttpContext.Session.GetString("Id");
                     ViewBag.Username = HttpContext.Session.GetString("Username");
-
                 }
                 ViewBag.MissionId = MissionId;
                 long userId = Convert.ToInt64(HttpContext.Session.GetString("Id"));
                 //long userId = long.Parse(Id);
-                var vm = new MissionDetailViewModel();
-                vm.MissionDetails = _missionDetail.MissionDetails(MissionId);
-                vm.ApprovedComments = _missionDetail.GetApprovedComments(MissionId);
-                vm.RecentVolunteers = _missionDetail.GetRecentVolunteers(MissionId, userId);
-                vm.RelatedMissions = _missionDetail.GetRelatedMissions(MissionId);
-                vm.UserList = _missionDetail.UserList(userId, MissionId);
-                vm.totalVolunteers = _missionDetail.GetRecentVolunteers(MissionId, userId).Count();
-               
+                MissionDetailViewModel vm = new()
+                {
+                    MissionDetails = _missionDetail.MissionDetails(MissionId),
+                    ApprovedComments = _missionDetail.GetApprovedComments(MissionId),
+                    RecentVolunteers = _missionDetail.GetRecentVolunteers(MissionId, userId),
+                    RelatedMissions = _missionDetail.GetRelatedMissions(MissionId),
+                    UserList = _missionDetail.UserList(userId, MissionId),
+                    totalVolunteers = _missionDetail.GetRecentVolunteers(MissionId, userId).Count()
+                };
+
                 return View(vm);
             }
             catch (Exception ex)
@@ -188,7 +198,7 @@ namespace CI_Platform_web.Controllers
         {
             string Id = HttpContext.Session.GetString("Id");
             long userId = long.Parse(Id);
-            var coworkers= _db.Users.Where(u => u.UserId != userId && !u.MissionApplications.Any(m => m.MissionId == MissionId && m.ApprovalStatus == "APPROVE")).ToList();
+            var coworkers= _db.Users.Where(u => u.UserId != userId && u.DeletedAt==null && u.Status==true && !u.MissionApplications.Any(m => m.MissionId == MissionId && m.ApprovalStatus == "APPROVE")).ToList();
             return Json(coworkers);  
         }
 

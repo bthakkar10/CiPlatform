@@ -27,12 +27,9 @@ namespace CI_Platform.Repository.Repository
 
         public PageListViewModel.PageList<MissionListViewModel> FilterOnMission(MissionFilterQueryParams queryParams, long UserId)
         {
-
-
             var query = _db.Missions.Where(m=>m.DeletedAt == null).AsQueryable();
-
-            // List<User> user = _db.Users.ToList();
-
+            List<User> user = _db.Users.Where(user => user.DeletedAt == null &&  user.UserId != UserId).Include(m => m.MissionInviteFromUsers).Include(m => m.MissionInviteToUsers).ToList();
+           
             if (!string.IsNullOrEmpty(queryParams.CountryId))
             {
                 long.TryParse(queryParams.CountryId, out long ConCountryId);
@@ -87,8 +84,15 @@ namespace CI_Platform.Repository.Repository
                 HasMissionStarted = mission.StartDate < DateTime.Now,
                 HasDeadlinePassed = mission.Deadline < DateTime.Now,
                 IsApplicationPending = mission.MissionApplications.Any(missionApp => missionApp.UserId == UserId && missionApp.DeletedAt == null && missionApp.ApprovalStatus=="Pending"),
-                //UserList = user,
-                favouriteMission = mission.FavouriteMissions.ToList(),
+                //CoWorkersList = user.Where(u => !u.MissionApplications.Any(m => m.MissionId == mission.MissionId && m.ApprovalStatus == "APPROVE")).ToList(),
+                CoWorkersList = user.ToList(),
+
+
+    //.Where(u => u.UserId != UserId && !u.MissionApplications.Any(ma => ma.MissionId == mission.MissionId && ma.ApprovalStatus == "APPROVE"))
+
+
+            favouriteMission = mission.FavouriteMissions.ToList(),
+               
                 updatedGoalValue = mission.Timesheets.Where(timesheet => timesheet.MissionId == mission.MissionId && timesheet.DeletedAt == null).Sum(timesheet=> timesheet.Action),
             });
 

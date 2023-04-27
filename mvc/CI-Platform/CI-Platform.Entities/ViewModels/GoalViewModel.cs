@@ -34,11 +34,11 @@ namespace CI_Platform.Entities.ViewModels
             }
             else
             {
-                TimeMessage = "";
+                TimeErrorMessage = "";
                 return true;
             }
         }
 
-        public string? TimeMessage { get; set; }
+        public string? GoalMessage { get; set; }
     }
 }
