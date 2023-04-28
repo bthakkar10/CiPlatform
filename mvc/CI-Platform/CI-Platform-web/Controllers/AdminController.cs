@@ -4,7 +4,9 @@ using CI_Platform.Repository.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using CI_Platform_web.Utility;
 using System.Reflection.Metadata.Ecma335;
+using PublicResXFileCodeGenerator;
 //using System.Web.Mvc;
 
 namespace CI_Platform_web.Controllers
@@ -66,7 +68,6 @@ namespace CI_Platform_web.Controllers
                 return RedirectToAction("User");
             }
         }
-
 
         //fetching user data on edit 
         public IActionResult GetUserData(long UserId)
@@ -296,9 +297,14 @@ namespace CI_Platform_web.Controllers
         public IActionResult DeleteTheme()
         {
             long ThemeId = long.TryParse(Request.Form["HiddenThemeId"], out long result) ? result : 0;
-            if (_adminTheme.ThemeDelete(ThemeId))
+            if (_adminTheme.ThemeDelete(ThemeId) == "Deleted")
             {
-                TempData["succes"] = "Theme Deleted Successfully!!";
+                TempData["succes"] = "Theme " + Messages.Add;
+                return RedirectToAction("MissionTheme");
+            }
+            else if(_adminTheme.ThemeDelete(ThemeId) == "Exists")
+            {
+                TempData["error"] = "Theme " + Messages.Use;
                 return RedirectToAction("MissionTheme");
             }
             else

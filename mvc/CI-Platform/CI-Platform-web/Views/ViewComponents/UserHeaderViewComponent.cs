@@ -25,6 +25,7 @@ namespace CI_Platform_web.Views.ViewComponents
             string Avtar = "";
             string Email = "";
             string Role = "";
+            //bool? Status = true;
             var customClaimForUser = HttpContext.User?.FindFirst("CustomClaimForUser")?.Value;
             var customClaimValue = JsonSerializer.Deserialize<User>(customClaimForUser);
             UserId = customClaimValue.UserId;
@@ -39,6 +40,7 @@ namespace CI_Platform_web.Views.ViewComponents
                     Username = UserModel.FirstName + " " + UserModel.LastName;
                     Avtar = UserModel.Avtar!;
                     Role = UserModel.Role!;
+                    //Status = UserModel.Status;
                 }
             }
             HeaderViewModel vm = new()
@@ -48,6 +50,7 @@ namespace CI_Platform_web.Views.ViewComponents
                 Avtar = Avtar,
                 Email = Email,
                 Role = Role!,
+                //Status = Status,
             };
             return View(viewName, vm);  
         }

@@ -193,14 +193,14 @@
                     <div class="d-flex justify-content-around flex-column flex-sm-row flex-wrap">
                         @if (Model.MissionDetails.FavouriteMissions.Any(fm => fm.UserId == Id))
                         {
-                            <button class="favourite-button capsule-details" onclick="favourite()" data-mission-id="@Model.MissionDetails.MissionId">
+                            <button class="favourite-button capsule-details"  data-mission-id="@Model.MissionDetails.MissionId">
                                 <i class="bi bi-heart-fill  filled-heart text-danger"></i>
                                 <span class="favText">Added To Favourites</span>
                             </button>
                         }
                         else
                         {
-                            <button type="button" class=" favourite-button capsule-details" onclick="favourite()" data-mission-id="@Model.MissionDetails.MissionId">
+                            <button type="button" class=" favourite-button capsule-details"  data-mission-id="@Model.MissionDetails.MissionId">
                                 <i class="bi bi-heart empty-heart text-dark "></i>
                                 <span class="favText">Add To Favourites</span>
                             </button>
@@ -579,6 +579,7 @@
                                             {
                                                 <img src="~/images/star.png" />
                                             }
+
 
                                         </div>
                                     </div>

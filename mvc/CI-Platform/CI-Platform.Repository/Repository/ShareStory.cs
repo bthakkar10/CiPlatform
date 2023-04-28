@@ -3,6 +3,7 @@ using CI_Platform.Entities.ViewModels;
 using CI_Platform.Repository.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using CI_Platform.Repository.Generic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,38 +13,27 @@ using System.Threading.Tasks;
 
 namespace CI_Platform.Repository.Repository
 {
-
     public class ShareStory : IShareStory
     {
         private readonly CiDbContext _db;
-        enum StoryStatus
-        {
-            DRAFT ,
-            PENDING ,
-            PUBLISHED ,
-            DECLINED , 
-            APPROVE
-        }
-        enum MediaType
-        {
-            images,
-            videos 
-        }
+       
 
         public ShareStory(CiDbContext db)
         {
             _db = db;
+
         }
+     
         //get mission titles where user has applied
         public List<MissionApplication> GetMissionListofUser(long userId)
         {
-            return _db.MissionApplications.Where(m => m.UserId == userId && m.ApprovalStatus == StoryStatus.APPROVE.ToString()).Include(m => m.Mission).ToList();
+            return _db.MissionApplications.Where(m => m.UserId == userId && m.ApprovalStatus == GenericEnum.StoryStatus.APPROVE.ToString() && m.Mission.DeletedAt == null).Include(m => m.Mission).ToList();
         }
 
         //get the drafted story if there is any
         public Story GetDraftedStory(long userId, long missionId)
         {
-            Story? story =  _db.Stories.Where(s => s.MissionId == missionId && s.UserId == userId && s.Status == StoryStatus.DRAFT.ToString() && s.DeletedAt == null).Include(s => s.StoryMedia).Include(m=>m.Mission).FirstOrDefault();
+            Story? story =  _db.Stories.Where(s => s.MissionId == missionId && s.UserId == userId && s.Status == GenericEnum.StoryStatus.DRAFT.ToString() && s.DeletedAt == null && s.Mission.DeletedAt==null).Include(s => s.StoryMedia).Include(m=>m.Mission).FirstOrDefault();
             return story!;
         }
 
@@ -55,7 +45,7 @@ namespace CI_Platform.Repository.Repository
             {
                 EditDraftStory.Title = vm.StoryTitle;
                 EditDraftStory.Description = vm.StoryDescription;
-                EditDraftStory.Status = StoryStatus.DRAFT.ToString();
+                EditDraftStory.Status = GenericEnum.StoryStatus.DRAFT.ToString();
                 EditDraftStory.PublishedAt = DateTime.Now;
 
                 _db.Update(EditDraftStory);
@@ -82,7 +72,7 @@ namespace CI_Platform.Repository.Repository
                 UserId = userId,
                 Title = vm.StoryTitle,
                 Description = vm.StoryDescription,
-                Status = StoryStatus.DRAFT.ToString(),
+                Status = GenericEnum.StoryStatus.DRAFT.ToString(),
                 PublishedAt = DateTime.Now,
             };
             _db.Add(newStory);
@@ -103,7 +93,7 @@ namespace CI_Platform.Repository.Repository
         //for story urls updation
         public void AddOrRemoveStoryUrls(long storyId, string[] url)
         {
-            var media = _db.StoryMedia.Where(sm => sm.StoryId == storyId && sm.Type == MediaType.videos.ToString());
+            var media = _db.StoryMedia.Where(sm => sm.StoryId == storyId && sm.Type == GenericEnum.StoryMediaType.videos.ToString());
             if (media.Any())
             {
                 _db.RemoveRange(media);
@@ -115,7 +105,7 @@ namespace CI_Platform.Repository.Repository
                     var newMedia = new StoryMedium()
                     {
                         StoryId = storyId,
-                        Type = MediaType.videos.ToString(),
+                        Type = GenericEnum.StoryMediaType.videos.ToString(),
                         Path = u,
                         CreatedAt = DateTime.Now,
                     };
@@ -129,7 +119,7 @@ namespace CI_Platform.Repository.Repository
         //for story images updation
         public void AddOrRemoveStoryImages(long storyId, List<IFormFile> Images)
         {
-            var media = _db.StoryMedia.Where(sm => sm.StoryId == storyId && sm.Type == MediaType.images.ToString());
+            var media = _db.StoryMedia.Where(sm => sm.StoryId == storyId && sm.Type == GenericEnum.StoryMediaType.images.ToString());
             //to remove if any 
             foreach (var m in media)
             {
@@ -153,7 +143,7 @@ namespace CI_Platform.Repository.Repository
                     var newImage = new StoryMedium()
                     { 
                         StoryId = storyId,
-                        Type = MediaType.images.ToString(),
+                        Type = GenericEnum.StoryMediaType.images.ToString(),
                         Path = fileName,
                         CreatedAt = DateTime.Now,
                     };
@@ -172,7 +162,7 @@ namespace CI_Platform.Repository.Repository
         //to check if the story is already published 
         public bool isPublishedStory(long userId, long missionId)
         {
-            return _db.Stories.Any(s => s.MissionId == missionId && s.UserId == userId && (s.Status == StoryStatus.PUBLISHED.ToString() || s.Status == StoryStatus.PENDING.ToString()) && s.DeletedAt == null);
+            return _db.Stories.Any(s => s.MissionId == missionId && s.UserId == userId && (s.Status == GenericEnum.StoryStatus.PUBLISHED.ToString() || s.Status == GenericEnum.StoryStatus.PENDING.ToString()) && s.DeletedAt == null);
         }
 
         public void SubmitStory(ShareStoryViewModel vm, long userId)
@@ -184,7 +174,7 @@ namespace CI_Platform.Repository.Repository
             existingStory.UserId = userId;
             existingStory.Title = vm.StoryTitle;
             existingStory.Description = vm.StoryDescription;
-            existingStory.Status = StoryStatus.PENDING.ToString();
+            existingStory.Status = GenericEnum.StoryStatus.PENDING.ToString();
             existingStory.PublishedAt = vm.Date;
             existingStory.UpdatedAt = DateTime.Now;
 

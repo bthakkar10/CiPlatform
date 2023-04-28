@@ -75,7 +75,7 @@ namespace CI_Platform.Repository.Repository
                 }
                 foreach (long storyId in StoryIds)
                 {
-                    Story story = _db.Stories.Include(m => m.Mission).ThenInclude(m=>m.MissionTheme).Include(m => m.User).Include(s => s.StoryMedia).FirstOrDefault(m => m.StoryId == storyId && m.DeletedAt == null)!;
+                    Story story = _db.Stories.Include(m => m.Mission).ThenInclude(m=>m.MissionTheme).Include(m => m.User).Include(s => s.StoryMedia).FirstOrDefault(s => s.StoryId == storyId && s.DeletedAt == null && s.User.DeletedAt == null && s.Mission.DeletedAt == null)!;
                     if (story != null)
                     {
                         stories.Add(story);

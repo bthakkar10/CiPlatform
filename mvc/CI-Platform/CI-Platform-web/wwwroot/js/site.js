@@ -9,6 +9,13 @@ $(document).on('click', '.bi-eye-fill', function () {
     $(this).addClass('d-none');
     $(this).next().removeClass('d-none');
 })
+//change date format 
+function ChangeDateFormat(date) {
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+}
 
 //to check session has expired or not 
 setInterval(checkSessionStatus, 1800000);

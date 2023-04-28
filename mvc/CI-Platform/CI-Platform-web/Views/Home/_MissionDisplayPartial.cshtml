@@ -1,12 +1,24 @@
-﻿@using CI_Platform.Entities.ViewModels
+﻿@using CI_Platform.Entities.DataModels;
+@using CI_Platform.Entities.ViewModels
+@using System.Text.Json;
+
 @model PageListViewModel.PageList<MissionListViewModel>
 
 @{
     //var Id = ViewBag.Id;
     //var email = ViewBag.email;
     //var Username = ViewBag.Username;
+    var customClaimForUser = User?.FindFirst("CustomClaimForUser")?.Value;
+    var customClaimValue = JsonSerializer.Deserialize<User>(customClaimForUser);
+     var Id = customClaimValue.UserId;
 
-    var Id = ViewBag.UserId;
+    //var customClaim = User.FindFirst("CustomClaimForUser")?.Value;
+    //var sessionUser = JsonSerializer.Deserialize<User>(customClaim);
+    //var Id = sessionUser.UserId;
+    //var customClaim = User.FindFirst("CustomClaimForUser")?.Value;
+    //var sessionUser = JsonSerializer.Deserialize<User>(customClaim);
+    //var Id = sessionUser.UserId;
+    //var Id = ViewBag.UserId;
     //var totalRecords = ViewBag.totalRecords;
 }
 
@@ -88,7 +100,7 @@
 
                         @if (obj.favMission)
                         {
-                            <button class="  like-on-img favourite-button" onclick="favourite()" data-mission-id="@obj.MissionCard.MissionId">
+                            <button class="  like-on-img favourite-button"  data-mission-id="@obj.MissionCard.MissionId">
                                 <i class="bi bi-heart-fill  filled-heart text-danger"></i>
 
                             </button>
@@ -97,7 +109,7 @@
 
                         else
                         {
-                            <button class="favourite-button  like-on-img " onclick="favourite()" data-mission-id="@obj.MissionCard.MissionId">
+                            <button class="favourite-button  like-on-img " data-mission-id="@obj.MissionCard.MissionId">
                                 <i class="bi bi-heart empty-heart text-light  "></i>
                             </button>
                         }
@@ -350,7 +362,7 @@
 
                         @if (obj.favMission)
                         {
-                            <button class="  like-on-img favourite-button" onclick="favourite()" data-mission-id="@obj.MissionCard.MissionId">
+                            <button class="  like-on-img favourite-button"  data-mission-id="@obj.MissionCard.MissionId">
                                 <i class="bi bi-heart-fill  filled-heart text-danger"></i>
 
                             </button>
@@ -358,7 +370,7 @@
                         }
                         else
                         {
-                            <button class="favourite-button  like-on-img " onclick="favourite()" data-mission-id="@obj.MissionCard.MissionId">
+                            <button class="favourite-button  like-on-img "  data-mission-id="@obj.MissionCard.MissionId">
                                 <i class="bi bi-heart empty-heart text-light  "></i>
                             </button>
                         }

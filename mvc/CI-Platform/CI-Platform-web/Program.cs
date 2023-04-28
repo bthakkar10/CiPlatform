@@ -14,12 +14,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-//builder.Services.AddScoped<CountryCityValidationFilter>();
-//builder.Services.AddControllersWithViews(options =>
-//{
-//    options.Filters.AddService<CountryCityValidationFilter>();
-//});
+
 builder.Services.AddScoped<CountryCityValidationFilter>();
 builder.Services.AddControllersWithViews(options =>
     {

@@ -12,28 +12,45 @@ using System.Data;
 using System.Diagnostics;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using System.IdentityModel.Tokens.Jwt;
 //using System.Web.Mvc;
 
 namespace CI_Platform_web.Controllers
 {
     [Authorize(Roles = "user")]
+
     public class HomeController : Controller
     {
-       
+        long UserId = 0;
         private readonly ILogger<HomeController> _logger;
         private readonly IFilter _filterMission;
         private readonly IMissionDisplay _missionDisplay;
         private readonly IMissionDetail _missionDetail;
         private readonly CiDbContext _db;
+        private readonly IHttpContextAccessor _httpContextAccessor;
  
-        public HomeController(ILogger<HomeController> logger,  IMissionDisplay missionDisplay, CiDbContext db, IFilter filterMission, IMissionDetail missionDetail)
+        public HomeController(ILogger<HomeController> logger,  IMissionDisplay missionDisplay, CiDbContext db, IFilter filterMission, IMissionDetail missionDetail, IHttpContextAccessor httpContextAccessor)
         {
+            
             _logger = logger;
             _filterMission = filterMission;
             _missionDisplay = missionDisplay;
             _missionDetail = missionDetail;
             _db = db;
-
+            _httpContextAccessor = httpContextAccessor;
+            string authorizationHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            string token = authorizationHeader?.Substring("Bearer ".Length).Trim();
+            if (token is not null)
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var decodedToken = tokenHandler.ReadJwtToken(token);
+                var claims = decodedToken.Claims;
+                var customClaimString = decodedToken.Claims.FirstOrDefault(c => c.Type == "CustomClaimForUser")?.Value;
+                var customClaimValue = JsonSerializer.Deserialize<User>(customClaimString);
+                 UserId = customClaimValue.UserId;
+            }
+           
         }
 
 
@@ -41,24 +58,6 @@ namespace CI_Platform_web.Controllers
         [CountryCityValidationFilter]
         public IActionResult HomePage()
         {
-            //var userName = HttpContext.User?.Identity?.Name;
-            
-            //var customClaimForUser = HttpContext.User?.FindFirst("CustomClaimForUser")?.Value;
-            //if (customClaimForUser != null)
-            //{
-            //    var UserModel = JsonSerializer.Deserialize<User>(customClaimForUser);
-            //    if(UserModel != null) 
-            //    {
-            //        ViewBag.email = UserModel.Email!;
-            //        ViewBag.UserId = UserModel.UserId!;
-            //        ViewBag.Username = UserModel.FirstName + " " + UserModel.LastName;
-            //        ViewBag.Avtar = UserModel.Avtar;    
-            //    }
-            //}
-            var userId = HttpContext.Session.GetString("Id");
-            long UserId = Convert.ToInt64(userId);
-
-            ViewBag.UserId = UserId;
             var vm = new PageListViewModel();
 
             vm.Country = _filterMission.CountryList();
@@ -76,9 +75,10 @@ namespace CI_Platform_web.Controllers
         public IActionResult HomePage(MissionFilterQueryParams queryParams)
         {
             
-            var userId = HttpContext.Session.GetString("Id");
-            long UserId = Convert.ToInt64(userId);
-            ViewBag.UserId = UserId;
+            //var userId = HttpContext.Session.GetString("Id");
+            //long UserId = Convert.ToInt64(userId);
+            //ViewBag.UserId = UserId;
+
             var vm = _missionDisplay.FilterOnMission(queryParams, UserId);
 
 
@@ -251,6 +251,12 @@ namespace CI_Platform_web.Controllers
                 return Ok(new { icon = "error", message = "Already Applied!!" });
             }
         }
+
+        public bool CheckSession()
+        {
+            return HttpContext.User.Identity.IsAuthenticated;
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

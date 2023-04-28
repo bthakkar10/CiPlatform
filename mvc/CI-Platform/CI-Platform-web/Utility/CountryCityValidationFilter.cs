@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
+
 namespace CI_Platform_web.Utility
 {
     public class CountryCityValidationFilter : IActionFilter
@@ -18,7 +19,7 @@ namespace CI_Platform_web.Utility
             var controller = context.RouteData.Values["controller"].ToString();
             var action = context.RouteData.Values["action"].ToString();
 
-            if((controller == "Auth") || (controller == "User" && (action == "UserProfile" || action == "EditUserProfile")) || action== "GetCitiesByCountry" || (controller=="Home" && action=="MissionDetail") || (controller == "Story" && action == "StoryDetail"))
+            if((controller == "Auth") || (controller == "User") || (controller == "Admin") || (action == "GetCitiesByCountry") ||  (controller=="Home" && action=="MissionDetail") || (controller == "Story" && action == "StoryDetail"))
             {
                 // Allow login page to load even if country and city are not set
                 return;
@@ -33,6 +34,7 @@ namespace CI_Platform_web.Utility
                     // Redirect to the user profile page if country and city are not set
                     if (controller != "User" || action != "UserProfile")
                     {
+                        //TempData["error"] = "Please enter your name, email, country and city first!!!";
                         context.Result = new RedirectToRouteResult(
                             new RouteValueDictionary(new { controller = "User", action = "UserProfile", UserId = userId })
                         );

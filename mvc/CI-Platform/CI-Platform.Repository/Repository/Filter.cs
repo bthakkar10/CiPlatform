@@ -23,7 +23,7 @@ namespace CI_Platform.Repository.Repository
 
         public List<City> CityList(int CountryId)
         {
-            return _db.Cities.Where(c => c.CountryId == CountryId && c.DeletedAt == null).ToList();
+            return _db.Cities.Where(c => c.CountryId == CountryId).ToList();
         }
         public List<Skill> SkillList()
         {

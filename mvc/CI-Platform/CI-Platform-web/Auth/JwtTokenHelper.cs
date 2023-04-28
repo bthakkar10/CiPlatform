@@ -12,7 +12,7 @@ namespace CI_Platform_web.Auth
 {
     public static class JwtTokenHelper
     {
-
+      
         public static string GenerateToken(JwtSetting jwtSetting, User user)
         {
             if (jwtSetting == null)
@@ -20,25 +20,22 @@ namespace CI_Platform_web.Auth
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSetting.Key));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-
-            
-
-
+            //string isActive = "false";
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, user.FirstName + user.LastName),
                 new Claim(ClaimTypes.NameIdentifier, user.Email),
                 new Claim(ClaimTypes.Role, user.Role!),
+                //new Claim("isActive", user.Status.ToString()!),
                 new Claim("CustomClaimForUser", JsonSerializer.Serialize(user)),  // Additional Claims
-                new Claim("exp", DateTime.UtcNow.AddMinutes(5).ToString()) // Expiration Time Claim
+                new Claim("exp", DateTime.UtcNow.AddMinutes(30).ToString()) // Expiration Time Claim
             };
 
             var token = new JwtSecurityToken(
                 jwtSetting.Issuer,
                 jwtSetting.Audience,
                 claims,
-                expires: DateTime.UtcNow.AddMinutes(5), // Default 5 mins, max 1 day
+                expires: DateTime.UtcNow.AddMinutes(30), // Default 5 mins, max 1 day
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

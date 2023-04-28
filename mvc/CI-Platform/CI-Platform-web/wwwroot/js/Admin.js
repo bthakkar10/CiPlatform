@@ -82,6 +82,7 @@ function updateTime() {
     var formattedDateTime = dateTime.toLocaleString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true });
     $("#datetime").text(formattedDateTime);
 }
+
 //set interval will update time every seconds
 setInterval(updateTime, 1000);
 //APPEND PARTIAL VIEW FOR ADD OR EDIT USER  
@@ -391,12 +392,19 @@ $(document).on('click', '#AddOrUpdateMissionBtn', function () {
         }
     });
 });
-//start end and registration dates validations
 $(document).ready(function () {
-    $('#EndDateDiv').hide();
+    //start end and registration dates validations
+    var CurrDate = new Date();
+    console.log(ChangeDateFormat(CurrDate))
+    $(".MissionStartDateValidate").prop('min', ChangeDateFormat(CurrDate))
 })
+
+
 // Add event listener to StartDate input
 $(document).on('change', '#StartDate', function () {
+    let CurrDate = new Date();
+    console.log(ChangeDateFormat(CurrDate))
+    $(".MissionStartDateValidate").prop('min', ChangeDateFormat(CurrDate))
     // Get selected value of StartDate
     var startDate = $(this).val();
     $("#MissionDeadline").attr('disabled', false);
@@ -405,6 +413,8 @@ $(document).on('change', '#StartDate', function () {
     $("#MissionEndDate").attr('min', addDays(startDate, 1));
     $("#MissionDeadline").attr('max', addDays(startDate, -1));
 });
+
+
 // Function to add days to a date
 function addDays(dateString, days) {
     var date = new Date(dateString);
@@ -511,15 +521,27 @@ function handleFiles(e) {
 
                 // Handle close icon click event
                 closeIcon.on('click', function () {
-                    const removedFile = $(this).closest('.image').data('file');
-
+                    const removedFile = $(this).parent().data('file');
+                    //closebtn.on('click', function () {
+                    //    const removedFile = $(this).parent().data('file');
+                    //    const index = allfiles.findIndex(f => f.name === file)
+                    //    allfiles.splice(index, 1);
+                    //    console.log(allfiles);
+                    //    /*console.log(allfiles.indexOf(removedFile))*/
+                    //    item.remove();
+                    //    if (removedFile === DefaultImage) {
+                    //        DefaultImage = null;
+                    //    }
+                    //});
                     //// Get the index of the associated file in the allfiles array
                     //const index = item.data('file-index');
                     // Remove the file from the allfiles array
+                    //item.remove();
+                    item.remove();
+                    /*   $(this).parent().remove();*/
+                    console.log(allfiles.indexOf(removedFile))
                     allfiles.splice(allfiles.indexOf(removedFile), 1);
                     console.log(allfiles);
-
-                    item.remove();
 
                     if (removedFile === DefaultImage) {
                         DefaultImage = null;
@@ -532,7 +554,6 @@ function handleFiles(e) {
             };
             console.log(allfiles)
             console.log(DefaultImage)
-
         })(file);
 
         // Read image file as data URL
@@ -868,14 +889,38 @@ $(document).on('click', '#EditBtnMissionDataFetch', function () {
                 });
                 // Handle close icon click event
                 closebtn.on('click', function () {
-                    const removedFile = $(this).closest('.image').data('file');
-                    allfiles.splice(allfiles.indexOf(removedFile), 1);
+                    const removedFile = $(this).parent().data('file');
+                    const index = allfiles.findIndex(f => f.name === file)
+                    allfiles.splice(index, 1);
                     console.log(allfiles);
+                    /*console.log(allfiles.indexOf(removedFile))*/
                     item.remove();
                     if (removedFile === DefaultImage) {
                         DefaultImage = null;
                     }
                 });
+
+                //closeIcon.on('click', function () {
+                //    const removedFile = $(this).parent().data('file');
+
+                //    //// Get the index of the associated file in the allfiles array
+                //    //const index = item.data('file-index');
+                //    // Remove the file from the allfiles array
+                //    //item.remove();
+                //    removedFile.remove();
+                //    /*   $(this).parent().remove();*/
+                //    console.log(allfiles.indexOf(removedFile))
+                //    allfiles.splice(allfiles.indexOf(removedFile), 1);
+                //    console.log(allfiles);
+
+                //    if (removedFile === DefaultImage) {
+                //        DefaultImage = null;
+                //    }
+
+                //    if (allfiles.length < 20) {
+                //        $('#mission-img-input').prop('disabled', false);
+                //    }
+                //});
 
                 allfiles.push(files);
             });

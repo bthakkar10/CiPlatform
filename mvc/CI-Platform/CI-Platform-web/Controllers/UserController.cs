@@ -37,7 +37,7 @@ namespace CI_Platform_web.Controllers
                 return View(ex);
             }
         }
-
+        [AllowAnonymous]
         public IActionResult GetCitiesByCountry(int CountryId)
         {
             var City = _filter.CityList(CountryId);

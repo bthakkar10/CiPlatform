@@ -11,6 +11,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using CI_Platform.Repository.Generic;
 
 namespace CI_Platform.Repository.Repository
 {
@@ -21,9 +22,6 @@ namespace CI_Platform.Repository.Repository
         {
             _db = db;
         }
-
-        
-
 
         public PageListViewModel.PageList<MissionListViewModel> FilterOnMission(MissionFilterQueryParams queryParams, long UserId)
         {
@@ -68,31 +66,24 @@ namespace CI_Platform.Repository.Repository
                 MissionCard = mission,
                 CityName = mission.City.CityName,
                 ThemeTitle = mission.MissionTheme.Title,
-                Applied = mission.MissionApplications.Any(missionApp => missionApp.UserId == UserId && missionApp.DeletedAt == null && missionApp.ApprovalStatus == "APPROVE"),
-                favMission = mission.FavouriteMissions.Any(favMission => favMission.UserId == UserId && favMission.DeletedAt == null),
-                avgRating = (float)mission.MissionRatings.Average(r => r.Rating),
-                seatsLeft = mission.TotalSeats - mission.MissionApplications.Count(m => m.ApprovalStatus.Contains("APPROVE")),
+                Applied = mission.MissionApplications.Any(missionApp => missionApp.UserId == UserId && missionApp.User.DeletedAt == null && missionApp.Mission.DeletedAt==null && missionApp.DeletedAt == null && missionApp.ApprovalStatus == GenericEnum.ApplicationStatus.APPROVE.ToString()),
+                favMission = mission.FavouriteMissions.Any(favMission => favMission.UserId == UserId && favMission.DeletedAt == null && favMission.User.DeletedAt == null && favMission.Mission.DeletedAt == null),
+                avgRating = (float)mission.MissionRatings.Where(rate=>rate.User.DeletedAt==null).Average(r => r.Rating),
+                seatsLeft = mission.TotalSeats - mission.MissionApplications.Where(missionApp => missionApp.User.DeletedAt==null).Count(m => m.ApprovalStatus.Contains(GenericEnum.ApplicationStatus.APPROVE.ToString())),
                 createdAt = mission.CreatedAt,
                 startDate = mission.StartDate,
                 deadline = mission.Deadline,
                 skillName = mission.MissionSkills.Select(ms => ms.Skill.SkillName).ToList()!,
                 missionMedia = mission.MissionMedia.Where(mm=>mm.Defaultval==true).Select(mm => mm.MediaPath).ToList()!,
                 goalMission = mission.GoalMissions.ToList(),
-                missionInvites = mission.MissionInvites.Where(mi => mi.DeletedAt == null).ToList(),
-                IsOngoing = (mission.StartDate < DateTime.Now) && (mission.EndDate > DateTime.Now),
+                missionInvites = mission.MissionInvites.Where(mi => mi.DeletedAt == null && mi.Mission.DeletedAt == null && mi.ToUser.DeletedAt == null && mi.FromUser.DeletedAt == null).ToList(),
+                IsOngoing = (mission.StartDate < DateTime.Now) && (mission.EndDate > DateTime.Now), 
                 HasEndDatePassed = mission.EndDate < DateTime.Now,
                 HasMissionStarted = mission.StartDate < DateTime.Now,
                 HasDeadlinePassed = mission.Deadline < DateTime.Now,
-                IsApplicationPending = mission.MissionApplications.Any(missionApp => missionApp.UserId == UserId && missionApp.DeletedAt == null && missionApp.ApprovalStatus=="Pending"),
-                //CoWorkersList = user.Where(u => !u.MissionApplications.Any(m => m.MissionId == mission.MissionId && m.ApprovalStatus == "APPROVE")).ToList(),
+                IsApplicationPending = mission.MissionApplications.Any(missionApp => missionApp.UserId == UserId && missionApp.DeletedAt == null && missionApp.ApprovalStatus == GenericEnum.ApplicationStatus.PENDING.ToString() && missionApp.Mission.DeletedAt == null && missionApp.User.DeletedAt == null),
                 CoWorkersList = user.ToList(),
-
-
-    //.Where(u => u.UserId != UserId && !u.MissionApplications.Any(ma => ma.MissionId == mission.MissionId && ma.ApprovalStatus == "APPROVE"))
-
-
-            favouriteMission = mission.FavouriteMissions.ToList(),
-               
+                favouriteMission = mission.FavouriteMissions.Where(favMission=>favMission.User.DeletedAt==null).ToList(),
                 updatedGoalValue = mission.Timesheets.Where(timesheet => timesheet.MissionId == mission.MissionId && timesheet.DeletedAt == null).Sum(timesheet=> timesheet.Action),
             });
 
@@ -125,12 +116,11 @@ namespace CI_Platform.Repository.Repository
 
         }
 
-        public string AddToFavourites(long MissionId, long UserId)
+        public string AddToFavourites(long UserId, long MissionId)
         {
             try
             {
-
-                if (_db.FavouriteMissions.Any(fm => fm.MissionId == MissionId && fm.UserId == UserId))
+                if (_db.FavouriteMissions.Any(fm => fm.MissionId == MissionId && fm.UserId == UserId && fm.User!.DeletedAt == null && fm.Mission!.DeletedAt == null))
                 {
                     // Mission is already in favorites, return an error message or redirect back to the mission page
                     var FavouriteMissionId = _db.FavouriteMissions.Where(fm => fm.MissionId == MissionId && fm.UserId == UserId).FirstOrDefault()!;
@@ -155,7 +145,7 @@ namespace CI_Platform.Repository.Repository
         public byte Ratings(byte rating, long MissionId, long UserId)
         {
 
-            var alreadyRated = _db.MissionRatings.SingleOrDefault(mr => mr.MissionId == MissionId && mr.UserId == UserId && mr.DeletedAt == null);
+            var alreadyRated = _db.MissionRatings.SingleOrDefault(mr => mr.MissionId == MissionId && mr.UserId == UserId && mr.DeletedAt == null && mr.User.DeletedAt == null && mr.Mission.DeletedAt == null);
 
             if (alreadyRated != null)
             {

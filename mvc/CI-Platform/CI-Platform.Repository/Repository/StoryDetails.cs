@@ -11,6 +11,7 @@ using System.Net;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using CI_Platform.Repository.Generic;
 //using Microsoft.AspNetCore.Mvc.Routing;
 //using Microsoft.AspNetCore.Http;
 
@@ -29,7 +30,7 @@ namespace CI_Platform.Repository.Repository
 
         public Story GetStoryDetails(long MissionId,long UserId)
         {
-            Story story =  _db.Stories.Where(s=>s.DeletedAt == null).
+            Story story =  _db.Stories.Where(s=>s.DeletedAt == null && s.User.DeletedAt == null && s.Mission.DeletedAt == null).
             Include(s => s.StoryMedia).
             Include(s => s.StoryInvites).
             Include(s => s.User).
@@ -42,12 +43,12 @@ namespace CI_Platform.Repository.Repository
 
         public List<User> UserList(long UserId)
         {
-            return _db.Users.Where(u => u.UserId != UserId && u.DeletedAt == null && u.Status == true).ToList();
+            return _db.Users.Where(u => u.UserId != UserId && u.DeletedAt == null && u.Status == true && u.Role==GenericEnum.Role.user.ToString()).ToList();
         }
 
         public void IncreaseViewCount(long UserId, long MissionId)
         {
-            Story story = _db.Stories.Where(s => s.MissionId == MissionId && s.UserId == UserId && s.Status == "PUBLISHED" && s.DeletedAt == null).FirstOrDefault()!;
+            Story story = _db.Stories.Where(s => s.MissionId == MissionId && s.UserId == UserId && s.Status == GenericEnum.StoryStatus.PUBLISHED.ToString() && s.DeletedAt == null).FirstOrDefault()!;
             if (story != null)
             {
                 story.UserVisits = story.UserVisits++;
@@ -61,9 +62,9 @@ namespace CI_Platform.Repository.Repository
 
         public async Task SendInvitationToCoWorker(long ToUserId, long FromUserId, StoryDetailsViewModel vm)
         {
-            var Email = await _db.Users.Where(u => u.UserId == ToUserId && u.DeletedAt == null).FirstOrDefaultAsync()!;
+            var Email = await _db.Users.Where(u => u.UserId == ToUserId && u.DeletedAt == null && u.Role == GenericEnum.Role.user.ToString()).FirstOrDefaultAsync()!;
 
-            var Sender = await _db.Users.Where(su => su.UserId == FromUserId && su.DeletedAt == null).FirstOrDefaultAsync()!;
+            var Sender = await _db.Users.Where(su => su.UserId == FromUserId && su.DeletedAt == null && su.Role == GenericEnum.Role.user.ToString()).FirstOrDefaultAsync()!;
 
             var fromEmail = new MailAddress("ciplatformdemo@gmail.com");
             var toEmail = new MailAddress(Email.Email);

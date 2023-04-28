@@ -37,7 +37,8 @@ namespace CI_Platform_web.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
-            HttpContext.Session.Remove("Username");
+            Response.Headers.Remove("Authorization");
+            HttpContext.Session.Remove("Token");
             HttpContext.Session.Remove("SEmail");
             HttpContext.Session.Remove("Id");
             return View();

@@ -1,5 +1,6 @@
 ﻿using CI_Platform.Entities.DataModels;
 using CI_Platform.Entities.ViewModels;
+using CI_Platform.Repository.Generic;
 using CI_Platform.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,13 +22,15 @@ namespace CI_Platform.Repository.Repository
         }
 
         public List<MissionApplication> GetMissionTitles(long UserId)
-        {
-            return _db.MissionApplications.Where(ms => ms.UserId == UserId && ms.ApprovalStatus == "APPROVE" && ms.DeletedAt == null).Include(m => m.Mission).ToList();
+        {   
+            //return mission whose user id matches, who has applied, mission is not deleted and mission is ongoing 
+            return _db.MissionApplications.Where(ms => ms.UserId == UserId && ms.ApprovalStatus == GenericEnum.ApplicationStatus.APPROVE.ToString() && ms.DeletedAt == null && ms.Mission.DeletedAt == null && (ms.Mission.StartDate<DateTime.Now && ms.Mission.EndDate>DateTime.Now))
+                .Include(m => m.Mission).ToList();
         }
-
+     
         public List<Timesheet> GetTimesheetData(long UserId)
         {
-            return _db.Timesheets.Where(ms => ms.UserId == UserId && ms.DeletedAt == null).Include(m => m.Mission).ToList();
+            return _db.Timesheets.Where(ms => ms.UserId == UserId && ms.DeletedAt == null && ms.User.DeletedAt == null && ms.Mission.DeletedAt == null).Include(m => m.Mission).ToList();
         }
 
         public string AddTimeBasedEntry(TimeViewModel vm, long UserId)
@@ -96,7 +99,7 @@ namespace CI_Platform.Repository.Repository
 
         public Timesheet GetDataOnEdit(long TimeSheetId)
         {
-            return _db.Timesheets.Include(m => m.Mission).Where(m => m.DeletedAt == null).FirstOrDefault(t => t.TimesheetId == TimeSheetId)!;
+            return _db.Timesheets.Include(m => m.Mission).Where(m => m.DeletedAt == null && m.Mission.DeletedAt == null).FirstOrDefault(t => t.TimesheetId == TimeSheetId)!;
         }
 
         public bool UpdateGoalBasedEntry(GoalViewModel vm)

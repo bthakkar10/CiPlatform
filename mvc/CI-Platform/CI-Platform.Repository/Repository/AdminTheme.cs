@@ -63,26 +63,31 @@ namespace CI_Platform.Repository.Repository
             }
         }
 
-        public bool ThemeDelete(long ThemeId)
+        public string ThemeDelete(long ThemeId)
         {
             try
             {
                 MissionTheme theme = _db.MissionThemes.Find(ThemeId)!;
                 if (theme != null)
                 {
+                    if (_db.Missions.Any(m => m.MissionThemeId == ThemeId))
+                    {
+                        // The theme is already used by a mission, so it cannot be deleted
+                        return "Exists";
+                    }
                     theme.DeletedAt = DateTime.Now;
                     _db.Update(theme);
                     _db.SaveChanges();
-                    return true;
+                    return "Deleted";
                 }
                 else
                 {
-                    return false;
+                    return "error";
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                return ex.Message;
             }
         }
 

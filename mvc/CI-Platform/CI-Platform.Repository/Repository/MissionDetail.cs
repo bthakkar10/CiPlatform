@@ -9,6 +9,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using CI_Platform.Entities.ViewModels;
+using CI_Platform.Repository.Generic;
 
 namespace CI_Platform.Repository.Repository
 {
@@ -23,7 +24,7 @@ namespace CI_Platform.Repository.Repository
         }
         public Mission MissionDetails(long MissionId)
         {
-            Mission mission = _db.Missions.Where(mission=>mission.DeletedAt == null)
+            Mission mission = _db.Missions.Where(m => m.DeletedAt == null && m.City.DeletedAt == null && m.Country.DeletedAt == null)
                 .Include(m => m.Country)
                 .Include(m => m.City)
                 .Include(m => m.MissionRatings)
@@ -47,26 +48,26 @@ namespace CI_Platform.Repository.Repository
 
         public List<Comment> GetApprovedComments(long MissionId)
         {
-            var approvedComments = _db.Comments.Where(c => c.MissionId == MissionId && c.ApprovalStatus == "PUBLISHED")
+            var approvedComments = _db.Comments.Where(c => c.MissionId == MissionId && c.ApprovalStatus == GenericEnum.CommentStatus.PUBLISHED.ToString() && c.User.DeletedAt == null && c.Mission.DeletedAt==null)
                 .Include(c => c.User).ToList();
-
             return approvedComments;
         }
 
         public List<MissionApplication> GetRecentVolunteers(long MissionId, long userId)
         {
-            var recentVolunteers = _db.MissionApplications.Include(u => u.User).Where(u => u.MissionId == MissionId && u.UserId != userId && u.ApprovalStatus == "APPROVE").OrderByDescending(u => u.CreatedAt).ToList();
+            var recentVolunteers = _db.MissionApplications.Include(u => u.User).Where(u => u.MissionId == MissionId && u.UserId != userId && u.ApprovalStatus == GenericEnum.ApplicationStatus.APPROVE.ToString() && u.User.DeletedAt == null && u.Mission.DeletedAt == null).OrderByDescending(u => u.CreatedAt).ToList();
 
             return recentVolunteers;
         }
 
         public List<Mission> GetRelatedMissions(long MissionId)
         {
-            var mission = _db.Missions.Where(m => m.MissionId == MissionId && m.DeletedAt == null).FirstOrDefault()!;
+            Mission mission = _db.Missions.Where(m => m.MissionId == MissionId && m.DeletedAt == null).FirstOrDefault()!;
 
-            var relatedMissions = new List<Mission>();
+            List<Mission> relatedMissions = new();
 
             relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.CityId == mission.CityId && m.DeletedAt == null)
+                .Where(mission=>mission.Country.DeletedAt == null && mission.City.DeletedAt == null)
                 .Include(m => m.Country)
                 .Include(m => m.City)
                 .Include(m => m.MissionRatings)
@@ -80,6 +81,7 @@ namespace CI_Platform.Repository.Repository
             if (relatedMissions.Count < 3)
             {
                 relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.CountryId == mission.CountryId && m.DeletedAt == null)
+                .Where(mission => mission.Country.DeletedAt == null && mission.City.DeletedAt == null)
                 .Include(m => m.Country)
                 .Include(m => m.City)
                 .Include(m => m.MissionRatings)
@@ -94,6 +96,7 @@ namespace CI_Platform.Repository.Repository
             if (relatedMissions.Count < 3)
             {
                 relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.MissionThemeId == mission.MissionThemeId && m.DeletedAt == null )
+                     .Where(mission => mission.Country.DeletedAt == null && mission.City.DeletedAt == null)
                 .Include(m => m.Country)
                 .Include(m => m.City)
                 .Include(m => m.MissionRatings)
@@ -110,13 +113,13 @@ namespace CI_Platform.Repository.Repository
 
         public List<User> UserList(long UserId, long MissionId)
         {
-            return _db.Users.Where(u => u.UserId != UserId && u.DeletedAt==null && u.Status==true && !u.MissionApplications.Any(m => m.MissionId == MissionId && m.ApprovalStatus == "APPROVE")).Include(m=>m.MissionInviteFromUsers).Include(m=>m.MissionInviteToUsers).ToList();
+            return _db.Users.Where(u => u.UserId != UserId && u.DeletedAt==null && u.Status==true && u.Role == GenericEnum.Role.user.ToString() && !u.MissionApplications.Any(m => m.MissionId == MissionId && m.ApprovalStatus == GenericEnum.ApplicationStatus.APPROVE.ToString())).Include(m=>m.MissionInviteFromUsers).Include(m=>m.MissionInviteToUsers).ToList();
         }
 
 
         public async Task SendInvitationToCoWorker(long ToUserId, long FromUserId, MissionDetailViewModel viewmodel)
         {
-            var Email = await _db.Users.Where(u => u.UserId == ToUserId && u.DeletedAt == null).FirstOrDefaultAsync()!;
+            var Email = await _db.Users.Where(u => u.UserId == ToUserId && u.DeletedAt == null ).FirstOrDefaultAsync()!;
 
             var Sender = await _db.Users.Where(su => su.UserId == FromUserId && su.DeletedAt == null).FirstOrDefaultAsync()!;
 

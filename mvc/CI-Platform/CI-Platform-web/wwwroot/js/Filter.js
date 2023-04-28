@@ -519,8 +519,8 @@ allDropdowns.each(function () {
 })
 
 //to add or remove favourites
-function favourite() {
-    $('.favourite-button').on('click', function () {
+
+    $(document).on('click', '.favourite-button', function () {
 
         var missionId = $(this).data('mission-id');
         $.ajax({
@@ -561,7 +561,7 @@ function favourite() {
             }
         });
     });
-}
+
 
 //to add or update ratings
 $('.rating-mission-detail').on('click', function () {
@@ -570,7 +570,6 @@ $('.rating-mission-detail').on('click', function () {
     var selectedIcon = $(this).prevAll().addBack();
     var unselectedIcon = $(this).nextAll();
 
-
     $.ajax({
         method: 'POST',
         url: '/Home/Rating',
@@ -578,7 +577,6 @@ $('.rating-mission-detail').on('click', function () {
         success: function () {
             selectedIcon.removeClass('bi-star').addClass('bi-star-fill text-warning');
             unselectedIcon.removeClass('bi-star-fill text-warning').addClass('bi-star');
-           
         },
         error: function (error) {
            
@@ -913,8 +911,6 @@ $('#img-input').on('change', function (e) {
         fileInput.disabled = true;
     }
 });
-
-
 //change date format 
 function ChangeDateFormat(date) {
     const yyyy = date.getFullYear();
@@ -922,7 +918,6 @@ function ChangeDateFormat(date) {
     const dd = String(date.getDate()).padStart(2, '0');
     return `${yyyy}-${mm}-${dd}`;
 }
-
 //to show story details when in draft
 $('#missionTitle').change(function () {
     var missionId = $(this).val();

@@ -37,8 +37,8 @@ namespace CI_Platform.Repository.Repository
                 CityId = user.CityId,
                 UserSkills = user.UserSkills.ToList(),
                 Skills = _db.Skills.ToList(),
-                Countries = _db.Countries.ToList(),
-                Cities = _db.Cities.ToList(),
+                Countries = _db.Countries.Where(c=>c.DeletedAt == null).ToList(),
+                Cities = _db.Cities.Where(c => c.DeletedAt == null).ToList(),
             };
 
             return vm;

@@ -99,7 +99,7 @@
             <div class="row g-3 m-3">
                 <div class="col-md-6">
                     <label asp-for="StartDate" class="form-label ms-1">Start Date</label>
-                    <input asp-for="StartDate" type="date" id="StartDate" required class="form-control">
+                    <input asp-for="StartDate" type="date" id="StartDate" required class="form-control MissionStartDateValidate">
                     <span asp-validation-for="StartDate" class="validate-text text-danger"></span>
                 </div>
                 <div class="col-md-6" id="EndDateDiv" >
@@ -112,7 +112,7 @@
             <div class="m-3">
                 <label asp-for="MissionType" class="form-label ms-1">Mission Type</label>
                 <select asp-for="MissionType" class="form-select" id="MissionTypeSelection" name="MissionType" aria-label="Select Mission Type">
-                    <option selected disabled> Select Mission Type </option>
+                    
                     <option value="Time">Time</option>
                     <option value="Goal">Goal</option>
                 </select>
@@ -152,7 +152,7 @@
                     <select asp-for="Avaliablity" class="form-select" id="AvaliabilitySelect" name="Avaliablity" aria-label="Select your Avaliability">
                         <option value="daily">daily</option>
                         <option value="weekly">weekly</option>
-                        <option value="weekend">weekend</option>
+                        <option value="week-end">week-end</option>
                         <option value="monthly">monthly</option>
                     </select>
                 </div>
