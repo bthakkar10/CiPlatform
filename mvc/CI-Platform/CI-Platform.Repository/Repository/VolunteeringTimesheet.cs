@@ -40,7 +40,7 @@ namespace CI_Platform.Repository.Repository
                 List<Timesheet> timesheet = _db.Timesheets.Where(t => t.UserId == UserId && t.MissionId == vm.MissionId && t.DeletedAt == null).ToList();
                 foreach (var ts in timesheet)
                 {
-                    if (ts.DateVolunteered != vm.TimeDate)
+                    if (ts.DateVolunteered == vm.TimeDate)
                     {
                         return "Exists";
                     }

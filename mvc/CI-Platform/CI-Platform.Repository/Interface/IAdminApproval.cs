@@ -17,6 +17,8 @@ namespace CI_Platform.Repository.Interface
 
         public string ApproveDeclineStory(long StoryId, long Status);
 
+        public Story GetStoryDetailsAdmin(long MissionId);
+
         public bool IsStoryDeleted(long StoryId);
 
         public List<Comment> CommentList();

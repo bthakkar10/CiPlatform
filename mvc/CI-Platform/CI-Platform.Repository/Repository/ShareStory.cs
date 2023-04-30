@@ -27,13 +27,13 @@ namespace CI_Platform.Repository.Repository
         //get mission titles where user has applied
         public List<MissionApplication> GetMissionListofUser(long userId)
         {
-            return _db.MissionApplications.Where(m => m.UserId == userId && m.ApprovalStatus == GenericEnum.StoryStatus.APPROVE.ToString() && m.Mission.DeletedAt == null).Include(m => m.Mission).ToList();
+            return _db.MissionApplications.Where(m => m.UserId == userId && m.ApprovalStatus == GenericEnum.StoryStatus.PUBLISHED.ToString() && m.Mission.DeletedAt == null).Include(m => m.Mission).ToList();
         }
 
         //get the drafted story if there is any
         public Story GetDraftedStory(long userId, long missionId)
         {
-            Story? story =  _db.Stories.Where(s => s.MissionId == missionId && s.UserId == userId && s.Status == GenericEnum.StoryStatus.DRAFT.ToString() && s.DeletedAt == null && s.Mission.DeletedAt==null).Include(s => s.StoryMedia).Include(m=>m.Mission).FirstOrDefault();
+            Story? story =  _db.Stories.Where(s => s.MissionId == missionId && s.UserId == userId && s.Status != GenericEnum.StoryStatus.DRAFT.ToString() && s.DeletedAt == null && s.Mission.DeletedAt==null).Include(s => s.StoryMedia).Include(m=>m.Mission).FirstOrDefault();
             return story!;
         }
 

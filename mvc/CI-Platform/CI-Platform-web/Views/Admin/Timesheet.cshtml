@@ -40,12 +40,12 @@
                         <td>@timesheet.DateVolunteered</td>
 
                         <td>
-                            <button class="p-0 btn ApproveOrDeclineTimesheet" id="TimesheetApprovalBtn" data-bs-toggle="modal" data-bs-target="#ApproveOrDeclineModal" data-timesheet-id="@timesheet.TimesheetId" data-status="1">
-                                <i class="fa-regular fa-circle-check" style="color: #00ff00;"></i>
+                            <button class="p-0 btn ApproveOrDeclineTimesheet @(timesheet.Status == "APPROVED" ? "disabled border-0" : "")" id="TimesheetApprovalBtn" data-bs-toggle="modal" data-bs-target="#ApproveOrDeclineModal" data-timesheet-id="@timesheet.TimesheetId" data-status="1">
+                                <i class=" fa-circle-check @(timesheet.Status == "APPROVED" ? "fa-solid" : "fa-regular")" style="color: #00ff00;"></i>
                             </button>
 
-                            <button class="btn p-0 ApproveOrDeclineTimesheet" id="TimesheetDeclineBtn" data-bs-target="#ApproveOrDeclineModal" data-bs-toggle="modal" data-timesheet-id="@timesheet.TimesheetId" data-status="0">
-                                <i class="fa-regular fa-circle-xmark" style="color: #ff0000;"></i>
+                            <button class="btn p-0 ApproveOrDeclineTimesheet @(timesheet.Status == "DECLINED" ? "disabled border-0" : "")" id="TimesheetDeclineBtn" data-bs-target="#ApproveOrDeclineModal" data-bs-toggle="modal" data-timesheet-id="@timesheet.TimesheetId" data-status="0">
+                                <i class="fa-circle-xmark @(timesheet.Status == "DECLINED" ? "fa-solid" : "fa-regular")" style="color: #ff0000;"></i>
                             </button>
                         </td>
                     </tr>

@@ -12,4 +12,8 @@ public partial class PasswordReset
     public DateTime? CreatedAt { get; set; }
 
     public int Id { get; set; }
+
+    public DateTime? ExpirationTime { get; set; }
+
+    public bool? IsUsed { get; set; }
 }

@@ -1,6 +1,8 @@
-﻿using CI_Platform.Entities.DataModels;
+﻿using Azure.Core;
+using CI_Platform.Entities.DataModels;
 using CI_Platform.Entities.ViewModels;
 using CI_Platform.Repository.Interface;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +10,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Helpers;
 
+
 namespace CI_Platform.Repository.Repository
 {
     public class UserRepository : IUserRepository
     {
+
         private readonly CiDbContext _db;
+        //public readonly HttpContext _httpContext;
         public UserRepository(CiDbContext db) 
         {
             _db = db;
@@ -57,16 +62,32 @@ namespace CI_Platform.Repository.Repository
             }
         }
 
-        public void UpdatePassword(ResetPasswordValidation obj)
+        public string UpdatePassword(ResetPasswordValidation obj, HttpContext httpContext)
         {
-            PasswordReset LastData = _db.PasswordResets.OrderBy(i => i.Id).Last();
-            User Change = _db.Users.FirstOrDefault(u => u.Email == LastData.Email)!;
-            Change.Password = BCrypt.Net.BCrypt.HashPassword(obj.Password);
-            Change.UpdatedAt = DateTime.Now;
-            _db.Update(Change);
-            _db.SaveChanges();
+            string token = httpContext.Request.Query["token"]!;
+            PasswordReset LastData = _db.PasswordResets.Where(pr => pr.Token == token && pr.ExpirationTime>DateTime.Now && pr.IsUsed == false).OrderByDescending(pr => pr.Id).FirstOrDefault()!;
+            if(LastData != null)
+            {
+                User user = _db.Users.FirstOrDefault(u => u.Email == LastData.Email)!;
+                if(user != null)
+                {
+                    user.Password = BCrypt.Net.BCrypt.HashPassword(obj.Password);
+                    user.UpdatedAt = DateTime.Now;
+                    LastData.IsUsed = true;
+                    _db.Update(LastData);
+                    _db.Update(user);
+                    _db.SaveChanges();
+                    return "changed";
+                }
+                else
+                {
+                    return "error";
+                }
+            }
+            else
+            {
+                return "invalid";
+            }
         }
-
-
     }
 }

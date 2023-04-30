@@ -24,7 +24,7 @@ namespace CI_Platform.Repository.Repository
        
         void IEmailGeneration.GenerateEmail(ForgotPasswordValidation obj)
         {
-            Random random = new Random();
+            Random random = new();
 
             int capitalCharCode = random.Next(65, 91);
             char randomCapitalChar = (char)capitalCharCode;
@@ -43,7 +43,7 @@ namespace CI_Platform.Repository.Repository
 
             //string token = WebSecurity.GeneratePasswordResetToken(obj.Email);
 
-            UriBuilder uriBuilder = new UriBuilder();
+            UriBuilder uriBuilder = new();
             uriBuilder.Scheme = "https";
             uriBuilder.Host = "localhost";
             uriBuilder.Port = 44350;
@@ -54,8 +54,10 @@ namespace CI_Platform.Repository.Repository
 
             var ResetPasswordInfo = new PasswordReset()
             {
-                Email = obj.Email,
-                Token = token
+                Email = obj.Email!,
+                Token = token,
+                ExpirationTime = DateTime.Now.AddHours(4),
+                IsUsed = false
             };
             _db.Add(ResetPasswordInfo);
             _db.SaveChanges();
@@ -64,8 +66,7 @@ namespace CI_Platform.Repository.Repository
             var toEmail = new MailAddress(obj.Email!);
             var fromEmailPassword = "pdckerdmuutmdzhz";
             string subject = "Reset Password";
-            string body = PasswordResetLink;
-
+            string body = "Your link for password reset is :  " + PasswordResetLink + "\n Note : Your link will expire in 4 hours. You can only use this link once!!! ";
 
             var smtp = new SmtpClient
             {
@@ -77,7 +78,7 @@ namespace CI_Platform.Repository.Repository
                 Credentials = new NetworkCredential(fromEmail.Address, fromEmailPassword)
             };
 
-            MailMessage message = new MailMessage(fromEmail, toEmail);
+            MailMessage message = new(fromEmail, toEmail);
             message.Subject = subject;
             message.Body = body;
             message.IsBodyHtml = true;

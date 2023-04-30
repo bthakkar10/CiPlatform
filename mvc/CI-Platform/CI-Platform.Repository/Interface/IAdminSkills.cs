@@ -14,7 +14,7 @@ namespace CI_Platform.Repository.Interface
 
         public string SkillsAdd(AdminSkillsViewModel skillvm);
 
-        public bool SkillDelete(long SkillId);
+        public string SkillDelete(long SkillId);
 
         public AdminSkillsViewModel GetSkills(long SkillId);
 

@@ -1,4 +1,5 @@
 ﻿using CI_Platform.Entities.DataModels;
+using CI_Platform.Repository.Generic;
 using CI_Platform.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -19,35 +20,11 @@ namespace CI_Platform.Repository.Repository
         {
             _db = db;
         }
-        enum ApplicationApprovalStatus
-        {
-            APPROVE,
-            DECLINE,
-            PENDING
-        }
-
-        enum StoryApprovalStatus
-        {
-            PENDING,
-            PUBLISHED,
-            DECLINED
-        }
-
-        enum CommentApprovalStatus
-        {
-            PENDING,
-            PUBLISHED,
-            DECLINED
-        }
-        enum TimesheetApprovalStatus
-        {
-            PENDING,
-            APPROVED,
-            DECLINED
-        }
+      
+                
         public List<MissionApplication> MissionApplicationList()
         {
-            return _db.MissionApplications.Where(missionapplication => missionapplication.DeletedAt == null && missionapplication.ApprovalStatus == ApplicationApprovalStatus.PENDING.ToString()).Include(missionapplication => missionapplication.Mission).Include(missionapplication => missionapplication.User).ToList();
+            return _db.MissionApplications.Where(missionapplication => missionapplication.DeletedAt == null && missionapplication.User.DeletedAt == null && missionapplication.Mission.DeletedAt == null).Include(missionapplication => missionapplication.Mission).Include(missionapplication => missionapplication.User).ToList();
         }
 
         public string ApproveDeclineApplication(long MissionApplicationId, long Status)
@@ -63,7 +40,7 @@ namespace CI_Platform.Repository.Repository
                 {
                     if (Status == 1)
                     {
-                        missionApplication.ApprovalStatus = ApplicationApprovalStatus.APPROVE.ToString();
+                        missionApplication.ApprovalStatus = GenericEnum.ApplicationStatus.APPROVE.ToString();
                         missionApplication.UpdatedAt = DateTime.Now;
                         _db.MissionApplications.Update(missionApplication);
                         _db.SaveChanges();
@@ -71,7 +48,7 @@ namespace CI_Platform.Repository.Repository
                     }
                     else
                     {
-                        missionApplication.ApprovalStatus = ApplicationApprovalStatus.DECLINE.ToString();
+                        missionApplication.ApprovalStatus = GenericEnum.ApplicationStatus.DECLINE.ToString();
                         missionApplication.UpdatedAt = DateTime.Now;
                         _db.MissionApplications.Update(missionApplication);
                         _db.SaveChanges();
@@ -88,7 +65,7 @@ namespace CI_Platform.Repository.Repository
 
         public List<Story> StoryList()
         {
-            return _db.Stories.Where(story => story.DeletedAt == null && story.Status == StoryApprovalStatus.PENDING.ToString()).Include(story => story.Mission).Include(story => story.User).ToList();
+            return _db.Stories.Where(story => story.DeletedAt == null && story.Status != GenericEnum.StoryStatus.DRAFT.ToString()  && story.Mission.DeletedAt == null && story.User.DeletedAt == null).Include(story => story.Mission).Include(story => story.User).ToList();
         }
 
         public string ApproveDeclineStory(long StoryId, long Status)
@@ -104,7 +81,7 @@ namespace CI_Platform.Repository.Repository
                 {
                     if (Status == 1)
                     {
-                        story.Status = StoryApprovalStatus.PUBLISHED.ToString();
+                        story.Status = GenericEnum.StoryStatus.PUBLISHED.ToString();
                         story.PublishedAt = DateTime.Now;
                         _db.Stories.Update(story);
                         _db.SaveChanges();
@@ -112,7 +89,7 @@ namespace CI_Platform.Repository.Repository
                     }
                     else
                     {
-                        story.Status = StoryApprovalStatus.DECLINED.ToString();
+                        story.Status = GenericEnum.StoryStatus.DECLINED.ToString();
                         story.UpdatedAt = DateTime.Now;
                         _db.Stories.Update(story);
                         _db.SaveChanges();
@@ -124,6 +101,14 @@ namespace CI_Platform.Repository.Repository
             {
                 return ex.Message;
             }
+        }
+
+        public Story GetStoryDetailsAdmin(long MissionId)
+        {
+            Story story = _db.Stories.Where(s => s.DeletedAt == null && s.Mission.DeletedAt == null).
+            Include(s => s.StoryMedia).Include(s => s.Mission).
+            FirstOrDefault(s => s.MissionId == MissionId)!;
+            return story;
         }
 
         public bool IsStoryDeleted(long StoryId)
@@ -151,7 +136,7 @@ namespace CI_Platform.Repository.Repository
 
         public List<Comment> CommentList()
         {
-            return _db.Comments.Where(comment => comment.DeletedAt == null && comment.ApprovalStatus == CommentApprovalStatus.PENDING.ToString()).Include(comment => comment.Mission).Include(comment => comment.User).ToList();
+            return _db.Comments.Where(comment => comment.DeletedAt == null && comment.User.DeletedAt == null && comment.Mission.DeletedAt == null).Include(comment => comment.Mission).Include(comment => comment.User).ToList();
         }
 
         public string ApproveDeclineComments(long CommentId, long Status)
@@ -167,7 +152,7 @@ namespace CI_Platform.Repository.Repository
                 {
                     if (Status == 1)
                     {
-                        comment.ApprovalStatus = CommentApprovalStatus.PUBLISHED.ToString();
+                        comment.ApprovalStatus = GenericEnum.CommentStatus.PUBLISHED.ToString();
                         comment.UpdatedAt = DateTime.Now;
                         _db.Comments.Update(comment);
                         _db.SaveChanges();
@@ -175,7 +160,7 @@ namespace CI_Platform.Repository.Repository
                     }
                     else
                     {
-                        comment.ApprovalStatus = CommentApprovalStatus.DECLINED.ToString();
+                        comment.ApprovalStatus = GenericEnum.CommentStatus.DECLINED.ToString();
                         comment.UpdatedAt = DateTime.Now;
                         _db.Comments.Update(comment);
                         _db.SaveChanges();
@@ -191,7 +176,7 @@ namespace CI_Platform.Repository.Repository
 
         public List<Timesheet> TimesheetList()
         {
-            return _db.Timesheets.Where(timesheet => timesheet.DeletedAt == null && timesheet.Status == TimesheetApprovalStatus.PENDING.ToString()).Include(timesheet => timesheet.Mission).Include(timesheet => timesheet.User).ToList();
+            return _db.Timesheets.Where(timesheet => timesheet.DeletedAt == null && timesheet.Mission.DeletedAt == null && timesheet.User.DeletedAt == null).Include(timesheet => timesheet.Mission).Include(timesheet => timesheet.User).ToList();
         }
 
         public string ApproveDeclineTimesheets(long TimesheetId, long Status)
@@ -207,7 +192,7 @@ namespace CI_Platform.Repository.Repository
                 {
                     if (Status == 1)
                     {
-                        timesheet.Status = TimesheetApprovalStatus.APPROVED.ToString();
+                        timesheet.Status = GenericEnum.TimesheetStatus.APPROVED.ToString();
                         timesheet.UpdatedAt = DateTime.Now;
                         _db.Timesheets.Update(timesheet);
                         _db.SaveChanges();
@@ -215,7 +200,7 @@ namespace CI_Platform.Repository.Repository
                     }
                     else
                     {
-                        timesheet.Status = TimesheetApprovalStatus.DECLINED.ToString();
+                        timesheet.Status = GenericEnum.TimesheetStatus.DECLINED.ToString();
                         timesheet.UpdatedAt = DateTime.Now;
                         _db.Timesheets.Update(timesheet);
                         _db.SaveChanges();

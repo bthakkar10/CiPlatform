@@ -14,7 +14,7 @@ namespace CI_Platform.Repository.Generic
             PENDING,
             PUBLISHED,
             DECLINED,
-            APPROVE
+          
         }
          public enum StoryMediaType
         {
@@ -30,12 +30,19 @@ namespace CI_Platform.Repository.Generic
         public enum ApplicationStatus
         {
             APPROVE, 
-            PENDING
+            PENDING,
+            DECLINE
         }
         public enum CommentStatus
         {
             PUBLISHED,
             PENDING,
+            DECLINED
+        }
+        public enum TimesheetStatus
+        {
+            APPROVED, 
+            PENDING, 
             DECLINED
         }
        

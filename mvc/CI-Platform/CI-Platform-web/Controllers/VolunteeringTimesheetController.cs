@@ -4,6 +4,7 @@ using CI_Platform.Repository.Interface;
 using CI_Platform.Repository.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PublicResXFileCodeGenerator;
 using System.Data;
 using System.Diagnostics;
 
@@ -85,7 +86,7 @@ namespace CI_Platform_web.Controllers
                     }
                     else
                     {
-                        TempData["error"] = "Something went wrong!! Please try again later!!";
+                        TempData["error"] = Messages.Error ;
                         return RedirectToAction("VolunteeringTimesheet");
                     }
                 }
@@ -94,12 +95,12 @@ namespace CI_Platform_web.Controllers
                 {
                     if (_timesheet.UpdateTimeBasedEntry(vm.TimeViewModel))
                     {
-                        TempData["success"] = "Your Data is updated successfully!!";
+                        TempData["success"] = "Your Data is " + Messages.Update;
                         return RedirectToAction("VolunteeringTimesheet");
                     }
                     else
                     {
-                        TempData["error"] = "Something went wrong!! Please try again later!!";
+                        TempData["error"] = Messages.Error  ;
                         return RedirectToAction("VolunteeringTimesheet");
                     }
                 }
@@ -128,7 +129,7 @@ namespace CI_Platform_web.Controllers
                     }
                     else
                     {
-                        TempData["error"] = "Something went wrong!! Please try again later!!";
+                        TempData["error"] = Messages.Error ;
                         return RedirectToAction("VolunteeringTimesheet");
                     }
                 }
@@ -137,12 +138,12 @@ namespace CI_Platform_web.Controllers
                 {
                     if (_timesheet.UpdateGoalBasedEntry(vm.GoalViewModel))
                     {
-                        TempData["success"] = "Your Data is updated successfully!!";
+                        TempData["success"] = "Your Data is " + Messages.Update;
                         return RedirectToAction("VolunteeringTimesheet");
                     }
                     else
                     {
-                        TempData["error"] = "Something went wrong!! Please try again later!!";
+                        TempData["error"] = Messages.Error ;
                         return RedirectToAction("VolunteeringTimesheet");
                     }
                 }
@@ -163,7 +164,7 @@ namespace CI_Platform_web.Controllers
             }
             else
             {
-                return Ok(new { icon = "error", message = "Some error occured!! Please try again later!!" });
+                return Ok(new { icon = "error", message = Messages.Error });
             }
         }
 
@@ -171,12 +172,12 @@ namespace CI_Platform_web.Controllers
         {
             if (_timesheet.DeleteTimeBasedEntry(TimeSheetId))
             {
-                TempData["success"] = "Your Data is deleted successfully!!";
+                TempData["success"] = "Your Data is " + Messages.Delete ;
                 return RedirectToAction("VolunteeringTimesheet");
             }
             else
             {
-                TempData["error"] = "Something went wrong!! Please try again later!!";
+                TempData["error"] = Messages.Error ;
                 return RedirectToAction("VolunteeringTimesheet");
             }
         }
@@ -186,12 +187,12 @@ namespace CI_Platform_web.Controllers
 
             if (_timesheet.DeleteGoalBasedEntry(TimeSheetId))
             {
-                TempData["success"] = "Your Data is deleted successfully!!";
+                TempData["success"] = "Your Data is " + Messages.Delete;
                 return RedirectToAction("VolunteeringTimesheet");
             }
             else
             {
-                TempData["error"] = "Something went wrong!! Please try again later!!";
+                TempData["error"] = Messages.Error ;
                 return RedirectToAction("VolunteeringTimesheet");
             }
         }

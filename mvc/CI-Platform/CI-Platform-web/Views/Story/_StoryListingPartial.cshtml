@@ -1,4 +1,5 @@
-﻿@model CI_Platform.Entities.ViewModels.StoryListingViewModel
+﻿@using System.Text.RegularExpressions;
+@model CI_Platform.Entities.ViewModels.StoryListingViewModel
 
 @{
     var totalRecords = Model.totalRecords;
@@ -38,16 +39,14 @@
                     <div class="card-body">
                         <h3 class="card-title">@obj.Title</h3>
                         <p class="card-text align-items-center">
-                           
                             @{
-                                var StoryDes = @Html.Raw(obj.Description);
-                                string DesString = StoryDes.ToString();
-                                int maxLength = 100;
-                                    string description = DesString.Length > maxLength
-                                ? DesString.Substring(0, maxLength) + "..."
-                                : DesString;
-                                }
-                                @description
+                               int maxLength = 200;
+                                string pattern = @"<[^>]*>";
+                                string text = Regex.Replace(obj.Description, pattern, string.Empty);
+                                string description = text.Length > maxLength
+                                ? text.Substring(0, maxLength) + "..." : text;
+                            }
+                            @Html.Raw(description)
                         </p>
                         <div class="d-flex">
                             <img class="rounded-circle story-card-icon" src="~/images/Upload/User/@obj.User.Avtar" />

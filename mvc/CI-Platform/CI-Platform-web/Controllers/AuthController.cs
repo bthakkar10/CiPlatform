@@ -13,7 +13,8 @@ using CI_Platform_web.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Tokens;
-
+using CI_Platform.Repository.Generic;
+using PublicResXFileCodeGenerator;
 namespace CI_Platform_web.Controllers
 {
     public class AuthController : Controller
@@ -23,7 +24,7 @@ namespace CI_Platform_web.Controllers
         private readonly IEmailGeneration _emailGeneration;
         private readonly IConfiguration _configuration;
         private readonly CiDbContext _db;
-
+        //private readonly HttpContext _httpContext;
 
         public AuthController(ILogger<AuthController> logger, IUserRepository dbUserRepository, IEmailGeneration emailGeneration, CiDbContext db, IConfiguration configuration)
         {
@@ -32,6 +33,7 @@ namespace CI_Platform_web.Controllers
             _emailGeneration = emailGeneration;
             _db = db;
             _configuration = configuration;
+            //_httpContext = httpContext;
         }
 
         [AllowAnonymous]
@@ -79,7 +81,7 @@ namespace CI_Platform_web.Controllers
                         HttpContext.Session.SetString("Id", DoesUserExists.UserId.ToString());
                         HttpContext.Session.SetString("Username", DoesUserExists.FirstName + " " + DoesUserExists.LastName);
 
-                        if (DoesUserExists.Role == "user")
+                        if (DoesUserExists.Role == GenericEnum.Role.user.ToString())
                         {
                             if(!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                             {
@@ -95,7 +97,7 @@ namespace CI_Platform_web.Controllers
                                 return RedirectToAction("HomePage", "Home");
                             }
                         }
-                        else if(DoesUserExists.Role == "admin")
+                        else if(DoesUserExists.Role == GenericEnum.Role.admin.ToString())
                         {
                             return RedirectToAction("User", "Admin");
                         }
@@ -108,7 +110,7 @@ namespace CI_Platform_web.Controllers
                      
                 }
             }
-            TempData["error"] = "Something went wrong!!";
+            TempData["error"] = Messages.Error ;
 
             return View();
         }
@@ -163,13 +165,13 @@ namespace CI_Platform_web.Controllers
                     }
                     else
                     {
-                        TempData["error"] = "Some error occured!! Please try again later!!";
+                        TempData["error"] = Messages.Error ;
                         return View(obj);
                     }
                 }
                 else
                 {
-                    TempData["error"] = "Email Already Exists!!";
+                    TempData["error"] = "Email " + Messages.Exists ;
                     return View(obj);
                 }
             }
@@ -186,11 +188,24 @@ namespace CI_Platform_web.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 if (form["ConfirmPassword"] == obj.Password)
                 {
-                    _dbUserRepository.UpdatePassword(obj);
-                    TempData["success"] = "Password updated successfully!! Please login now";
-                    return View("Index");
+                    if(_dbUserRepository.UpdatePassword(obj, HttpContext) == "changed")
+                    {
+                        TempData["success"] = "Password " + Messages.Update + " Please login now";
+                        return View("Index");
+                    }
+                    else if(_dbUserRepository.UpdatePassword(obj, HttpContext) == "invalid")
+                    {
+                        TempData["error"] = "Invalid Link!! Please try again!!";
+                        return View("Index");
+                    }
+                    else
+                    {
+                        TempData["error"] = Messages.Error ;
+                        return View("Index");
+                    }
                 }
                 else
                 {

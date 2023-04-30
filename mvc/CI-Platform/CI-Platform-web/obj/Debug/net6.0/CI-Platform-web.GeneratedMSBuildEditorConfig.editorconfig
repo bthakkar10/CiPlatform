@@ -84,6 +84,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cX0FkbWluTGF5b3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/Admin/_StoryDetailsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cX1N0b3J5RGV0YWlsc1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/Auth/Components/Banner/_BannerSection.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxDb21wb25lbnRzXEJhbm5lclxfQmFubmVyU2VjdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -116,6 +120,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxfTWlzc2lvbkRpc3BsYXlQYXJ0aWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/Home/_NoMissionFound.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxfTm9NaXNzaW9uRm91bmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/Home/_RecentVolunteers.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxfUmVjZW50Vm9sdW50ZWVycy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -134,10 +142,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/Shared/_NoMissionFound.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Ob01pc3Npb25Gb3VuZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/Shared/_Notification.cshtml]
@@ -162,6 +166,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/Story/StoryListing.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RvcnlcU3RvcnlMaXN0aW5nLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/Story/_NoStoryFound.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RvcnlcX05vU3RvcnlGb3VuZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/pct127/Desktop/CI-Platform-perfect/CI-Platform-master/mvc/CI-Platform/CI-Platform-web/Views/Story/_StoryListingPartial.cshtml]

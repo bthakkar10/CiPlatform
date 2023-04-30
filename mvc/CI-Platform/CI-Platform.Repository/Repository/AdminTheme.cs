@@ -70,7 +70,7 @@ namespace CI_Platform.Repository.Repository
                 MissionTheme theme = _db.MissionThemes.Find(ThemeId)!;
                 if (theme != null)
                 {
-                    if (_db.Missions.Any(m => m.MissionThemeId == ThemeId))
+                    if (_db.Missions.Any(m => m.MissionThemeId == ThemeId && m.Status == true && m.DeletedAt == null))
                     {
                         // The theme is already used by a mission, so it cannot be deleted
                         return "Exists";

@@ -14,6 +14,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
+using PublicResXFileCodeGenerator;
 //using System.Web.Mvc;
 
 namespace CI_Platform_web.Controllers
@@ -81,8 +82,14 @@ namespace CI_Platform_web.Controllers
 
             var vm = _missionDisplay.FilterOnMission(queryParams, UserId);
 
-
-            return PartialView("_MissionDisplayPartial", vm);
+            if (vm.Records.Count != 0)
+            {
+                return PartialView("_MissionDisplayPartial", vm);
+            }
+            else
+            {
+                return PartialView("_NoMissionFound");
+            }
         }
 
 
@@ -102,7 +109,7 @@ namespace CI_Platform_web.Controllers
         //get cities based on country filter
         public IActionResult GetCitiesByCountry(int countryId)
         {
-            var vm = new PageListViewModel();
+            PageListViewModel vm = new();
             vm.City = _filterMission.CityList(countryId);
             return Json(vm.City);
         }
@@ -188,7 +195,7 @@ namespace CI_Platform_web.Controllers
             }
             else
             {
-                return Ok(new { icon = "error", message = "Something went wrong!! Please try again later!!" });
+                return Ok(new { icon = "error", message = Messages.Error });
             }
         }
 
@@ -248,7 +255,7 @@ namespace CI_Platform_web.Controllers
             }
             else
             {
-                return Ok(new { icon = "error", message = "Already Applied!!" });
+                return Ok(new { icon = "error", message = Messages.Error });
             }
         }
 

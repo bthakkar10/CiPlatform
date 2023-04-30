@@ -42,12 +42,12 @@
                         <td>@mal.CommentText</td>
 
                         <td>
-                            <button class="p-0 btn ApproveOrDeclineComment" id="CommentApprovalBtn" data-bs-toggle="modal" data-bs-target="#ApproveOrDeclineModal" data-comment-id="@mal.CommentId" data-status="1">
-                                <i class="fa-regular fa-circle-check" style="color: #00ff00;"></i>
+                            <button class="p-0 btn ApproveOrDeclineComment @(mal.ApprovalStatus == "APPROVED" ? "disabled border-0" : "")" id="CommentApprovalBtn" data-bs-toggle="modal" data-bs-target="#ApproveOrDeclineModal" data-comment-id="@mal.CommentId" data-status="1">
+                                <i class="fa-circle-check @(mal.ApprovalStatus == "APPROVED" ? "fa-solid" : "fa-regular")" style="color: #00ff00;"></i>
                             </button>
 
-                            <button class="btn p-0 ApproveOrDeclineComment" id="CommentDeclineBtn" data-bs-target="#ApproveOrDeclineModal" data-bs-toggle="modal" data-comment-id="@mal.CommentId" data-status="0">
-                                <i class="fa-regular fa-circle-xmark" style="color: #ff0000;"></i>
+                            <button class="btn p-0 ApproveOrDeclineComment @(mal.ApprovalStatus == "DECLINED" ? "disabled border-0" : "")" id="CommentDeclineBtn" data-bs-target="#ApproveOrDeclineModal" data-bs-toggle="modal" data-comment-id="@mal.CommentId" data-status="0">
+                                <i class="fa-circle-xmark @(mal.ApprovalStatus == "DECLINED" ? "fa-solid" : "fa-regular")" style="color: #ff0000;"></i>
                             </button>
                         </td>
                     </tr>

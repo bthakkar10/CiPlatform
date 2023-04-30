@@ -328,20 +328,15 @@ $(document).on('click', '#DeclineBtn', function () {
     $('#ApplicationModalBody div').text(isDeclineBtn ? 'Are you sure you want to decline this mission application??' : 'Are you sure you want to approve this mission application??');
 });
 //view story in story page of admin
-$('#ViewStoryBtn').click(function () {
-    var UserId = $(this).data('user-id');
+$(document).on('click', '#ViewStoryBtn',function () {
     var MissionId = $(this).data('mission-id');
     $.ajax({
         method: 'GET',
-        url: '/Story/StoryDetails',
-        data: { UserId: UserId, MissionId: MissionId },
+        url: '/Admin/StoryDetailsAdmin',
+        data: { MissionId: MissionId },
         success: function (result) {
-            console.log(result)
-            var url = '/Story/StoryDetails?MissionId=' + MissionId + '&UserId=' + UserId;
-
-            var win = window.open(url, '_blank');
-            win.focus();
-
+            $('.table-responsive').empty();
+            $('#StoryDetailsAdmin').html(result);
         },
         error: function (error) {
             console.log(error);

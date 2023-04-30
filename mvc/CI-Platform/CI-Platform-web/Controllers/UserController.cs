@@ -4,7 +4,7 @@ using CI_Platform.Repository.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
-
+using PublicResXFileCodeGenerator;
 namespace CI_Platform_web.Controllers
 {
     [Authorize(Roles = "user")]
@@ -55,7 +55,7 @@ namespace CI_Platform_web.Controllers
             bool isPasswordChanged = _userProfile.ChangePassword(userId, oldPass, newPass);
             if (isPasswordChanged)
             {
-                return Ok(new { icon = "success", message = "Password updated successfully!!" });
+                return Ok(new { icon = "success", message = "Password " + Messages.Update });
             }
             else
             {
@@ -72,17 +72,17 @@ namespace CI_Platform_web.Controllers
 
             if (_userProfile.EditUserProfile(userId, vm) == "Updated")
             {
-                TempData["success"] = "Your Profile is Updated Successfully!!";
+                TempData["success"] = "Your Profile " + Messages.Update;
                 return RedirectToAction("UserProfile");
             }
             else if(_userProfile.EditUserProfile(userId, vm) == "Exists")
             {
-                TempData["error"] = "User with same EmploeeId Already Exists!!";
+                TempData["error"] = "User with same EmploeeId " + Messages.Exists;
                 return RedirectToAction("UserProfile");
             }
             else
             {
-                TempData["error"] = "Something went wrong!! Please try again later!!";
+                TempData["error"] = Messages.Error ;
                 return RedirectToAction("UserProfile");
             }
         }
@@ -102,7 +102,7 @@ namespace CI_Platform_web.Controllers
             }
             else
             {
-                return Ok(new { icon = "error", message = "Some error occured!! Please try again later!!" });
+                return Ok(new { icon = "error", message = Messages.Error });
             }
         }
     }

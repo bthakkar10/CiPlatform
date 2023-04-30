@@ -676,6 +676,10 @@ public partial class CiDbContext : DbContext
                 .HasMaxLength(191)
                 .IsUnicode(false)
                 .HasColumnName("email");
+            entity.Property(e => e.ExpirationTime)
+                .HasColumnType("datetime")
+                .HasColumnName("expiration_time");
+            entity.Property(e => e.IsUsed).HasColumnName("is_used");
             entity.Property(e => e.Token)
                 .HasMaxLength(191)
                 .IsUnicode(false)

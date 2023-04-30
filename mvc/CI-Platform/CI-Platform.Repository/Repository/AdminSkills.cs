@@ -63,26 +63,31 @@ namespace CI_Platform.Repository.Repository
             }
         }
 
-        public bool SkillDelete(long SkillId)
+        public string SkillDelete(long SkillId)
         {
             try
             {
                 Skill skill = _db.Skills.Find(SkillId)!;
                 if (skill != null)
                 {
+                    if (_db.MissionSkills.Any(ms => ms.SkillId == SkillId && ms.Mission.Status == true && ms.Mission.DeletedAt == null) || _db.UserSkills.Any(us=>us.SkillId == SkillId && us.User.Status == true && us.User.DeletedAt == null))
+                    {
+                        // The skill is already used by a mission or user, so it cannot be deleted
+                        return "Exists";
+                    }
                     skill.DeletedAt = DateTime.Now;
                     _db.Update(skill);
                     _db.SaveChanges();
-                    return true;
+                    return "Deleted";
                 }
                 else
                 {
-                    return false;
+                    return "Error";
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                return ex.Message;
             }
         }
 

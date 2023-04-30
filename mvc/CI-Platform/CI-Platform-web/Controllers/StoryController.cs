@@ -67,7 +67,7 @@ namespace CI_Platform_web.Controllers
             }
             else
             {
-                return PartialView("_NoMissionFound");
+                return PartialView("_NoStoryFound");
             }
         }
 
@@ -214,7 +214,7 @@ namespace CI_Platform_web.Controllers
         [HttpPost]
         public async Task<IActionResult> StoryInvite(long ToUserId, long StoryId, long FromUserId, long MissionId, long SPUserId, StoryDetailsViewModel viewmodel)
         {
-            StoryInvite storyInvite = new StoryInvite()
+            StoryInvite storyInvite = new()
             {
                 FromUserId = FromUserId,
                 ToUserId = ToUserId,

@@ -120,8 +120,17 @@
   <data name="Add" xml:space="preserve">
     <value>Added Successfully!!</value>
   </data>
+  <data name="Approve" xml:space="preserve">
+    <value>Approved Successfully!!</value>
+  </data>
+  <data name="Decline" xml:space="preserve">
+    <value>Declined Successfully!!</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Deleted Successfully!!</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Something went wrong. Please try again later!!!</value>
   </data>
   <data name="Exists" xml:space="preserve">
     <value>Already Exists!!</value>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace CI_Platform.Entities.DataModels;
 
@@ -68,9 +67,7 @@ public partial class Mission
 
     public virtual MissionTheme MissionTheme { get; set; } = null!;
 
-    [JsonIgnore]
     public virtual ICollection<Story> Stories { get; } = new List<Story>();
 
-    [JsonIgnore]    
     public virtual ICollection<Timesheet> Timesheets { get; } = new List<Timesheet>();
 }

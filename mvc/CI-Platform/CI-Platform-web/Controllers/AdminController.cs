@@ -7,6 +7,8 @@ using System.Data;
 using CI_Platform_web.Utility;
 using System.Reflection.Metadata.Ecma335;
 using PublicResXFileCodeGenerator;
+using CI_Platform.Repository.Generic;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 //using System.Web.Mvc;
 
 namespace CI_Platform_web.Controllers
@@ -43,7 +45,7 @@ namespace CI_Platform_web.Controllers
         {
             try
             {
-                AdminUserViewModel vm = new AdminUserViewModel();
+                AdminUserViewModel vm = new();
                 vm.users = _adminUser.users();
                 return View(vm);
 
@@ -59,12 +61,12 @@ namespace CI_Platform_web.Controllers
             long UserId = long.TryParse(Request.Form["HiddenUserId"], out long result) ? result : 0;
             if (_adminUser.IsUserDeleted(UserId))
             {
-                TempData["succes"] = "User Deleted Successfully!!";
+                TempData["succes"] = "User " + Messages.Delete ;
                 return RedirectToAction("User");
             }
             else
             {
-                TempData["error"] = "Something went wrong!! Please try again later!!";
+                TempData["error"] = Messages.Error;
                 return RedirectToAction("User");
             }
         }
@@ -95,17 +97,17 @@ namespace CI_Platform_web.Controllers
             {
                 if (_adminUser.IsUserAdded(vm) == "Added")
                 {
-                    TempData["success"] = "User Added Successfully!!";
+                    TempData["success"] = "User " + Messages.Add;
                     return RedirectToAction("User");
                 }
                 else if (_adminUser.IsUserAdded(vm) == "Exists")
                 {
-                    TempData["error"] = "User with same Email or Employee Id Already Exists!!";
+                    TempData["error"] = "User with same Email or Employee Id " + Messages.Exists;
                     return RedirectToAction("User");
                 }
                 else
                 {
-                    TempData["error"] = "Something went wrong!!";
+                    TempData["error"] = Messages.Error;
                     return RedirectToAction("User");
                 }
             }
@@ -114,17 +116,17 @@ namespace CI_Platform_web.Controllers
             {
                 if (_adminUser.EditUser(vm) == "Updated")
                 {
-                    TempData["success"] = "User Updated Successfully!!";
+                    TempData["success"] = "User " + Messages.Update;
                     return RedirectToAction("User");
                 }
                 else if(_adminUser.EditUser(vm) == "Exists")
                 {
-                    TempData["error"] = "User with same Email or Employee Id Already Exists!!";
+                    TempData["error"] = "User with same Email or Employee Id " + Messages.Exists;
                     return RedirectToAction("User");
                 }
                 else
                 {
-                    TempData["error"] = "Something went wrong!!";
+                    TempData["error"] = Messages.Error;
                     return RedirectToAction("User");
                 }
             }
@@ -138,7 +140,7 @@ namespace CI_Platform_web.Controllers
         {
             try
             {
-                AdminCmsViewModel cmsvm = new AdminCmsViewModel();
+                AdminCmsViewModel cmsvm = new();
                 cmsvm.CmsList = _adminCms.CmsList();
                 return View(cmsvm);
 
@@ -175,12 +177,12 @@ namespace CI_Platform_web.Controllers
             {
                 if (_adminCms.CmsAdd(cmsvm))
                 {
-                    TempData["success"] = "Privacy Page Added Successfully!!";
+                    TempData["success"] = "Privacy Page " + Messages.Add;
                     return RedirectToAction("CmsPage");
                 }
                 else
                 {
-                    TempData["error"] = "Something went wrong!!";
+                    TempData["error"] = Messages.Error;
                     return RedirectToAction("CmsPage");
                 }
             }
@@ -189,12 +191,12 @@ namespace CI_Platform_web.Controllers
             {
                 if (_adminCms.EditCms(cmsvm))
                 {
-                    TempData["success"] = "Privacy Policy Updated Successfully!!";
+                    TempData["success"] = "Privacy Policy " + Messages.Update;
                     return RedirectToAction("CmsPage");
                 }
                 else
                 {
-                    TempData["error"] = "Something went wrong!!";
+                    TempData["error"] = Messages.Error;
                     return RedirectToAction("CmsPage");
                 }
             }
@@ -205,12 +207,12 @@ namespace CI_Platform_web.Controllers
             long CmsId = long.TryParse(Request.Form["HiddenCmsId"], out long result) ? result : 0;
             if (_adminCms.CmsDelete(CmsId))
             {
-                TempData["succes"] = "Privacy Page  Deleted Successfully!!";
+                TempData["succes"] = "Privacy Page " + Messages.Delete;
                 return RedirectToAction("CmsPage");
             }
             else
             {
-                TempData["error"] = "Something went wrong!! Please try again later!!";
+                TempData["error"] = Messages.Error;
                 return RedirectToAction("CmsPage");
             }
         }
@@ -223,7 +225,7 @@ namespace CI_Platform_web.Controllers
         {
             try
             {
-                AdminThemeViewModel themevm = new AdminThemeViewModel();
+                AdminThemeViewModel themevm = new();
                 themevm.ThemeList = _adminTheme.ThemeList();
                 return View(themevm);
 
@@ -259,17 +261,17 @@ namespace CI_Platform_web.Controllers
             {
                 if (_adminTheme.ThemeAdd(themevm) == "Added")
                 {
-                    TempData["success"] = "New Theme Added Successfully!!";
+                    TempData["success"] = "New Theme " + Messages.Add;
                     return RedirectToAction("MissionTheme");
                 }
                 else if(_adminTheme.ThemeAdd(themevm) == "Exists")
                 {
-                    TempData["error"] = "Theme Already Exists";
+                    TempData["error"] = "Theme " + Messages.Exists;
                     return RedirectToAction("MissionTheme");
                 }
                 else
                 {
-                    TempData["error"] = "Something went wrong!! Please try again later!!";
+                    TempData["error"] = Messages.Error ;
                     return RedirectToAction("MissionTheme");
                 }
             }
@@ -278,17 +280,17 @@ namespace CI_Platform_web.Controllers
             {
                 if (_adminTheme.EditTheme(themevm) == "Updated")
                 {
-                    TempData["success"] = "Theme Updated Successfully!!";
+                    TempData["success"] = "Theme " + Messages.Update;
                     return RedirectToAction("MissionTheme");
                 }
                 else if(_adminTheme.EditTheme(themevm) == "Exists")
                 {
-                    TempData["error"] = "Theme Already Exists";
+                    TempData["error"] = "Theme " + Messages.Exists;
                     return RedirectToAction("MissionTheme");
                 }
                 else
                 {
-                    TempData["error"] = "Something went wrong!! Please try again later!!";
+                    TempData["error"] = Messages.Error;
                     return RedirectToAction("MissionTheme");
                 }
             }
@@ -309,7 +311,7 @@ namespace CI_Platform_web.Controllers
             }
             else
             {
-                TempData["error"] = "Something went wrong!! Please try again later!!";
+                TempData["error"] = Messages.Error;
                 return RedirectToAction("MissionTheme");
             }
         }
@@ -322,7 +324,7 @@ namespace CI_Platform_web.Controllers
         {
             try
             {
-                AdminSkillsViewModel skillvm = new AdminSkillsViewModel();
+                AdminSkillsViewModel skillvm = new();
                 skillvm.SkillList = _adminSkills.SkillList();
                 return View(skillvm);
 
@@ -358,17 +360,17 @@ namespace CI_Platform_web.Controllers
             {
                 if (_adminSkills.SkillsAdd(skillvm) == "Added")
                 {
-                    TempData["success"] = "New Skill Added Successfully!!";
+                    TempData["success"] = "New Skill " + Messages.Add;
                     return RedirectToAction("MissionSKill");
                 }
                 else if(_adminSkills.SkillsAdd(skillvm) == "Exists")
                 {
-                    TempData["error"] = "Skill Already Exists";
+                    TempData["error"] = "Skill " + Messages.Exists;
                     return RedirectToAction("MissionSKill");
                 }
                 else
                 {
-                    TempData["error"] = "Something went wrong!!";
+                    TempData["error"] = Messages.Error;
                     return RedirectToAction("MissionSKill");
                 }
             }
@@ -377,17 +379,17 @@ namespace CI_Platform_web.Controllers
             {
                 if (_adminSkills.EditSkill(skillvm) == "Updated")
                 {
-                    TempData["success"] = "Skill Updated Successfully!!";
+                    TempData["success"] = "Skill " + Messages.Update;
                     return RedirectToAction("MissionSKill");
                 }
                 else if(_adminSkills.EditSkill(skillvm) == "Exists")
                 {
-                    TempData["error"] = "Skill Already Exists!!";
+                    TempData["error"] = "Skill " + Messages.Exists;
                     return RedirectToAction("MissionSKill");
                 }
                 else
                 {
-                    TempData["error"] = "Something went wrong!!";
+                    TempData["error"] = Messages.Error;
                     return RedirectToAction("MissionSKill");
                 }
             }
@@ -396,14 +398,19 @@ namespace CI_Platform_web.Controllers
         public IActionResult DeleteSkill()
         {
             long SkillId = long.TryParse(Request.Form["HiddenSkillId"], out long result) ? result : 0;
-            if (_adminSkills.SkillDelete(SkillId))
+            if (_adminSkills.SkillDelete(SkillId) == "Deleted")
             {
-                TempData["succes"] = "Skill Deleted Successfully!!";
+                TempData["succes"] = "Skill " + Messages.Delete;
                 return RedirectToAction("MissionSKill");
             }
-            else
+            else if(_adminSkills.SkillDelete(SkillId) == "Exists")
             {
-                TempData["error"] = "Something went wrong!! Please try again later!!";
+                TempData["error"] = "Skill " + Messages.Use;
+                return RedirectToAction("MissionSKill");
+            }
+            else 
+            {
+                TempData["error"] = Messages.Error;
                 return RedirectToAction("MissionSKill");
             }
         }
@@ -413,7 +420,7 @@ namespace CI_Platform_web.Controllers
 
         public IActionResult MissionApplication()
         {
-            AdminApprovalViewModel vm = new AdminApprovalViewModel();
+            AdminApprovalViewModel vm = new();
             vm.MissionApplicationList = _adminApproval.MissionApplicationList();
             return View(vm);
         }
@@ -423,20 +430,20 @@ namespace CI_Platform_web.Controllers
             long MissionApplicationId = long.TryParse(Request.Form["HiddenApplicationId"], out long result) ? result : 0;
             long Status = long.TryParse(Request.Form["HiddenStatus"], out long resultStatus) ? resultStatus : 0;
 
-            if(_adminApproval.ApproveDeclineApplication(MissionApplicationId, Status) == "APPROVE")
+            if(_adminApproval.ApproveDeclineApplication(MissionApplicationId, Status) == GenericEnum.ApplicationStatus.APPROVE.ToString())
             {
-                TempData["success"] = "Mission Application Approved Successfully";
+                TempData["success"] = "Mission Application " + Messages.Approve;
                 return RedirectToAction("MissionApplication");
 
             }
-            else if(_adminApproval.ApproveDeclineApplication(MissionApplicationId, Status) == "DECLINE")
+            else if(_adminApproval.ApproveDeclineApplication(MissionApplicationId, Status) == GenericEnum.ApplicationStatus.APPROVE.ToString())
             {
-                TempData["success"] = "Mission Application Declined Successfully";
+                TempData["success"] = "Mission Application " + Messages.Decline; 
                 return RedirectToAction("MissionApplication");
             }
             else
             {
-                TempData["error"] = "Something went wrong!! Please try again later!!";
+                TempData["error"] = Messages.Decline;
                 return RedirectToAction("MissionApplication");
             }
         }
@@ -454,22 +461,29 @@ namespace CI_Platform_web.Controllers
             long StoryId = long.TryParse(Request.Form["HiddenStoryId"], out long result) ? result : 0;
             long Status = long.TryParse(Request.Form["HiddenStatus"], out long resultStatus) ? resultStatus : 0;
 
-            if (_adminApproval.ApproveDeclineStory(StoryId, Status) == "PUBLISHED")
+            if (_adminApproval.ApproveDeclineStory(StoryId, Status) == GenericEnum.StoryStatus.PUBLISHED.ToString())
             {
                 TempData["success"] = "Story Published Successfully";
                 return RedirectToAction("Story");
 
             }
-            else if (_adminApproval.ApproveDeclineStory(StoryId, Status) == "DECLINED")
+            else if (_adminApproval.ApproveDeclineStory(StoryId, Status) == GenericEnum.StoryStatus.DECLINED.ToString())
             {
-                TempData["success"] = "Story Declined Successfully";
+                TempData["success"] = "Story " + Messages.Decline;
                 return RedirectToAction("Story");
             }
             else
             {
-                TempData["error"] = "Something went wrong!! Please try again later!!";
+                TempData["error"] = Messages.Error ;
                 return RedirectToAction("Story");
             }
+        }
+
+        public IActionResult StoryDetailsAdmin(long MissionId)
+        {
+            AdminApprovalViewModel vm = new();
+            vm.AdminStoryDetails =  _adminApproval.GetStoryDetailsAdmin(MissionId);
+            return PartialView("_StoryDetailsPartial", vm);
         }
 
         public IActionResult DeleteStory()
@@ -477,12 +491,12 @@ namespace CI_Platform_web.Controllers
             long StoryId = long.TryParse(Request.Form["HiddenStoryId"], out long result) ? result : 0;
             if (_adminApproval.IsStoryDeleted(StoryId))
             {
-                TempData["succes"] = "Skill Deleted Successfully!!";
+                TempData["succes"] = "Skill " + Messages.Delete;
                 return RedirectToAction("Story");
             }
             else
             {
-                TempData["error"] = "Something went wrong!! Please try again later!!";
+                TempData["error"] = Messages.Error ;
                 return RedirectToAction("Story");
             }
         }
@@ -493,7 +507,7 @@ namespace CI_Platform_web.Controllers
 
         public IActionResult AdminMission()
         {
-            AdminMissionViewModel missionvm = new AdminMissionViewModel();
+            AdminMissionViewModel missionvm = new();
             missionvm.GetMissionList = _adminMission.MissionList();
             return View(missionvm);
         }
@@ -519,16 +533,16 @@ namespace CI_Platform_web.Controllers
             {
                 if (_adminMission.MissionAdd(missionvm) == "Added")
                 {
-                    return Ok(new { icon = "success", message = "Mission Added Successfully!!" });
+                    return Ok(new { icon = "success", message = "Mission " + Messages.Add });
                     //return RedirectToAction("AdminMission");
                 }
                 else if (_adminMission.MissionAdd(missionvm) == "Exists")
                 {
-                    return Ok(new { icon = "error", message = "Mission Already Exists!!"});
+                    return Ok(new { icon = "error", message = "Mission " + Messages.Exists});
                 }
                 else
                 {
-                    return Ok(new { icon = "error", message = "Something went wrong!!" });
+                    return Ok(new { icon = "error", message = Messages.Error });
                     //TempData["error"] = "Something went wrong!!";
                     //return RedirectToAction("AdminMission");
                 }
@@ -537,19 +551,19 @@ namespace CI_Platform_web.Controllers
             {
                 if (_adminMission.MissionEdit(missionvm) == "Updated")
                 {
-                    return Ok(new { icon = "success", message = "Mission Updated Successfully!!" });
+                    return Ok(new { icon = "success", message = "Mission " + Messages.Update });
                     //TempData["success"] = "Mission Updated Successfully!!";
                     //return RedirectToAction("AdminMission");
                 }
                 else if(_adminMission.MissionEdit(missionvm) == "Exists")
                 {
-                    return Ok(new { icon = "error", message = "Mission Already Exists!!" });
+                    return Ok(new { icon = "error", message = "Mission " + Messages.Exists });
                     //TempData["error"] = "Mission Already Exists!!";
                     //return RedirectToAction("AdminMission");
                 }
                 else
                 {
-                    return Ok(new { icon = "error", message = "Something went wrong!!" });
+                    return Ok(new { icon = "error", message = Messages.Error });
                     //TempData["error"] = "Something went wrong!!";
                     //return RedirectToAction("AdminMission");
                 }
@@ -576,12 +590,12 @@ namespace CI_Platform_web.Controllers
             long MissionId = long.TryParse(Request.Form["HiddenMissionId"], out long result) ? result : 0;
             if (_adminMission.MissionDelete(MissionId))
             {
-                TempData["succes"] = "Mission Deleted Successfully!!";
+                TempData["succes"] = "Mission " + Messages.Delete;
                 return RedirectToAction("AdminMission");
             }
             else
             {
-                TempData["error"] = "Something went wrong!! Please try again later!!";
+                TempData["error"] = Messages.Error ;
                 return RedirectToAction("AdminMission");
             }
         }
@@ -592,7 +606,7 @@ namespace CI_Platform_web.Controllers
         //------------------------------------------  Banner Section Starts ---------------------------------------------------------- 
         public IActionResult Banner()
         {
-            AdminBannerViewModel bannervm = new AdminBannerViewModel();
+            AdminBannerViewModel bannervm = new();
             bannervm.BannerList = _adminBanner.BannerList();
             return View(bannervm);
         }
@@ -608,7 +622,7 @@ namespace CI_Platform_web.Controllers
         [HttpGet]
         public IActionResult AddOrUpdateBanner()
         {
-            AdminBannerViewModel bannervm = new AdminBannerViewModel();
+            AdminBannerViewModel bannervm = new();
             return PartialView("_AddOrUpdateBanner", bannervm);
         }
 
@@ -622,17 +636,17 @@ namespace CI_Platform_web.Controllers
             {
                 if (_adminBanner.BannerAdd(bannervm) == "Added")
                 {
-                    TempData["success"] = "Banner Added Successfully!!";
+                    TempData["success"] = " New Banner " + Messages.Add;
                     return RedirectToAction("Banner");
                 }
                 else if(_adminBanner.BannerAdd(bannervm) == "Exists")
                 {
-                    TempData["error"] = "Sort Order Already Exists!!";
+                    TempData["error"] = "Sort Order " + Messages.Exists ;
                     return RedirectToAction("Banner");
                 }
                 else
                 {
-                    TempData["error"] = "Something went wrong!!";
+                    TempData["error"] = Messages.Error ;
                     return RedirectToAction("Banner");
                 }
             }
@@ -641,12 +655,12 @@ namespace CI_Platform_web.Controllers
             {
                 if (_adminBanner.EditBanner(bannervm))
                 {
-                    TempData["success"] = "Banner Updated Successfully!!";
+                    TempData["success"] = "Banner " + Messages.Update;
                     return RedirectToAction("Banner");
                 }
                 else
                 {
-                    TempData["error"] = "Something went wrong!!";
+                    TempData["error"] = Messages.Error ;
                     return RedirectToAction("Banner");
                 }
             }
@@ -657,12 +671,12 @@ namespace CI_Platform_web.Controllers
             long BannerId = long.TryParse(Request.Form["HiddenBannerId"], out long result) ? result : 0;
             if (_adminBanner.BannerDelete(BannerId))
             {
-                TempData["succes"] = "Banner Deleted Successfully!!";
+                TempData["succes"] = "Banner " + Messages.Delete;
                 return RedirectToAction("Banner");
             }
             else
             {
-                TempData["error"] = "Something went wrong!! Please try again later!!";
+                TempData["error"] = Messages.Error ;
                 return RedirectToAction("Banner");
             }
         }
@@ -684,20 +698,20 @@ namespace CI_Platform_web.Controllers
             long CommentId = long.TryParse(Request.Form["HiddenCommentId"], out long result) ? result : 0;
             long Status = long.TryParse(Request.Form["HiddenStatus"], out long resultStatus) ? resultStatus : 0;
 
-            if (_adminApproval.ApproveDeclineComments(CommentId, Status) == "PUBLISHED")
+            if (_adminApproval.ApproveDeclineComments(CommentId, Status) == GenericEnum.CommentStatus.PUBLISHED.ToString())
             {
-                TempData["success"] = "Comment Approved Successfully";
+                TempData["success"] = "Comment " + Messages.Approve;
                 return RedirectToAction("MissionComments");
 
             }
-            else if (_adminApproval.ApproveDeclineComments(CommentId, Status) == "DECLINED")
+            else if (_adminApproval.ApproveDeclineComments(CommentId, Status) == GenericEnum.CommentStatus.DECLINED.ToString())
             {
-                TempData["success"] = "Comment Declined Successfully";
+                TempData["success"] = "Comment " + Messages.Decline;
                 return RedirectToAction("MissionComments");
             }
             else
             {
-                TempData["error"] = "Something went wrong!! Please try again later!!";
+                TempData["error"] = Messages.Error ;
                 return RedirectToAction("MissionComments");
             }
         }
@@ -719,20 +733,20 @@ namespace CI_Platform_web.Controllers
             long TimesheetId = long.TryParse(Request.Form["HiddenTimesheetId"], out long result) ? result : 0;
             long Status = long.TryParse(Request.Form["HiddenStatus"], out long resultStatus) ? resultStatus : 0;
 
-            if (_adminApproval.ApproveDeclineTimesheets(TimesheetId, Status) == "APPROVED")
+            if (_adminApproval.ApproveDeclineTimesheets(TimesheetId, Status) == GenericEnum.TimesheetStatus.APPROVED.ToString())
             {
-                TempData["success"] = "Timesheet Approved Successfully";
+                TempData["success"] = "Timesheet " + Messages.Approve;
                 return RedirectToAction("Timesheet");
 
             }
-            else if (_adminApproval.ApproveDeclineTimesheets(TimesheetId, Status) == "DECLINED")
+            else if (_adminApproval.ApproveDeclineTimesheets(TimesheetId, Status) == GenericEnum.TimesheetStatus.DECLINED.ToString())
             {
-                TempData["success"] = "Timesheet Declined Successfully";
+                TempData["success"] = "Timesheet " + Messages.Decline;
                 return RedirectToAction("Timesheet");
             }
             else
             {
-                TempData["error"] = "Something went wrong!! Please try again later!!";
+                TempData["error"] = Messages.Error ;
                 return RedirectToAction("Timesheet");
             }
         }
