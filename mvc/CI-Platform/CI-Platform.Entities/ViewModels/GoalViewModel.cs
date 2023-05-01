@@ -16,6 +16,7 @@ namespace CI_Platform.Entities.ViewModels
         public long MissionId { get; set; }
 
         [Required(ErrorMessage = "Action is required!!")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Only digits are allowed")]
         public int Action { get; set; } 
 
         [Required(ErrorMessage = "Date Volunteered is required")]

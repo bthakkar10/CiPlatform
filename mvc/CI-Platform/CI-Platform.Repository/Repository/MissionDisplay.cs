@@ -25,9 +25,17 @@ namespace CI_Platform.Repository.Repository
 
         public PageListViewModel.PageList<MissionListViewModel> FilterOnMission(MissionFilterQueryParams queryParams, long UserId)
         {
-            var query = _db.Missions.Where(m=>m.DeletedAt == null).AsQueryable();
-            List<User> user = _db.Users.Where(user => user.DeletedAt == null &&  user.UserId != UserId).Include(m => m.MissionInviteFromUsers).Include(m => m.MissionInviteToUsers).ToList();
-           
+            var query = _db.Missions.Where(m => m.DeletedAt == null).AsQueryable();
+            List<User> user = _db.Users.Where(user => user.DeletedAt == null && user.UserId != UserId).Include(m => m.MissionInviteFromUsers).Include(m => m.MissionInviteToUsers).ToList();
+
+            var topThemes = _db.Missions
+                            .Where(mission => mission.DeletedAt == null && mission.Status == true && mission.MissionTheme.Status == 1 && mission.MissionTheme.DeletedAt == null)
+                            .GroupBy(mission => mission.MissionThemeId)
+                            .Select(group => new { ThemeId = group.Key, Count = group.Count() })
+                            .OrderByDescending(themeCount => themeCount.Count)
+                            .Take(5)
+                            .Select(themeCount => themeCount.ThemeId);
+
             if (!string.IsNullOrEmpty(queryParams.CountryId))
             {
                 long.TryParse(queryParams.CountryId, out long ConCountryId);
@@ -66,28 +74,28 @@ namespace CI_Platform.Repository.Repository
                 MissionCard = mission,
                 CityName = mission.City.CityName,
                 ThemeTitle = mission.MissionTheme.Title,
-                Applied = mission.MissionApplications.Any(missionApp => missionApp.UserId == UserId && missionApp.User.DeletedAt == null && missionApp.Mission.DeletedAt==null && missionApp.DeletedAt == null && missionApp.ApprovalStatus == GenericEnum.ApplicationStatus.APPROVE.ToString()),
+                Applied = mission.MissionApplications.Any(missionApp => missionApp.UserId == UserId && missionApp.User.DeletedAt == null && missionApp.Mission.DeletedAt == null && missionApp.DeletedAt == null && missionApp.ApprovalStatus == GenericEnum.ApplicationStatus.APPROVE.ToString()),
                 favMission = mission.FavouriteMissions.Any(favMission => favMission.UserId == UserId && favMission.DeletedAt == null && favMission.User.DeletedAt == null && favMission.Mission.DeletedAt == null),
-                avgRating = (float)mission.MissionRatings.Where(rate=>rate.User.DeletedAt==null).Average(r => r.Rating),
-                seatsLeft = mission.TotalSeats - mission.MissionApplications.Where(missionApp => missionApp.User.DeletedAt==null).Count(m => m.ApprovalStatus.Contains(GenericEnum.ApplicationStatus.APPROVE.ToString())),
+                avgRating = (float)mission.MissionRatings.Where(rate => rate.User.DeletedAt == null).Average(r => r.Rating),
+                seatsLeft = mission.TotalSeats - mission.MissionApplications.Where(missionApp => missionApp.User.DeletedAt == null).Count(m => m.ApprovalStatus.Contains(GenericEnum.ApplicationStatus.APPROVE.ToString())),
                 createdAt = mission.CreatedAt,
                 startDate = mission.StartDate,
                 deadline = mission.Deadline,
                 skillName = mission.MissionSkills.Select(ms => ms.Skill.SkillName).ToList()!,
-                missionMedia = mission.MissionMedia.Where(mm=>mm.Defaultval==true).Select(mm => mm.MediaPath).ToList()!,
+                missionMedia = mission.MissionMedia.Where(mm => mm.Defaultval == true).Select(mm => mm.MediaPath).ToList()!,
                 goalMission = mission.GoalMissions.ToList(),
                 missionInvites = mission.MissionInvites.Where(mi => mi.DeletedAt == null && mi.Mission.DeletedAt == null && mi.ToUser.DeletedAt == null && mi.FromUser.DeletedAt == null).ToList(),
-                IsOngoing = (mission.StartDate < DateTime.Now) && (mission.EndDate > DateTime.Now), 
+                IsOngoing = (mission.StartDate < DateTime.Now) && (mission.EndDate > DateTime.Now),
                 HasEndDatePassed = mission.EndDate < DateTime.Now,
                 HasMissionStarted = mission.StartDate < DateTime.Now,
                 HasDeadlinePassed = mission.Deadline < DateTime.Now,
                 IsApplicationPending = mission.MissionApplications.Any(missionApp => missionApp.UserId == UserId && missionApp.DeletedAt == null && missionApp.ApprovalStatus == GenericEnum.ApplicationStatus.PENDING.ToString() && missionApp.Mission.DeletedAt == null && missionApp.User.DeletedAt == null),
                 CoWorkersList = user.ToList(),
-                favouriteMission = mission.FavouriteMissions.Where(favMission=>favMission.User.DeletedAt==null).ToList(),
-                updatedGoalValue = mission.Timesheets.Where(timesheet => timesheet.MissionId == mission.MissionId && timesheet.DeletedAt == null).Sum(timesheet=> timesheet.Action),
+                favouriteMission = mission.FavouriteMissions.Where(favMission => favMission.User.DeletedAt == null).ToList(),
+                updatedGoalValue = mission.Timesheets.Where(timesheet => timesheet.MissionId == mission.MissionId && timesheet.DeletedAt == null).Sum(timesheet => timesheet.Action),
             });
 
-            if ( queryParams.sortCase != 0)
+            if (queryParams.sortCase != 0)
             {
                 MissionCardQuery = queryParams.sortCase switch
                 {
@@ -106,12 +114,30 @@ namespace CI_Platform.Repository.Repository
                     _ => MissionCardQuery.OrderBy(q => q.MissionCard.MissionId),
                 };
             }
+            if (queryParams.ExploreCase != 0)
+            {
+                switch (queryParams.ExploreCase)
+                {
+                    case 1://Top themes (select 5 top themes)
+                        MissionCardQuery = MissionCardQuery.Where(mission => topThemes.Contains(mission.MissionCard.MissionThemeId));
+                        break;
+                    case 2: //most rated
+                        MissionCardQuery = MissionCardQuery.OrderByDescending(m => m.avgRating);
+                        break;
+                    case 3: //most favourite missions 
+                        MissionCardQuery = MissionCardQuery.OrderByDescending(m => m.MissionCard.FavouriteMissions.Count());
+                        break;
+                    case 4: // random missions
+                        MissionCardQuery = MissionCardQuery.Take(5);
+                        break;
+                }
+            };
 
             var totalRecords = MissionCardQuery.Count();
 
             var records = MissionCardQuery.Skip((queryParams.pageNo - 1) * queryParams.pagesize).Take(queryParams.pagesize).ToList();
 
-           
+
             return new PageListViewModel.PageList<MissionListViewModel>(records, totalRecords, queryParams.pageNo);
 
         }
@@ -156,10 +182,10 @@ namespace CI_Platform.Repository.Repository
             {
 
                 MissionRating newRating = new()
-                { 
+                {
                     UserId = UserId,
-                    MissionId = MissionId, 
-                    Rating = rating 
+                    MissionId = MissionId,
+                    Rating = rating
                 };
                 _db.MissionRatings.Add(newRating);
                 _db.SaveChanges();
@@ -217,10 +243,10 @@ namespace CI_Platform.Repository.Repository
                     AlreadyApplied.ApprovalStatus = "PENDING";
                     AlreadyApplied.UpdatedAt = DateTime.Now;
                     _db.MissionApplications.Update(AlreadyApplied);
-                    _db.SaveChanges();  
+                    _db.SaveChanges();
                     return true;
                 }
-                
+
             }
             catch (Exception)
             {

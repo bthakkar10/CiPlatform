@@ -15,6 +15,7 @@
     }
 }
 <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
 
 <div class="container py-5">
@@ -380,8 +381,6 @@
                     <br>
                     <h3>Introduction</h3>
                     <p>@Html.Raw(Model.MissionDetails.Description)</p>
-                    <h3>Challenge</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                     <h3>Documents</h3>
                     <div class="d-flex flex-column flex-md-row">
                         @if (Model.MissionDetails.MissionDocuments.Any())
@@ -531,14 +530,26 @@
         <h2 style="color:#414141; font-weight:normal; text-align:center">Releated Missions</h2>
         <div class="container my-5" id="grid-view">
             <div class=" row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-sm-1   g-4">
+               
                 <!-- Card starts from col -->
                 @if (Model.RelatedMissions is not null)
                 {
+             
                     @foreach (var releated in Model.RelatedMissions)
                     {
-                        <div class="col">
-                            <div class="card  ">
+                        var releated_registered_users = releated.MissionApplications.Count(m => m.ApprovalStatus.Contains("APPROVE"));
+                        var releated_seats_left = releated.TotalSeats - releated_registered_users;
+                        bool releated_isDeadlinePassed = currDate > releated.Deadline;
+                        bool releated_isEndDatePassed = currDate > releated.EndDate;
+                        bool releated_isOngoing = currDate > releated.StartDate;
+                        bool releated_isAlreadyApplied = releated.MissionApplications.Any(a => a.UserId == Id && a.ApprovalStatus == "APPROVE");
+                        bool releated_isApprovalPending = releated.MissionApplications.Any(a => a.UserId == Id && a.ApprovalStatus == "PENDING");
+                        <div class="col card-div ">
+                            <div class="card grid-card  h-100 shadow">
+                               
                                 <div class="pill-on-img">
+
+
                                     @if (!releated.MissionMedia.Any())
                                     {
                                         <img src="~/images/no-image.png" class="card-img-top" />
@@ -553,42 +564,108 @@
                                             }
                                         }
                                     }
+
+
+                                   @* @if (releated_isAlreadyApplied)
+                                    {
+                                        <div class="applied-pill" style="background:green 0% 0% no-repeat;">
+                                            <span>APPLIED</span>
+                                        </div>
+                                    }
+                                    else if (releated_isEndDatePassed)
+                                    {
+                                        <div class="applied-pill" style="background:red 0% 0% no-repeat;">
+                                            <span>CLOSED</span>
+                                        </div>
+                                    }
+                                    else if (releated.MissionType == "Time")
+                                    {
+                                        @if (releated_isDeadlinePassed || releated_seats_left <= 0)
+                                        {
+                                            <div class="applied-pill" style="background:red 0% 0% no-repeat;">
+                                                <span>CLOSED</span>
+                                            </div>
+                                        }
+                                    }
+                                    else if (releated_isApprovalPending)
+                                    {
+                                        <div class="applied-pill" style="background:orange 0% 0% no-repeat;">
+                                            <span>Approval Pending</span>
+                                        </div>
+                                    }*@
+
                                     <div class="location">
                                         <img src="~/images/pin1.png">
-                                        @releated.City.CityName
+                                        <span class="mission-city">@releated.City.CityName</span>
                                     </div>
-                                    <div class="like-on-img">
-                                        <img style="opacity: 1;" src="~/images/heart.png">
-                                    </div>
-                                    <div class="add-on-img">
+@*
+                                    @if ()
+                                    {
+                                        <button class="  like-on-img favourite-button" data-mission-id="@obj.MissionCard.MissionId">
+                                            <i class="bi bi-heart-fill  filled-heart text-danger"></i>
+
+                                        </button>
+
+                                    }
+
+                                    else
+                                    {*@
+                                        <button class="favourite-button  like-on-img ">
+                                            <i class="bi bi-heart empty-heart text-light  "></i>
+                                        </button>
+                                  @*  }*@
+                                    @*recommended to co worker*@
+                                    <button class="add-on-img" type="submit" @* data-user-id="@Id" data-mission-id="@obj.MissionCard.MissionId"*@ >
                                         <img style="opacity: 1;" src="~/images/add1.png">
-                                    </div>
-                                    <div class="theme-pill rounded-pill"> @releated.MissionTheme.Title </div>
+                                    </button>
+
+                                    <div class="theme-pill rounded-pill "> <span class="mission-theme">@releated.MissionTheme.Title</span>  </div>
                                 </div>
                                 <div class="card-body">
-                                    <h3 class="card-title">@releated.Title</h3>
-                                    <p class="card-text align-items-center">@releated.ShortDescription</p>
+                                    <h3 class="card-title ">@releated.Title</h3>
+                                    <p class="card-text align-items-center">
+                                        @{
+                                            int maxLength = 50;
+                                            string description = releated.ShortDescription!.Length > maxLength
+                                            ? @releated.ShortDescription!.Substring(0, maxLength) + "..."
+                                            : @releated.ShortDescription!;
+
+                                        }
+
+                                        @description
+                                    </p>
                                     <div class="d-flex justify-content-between">
                                         @releated.OrganizationName
                                         <div class="stars">
-                                            @for (int i = 1; i <= avg_rating; i++)
+                                            @if (avg_rating != null)
                                             {
-                                                <img src="~/images/selected-star.png" />
+                                                @for (int i = 1; i <= avg_rating; i++)
+                                                {
+                                                    <img src="~/images/selected-star.png" />
+                                                }
+                                                @for (int i = 5; i > avg_rating; i--)
+                                                {
+                                                    <img src="~/images/star.png" />
+                                                }
                                             }
-                                            @for (int i = 5; i > avg_rating; i--)
+                                            else
                                             {
-                                                <img src="~/images/star.png" />
+                                                @for (int i = 1; i <= 5; i++)
+                                                {
+                                                    <img src="~/images/star.png" />
+                                                }
                                             }
-
 
                                         </div>
+
                                     </div>
                                 </div>
 
-                                @if (isEndDatePassed || isAlreadyApplied || seats_left <= 0 || isDeadlinePassed)
+
+                                @if (releated_isAlreadyApplied)
                                 {
                                     <div class=" d-flex pb-3 justify-content-center">
-                                        <a class="btn btn card-btn" @* href="@Url.Action("MissionDetail", "Home" , new { MissionId = @obj.MissionId})"*@>
+                                        <a class="btn btn card-btn" href="@Url.Action("MissionDetail", "Home" , new { MissionId = releated.MissionId})">
                                             View Details &nbsp;&nbsp;<img src="~/images/right-arrow.png" />
                                             <img src="~/images/right-arrow2.png" />
                                         </a>
@@ -600,16 +677,13 @@
                                         <div class="time-pill rounded-pill ">
                                             @if (releated.MissionType.Equals("Time"))
                                             {
-                                                if (isOngoing)
+                                                if (releated_isOngoing)
                                                 {
                                                     <span>Ongoing Opportunity</span>
                                                 }
                                                 else
                                                 {
-                                                    @if (releated.StartDate != null && releated.EndDate != null)
-                                                    {
-                                                        <span>From @releated.StartDate.Value.ToShortDateString() until @releated.EndDate.Value.ToShortDateString()</span>
-                                                    }
+                                                    <span>From @releated.StartDate!.Value.ToShortDateString() until @releated.EndDate!.Value.ToShortDateString()</span>
                                                 }
                                             }
                                             else
@@ -621,20 +695,20 @@
                                             }
                                         </div>
                                         <div class="row gutter mt-4 mb-2 justify-content-around">
-                                            <div class="col card-detail">
-                                                <img class="icon-detail my-2" src="~/images/Seats-left.png" alt="seats left">
-                                                <div class="card-detail-text">
-
-                                                    <p class="seat-left">  @seats_left </p>
-                                                    <span>Seats left</span>
-                                                </div>
-                                            </div>
                                             @if (releated.MissionType.Equals("Time"))
                                             {
                                                 <div class="col card-detail">
+                                                    <img class="icon-detail my-2" src="~/images/Seats-left.png" alt="seats left">
+                                                    <div class="card-detail-text">
+
+                                                        <p class="seat-left">  @releated_seats_left </p>
+                                                        <span>Seats left</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col card-detail">
                                                     <img class="icon-detail my-2" src="~/images/deadline.png" alt="deadline">
                                                     <div class="card-detail-text ">
-                                                        <p class="deadline">@Model.MissionDetails.Deadline</p>
+                                                        <p class="deadline">@releated.StartDate!.Value.AddDays(-1).ToShortDateString()</p>
                                                         <span>Deadline</span>
                                                     </div>
                                                 </div>
@@ -649,7 +723,7 @@
                                                             <div class="progress">
                                                                 <div class="progress-bar" role="progressbar" aria-label="Warning example" style="background-color: #F88634; width:@updatedGoalValue%" aria-valuenow="@updatedGoalValue" aria-valuemin="0" aria-valuemax="@goal_mission.GoalValue%"></div>
                                                             </div>
-                                                            <span> @updatedGoalValue achieved</span>
+                                                            <span>@updatedGoalValue achieved</span>
                                                         </div>
                                                     </div>
                                                 }
@@ -658,16 +732,29 @@
                                         </div>
                                     </div>
 
-
-                                    <div class=" d-flex pb-3 justify-content-center">
-                                        <a class="btn card-btn">
-                                            Apply  &nbsp;&nbsp;&nbsp;
-                                            <img src="~/images/right-arrow.png">
-                                            <img src="~/images/right-arrow2.png" />
-                                        </a>
-                                    </div>
+                                    @if (releated_isEndDatePassed || releated_seats_left <= 0 || releated_isDeadlinePassed || releated_isApprovalPending)
+                                    {
+                                        <div class=" d-flex pb-3 justify-content-center">
+                                            <a class="btn card-btn" href="@Url.Action("MissionDetail", "Home" , new { MissionId = releated.MissionId})">
+                                                View Details  &nbsp;&nbsp;&nbsp;
+                                                <img src="~/images/right-arrow.png">
+                                                <img src="~/images/right-arrow2.png" />
+                                            </a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class=" d-flex pb-3 justify-content-center">
+                                            <a class="btn card-btn" href="@Url.Action("MissionDetail", "Home" , new { MissionId = @releated.MissionId})">
+                                                Apply  &nbsp;&nbsp;&nbsp;
+                                                <img src="~/images/right-arrow.png">
+                                                <img src="~/images/right-arrow2.png" />
+                                            </a>
+                                        </div>
+                                    }
 
                                 }
+
                             </div>
                         </div>
                     }

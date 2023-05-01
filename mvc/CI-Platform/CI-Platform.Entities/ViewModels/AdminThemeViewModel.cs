@@ -20,6 +20,8 @@ namespace CI_Platform.Entities.ViewModels
         public long ThemeId { get; set; } = 0;
 
         [Required(ErrorMessage = "Theme Name is Required")]
+        [MaxLength(120, ErrorMessage = "Maximum 120 characters are allowed!!")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Only alphabetical characters are allowed!!")]
         public string? ThemeName { get; set; }
 
         [Required(ErrorMessage = "Status is Required")]

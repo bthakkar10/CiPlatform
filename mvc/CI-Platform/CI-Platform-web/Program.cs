@@ -1,9 +1,11 @@
 //using AspNetCore;
+using Azure;
 using CI_Platform.Entities.DataModels;
 using CI_Platform.Repository.Interface;
 using CI_Platform.Repository.Repository;
 using CI_Platform_web.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -89,15 +91,42 @@ app.Use(async (context, next) =>
     }
     await next();
 });
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        context.Response.ContentType = "text/html";
 
+        await context.Response.WriteAsync("<html><body>\r\n");
+        await context.Response.WriteAsync("<h2>Something went wrong!</h2>\r\n");
+        await context.Response.WriteAsync("<p>Please try again later.</p>\r\n");
+
+        var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+
+        if (exceptionHandlerPathFeature?.Error is InvalidOperationException)
+        {
+            if(context.Response.StatusCode == (int)HttpStatusCode.NotFound)
+            {
+                context.Response.Redirect("/Auth/PageNotFound");
+            }
+            
+        }
+      
+    });
+});
 app.UseStatusCodePages(async context => {
     var request = context.HttpContext.Request;
     var response = context.HttpContext.Response;
-
     if (response.StatusCode == (int)HttpStatusCode.Unauthorized || response.StatusCode == (int)HttpStatusCode.Forbidden)
     {
         response.Redirect("/Auth/Index");
     }
+    if(response.StatusCode == (int)HttpStatusCode.NotFound)
+    {
+        response.Redirect("/Auth/PageNotFound");
+    }
+
 });
 
 app.UseHttpsRedirection();

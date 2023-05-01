@@ -78,14 +78,21 @@
                                 <span>APPLIED</span>
                             </div>
                         }
-
-                        @if (obj.HasDeadlinePassed || obj.HasEndDatePassed || obj.seatsLeft <= 0)
+                       @if(obj.HasEndDatePassed)
                         {
                             <div class="applied-pill" style="background:red 0% 0% no-repeat;">
                                 <span>CLOSED</span>
                             </div>
                         }
-
+                        @if(obj.MissionCard.MissionType == "Time")
+                        {
+                            @if (obj.HasDeadlinePassed || obj.seatsLeft <= 0)
+                            {
+                                <div class="applied-pill" style="background:red 0% 0% no-repeat;">
+                                    <span>CLOSED</span>
+                                </div>
+                            }
+                        }
                         @if (obj.IsApplicationPending)
                         {
                             <div class="applied-pill" style="background:orange 0% 0% no-repeat;">
@@ -339,14 +346,22 @@
                                 <span>APPLIED</span>
                             </div>
                         }
-
-                        @if(obj.HasDeadlinePassed || obj.seatsLeft <= 0 || obj.HasEndDatePassed)
+                        else if (obj.HasEndDatePassed)
                         {
                             <div class="applied-pill" style="background:red 0% 0% no-repeat;">
                                 <span>CLOSED</span>
                             </div>
                         }
-                        @if (obj.IsApplicationPending)
+                        else if (obj.MissionCard.MissionType == "Time")
+                        {
+                            @if (obj.HasDeadlinePassed || obj.seatsLeft <= 0)
+                            {
+                                <div class="applied-pill" style="background:red 0% 0% no-repeat;">
+                                    <span>CLOSED</span>
+                                </div>
+                            }
+                        }
+                        else if (obj.IsApplicationPending)
                         {
                             <div class="applied-pill" style="background:orange 0% 0% no-repeat;">
                                 <span>Approval Pending</span>
@@ -433,6 +448,7 @@
                                         <img src="~/images/selected-star.png" />
                                     }
                                 }
+                              
                             </div>
                         </div>
                         <h3 class="card-title">@obj.MissionCard.Title</h3>
@@ -449,16 +465,17 @@
                         <div class="card-text d-flex justify-content-between pt-4">
                             <div>
                                 <div class="row gutter justify-content-around">
-                                    <div class="col card-detail-listview">
-                                        <img class="icon-detail icon" src="~/images/Seats-left.png" alt="seats left">
-                                        <div class="card-detail-text">
-                                            <p class="seat-left">  @obj.seatsLeft</p>
-                                            <p>Seats left</p>
-                                        </div>
-                                    </div>
+                                    
 
                                     @if (obj.MissionCard.MissionType.Equals("Time"))
                                     {
+                                        <div class="col card-detail-listview">
+                                            <img class="icon-detail icon" src="~/images/Seats-left.png" alt="seats left">
+                                            <div class="card-detail-text">
+                                                <p class="seat-left">  @obj.seatsLeft</p>
+                                                <p>Seats left</p>
+                                            </div>
+                                        </div>
                                         <div class="col card-detail-listview">
                                             <img class="icon-detail icon" src="~/images/calender.png" alt="calender">
                                             <div class="card-detail-text">

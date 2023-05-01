@@ -93,7 +93,7 @@ namespace CI_Platform_web.Controllers
                 ViewBag.Username = HttpContext.Session.GetString("Username");
             }
             //long UserId = Convert.ToInt64(ViewBag.UserId);
-            var vm = new ShareStoryViewModel();
+            ShareStoryViewModel vm = new();
             vm.GetMissionListofUser = _shareStory.GetMissionListofUser(userId);
             return View(vm);
         }

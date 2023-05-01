@@ -5,14 +5,27 @@ if (currentUrl.includes("HomePage")) {
 }
 else if (currentUrl.includes("StoryListing")) {
     StoryFilter(1);
-
+}
+if (currentUrl.includes("HomePage")) {
+    document.getElementById("ExploreMissionLink").style.display = "block";
+} else {
+    document.getElementById("ExploreMissionLink").style.display = "none";
 }
 
-
+var SelectedExploreOption = null;
 var SelectedsortCase = null;
 var SelectedCountry = null;
 var userId = ($("#user-id").text());
 let allDropdowns = $('.dropdown ul');
+
+//for selecting explore mission dropdown in mission page
+$("#ExploreMissionDropdown li").click(function () {
+    var ExploreCase = $(this).val();
+    SelectedExploreOption = ExploreCase;
+    console.log(ExploreCase);
+    FilterSortPaginationSearch(1);
+});
+
 
 //global search text selection
 $('#searchText').on('keyup', function () {
@@ -43,13 +56,13 @@ function FilterSortPaginationSearch(pageNo) {
     var CityId = $('#CityList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var ThemeId = $('#ThemeList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var SkillId = $('#SkillList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
-    /* var SearchText = searchText;*/
+    var ExploreCase = SelectedExploreOption;
     var SearchText = $("#searchText").val();
     var sortCase = SelectedsortCase;
     var pagesize = 9;
 
     let queryData = {
-        CountryId: CountryId, CityIds: CityId, ThemeIds: ThemeId, SkillIds: SkillId, SearchText: SearchText, sortCase: sortCase, pageNo: pageNo, pagesize: pagesize
+        CountryId: CountryId, CityIds: CityId, ThemeIds: ThemeId, SkillIds: SkillId, SearchText: SearchText, sortCase: sortCase, pageNo: pageNo, pagesize: pagesize, ExploreCase: ExploreCase
     }
 
     $.ajax({
@@ -812,9 +825,19 @@ function handleFiles(e) {
             });
             return false;
         }
-
+        // Check if maximum image limit is reached
+        if (allfiles.length >= 20) {
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Maximum 20 images are allowed!",
+                showConfirmButton: false,
+                timer: 4000
+            });
+            return false;
+        }
         allfiles.push(files[i]);
-   
+        console.log(allfiles);
 
         // Create image preview and close icon
   
@@ -837,25 +860,15 @@ function handleFiles(e) {
                         fileInput.disabled = false;
                     }
                 });
+                console.log(allfiles);
             };
         })(file);
 
         // Read image file as data URL
         reader.readAsDataURL(file);
     }
-    if (allfiles.length > 20) {
-        swal.fire({
-            position: 'top-end',
-            icon: "error",
-            title: "Maximum 20 images are allowed!",
-            showConfirmButton: false,
-            timer: 4000
-        });
-        // Remove the last added file from the list
-        allfiles.splice(-1, 1);
-        // Remove the last added image preview from the list
-        imageList.children().last().remove();
-        //// Disable further file selection
+    // Disable further file selection if maximum limit is reached
+    if (allfiles.length >= 20) {
         fileInput.disabled = true;
     }
     // Create a new DataTransfer object
@@ -1022,7 +1035,7 @@ $('#missionTitle').change(function () {
 $('#saveStory').click(function (e) {
     e.preventDefault();
     let isValid = false;
-    if (validateStoryTitle() == true && validateDate() == true &&  validateYoutubeUrls() == true && validateMissionTitle() == true) {
+    if (validateStoryTitle() == true && validateStoryDes() == true && validateDate() == true &&  validateYoutubeUrls() == true && validateMissionTitle() == true) {
         isValid = true;
     }
     if (isValid) {
@@ -1080,7 +1093,7 @@ $('#saveStory').click(function (e) {
 $('#submitButton').click(function (e) {
     e.preventDefault();
     let isValid = false;
-    if (validateStoryTitle() == true && validateDate() == true &&  validateYoutubeUrls() == true && validateMissionTitle() == true) {
+    if (validateStoryTitle() == true && validateDate() == true && validateStoryDes() == true &&  validateYoutubeUrls() == true && validateMissionTitle() == true) {
         isValid = true;
     }
     if (isValid) {
@@ -1220,22 +1233,23 @@ function validateDate() {
     return true;
 }
 //validate story des in share story
-$('#saveStory').on('click', validateStoryDes);
+$('#storyEditor').on('blur', validateStoryDes);
 function validateStoryDes() {
-    /*tinymce.get('storyEditor').setContent('');*/
-    var content = tinymce.get('storyEditor').getContent();
-    if (content === null || content === "") {
-        $("#HelpBlock-storyDes").text("Story Description is a required field!!");
+    var description = tinymce.activeEditor.getContent();
+    var descText = $('<div>').html(description).text().trim();
+    if (descText == "") {
+    $("#HelpBlock-storyDes").text("Story Description is a required field!!");
+    return false;
+    }
+    else if (descText.length > 40000) {
+        $("#HelpBlock-storyDes").text("Maximum 40000 characters are allowed!!!");
         return false;
     }
-    else if (tinymce.get('storyEditor').setContent('').length > 40000) {
-        $("#HelpBlock-storyDes").text("Maximum 40000 characters are allowed!!");
-        return false;
+    else {
+        $("#HelpBlock-storyDes").text("");
+        return true;
     }
-    $("#HelpBlock-storyDes").text("");
-    return true;
 }
-//validate img in share story
 
 
 //user-profile-img-change
@@ -1664,4 +1678,8 @@ $(document).on('click', '.ViewButtonDataFetch', function () {
             console.log(error);
         },
     });
+})
+$(document).on('click', '.TimesheetSubmitBtn', function () {
+    $("#GoalAddSelection").prop('disabled', false);
+    $("#TimeAddSelection").prop('disabled', false);
 })

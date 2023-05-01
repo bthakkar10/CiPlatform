@@ -42,15 +42,15 @@
                                 View
                             </button>&nbsp;
                             <button class="p-0 btn GetStoryIdBtn @(story.Status == "PUBLISHED" ? "disabled border-0" : "")" id="StoryApprovalBtn" data-bs-toggle="modal" data-bs-target="#StoryModal" data-story-id="@story.StoryId" data-status="1">
-                                <i class="fa-circle-check @(story.Status == "PUBLISHED" ? "fa-solid" : "fa-regular")" style="color: #00ff00;"></i>
+                                <i class="fa-circle-check fa-xl @(story.Status == "PUBLISHED" ? "fa-solid" : "fa-regular")" style="color: #00ff00;"></i>
                             </button>
                             &nbsp;
                             <button class="btn p-0 GetStoryIdBtn @(story.Status == "DECLINED" ? "disabled border-0" : "")" id="StoryDeclineBtn" data-bs-target="#StoryModal" data-bs-toggle="modal" data-story-id="@story.StoryId" data-status="0">
-                                <i class="fa-circle-xmark @(story.Status == "DECLINED" ? "fa-solid" : "fa-regular")" style="color: #ff0000;"></i>
+                                <i class="fa-circle-xmark fa-xl @(story.Status == "DECLINED" ? "fa-solid" : "fa-regular")" style="color: #ff0000;"></i>
                             </button>
                             &nbsp;
                             <button class="p-0 btn GetStoryIdBtn" data-bs-toggle="modal" data-bs-target="#StoryDeleteModal" data-story-id="@story.StoryId">
-                                <i class="bi bi-trash"> </i>
+                                <h4><i class="bi bi-trash "> </i></h4>
                             </button>
                         </td>
                     </tr>

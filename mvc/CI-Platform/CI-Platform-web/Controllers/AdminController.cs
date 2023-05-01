@@ -521,7 +521,10 @@ namespace CI_Platform_web.Controllers
             missionvm.CountryList = _filter.CountryList().ToList();
             missionvm.ThemeList = _filter.ThemeList().ToList();
             missionvm.SkillsList = _filter.SkillList().ToList();
-
+            if(missionvm.OrganizationDetail==null)
+            {
+                missionvm.OrganizationDetail = "";
+            }
             return PartialView("_AddOrUpdateMission", missionvm);
         }
 

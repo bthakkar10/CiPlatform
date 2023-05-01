@@ -20,18 +20,5 @@ namespace CI_Platform.Entities.ViewModels
         ErrorMessage = "The password must contain at least 8 characters including at least one uppercase letter, one lowercase letter, one digit and one special character!!")]
         public string Password { get; set; } = string.Empty;
 
-        //public UserLoginViewModel(User user)
-        //{
-        //    Email= user.Email;
-        //    UserName = user.FirstName + " " + user.LastName;    
-        //}
-
-        //public string? FirstName { get; set; } 
-
-        //public string? LastName { get; set; }
-
-        //public string UserName { get; set; }   
-
-        //public string Role { get; set; } = string.Empty;
     }
 }

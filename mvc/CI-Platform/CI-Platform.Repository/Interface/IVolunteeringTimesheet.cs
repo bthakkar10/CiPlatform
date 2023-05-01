@@ -20,9 +20,9 @@ namespace CI_Platform.Repository.Interface
 
         public List<Timesheet> GetTimesheetData(long UserId);
 
-        public bool UpdateGoalBasedEntry(GoalViewModel vm);
+        public string UpdateGoalBasedEntry(GoalViewModel vm, long UserId);
 
-        public bool UpdateTimeBasedEntry(TimeViewModel vm);
+        public string UpdateTimeBasedEntry(TimeViewModel vm, long UserId);
 
         public bool DeleteTimeBasedEntry(long TimeSheetId);
 

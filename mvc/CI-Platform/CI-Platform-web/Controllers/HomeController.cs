@@ -75,11 +75,6 @@ namespace CI_Platform_web.Controllers
         [HttpPost]
         public IActionResult HomePage(MissionFilterQueryParams queryParams)
         {
-            
-            //var userId = HttpContext.Session.GetString("Id");
-            //long UserId = Convert.ToInt64(userId);
-            //ViewBag.UserId = UserId;
-
             var vm = _missionDisplay.FilterOnMission(queryParams, UserId);
 
             if (vm.Records.Count != 0)
@@ -133,7 +128,7 @@ namespace CI_Platform_web.Controllers
                 }
                 ViewBag.MissionId = MissionId;
                 long userId = Convert.ToInt64(HttpContext.Session.GetString("Id"));
-                //long userId = long.Parse(Id);
+                  
                 MissionDetailViewModel vm = new()
                 {
                     MissionDetails = _missionDetail.MissionDetails(MissionId),

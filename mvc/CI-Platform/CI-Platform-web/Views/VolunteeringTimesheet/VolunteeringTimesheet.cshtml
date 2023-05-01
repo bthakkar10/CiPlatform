@@ -43,12 +43,10 @@
                                         <form method="post" id="TimeFormTimesheet">
 
                                             <input type="hidden" asp-for="TimeViewModel.TimesheetId" id="TimeBasedTimesheetId" />
-
-
                                             <div class="mb-3">
                                                 <label for="MissionNameLabel" class="form-label">Mission</label>
                                                 <select asp-for="TimeViewModel.MissionId" type="text" class="form-select TimesheetSelection" id="TimeAddSelection">
-                                                    <option selected disabled> Select Mission Title</option>
+                                                    <option selected readonly> Select Mission Title</option>
                                                     @if (Model.GetMissionTitles.Any())
                                                     {
                                                         @foreach (var mission_list in Model.GetMissionTitles.Where(m => m.Mission.MissionType == "Time"))

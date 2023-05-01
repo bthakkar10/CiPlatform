@@ -39,7 +39,7 @@
                     <i class="bi bi-eye-slash position-absolute translate-middle-x end-0 top-50 "></i>
                 </div>
                 <span asp-validation-for="Password" class="validate-text text-danger"></span>
-                <span id="cnf-msg"></span>
+                <div id="cnf-msg"></div>
                 <div class="mb-2 position-relative">
                     <label asp-for="ConfirmPassword" name="ConfirmPassword" class="form-label">Confirm Password</label>
                     <input asp-for="ConfirmPassword" type="password" name="ConfirmPassword" id="ConfirmPassword" placeholder="**********" class="form-control form-control-lg" onkeyup="check()">

@@ -234,6 +234,11 @@ namespace CI_Platform_web.Controllers
             bool sessionExists = (HttpContext.Session.GetString("Token") == null);
             return Json(new { sessionExists });
         }
+        [AllowAnonymous]
+        public IActionResult PageNotFound()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

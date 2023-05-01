@@ -39,8 +39,8 @@ namespace CI_Platform.Repository.Repository
             {
                 List<Timesheet> timesheet = _db.Timesheets.Where(t => t.UserId == UserId && t.MissionId == vm.MissionId && t.DeletedAt == null).ToList();
                 foreach (var ts in timesheet)
-                {
-                    if (ts.DateVolunteered == vm.TimeDate)
+                {//the commented line in the if condition suggest that the timesheet should be allowed to be edited if it is declined by the admin
+                    if (ts.DateVolunteered == vm.TimeDate /*&& ts.Status != GenericEnum.TimesheetStatus.DECLINED.ToString()*/)
                     {
                         return "Exists";
                     }
@@ -102,11 +102,21 @@ namespace CI_Platform.Repository.Repository
             return _db.Timesheets.Include(m => m.Mission).Where(m => m.DeletedAt == null && m.Mission.DeletedAt == null).FirstOrDefault(t => t.TimesheetId == TimeSheetId)!;
         }
 
-        public bool UpdateGoalBasedEntry(GoalViewModel vm)
+        public string UpdateGoalBasedEntry(GoalViewModel vm , long UserId)
         {
+            List<Timesheet> timesheets = _db.Timesheets.Where(t => t.UserId == UserId && t.MissionId == vm.MissionId && t.TimesheetId != vm.TimesheetId && t.DeletedAt == null ).ToList();
+            foreach (var timesheet in timesheets)
+            {
+                if (timesheet.DateVolunteered == vm.TimeDate)
+                {
+                    return "Exists";
+                }
+            }
             Timesheet ts = GetDataOnEdit(vm.TimesheetId);
+            
             if (ts != null)
             {
+              
                 ts.Action = vm.Action;
                 ts.Notes = vm.GoalMessage;
                 ts.DateVolunteered = vm.TimeDate;
@@ -114,16 +124,24 @@ namespace CI_Platform.Repository.Repository
 
                 _db.Update(ts);
                 _db.SaveChanges();
-                return true;
+                return "Update";
             }
             else
             {
-                return false;
+                return "Error";
             }
         }
 
-        public bool UpdateTimeBasedEntry(TimeViewModel vm)
+        public string UpdateTimeBasedEntry(TimeViewModel vm, long UserId)
         {
+            List<Timesheet> timesheets = _db.Timesheets.Where(t => t.UserId == UserId && t.MissionId == vm.MissionId && t.TimesheetId != vm.TimesheetId && t.DeletedAt == null).ToList();
+            foreach (var timesheet in timesheets)
+            {
+                if (timesheet.DateVolunteered == vm.TimeDate)
+                {
+                    return "Exists";
+                }
+            }
             Timesheet ts = GetDataOnEdit(vm.TimesheetId);
             if (ts != null)
             {
@@ -134,11 +152,11 @@ namespace CI_Platform.Repository.Repository
 
                 _db.Update(ts);
                 _db.SaveChanges();
-                return true;
+                return "Update";
             }
             else
             {
-                return false;
+                return "Error";
             }
         }
 

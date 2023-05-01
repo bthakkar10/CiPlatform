@@ -442,6 +442,115 @@ $(document).on('change', '#MissionTypeSelection', function () {
         $("#GoalObjectiveText").attr('disabled', false);
     }
 });
+//validate goal and time based values on the selection of type of mission
+function validateGoalTime() {
+    if ($('#MissionTypeSelection').val() === "Goal") {
+        let isValidGoalObjective = validateGoalObjective();
+        let isValidGoalValue = validateGoalValue();
+        if (isValidGoalObjective && isValidGoalValue) {
+            return true;
+        }
+        return false;
+    } else if ($('#MissionTypeSelection').val() === "Time") {
+        let isValidDeadline = validateDeadline();
+        let isValidSeats = validateSeats();
+        if (isValidDeadline && isValidSeats) {
+            return true;
+        }
+        return false;
+    }
+}
+
+function validateDeadline() {
+    var deadline = $('#MissionDeadline').val();
+    if (deadline == "" || deadline == null) {
+        $('#DeadlineValidateText').text("Registration deadline is required!!");
+        return false;
+    }
+    $('#DeadlineValidateText').text("");
+    return true;
+}
+
+function validateSeats() {
+    var totalSeats = $('#TotalSeats').val();
+    if (totalSeats == "" || totalSeats == null) {
+        $('#SeatsValidateText').text("Total seats is required!!");
+        return false;
+    }
+    $('#SeatsValidateText').text("");
+    return true;
+}
+
+function validateGoalObjective() {
+    var goalObjective = $('#GoalObjectiveText').val();
+    if (goalObjective == "" || goalObjective == null) {
+        $('#GoalTextValidateText').text("Goal Objective is required!!");
+        return false;
+    }
+    $('#GoalTextValidateText').text("");
+    return true;
+}
+
+function validateGoalValue() {
+    var goalValue = $('#GoalValue').val();
+    if (goalValue == "" || goalValue == null) {
+        $('#GoalValueValidateText').text("Goal Value is required!!");
+        return false;
+    }
+    $('#validateGoalValue').text("");
+    return true;
+}
+
+//validate organisation details in admin mission
+tinymce.init({
+    selector: '#OrganizationDetail',
+    init_instance_callback: function (editor) {
+        // Code to be executed when the editor is initialized
+        $(document).on('blur', '#OrganizationDetail', validateOrganisationDetail);
+    }
+});
+/*$(document).on('blur','#OrganizationDetail', validateOrganisationDetail());*/
+function validateOrganisationDetail() {
+    var description = tinymce.activeEditor.getContent();
+    var descText = $('<div>').html(description).text().trim();
+    if (descText == "") {
+        $("#HelpBlockOrgDetail").text("Organisation Details  is a required field!!");
+        return false;
+    }
+    else if (descText.length > 40000) {
+        $("#HelpBlockOrgDetail").text("Maximum 40000 characters are allowed!!!");
+        return false;
+    }
+    else {
+        $("#HelpBlockOrgDetail").text("");
+        return true;
+    }
+}
+tinymce.init({
+    selector: '#Description',
+    init_instance_callback: function (editor) {
+        // Code to be executed when the editor is initialized
+        $(document).on('blur', '#Description', validateMissionDes);
+    }
+});
+//validate organisation details in admin mission
+/*$('#Description').on('blur', validateMissionDes());*/
+function validateMissionDes() {
+    var description = tinymce.activeEditor.getContent();
+    var descText = $('<div>').html(description).text().trim();
+    if (descText == "") {
+        $("#HelpBlockMissionDes").text("Mission Description is a required field!!");
+        return false;
+    }
+    else if (descText.length > 40000) {
+        $("#HelpBlockMissionDes").text("Maximum 40000 characters are allowed!!!");
+        return false;
+    }
+    else {
+        $("#HelpBlockMissionDes").text("");
+        return true;
+    }
+}
 
 // drag and drop images in admin mission page
 let DefaultImage = null;
@@ -482,6 +591,17 @@ function handleFiles(e) {
             });
             return false;
         }
+        // Check if maximum image limit is reached
+        if (allfiles.length >= 20) {
+            swal.fire({
+                position: 'top-end',
+                icon: "error",
+                title: "Maximum 20 images are allowed!",
+                showConfirmButton: false,
+                timer: 4000
+            });
+            return false;
+        }
 
         allfiles.push(files[i]);
 
@@ -517,21 +637,6 @@ function handleFiles(e) {
                 // Handle close icon click event
                 closeIcon.on('click', function () {
                     const removedFile = $(this).parent().data('file');
-                    //closebtn.on('click', function () {
-                    //    const removedFile = $(this).parent().data('file');
-                    //    const index = allfiles.findIndex(f => f.name === file)
-                    //    allfiles.splice(index, 1);
-                    //    console.log(allfiles);
-                    //    /*console.log(allfiles.indexOf(removedFile))*/
-                    //    item.remove();
-                    //    if (removedFile === DefaultImage) {
-                    //        DefaultImage = null;
-                    //    }
-                    //});
-                    //// Get the index of the associated file in the allfiles array
-                    //const index = item.data('file-index');
-                    // Remove the file from the allfiles array
-                    //item.remove();
                     item.remove();
                     /*   $(this).parent().remove();*/
                     console.log(allfiles.indexOf(removedFile))
@@ -554,19 +659,8 @@ function handleFiles(e) {
         // Read image file as data URL
         reader.readAsDataURL(file);
     }
-    if (allfiles.length > 20) {
-        swal.fire({
-            position: 'top-end',
-            icon: "error",
-            title: "Maximum 20 images can be added!!",
-            showConfirmButton: false,
-            timer: 4000
-        });
-        // Remove the last added file from the list
-        allfiles.splice(-1, 1);
-        // Remove the last added image preview from the list
-        $('#mission-img-output').children().last().remove();
-        //// Disable further file selection
+    // Disable further file selection if maximum limit is reached
+    if (allfiles.length >= 20) {
         fileInput.disabled = true;
     }
     // Create a new DataTransfer object
@@ -776,11 +870,11 @@ $(document).on('submit', '#MissionForm', function (e) {
     $('#GoalValue').prop('disabled', false);
     $('#GoalObjectiveText').prop('disabled', false);
     $("#MissionEndDate").prop('disabled', false);
-    if ($(this).valid()) {
-
+    var isValidDes = validateMissionDes();
+    var isValidDetails = validateOrganisationDetail();
+    if ($(this).valid() && validateGoalTime() == true && isValidDetails && isValidDes)  {
         var myform = document.getElementById("MissionForm");
         var MissionFormData = new FormData(myform);
-        console.log(MissionFormData)
 
         for (let i = 0; i < allfiles.length; i++) {
             MissionFormData.append('ImageList', allfiles[i]);
@@ -793,7 +887,7 @@ $(document).on('submit', '#MissionForm', function (e) {
         if (DefaultImage != null) {
             MissionFormData.append('DefaultMissionImg', DefaultImage);
         }
-
+        console.log(DefaultImage)
         let urls = null;
         let u = $('#MissionYoutubeUrl').val();
         if (u != null) {
@@ -864,8 +958,8 @@ $(document).on('click', '#EditBtnMissionDataFetch', function () {
                 if (defaultimg === imageArr[index]) {
                     item.addClass('default-img');
                     DefaultImage = files;
+                    console.log("defaut " + DefaultImage);
                 }
-
 
                 item.on('click', function () {
                     if ($(this).hasClass('default-img')) {
@@ -879,8 +973,9 @@ $(document).on('click', '#EditBtnMissionDataFetch', function () {
                         // set default image class to clicked image
                         $(this).addClass('default-img');
                         // set it as DefaultImage variable
-                        DefaultImage = file;
+                        DefaultImage = files;
                     }
+                   
                 });
                 // Handle close icon click event
                 closebtn.on('click', function () {
@@ -895,28 +990,8 @@ $(document).on('click', '#EditBtnMissionDataFetch', function () {
                     }
                 });
 
-                //closeIcon.on('click', function () {
-                //    const removedFile = $(this).parent().data('file');
-
-                //    //// Get the index of the associated file in the allfiles array
-                //    //const index = item.data('file-index');
-                //    // Remove the file from the allfiles array
-                //    //item.remove();
-                //    removedFile.remove();
-                //    /*   $(this).parent().remove();*/
-                //    console.log(allfiles.indexOf(removedFile))
-                //    allfiles.splice(allfiles.indexOf(removedFile), 1);
-                //    console.log(allfiles);
-
-                //    if (removedFile === DefaultImage) {
-                //        DefaultImage = null;
-                //    }
-
-                //    if (allfiles.length < 20) {
-                //        $('#mission-img-input').prop('disabled', false);
-                //    }
-                //});
-
+                console.log("defaut " + DefaultImage);
+               
                 allfiles.push(files);
             });
             //for youtubeurls 

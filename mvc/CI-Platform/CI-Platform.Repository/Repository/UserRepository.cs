@@ -50,6 +50,7 @@ namespace CI_Platform.Repository.Repository
                         PhoneNumber = obj.PhoneNumber,
                         Password = BCrypt.Net.BCrypt.HashPassword(obj.Password),
                         Avtar = default_avtar,
+                        Status = true,
                     };
                     _db.Users.Add(user);
                     _db.SaveChanges();  

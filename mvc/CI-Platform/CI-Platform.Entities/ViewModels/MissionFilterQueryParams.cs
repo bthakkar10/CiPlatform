@@ -24,5 +24,7 @@ namespace CI_Platform.Entities.ViewModels
 
         public int pagesize { get; set; }
 
+        public int ExploreCase { get; set; }
+
     }
 }

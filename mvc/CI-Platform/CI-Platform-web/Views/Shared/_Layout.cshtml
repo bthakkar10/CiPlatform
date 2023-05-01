@@ -59,10 +59,11 @@
                                         &nbsp; &nbsp; <img class=" pe-2" src="~/images/drop-down.png">
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-light"
-                                        aria-labelledby="navbarDarkDropdownMenuLink">
-                                        <li><a class="dropdown-item" href="#">Action</a></li>
-                                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                        aria-labelledby="navbarDarkDropdownMenuLink" id="ExploreMissionDropdown">
+                                        <li value="Top Themes"><a class="dropdown-item">Top Themes</a></li>
+                                        <li value="Most Ranked"><a class="dropdown-item">Most Ranked</a></li>
+                                        <li value="Top Favourite"><a class="dropdown-item">Top Favourite</a></li>
+                                        <li value="Random"><a class="dropdown-item">Random</a></li>
                                     </ul>
                                 </li>
 
@@ -103,17 +104,24 @@
                 </a>
                 @*navbar starts*@
                 <div class="d-flex d-none d-md-flex">
-                    
-
+                    <a class="nav-item nav-link " href="#" id="ExploreMissionLink">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="text-dark p-2">Explore</span>
+                                <img src="~/images/drop-down.png">
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-light"
+                                        aria-labelledby="navbarDarkDropdownMenuLink" id="ExploreMissionDropdown">
+                                        <li value="1"><a class="dropdown-item">Top Themes</a></li>
+                                        <li value="2"><a class="dropdown-item">Most Ranked</a></li>
+                                        <li value="3"><a class="dropdown-item">Top Favourite</a></li>
+                                        <li value="4"><a class="dropdown-item">Random</a></li>
+                                    </ul>
+                        </li>
+                    </a>
 
                     <a class="nav-item nav-link " href="#">
-                        @*<li class="nav-item dropdown">
-                        <a class="nav-link ms-3 dropdown-toggle" asp-controller="Home" asp-action="StoryListing" id="navbarDarkDropdownMenuLink" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="text-dark p-2">Stories</span>
-                        </a>
-                        </li>*@
-
                         <li class="nav-item">
                             <a asp-controller="Story" asp-action="StoryListing" class="nav-link">
                                 <span class="text-dark p-2">Stories</span>
@@ -138,7 +146,7 @@
                     </a>
                 </div>
                 <div class="d-flex">
-                    <li class="nav-item dropdown">
+                   @* <li class="nav-item dropdown">
                         <a class="nav-link ms-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">
                             <img class="p-2" src="~/images/bell.png">
@@ -148,7 +156,7 @@
                             <li><a class="dropdown-item" href="#">Another action</a></li>
                             <li><a class="dropdown-item" href="#">Something else here</a></li>
                         </ul>
-                    </li>
+                    </li>*@
 
                     @await Component.InvokeAsync("UserHeader", "_ProfileSection")
 

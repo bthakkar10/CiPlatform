@@ -15,6 +15,7 @@ namespace CI_Platform.Entities.ViewModels
         public List<Banner> BannerList { get; set; } = new List<Banner>();
 
         [Required(ErrorMessage = "Title is Required!!")]
+        [MaxLength(255, ErrorMessage = "Maximum 255 characters are allowed!!")]
         public string? Title { get; set; } = string.Empty;
 
         [AllowHtml]

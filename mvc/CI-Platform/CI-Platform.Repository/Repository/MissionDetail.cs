@@ -24,12 +24,13 @@ namespace CI_Platform.Repository.Repository
         }
         public Mission MissionDetails(long MissionId)
         {
+
             Mission mission = _db.Missions.Where(m => m.DeletedAt == null && m.City.DeletedAt == null && m.Country.DeletedAt == null)
                 .Include(m => m.Country)
                 .Include(m => m.City)
                 .Include(m => m.MissionRatings)
                 .Include(m => m.MissionTheme)
-                .Include(m=>m.Timesheets)
+                .Include(m => m.Timesheets)
                 .Include(m => m.MissionSkills)
                 .ThenInclude(m => m.Skill)
                 .Include(m => m.MissionApplications)
@@ -40,15 +41,14 @@ namespace CI_Platform.Repository.Repository
                 .Include(m => m.Comments)
                 .ThenInclude(u => u.User)
                 .FirstOrDefault(m => m.MissionId == MissionId)!;
-
             return mission;
-            
+
 
         }
 
         public List<Comment> GetApprovedComments(long MissionId)
         {
-            var approvedComments = _db.Comments.Where(c => c.MissionId == MissionId && c.ApprovalStatus == GenericEnum.CommentStatus.PUBLISHED.ToString() && c.User.DeletedAt == null && c.Mission.DeletedAt==null)
+            var approvedComments = _db.Comments.Where(c => c.MissionId == MissionId && c.ApprovalStatus == GenericEnum.CommentStatus.PUBLISHED.ToString() && c.User.DeletedAt == null && c.Mission.DeletedAt == null)
                 .Include(c => c.User).ToList();
             return approvedComments;
         }
@@ -67,7 +67,7 @@ namespace CI_Platform.Repository.Repository
             List<Mission> relatedMissions = new();
 
             relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.CityId == mission.CityId && m.DeletedAt == null)
-                .Where(mission=>mission.Country.DeletedAt == null && mission.City.DeletedAt == null)
+                .Where(mission => mission.Country.DeletedAt == null && mission.City.DeletedAt == null)
                 .Include(m => m.Country)
                 .Include(m => m.City)
                 .Include(m => m.MissionRatings)
@@ -95,7 +95,7 @@ namespace CI_Platform.Repository.Repository
 
             if (relatedMissions.Count < 3)
             {
-                relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.MissionThemeId == mission.MissionThemeId && m.DeletedAt == null )
+                relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.MissionThemeId == mission.MissionThemeId && m.DeletedAt == null)
                      .Where(mission => mission.Country.DeletedAt == null && mission.City.DeletedAt == null)
                 .Include(m => m.Country)
                 .Include(m => m.City)
@@ -113,13 +113,13 @@ namespace CI_Platform.Repository.Repository
 
         public List<User> UserList(long UserId, long MissionId)
         {
-            return _db.Users.Where(u => u.UserId != UserId && u.DeletedAt==null && u.Status==true && u.Role == GenericEnum.Role.user.ToString() && !u.MissionApplications.Any(m => m.MissionId == MissionId && m.ApprovalStatus == GenericEnum.ApplicationStatus.APPROVE.ToString())).Include(m=>m.MissionInviteFromUsers).Include(m=>m.MissionInviteToUsers).ToList();
+            return _db.Users.Where(u => u.UserId != UserId && u.DeletedAt == null && u.Status == true && u.Role == GenericEnum.Role.user.ToString() && !u.MissionApplications.Any(m => m.MissionId == MissionId && m.ApprovalStatus == GenericEnum.ApplicationStatus.APPROVE.ToString())).Include(m => m.MissionInviteFromUsers).Include(m => m.MissionInviteToUsers).ToList();
         }
 
 
         public async Task SendInvitationToCoWorker(long ToUserId, long FromUserId, MissionDetailViewModel viewmodel)
         {
-            var Email = await _db.Users.Where(u => u.UserId == ToUserId && u.DeletedAt == null ).FirstOrDefaultAsync()!;
+            var Email = await _db.Users.Where(u => u.UserId == ToUserId && u.DeletedAt == null).FirstOrDefaultAsync()!;
 
             var Sender = await _db.Users.Where(su => su.UserId == FromUserId && su.DeletedAt == null).FirstOrDefaultAsync()!;
 

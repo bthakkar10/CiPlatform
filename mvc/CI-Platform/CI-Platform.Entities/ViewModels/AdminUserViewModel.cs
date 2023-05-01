@@ -39,10 +39,12 @@ namespace CI_Platform.Entities.ViewModels
 
         [Required(ErrorMessage = "First Name is Required!!")]
         [MaxLength(16, ErrorMessage = "Only 16 characters are allowed!!")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Only alphabetical characters are allowed!!")]
         public string FirstName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Surname is Required!!")]
         [MaxLength(16, ErrorMessage = "Only 16 characters are allowed!!")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Only alphabetical characters are allowed!!")]
         public string Surname { get; set; } = string.Empty;
 
         [EmailAddress(ErrorMessage = "Please enter only valid email addresss!!")]
@@ -53,10 +55,10 @@ namespace CI_Platform.Entities.ViewModels
         [RegularExpression(@"^[6-9]\d{9}$", ErrorMessage = "The phone number must be 10 digits and start with 6, 7, 8, or 9.")]
         public string? PhoneNumber { get; set; } = string.Empty;
 
-        [MaxLength(16, ErrorMessage = "Only 16 characters are allowed!!")]
+        [MaxLength(16, ErrorMessage = "Maximum 16 characters are allowed!!")]
         public string EmployeeId { get; set; } = string.Empty;
 
-        [MaxLength(16, ErrorMessage = "Only 16 characters are allowed!!")]
+        [MaxLength(16, ErrorMessage = "Maximum 16 characters are allowed!!")]
         public string  Department { get; set; } = string.Empty;
 
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$",

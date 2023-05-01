@@ -12,21 +12,21 @@ namespace CI_Platform.Entities.ViewModels
     {
         [Required(ErrorMessage = "First Name is Required!!")]
         [MaxLength(16, ErrorMessage = "Maximum 16 characters are allowed!!")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Only alphabetical characters are allowed!!")]
         public string FirstName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Last Name is Required!!")]
         [MaxLength(16, ErrorMessage = "Maximum 16 characters are allowed!!")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Only alphabetical characters are allowed!!")]
         public string LastName { get; set;} = string.Empty;
 
         [Required(ErrorMessage = "Mobile number is Required!!")]
-        [RegularExpression(@"^[6-9]\d{9}$", ErrorMessage = "The phone number must be 10 digits and start with 6, 7, 8, or 9.")]
+        [RegularExpression(@"^[6-9]\d{9}$", ErrorMessage = "The phone number must be of 10 digits and should start with 6, 7, 8, or 9.")]
         public string PhoneNumber { get; set; } = string.Empty;
 
         [EmailAddress(ErrorMessage = "Please enter only valid email addresss!!")]
         [Required(ErrorMessage = "Email Address is Required!!")]
-
         public string Email { get; set; } = string.Empty;
-
 
         [Required(ErrorMessage = "Password is Required!!")]
         [DataType(DataType.Password)]

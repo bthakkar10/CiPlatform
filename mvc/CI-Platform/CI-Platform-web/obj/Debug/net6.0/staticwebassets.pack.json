@@ -25,8 +25,16 @@
       "PackagePath": "staticwebassets\\documents\\1c3d9807_8e661479_SQL cheat sheet.pdf"
     },
     {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\documents\\31793c1c_26f15f81_SQL cheat sheet.pdf",
+      "PackagePath": "staticwebassets\\documents\\31793c1c_26f15f81_SQL cheat sheet.pdf"
+    },
+    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\documents\\4bf5d9a1_89905e57_.Net Coding Standards.pdf",
       "PackagePath": "staticwebassets\\documents\\4bf5d9a1_89905e57_.Net Coding Standards.pdf"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\documents\\64cc8d70_CI-Good to have.pdf",
+      "PackagePath": "staticwebassets\\documents\\64cc8d70_CI-Good to have.pdf"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\documents\\67ff38bb_2f0329a4_4010fa08_.Net Coding Standards.pdf",
@@ -205,28 +213,32 @@
       "PackagePath": "staticwebassets\\images\\Upload\\Mission\\106689d3_Education-Supplies-for-Every--Pair-of-Shoes-Sold-1.png"
     },
     {
-      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\2ad99987_5e657ef8_Feed-the-homeless.jpg",
-      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\2ad99987_5e657ef8_Feed-the-homeless.jpg"
-    },
-    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\58b32c98_animal-welfare-4.jpg",
       "PackagePath": "staticwebassets\\images\\Upload\\Mission\\58b32c98_animal-welfare-4.jpg"
     },
     {
-      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\5dfc07f3_img.jpg",
-      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\5dfc07f3_img.jpg"
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\5a609803_930aa3c1_01c11b87_7ef1569c_88d081b3_Feed-the-homeless1.jpg",
+      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\5a609803_930aa3c1_01c11b87_7ef1569c_88d081b3_Feed-the-homeless1.jpg"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\6222fc47_Feed-the-homeless.jpg",
+      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\6222fc47_Feed-the-homeless.jpg"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\73f45f7e_assist-with-disaster-relief.jpeg",
       "PackagePath": "staticwebassets\\images\\Upload\\Mission\\73f45f7e_assist-with-disaster-relief.jpeg"
     },
     {
-      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\7ef1569c_88d081b3_Feed-the-homeless1.jpg",
-      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\7ef1569c_88d081b3_Feed-the-homeless1.jpg"
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\80e38640_Feed-the-homeless1.jpg",
+      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\80e38640_Feed-the-homeless1.jpg"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\830f477c_7475f7fa_Women-Empowerment.jpg",
       "PackagePath": "staticwebassets\\images\\Upload\\Mission\\830f477c_7475f7fa_Women-Empowerment.jpg"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\90a0f3aa_Nourish-the-Children-in--African-country.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\90a0f3aa_Nourish-the-Children-in--African-country.png"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\95ce021c_9e0aac9d_0524d494_community-cleanup.jpg",
@@ -265,8 +277,16 @@
       "PackagePath": "staticwebassets\\images\\Upload\\Mission\\ad4dddae_Nourish-the-Children-in--African-country-1.png"
     },
     {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\animal-welfare-2.jpg",
+      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\animal-welfare-2.jpg"
+    },
+    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\animal-welfare-3.jpg",
       "PackagePath": "staticwebassets\\images\\Upload\\Mission\\animal-welfare-3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\animal-welfare-4.jpg",
+      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\animal-welfare-4.jpg"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\animal-welfare-5.jpg",
@@ -275,6 +295,14 @@
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\animal-welfare-6.jpg",
       "PackagePath": "staticwebassets\\images\\Upload\\Mission\\animal-welfare-6.jpg"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\be82e458_14553e8b_creative.jpg",
+      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\be82e458_14553e8b_creative.jpg"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\c432ed97_404bc85a_56c52383_Nourish-the-Children-in--African-country.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\c432ed97_404bc85a_56c52383_Nourish-the-Children-in--African-country.png"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\c769b800_assist-with-disaster-relief1.jpeg",
@@ -291,6 +319,10 @@
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\community-cleanup2.jpg",
       "PackagePath": "staticwebassets\\images\\Upload\\Mission\\community-cleanup2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\e20d4702_200ec6c6_entrepreneurship.jpg",
+      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\e20d4702_200ec6c6_entrepreneurship.jpg"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\e879f25e_c8e1ebcb_womenempowerment.png",
@@ -317,12 +349,32 @@
       "PackagePath": "staticwebassets\\images\\Upload\\Story\\03b80635_9e955a9e_Education-Supplies-for-Every--Pair-of-Shoes-Sold.png"
     },
     {
-      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\1f469aef_6b3bc369_assist-with-disaster-relief.jpeg",
-      "PackagePath": "staticwebassets\\images\\Upload\\Story\\1f469aef_6b3bc369_assist-with-disaster-relief.jpeg"
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\0747552b_Animal-welfare-&-save-birds-campaign.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\Story\\0747552b_Animal-welfare-&-save-birds-campaign.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\088e0af5_236e614d_img11.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\Story\\088e0af5_236e614d_img11.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\2661403a_taching-english.jpg",
+      "PackagePath": "staticwebassets\\images\\Upload\\Story\\2661403a_taching-english.jpg"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\2f298065_animal-welfare-5.jpg",
       "PackagePath": "staticwebassets\\images\\Upload\\Story\\2f298065_animal-welfare-5.jpg"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\37c8424a_animal-welfare-2.jpg",
+      "PackagePath": "staticwebassets\\images\\Upload\\Story\\37c8424a_animal-welfare-2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\401f0738_9112aaf1_img.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\Story\\401f0738_9112aaf1_img.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\51b99e13_0224b160_image2.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\Story\\51b99e13_0224b160_image2.png"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\740f256e_626352.jpg",
@@ -333,6 +385,10 @@
       "PackagePath": "staticwebassets\\images\\Upload\\Story\\75bcd7b9_9a7cfb72bee5b42e2daa8ae46cff241a.jpg"
     },
     {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\856afa50_assist-with-disaster-relief1.jpeg",
+      "PackagePath": "staticwebassets\\images\\Upload\\Story\\856afa50_assist-with-disaster-relief1.jpeg"
+    },
+    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\9b1a5734_d8a3b175_CSR-initiative-stands-for-Coffee--and-Farmer-Equity.png",
       "PackagePath": "staticwebassets\\images\\Upload\\Story\\9b1a5734_d8a3b175_CSR-initiative-stands-for-Coffee--and-Farmer-Equity.png"
     },
@@ -341,12 +397,12 @@
       "PackagePath": "staticwebassets\\images\\Upload\\Story\\Education-Supplies-for-Every--Pair-of-Shoes-Sold.png"
     },
     {
-      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\b78996e8_7f799e25_animal-welfare-3.jpg",
-      "PackagePath": "staticwebassets\\images\\Upload\\Story\\b78996e8_7f799e25_animal-welfare-3.jpg"
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\b5a41346_2cf2d3d3_home-for-homeless.jpg",
+      "PackagePath": "staticwebassets\\images\\Upload\\Story\\b5a41346_2cf2d3d3_home-for-homeless.jpg"
     },
     {
-      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\b840a2b8_home-for-homeless1.jpg",
-      "PackagePath": "staticwebassets\\images\\Upload\\Story\\b840a2b8_home-for-homeless1.jpg"
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\b78996e8_7f799e25_animal-welfare-3.jpg",
+      "PackagePath": "staticwebassets\\images\\Upload\\Story\\b78996e8_7f799e25_animal-welfare-3.jpg"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\bcf8b7ae_626317.jpg",
@@ -359,6 +415,14 @@
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\customer-engagement.jfif",
       "PackagePath": "staticwebassets\\images\\Upload\\Story\\customer-engagement.jfif"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\f4c0d306_89b81352_088e0af5_236e614d_img11.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\Story\\f4c0d306_89b81352_088e0af5_236e614d_img11.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\f86ed581_creative.jpg",
+      "PackagePath": "staticwebassets\\images\\Upload\\Story\\f86ed581_creative.jpg"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Story\\img11.png",
@@ -383,6 +447,10 @@
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\653ea079_volunteer9.png",
       "PackagePath": "staticwebassets\\images\\Upload\\User\\653ea079_volunteer9.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\6e837fc7_volunteer7.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\User\\6e837fc7_volunteer7.png"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\User\\a6842eb4_volunteer9.png",

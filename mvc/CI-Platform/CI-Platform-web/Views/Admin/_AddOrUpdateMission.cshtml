@@ -35,6 +35,7 @@
                     });
                 </script>
                 <span asp-validation-for="Description" class="validate-text text-danger"></span>
+                <span id="HelpBlockMissionDes" class="validate-text text-danger"></span>
             </div>
 
             <div class="row g-3 m-3">
@@ -94,6 +95,7 @@
                     });
                 </script>
                 <span asp-validation-for="OrganizationDetail" class="validate-text text-danger"></span>
+                <span id="HelpBlockOrgDetail" class="validate-text text-danger"></span>
             </div>
 
             <div class="row g-3 m-3">
@@ -123,12 +125,14 @@
                     <label asp-for="Deadline" class="form-label  ms-1">Registration Deadline</label>
                     <input asp-for="Deadline" type="date" id="MissionDeadline" class="form-control" disabled>
                     <span asp-validation-for="Deadline" class="validate-text text-danger"></span>
+                    <span id="DeadlineValidateText" class="validate-text text-danger"></span>
                 </div>
 
                 <div class="col-md-6 " >
                     <label asp-for="TotalSeats" class="form-label  ms-1">Total Seats</label>
                     <input asp-for="TotalSeats" type="text" id="TotalSeats" class="form-control" disabled>
                     <span asp-validation-for="TotalSeats" class="validate-text text-danger"></span>
+                    <span id="SeatsValidateText" class="validate-text text-danger"></span>
                 </div>
             </div>
 
@@ -137,12 +141,14 @@
                     <label asp-for="GoalValue" class="form-label ms-1">Goal Value</label>
                     <input asp-for="GoalValue" type="text" id="GoalValue" class="form-control" disabled>
                     <span asp-validation-for="GoalValue" class="validate-text text-danger"></span>
+                    <span id="GoalValueValidateText" class="validate-text text-danger"></span>
                 </div>
 
                 <div class="col-md-6" >
                     <label asp-for="GoalObjectiveText" class="form-label ms-1">Goal Objective Text</label>
                     <input asp-for="GoalObjectiveText" type="text" id="GoalObjectiveText" class="form-control" disabled>
                     <span asp-validation-for="GoalObjectiveText" class="validate-text text-danger"></span>
+                    <span id="GoalTextValidateText" class="validate-text text-danger"></span>
                 </div>
             </div>
 

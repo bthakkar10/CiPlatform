@@ -93,9 +93,14 @@ namespace CI_Platform_web.Controllers
                 //to update
                 else
                 {
-                    if (_timesheet.UpdateTimeBasedEntry(vm.TimeViewModel))
+                    if (_timesheet.UpdateTimeBasedEntry(vm.TimeViewModel, UserId) == "Update")
                     {
                         TempData["success"] = "Your Data is " + Messages.Update;
+                        return RedirectToAction("VolunteeringTimesheet");
+                    }
+                    else if(_timesheet.UpdateTimeBasedEntry(vm.TimeViewModel, UserId) == "Exists")
+                    {
+                        TempData["error"] = "You already have entered timesheet for this date!!";
                         return RedirectToAction("VolunteeringTimesheet");
                     }
                     else
@@ -136,9 +141,14 @@ namespace CI_Platform_web.Controllers
                 //to update 
                 else
                 {
-                    if (_timesheet.UpdateGoalBasedEntry(vm.GoalViewModel))
+                    if (_timesheet.UpdateGoalBasedEntry(vm.GoalViewModel, UserId) == "Update")
                     {
                         TempData["success"] = "Your Data is " + Messages.Update;
+                        return RedirectToAction("VolunteeringTimesheet");
+                    }
+                    else if(_timesheet.UpdateGoalBasedEntry(vm.GoalViewModel, UserId) == "Exists")
+                    {
+                        TempData["error"] = "You already have entered timesheet for this date!!";
                         return RedirectToAction("VolunteeringTimesheet");
                     }
                     else

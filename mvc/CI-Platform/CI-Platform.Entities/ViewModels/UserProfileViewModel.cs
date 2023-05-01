@@ -15,23 +15,25 @@ namespace CI_Platform.Entities.ViewModels
 
 
         [Required (ErrorMessage = "First Name is Required!!" )]
-        [MaxLength(16, ErrorMessage = "Only 16 characters are allowed!!")]
+        [MaxLength(16, ErrorMessage = "Maximum 16 characters are allowed!!")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Only alphabetical characters are allowed!!")] 
         public string FirstName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Surname is Required!!")]
-        [MaxLength(16, ErrorMessage = "Only 16 characters are allowed!!")]
+        [MaxLength(16, ErrorMessage = "Maximum 16 characters are allowed!!")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Only alphabetical characters are allowed!!")]
         public string Surname { get; set; } = string.Empty;
 
-        [MaxLength(16, ErrorMessage = "Only 16 characters are allowed!!")]
+        [MaxLength(16, ErrorMessage = "Maximum 16 characters are allowed!!")]
         public string? EmployeeId  { get; set;}
 
-        [MaxLength(255, ErrorMessage = "Only 255 characters are allowed!!")]
+        [MaxLength(255, ErrorMessage = "Maximum 255 characters are allowed!!")]
         public string? Manager { get; set;}
 
-        [MaxLength(255, ErrorMessage = "Only 255 characters are allowed!!")]
+        [MaxLength(255, ErrorMessage = "Maximum 255 characters are allowed!!")]
         public string? Title { get; set; }
 
-        [MaxLength(16, ErrorMessage = "Only 16 characters are allowed!!")]
+        [MaxLength(16, ErrorMessage = "Maximum 16 characters are allowed!!")]
         public string? Department { get; set; }
 
         public string? ProfileText { get; set; }
