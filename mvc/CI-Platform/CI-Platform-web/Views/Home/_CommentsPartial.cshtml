@@ -1,0 +1,23 @@
+﻿@model CI_Platform.Entities.ViewModels.MissionDetailViewModel
+<div class="container mt-2 bg-light overflow-scroll p-4" style="max-height:30rem">
+    @foreach (var com in Model.ApprovedComments)
+    {
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="d-flex">
+                        <img class="rounded-circle comments-img d-none d-md-flex" src=~/images/Upload/User/@com.User.Avtar />
+                        <div class="comments-details">
+                            <h6>@com.User.FirstName @com.User.LastName</h6>
+                            @if (com.CreatedAt is not null)
+                            {
+                                <p> @com.CreatedAt.Value.ToString("dddd, MMMM dd, yyyy, h:mm tt")</p>
+                            }
+                            <p>@com.CommentText</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

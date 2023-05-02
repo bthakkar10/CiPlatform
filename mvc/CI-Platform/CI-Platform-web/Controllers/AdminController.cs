@@ -59,7 +59,8 @@ namespace CI_Platform_web.Controllers
         public IActionResult DeleteUser()
         {
             long UserId = long.TryParse(Request.Form["HiddenUserId"], out long result) ? result : 0;
-            if (_adminUser.IsUserDeleted(UserId))
+            bool returnvalue = _adminUser.IsUserDeleted(UserId);
+            if (returnvalue)
             {
                 TempData["succes"] = "User " + Messages.Delete ;
                 return RedirectToAction("User");
@@ -95,12 +96,13 @@ namespace CI_Platform_web.Controllers
             //to add
             if (vm.UserId == 0)
             {
-                if (_adminUser.IsUserAdded(vm) == "Added")
+                string returnvalue = _adminUser.IsUserAdded(vm);
+                if (returnvalue == "Added")
                 {
                     TempData["success"] = "User " + Messages.Add;
                     return RedirectToAction("User");
                 }
-                else if (_adminUser.IsUserAdded(vm) == "Exists")
+                else if (returnvalue == "Exists")
                 {
                     TempData["error"] = "User with same Email or Employee Id " + Messages.Exists;
                     return RedirectToAction("User");
@@ -114,12 +116,13 @@ namespace CI_Platform_web.Controllers
             // to Update 
             else
             {
-                if (_adminUser.EditUser(vm) == "Updated")
+                string returnvalue = _adminUser.EditUser(vm);
+                if (returnvalue == "Updated")
                 {
                     TempData["success"] = "User " + Messages.Update;
                     return RedirectToAction("User");
                 }
-                else if(_adminUser.EditUser(vm) == "Exists")
+                else if(returnvalue == "Exists")
                 {
                     TempData["error"] = "User with same Email or Employee Id " + Messages.Exists;
                     return RedirectToAction("User");
@@ -175,7 +178,8 @@ namespace CI_Platform_web.Controllers
             //to add
             if (cmsvm.CmsId == 0)
             {
-                if (_adminCms.CmsAdd(cmsvm))
+                bool returnvalue = _adminCms.CmsAdd(cmsvm);
+                if (returnvalue)
                 {
                     TempData["success"] = "Privacy Page " + Messages.Add;
                     return RedirectToAction("CmsPage");
@@ -189,7 +193,8 @@ namespace CI_Platform_web.Controllers
             // to Update 
             else
             {
-                if (_adminCms.EditCms(cmsvm))
+                bool returnvalue = _adminCms.EditCms(cmsvm);
+                if (returnvalue)
                 {
                     TempData["success"] = "Privacy Policy " + Messages.Update;
                     return RedirectToAction("CmsPage");
@@ -205,7 +210,8 @@ namespace CI_Platform_web.Controllers
         public IActionResult DeleteCmsPage()
         {
             long CmsId = long.TryParse(Request.Form["HiddenCmsId"], out long result) ? result : 0;
-            if (_adminCms.CmsDelete(CmsId))
+            bool returnvalue = _adminCms.CmsDelete(CmsId);
+            if (returnvalue)
             {
                 TempData["succes"] = "Privacy Page " + Messages.Delete;
                 return RedirectToAction("CmsPage");
@@ -259,12 +265,13 @@ namespace CI_Platform_web.Controllers
             //to add
             if (themevm.ThemeId == 0)
             {
-                if (_adminTheme.ThemeAdd(themevm) == "Added")
+                string returnvalue = _adminTheme.ThemeAdd(themevm);
+                if (returnvalue == "Added")
                 {
                     TempData["success"] = "New Theme " + Messages.Add;
                     return RedirectToAction("MissionTheme");
                 }
-                else if(_adminTheme.ThemeAdd(themevm) == "Exists")
+                else if(returnvalue == "Exists")
                 {
                     TempData["error"] = "Theme " + Messages.Exists;
                     return RedirectToAction("MissionTheme");
@@ -278,12 +285,13 @@ namespace CI_Platform_web.Controllers
             // to Update 
             else
             {
-                if (_adminTheme.EditTheme(themevm) == "Updated")
+                string returnvalue = _adminTheme.EditTheme(themevm);
+                if (returnvalue == "Updated")
                 {
                     TempData["success"] = "Theme " + Messages.Update;
                     return RedirectToAction("MissionTheme");
                 }
-                else if(_adminTheme.EditTheme(themevm) == "Exists")
+                else if(returnvalue == "Exists")
                 {
                     TempData["error"] = "Theme " + Messages.Exists;
                     return RedirectToAction("MissionTheme");
@@ -299,12 +307,13 @@ namespace CI_Platform_web.Controllers
         public IActionResult DeleteTheme()
         {
             long ThemeId = long.TryParse(Request.Form["HiddenThemeId"], out long result) ? result : 0;
-            if (_adminTheme.ThemeDelete(ThemeId) == "Deleted")
+            string returnvalue = _adminTheme.ThemeDelete(ThemeId);
+            if (returnvalue == "Deleted")
             {
                 TempData["succes"] = "Theme " + Messages.Add;
                 return RedirectToAction("MissionTheme");
             }
-            else if(_adminTheme.ThemeDelete(ThemeId) == "Exists")
+            else if(returnvalue == "Exists")
             {
                 TempData["error"] = "Theme " + Messages.Use;
                 return RedirectToAction("MissionTheme");
@@ -358,12 +367,13 @@ namespace CI_Platform_web.Controllers
             //to add
             if (skillvm.SkillId == 0)
             {
-                if (_adminSkills.SkillsAdd(skillvm) == "Added")
+                string returnvalue = _adminSkills.SkillsAdd(skillvm);
+                if (returnvalue == "Added")
                 {
                     TempData["success"] = "New Skill " + Messages.Add;
                     return RedirectToAction("MissionSKill");
                 }
-                else if(_adminSkills.SkillsAdd(skillvm) == "Exists")
+                else if(returnvalue == "Exists")
                 {
                     TempData["error"] = "Skill " + Messages.Exists;
                     return RedirectToAction("MissionSKill");
@@ -377,12 +387,13 @@ namespace CI_Platform_web.Controllers
             // to Update 
             else
             {
-                if (_adminSkills.EditSkill(skillvm) == "Updated")
+                string returnvalue = _adminSkills.EditSkill(skillvm);
+                if (returnvalue == "Updated")
                 {
                     TempData["success"] = "Skill " + Messages.Update;
                     return RedirectToAction("MissionSKill");
                 }
-                else if(_adminSkills.EditSkill(skillvm) == "Exists")
+                else if(returnvalue == "Exists")
                 {
                     TempData["error"] = "Skill " + Messages.Exists;
                     return RedirectToAction("MissionSKill");
@@ -398,12 +409,13 @@ namespace CI_Platform_web.Controllers
         public IActionResult DeleteSkill()
         {
             long SkillId = long.TryParse(Request.Form["HiddenSkillId"], out long result) ? result : 0;
-            if (_adminSkills.SkillDelete(SkillId) == "Deleted")
+            string returnvalue = _adminSkills.SkillDelete(SkillId);
+            if (returnvalue == "Deleted")
             {
                 TempData["succes"] = "Skill " + Messages.Delete;
                 return RedirectToAction("MissionSKill");
             }
-            else if(_adminSkills.SkillDelete(SkillId) == "Exists")
+            else if(returnvalue == "Exists")
             {
                 TempData["error"] = "Skill " + Messages.Use;
                 return RedirectToAction("MissionSKill");
@@ -429,14 +441,14 @@ namespace CI_Platform_web.Controllers
         {
             long MissionApplicationId = long.TryParse(Request.Form["HiddenApplicationId"], out long result) ? result : 0;
             long Status = long.TryParse(Request.Form["HiddenStatus"], out long resultStatus) ? resultStatus : 0;
-
-            if(_adminApproval.ApproveDeclineApplication(MissionApplicationId, Status) == GenericEnum.ApplicationStatus.APPROVE.ToString())
+            string returnvalue = _adminApproval.ApproveDeclineApplication(MissionApplicationId, Status);
+            if (returnvalue == GenericEnum.ApplicationStatus.APPROVE.ToString())
             {
                 TempData["success"] = "Mission Application " + Messages.Approve;
                 return RedirectToAction("MissionApplication");
 
             }
-            else if(_adminApproval.ApproveDeclineApplication(MissionApplicationId, Status) == GenericEnum.ApplicationStatus.APPROVE.ToString())
+            else if(returnvalue == GenericEnum.ApplicationStatus.APPROVE.ToString())
             {
                 TempData["success"] = "Mission Application " + Messages.Decline; 
                 return RedirectToAction("MissionApplication");
@@ -460,14 +472,14 @@ namespace CI_Platform_web.Controllers
         {
             long StoryId = long.TryParse(Request.Form["HiddenStoryId"], out long result) ? result : 0;
             long Status = long.TryParse(Request.Form["HiddenStatus"], out long resultStatus) ? resultStatus : 0;
-
-            if (_adminApproval.ApproveDeclineStory(StoryId, Status) == GenericEnum.StoryStatus.PUBLISHED.ToString())
+            string returnvalue = _adminApproval.ApproveDeclineStory(StoryId, Status);
+            if (returnvalue == GenericEnum.StoryStatus.PUBLISHED.ToString())
             {
                 TempData["success"] = "Story Published Successfully";
                 return RedirectToAction("Story");
 
             }
-            else if (_adminApproval.ApproveDeclineStory(StoryId, Status) == GenericEnum.StoryStatus.DECLINED.ToString())
+            else if (returnvalue == GenericEnum.StoryStatus.DECLINED.ToString())
             {
                 TempData["success"] = "Story " + Messages.Decline;
                 return RedirectToAction("Story");
@@ -489,7 +501,8 @@ namespace CI_Platform_web.Controllers
         public IActionResult DeleteStory()
         {
             long StoryId = long.TryParse(Request.Form["HiddenStoryId"], out long result) ? result : 0;
-            if (_adminApproval.IsStoryDeleted(StoryId))
+            bool returnvalue = _adminApproval.IsStoryDeleted(StoryId);
+            if (returnvalue)
             {
                 TempData["succes"] = "Skill " + Messages.Delete;
                 return RedirectToAction("Story");
@@ -534,41 +547,34 @@ namespace CI_Platform_web.Controllers
             //to add
             if (missionvm.MissionId == 0)
             {
-                if (_adminMission.MissionAdd(missionvm) == "Added")
+                string returnvalue = _adminMission.MissionAdd(missionvm);
+                if (returnvalue == "Added")
                 {
                     return Ok(new { icon = "success", message = "Mission " + Messages.Add });
-                    //return RedirectToAction("AdminMission");
                 }
-                else if (_adminMission.MissionAdd(missionvm) == "Exists")
+                else if (returnvalue == "Exists")
                 {
                     return Ok(new { icon = "error", message = "Mission " + Messages.Exists});
                 }
                 else
                 {
-                    return Ok(new { icon = "error", message = Messages.Error });
-                    //TempData["error"] = "Something went wrong!!";
-                    //return RedirectToAction("AdminMission");
+                    return Ok(new { icon = "error", message = Messages.Error }); 
                 }
             }
             else
             {
-                if (_adminMission.MissionEdit(missionvm) == "Updated")
+                string returnvalue = _adminMission.MissionEdit(missionvm);
+                if (returnvalue  == "Updated")
                 {
                     return Ok(new { icon = "success", message = "Mission " + Messages.Update });
-                    //TempData["success"] = "Mission Updated Successfully!!";
-                    //return RedirectToAction("AdminMission");
                 }
-                else if(_adminMission.MissionEdit(missionvm) == "Exists")
+                else if(returnvalue == "Exists")
                 {
                     return Ok(new { icon = "error", message = "Mission " + Messages.Exists });
-                    //TempData["error"] = "Mission Already Exists!!";
-                    //return RedirectToAction("AdminMission");
                 }
                 else
                 {
                     return Ok(new { icon = "error", message = Messages.Error });
-                    //TempData["error"] = "Something went wrong!!";
-                    //return RedirectToAction("AdminMission");
                 }
             }
         }
@@ -591,7 +597,8 @@ namespace CI_Platform_web.Controllers
         public IActionResult DeleteMission()
         {
             long MissionId = long.TryParse(Request.Form["HiddenMissionId"], out long result) ? result : 0;
-            if (_adminMission.MissionDelete(MissionId))
+            bool returnvalue = _adminMission.MissionDelete(MissionId);
+            if (returnvalue)
             {
                 TempData["succes"] = "Mission " + Messages.Delete;
                 return RedirectToAction("AdminMission");
@@ -637,12 +644,13 @@ namespace CI_Platform_web.Controllers
             //to add
             if (bannervm.BannerId == 0)
             {
-                if (_adminBanner.BannerAdd(bannervm) == "Added")
+                string returnvalue = _adminBanner.BannerAdd(bannervm);
+                if (returnvalue  == "Added")
                 {
                     TempData["success"] = " New Banner " + Messages.Add;
                     return RedirectToAction("Banner");
                 }
-                else if(_adminBanner.BannerAdd(bannervm) == "Exists")
+                else if(returnvalue == "Exists")
                 {
                     TempData["error"] = "Sort Order " + Messages.Exists ;
                     return RedirectToAction("Banner");
@@ -656,7 +664,8 @@ namespace CI_Platform_web.Controllers
             // to Update 
             else
             {
-                if (_adminBanner.EditBanner(bannervm))
+                bool returnvalue = _adminBanner.EditBanner(bannervm);
+                if (returnvalue)
                 {
                     TempData["success"] = "Banner " + Messages.Update;
                     return RedirectToAction("Banner");
@@ -672,7 +681,8 @@ namespace CI_Platform_web.Controllers
         public IActionResult DeleteBanner()
         {
             long BannerId = long.TryParse(Request.Form["HiddenBannerId"], out long result) ? result : 0;
-            if (_adminBanner.BannerDelete(BannerId))
+            bool returnvalue = _adminBanner.BannerDelete(BannerId);
+            if (returnvalue)
             {
                 TempData["succes"] = "Banner " + Messages.Delete;
                 return RedirectToAction("Banner");
@@ -700,14 +710,14 @@ namespace CI_Platform_web.Controllers
         {
             long CommentId = long.TryParse(Request.Form["HiddenCommentId"], out long result) ? result : 0;
             long Status = long.TryParse(Request.Form["HiddenStatus"], out long resultStatus) ? resultStatus : 0;
-
-            if (_adminApproval.ApproveDeclineComments(CommentId, Status) == GenericEnum.CommentStatus.PUBLISHED.ToString())
+            string returnvalue = _adminApproval.ApproveDeclineComments(CommentId, Status);
+            if (returnvalue  == GenericEnum.CommentStatus.PUBLISHED.ToString())
             {
                 TempData["success"] = "Comment " + Messages.Approve;
                 return RedirectToAction("MissionComments");
 
             }
-            else if (_adminApproval.ApproveDeclineComments(CommentId, Status) == GenericEnum.CommentStatus.DECLINED.ToString())
+            else if (returnvalue == GenericEnum.CommentStatus.DECLINED.ToString())
             {
                 TempData["success"] = "Comment " + Messages.Decline;
                 return RedirectToAction("MissionComments");
@@ -735,14 +745,14 @@ namespace CI_Platform_web.Controllers
         {
             long TimesheetId = long.TryParse(Request.Form["HiddenTimesheetId"], out long result) ? result : 0;
             long Status = long.TryParse(Request.Form["HiddenStatus"], out long resultStatus) ? resultStatus : 0;
-
-            if (_adminApproval.ApproveDeclineTimesheets(TimesheetId, Status) == GenericEnum.TimesheetStatus.APPROVED.ToString())
+            string returnvalue = _adminApproval.ApproveDeclineTimesheets(TimesheetId, Status);
+            if (returnvalue == GenericEnum.TimesheetStatus.APPROVED.ToString())
             {
                 TempData["success"] = "Timesheet " + Messages.Approve;
                 return RedirectToAction("Timesheet");
 
             }
-            else if (_adminApproval.ApproveDeclineTimesheets(TimesheetId, Status) == GenericEnum.TimesheetStatus.DECLINED.ToString())
+            else if (returnvalue == GenericEnum.TimesheetStatus.DECLINED.ToString())
             {
                 TempData["success"] = "Timesheet " + Messages.Decline;
                 return RedirectToAction("Timesheet");

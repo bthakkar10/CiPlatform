@@ -51,7 +51,7 @@ namespace CI_Platform.Repository.Repository
             Story story = _db.Stories.Where(s => s.MissionId == MissionId && s.UserId == UserId && s.Status == GenericEnum.StoryStatus.PUBLISHED.ToString() && s.DeletedAt == null).FirstOrDefault()!;
             if (story != null)
             {
-                story.UserVisits = story.UserVisits++;
+                story.UserVisits = story.UserVisits+1;
                 story.UpdatedAt = DateTime.Now;
                 _db.Update(story);
                 _db.SaveChanges();
@@ -68,7 +68,7 @@ namespace CI_Platform.Repository.Repository
 
             var fromEmail = new MailAddress("ciplatformdemo@gmail.com");
             var toEmail = new MailAddress(Email.Email);
-            var fromEmailPassword = "oretveqrckcgcoog";
+            var fromEmailPassword = "pdckerdmuutmdzhz";
             string subject = "Story Invitation";
             string body = "You Have Reciever Story Invitation From " + Sender.FirstName + " " + Sender.LastName + " For:\n\n" + vm.InviteLink;
 

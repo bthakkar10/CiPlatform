@@ -120,10 +120,10 @@ namespace CI_Platform_web.Controllers
                     string returnUrl = Url.Action("MissionDetail", "Home", new { MissionId = MissionId })!;
                     return RedirectToAction("Index", "Auth", new { returnUrl });
                 }
-                if (HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Id") != null && HttpContext.Session.GetString("Username") != null)
+                if (HttpContext.Session.GetString("Id") != null)
                 {
                     ViewBag.UserId = HttpContext.Session.GetString("Id");
-                    ViewBag.UserId = HttpContext.Session.GetString("Id");
+                  
                     ViewBag.Username = HttpContext.Session.GetString("Username");
                 }
                 ViewBag.MissionId = MissionId;
@@ -192,6 +192,15 @@ namespace CI_Platform_web.Controllers
             {
                 return Ok(new { icon = "error", message = Messages.Error });
             }
+        }
+
+        public IActionResult GetComments(long missionId) 
+        {
+            MissionDetailViewModel vm = new()
+            {
+                ApprovedComments = _missionDetail.GetApprovedComments(missionId),
+            };
+            return PartialView("_CommentsPartial", vm);
         }
 
         //necessary for displaying user list in recommended to co worker on grid and list view

@@ -48,7 +48,7 @@ namespace CI_Platform.Repository.Repository
 
         public List<Comment> GetApprovedComments(long MissionId)
         {
-            var approvedComments = _db.Comments.Where(c => c.MissionId == MissionId && c.ApprovalStatus == GenericEnum.CommentStatus.PUBLISHED.ToString() && c.User.DeletedAt == null && c.Mission.DeletedAt == null)
+            List<Comment> approvedComments = _db.Comments.Where(c => c.MissionId == MissionId && c.User.DeletedAt == null && c.Mission.DeletedAt == null && c.DeletedAt ==null && c.ApprovalStatus!=GenericEnum.CommentStatus.DECLINED.ToString())
                 .Include(c => c.User).ToList();
             return approvedComments;
         }

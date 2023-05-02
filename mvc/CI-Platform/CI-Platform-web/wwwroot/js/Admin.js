@@ -473,7 +473,7 @@ function validateDeadline() {
 
 function validateSeats() {
     var totalSeats = $('#TotalSeats').val();
-    if (totalSeats == "" || totalSeats == null) {
+    if (totalSeats == "" || totalSeats == null || totalSeats <= 0) {
         $('#SeatsValidateText').text("Total seats is required!!");
         return false;
     }
@@ -493,7 +493,7 @@ function validateGoalObjective() {
 
 function validateGoalValue() {
     var goalValue = $('#GoalValue').val();
-    if (goalValue == "" || goalValue == null) {
+    if (goalValue == "" || goalValue == null || goalValue <= 0) {
         $('#GoalValueValidateText').text("Goal Value is required!!");
         return false;
     }
@@ -872,7 +872,7 @@ $(document).on('submit', '#MissionForm', function (e) {
     $("#MissionEndDate").prop('disabled', false);
     var isValidDes = validateMissionDes();
     var isValidDetails = validateOrganisationDetail();
-    if ($(this).valid() && validateGoalTime() == true && isValidDetails && isValidDes)  {
+    if (validateGoalTime() == true && isValidDetails && isValidDes && $(this).valid())  {
         var myform = document.getElementById("MissionForm");
         var MissionFormData = new FormData(myform);
 

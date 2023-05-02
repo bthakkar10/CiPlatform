@@ -11,10 +11,12 @@ if (currentUrl.includes("HomePage")) {
 } else {
     document.getElementById("ExploreMissionLink").style.display = "none";
 }
-
+showComments();
+var UserCountry = $('#UserCountry').val();
+var UserCity = $('#UserCity').val();
 var SelectedExploreOption = null;
 var SelectedsortCase = null;
-var SelectedCountry = null;
+var SelectedCountry = UserCountry;
 var userId = ($("#user-id").text());
 let allDropdowns = $('.dropdown ul');
 
@@ -68,7 +70,7 @@ function FilterSortPaginationSearch(pageNo) {
     $.ajax({
         type: 'POST',
         url: '/Home/HomePage',
-        data:   queryData ,
+        data: queryData,
         success: function (data) {
             var view = $(".partialViews");
             view.empty();
@@ -209,7 +211,7 @@ function totalMission() {
 
 //stories filters stored procedure
 function StoryFilter(pageNo) {
-    var CountryId = SelectedCountry != "" ? SelectedCountry : null ;
+    var CountryId = SelectedCountry != "" ? SelectedCountry : null;
     var CityId = $('#CityList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var ThemeId = $('.ThemeListMissionFilter input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var SkillId = $('#SkillList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
@@ -222,7 +224,7 @@ function StoryFilter(pageNo) {
     $.ajax({
         type: 'POST',
         url: '/Story/StoryListing',
-        data: queryParams ,
+        data: queryParams,
         success: function (data) {
             var view = $(".StorypartialViews");
             view.empty();
@@ -533,47 +535,47 @@ allDropdowns.each(function () {
 
 //to add or remove favourites
 
-    $(document).on('click', '.favourite-button', function () {
+$(document).on('click', '.favourite-button', function () {
 
-        var missionId = $(this).data('mission-id');
-        $.ajax({
-            url: '/Home/AddToFavorites',
-            type: 'POST',
-            data: { missionId: missionId },
-            success: function () {
-                // Show a success message or update the UI
-                console.log(missionId);
-                var text = $('.favText');
-                console.log(text);
-                var allMissionId = $('.favourite-button')
-                allMissionId.each(function () {
-                    if ($(this).data('mission-id') === missionId) {
-                        if ($(this).find('i').hasClass('bi-heart')) {
-                            $(this).find('i').addClass('bi-heart-fill text-danger')
-                            $(this).find('i').removeClass('bi-heart text-dark')
-                            text.empty();
-                            text.append("Added To favourites");
-                            console.log("added");
-                           
-                        }
-                        else {
-                            $(this).find('i').addClass('bi-heart text-dark')
-                            $(this).find('i').removeClass('bi-heart-fill text-danger')
-                            text.empty();
-                            text.append("Add to favourites");
-                            console.log("remove");
-                           
-                        }
+    var missionId = $(this).data('mission-id');
+    $.ajax({
+        url: '/Home/AddToFavorites',
+        type: 'POST',
+        data: { missionId: missionId },
+        success: function () {
+            // Show a success message or update the UI
+            console.log(missionId);
+            var text = $('.favText');
+            console.log(text);
+            var allMissionId = $('.favourite-button')
+            allMissionId.each(function () {
+                if ($(this).data('mission-id') === missionId) {
+                    if ($(this).find('i').hasClass('bi-heart')) {
+                        $(this).find('i').addClass('bi-heart-fill text-danger')
+                        $(this).find('i').removeClass('bi-heart text-dark')
+                        text.empty();
+                        text.append("Added To favourites");
+                        console.log("added");
+
                     }
-                })
-            },
-            error: function (error) {
-                // Show an error message or handle the error
-                console.log(error)
+                    else {
+                        $(this).find('i').addClass('bi-heart text-dark')
+                        $(this).find('i').removeClass('bi-heart-fill text-danger')
+                        text.empty();
+                        text.append("Add to favourites");
+                        console.log("remove");
 
-            }
-        });
+                    }
+                }
+            })
+        },
+        error: function (error) {
+            // Show an error message or handle the error
+            console.log(error)
+
+        }
     });
+});
 
 
 //to add or update ratings
@@ -592,7 +594,7 @@ $('.rating-mission-detail').on('click', function () {
             unselectedIcon.removeClass('bi-star-fill text-warning').addClass('bi-star');
         },
         error: function (error) {
-           
+
             if (confirm("Please Login Again And Try Agaion")) {
                 window.location.href = "/Home/Index";
             }
@@ -602,9 +604,18 @@ $('.rating-mission-detail').on('click', function () {
 
 //comments in mission details page
 $('.commentButton').click(function () {
-    var comment = $('.newComment').val();
+    var comment = $('.newComment').val().trim();
     console.log(comment);
     var missionId = $(this).data('mission-id');
+    //if (comment.length == 0 || comment.length > 600) {
+    //    $('.valComment').show();
+    //    $('.newComment').on('input', function () {
+    //        if ($('.newComment').val().trim().length > 0 && $('.newComment').val().trim().length <= 600) {
+    //            $('.valComment').hide();
+    //        }
+    //    })
+    //    return;
+    //}
     if (comment != " ") {
         $.ajax({
             method: 'POST',
@@ -612,14 +623,8 @@ $('.commentButton').click(function () {
             data: { comment: comment, missionId: missionId },
             success: function (result) {
                 $('.newComment').val('');
-                swal.fire({
-                    position: 'top-end',
-                    icon: result.icon,
-                    title: result.message,
-                    showConfirmButton: false,
-                    timer: 4000
-                })
-                /*$('#CommentHelpBox').text("Comment will be published after approval!!");*/
+               
+                showComments();
             },
             error: function (error) {
                 console.log("error");
@@ -631,7 +636,19 @@ $('.commentButton').click(function () {
         //$('.newComment').focus();
     }
 });
+function showComments() {
+    var missionId = $('#MissionId').val();
 
+    $.ajax({
+        type: 'POST',
+        url: '/Home/GetComments',
+        data: { missionId: missionId },
+        success: function (data) {
+            $('.commentsContainer').empty()
+            $('.commentsContainer').append(data)
+        }
+    });
+}
 //recommend to co-worker invite for mission details page 
 $(document).on('click', '.model-invite-btn', function () {
 
@@ -840,7 +857,7 @@ function handleFiles(e) {
         console.log(allfiles);
 
         // Create image preview and close icon
-  
+
 
         reader.onload = (function (file) {
             return function (e) {
@@ -967,7 +984,7 @@ $('#missionTitle').change(function () {
                         UrlRecords += item.path + '\n';
                     }
                     else {
-                        
+
                         var file = result.storyMedia[index];
                         var image = $('<img>').attr('src', '/images/Upload/Story/' + result.storyMedia[index].path);
                         var closebtn = $('<span>').text('x');
@@ -1035,7 +1052,7 @@ $('#missionTitle').change(function () {
 $('#saveStory').click(function (e) {
     e.preventDefault();
     let isValid = false;
-    if (validateStoryTitle() == true && validateStoryDes() == true && validateDate() == true &&  validateYoutubeUrls() == true && validateMissionTitle() == true) {
+    if (validateStoryTitle() == true && validateStoryDes() == true && validateDate() == true && validateYoutubeUrls() == true && validateMissionTitle() == true) {
         isValid = true;
     }
     if (isValid) {
@@ -1052,7 +1069,7 @@ $('#saveStory').click(function (e) {
         else {
             formData.append("VideoUrls", null);
         }
-   
+
         for (var i = 0; i < allfiles.length; i++) {
             formData.append("Images", allfiles[i]);
         }
@@ -1093,7 +1110,7 @@ $('#saveStory').click(function (e) {
 $('#submitButton').click(function (e) {
     e.preventDefault();
     let isValid = false;
-    if (validateStoryTitle() == true && validateDate() == true && validateStoryDes() == true &&  validateYoutubeUrls() == true && validateMissionTitle() == true) {
+    if (validateStoryTitle() == true && validateDate() == true && validateStoryDes() == true && validateYoutubeUrls() == true && validateMissionTitle() == true) {
         isValid = true;
     }
     if (isValid) {
@@ -1156,10 +1173,10 @@ $('#previewButton').click(function () {
         success: function (result) {
             console.log(result)
             var url = '/Story/StoryDetails?MissionId=' + MissionId + '&UserId=' + UserId;
-           
+
             var win = window.open(url, '_blank');
             win.focus();
-      
+
         },
         error: function (error) {
             console.log(error);
@@ -1222,7 +1239,7 @@ function validateStoryTitle() {
 //validate date in share story
 $('#date').on('blur', validateDate);
 function validateDate() {
-    
+
     if ($('#date').val() === '') {
         $("#HelpBlock-date").text("Date is a required field!!");
         $('#date').focus();
@@ -1238,8 +1255,8 @@ function validateStoryDes() {
     var description = tinymce.activeEditor.getContent();
     var descText = $('<div>').html(description).text().trim();
     if (descText == "") {
-    $("#HelpBlock-storyDes").text("Story Description is a required field!!");
-    return false;
+        $("#HelpBlock-storyDes").text("Story Description is a required field!!");
+        return false;
     }
     else if (descText.length > 40000) {
         $("#HelpBlock-storyDes").text("Maximum 40000 characters are allowed!!!");
@@ -1260,7 +1277,7 @@ $('.edit-icon').click(function () {
 
 // Add change event listener to profile image file input
 $('#profile-image-input').change(function () {
-    
+
     // Read image file and display preview
     var reader = new FileReader();
     reader.onload = function (e) {
@@ -1570,8 +1587,7 @@ $(".TimesheetSelection").change(function () {
     });
 });
 
-$(document).on('click', '.AddButtonTimesheet', function ()
-{
+$(document).on('click', '.AddButtonTimesheet', function () {
     $('.TimesheetSubmitBtn').text('Submit').removeClass('btn-success btn-danger').addClass('card-btn');
     $("#TimeFormTimesheet :input").prop("disabled", false);
     $("#GoalFormTimesheet :input").prop("disabled", false);
@@ -1579,22 +1595,30 @@ $(document).on('click', '.AddButtonTimesheet', function ()
     $('#TimeMessageTextarea').empty();
     $("#GoalFormTimesheet")[0].reset();
     $("#TimeFormTimesheet")[0].reset();
+    var Goalform = $('#GoalFormTimesheet');
+    Goalform.find("[data-valmsg-for]").empty();
+    var Timeform = $('#TimeFormTimesheet');
+    Timeform.find("[data-valmsg-for]").empty();
+
 })
 
 //timesheet edit button
-$(document).on('click','.EditButtonDataFetch',function ()
-{
+$(document).on('click', '.EditButtonDataFetch', function () {
     $('.TimesheetSubmitBtn').text('Submit').removeClass('btn-success btn-danger').addClass('card-btn');
     $("#TimeFormTimesheet :input").prop("disabled", false);
     $("#GoalFormTimesheet :input").prop("disabled", false);
-    var TimeSheetId = $(this).data('timesheet-id');  
+    var Goalform = $('#GoalFormTimesheet');
+    Goalform.find("[data-valmsg-for]").empty();
+    var Timeform = $('#TimeFormTimesheet');
+    Timeform.find("[data-valmsg-for]").empty();
+    var TimeSheetId = $(this).data('timesheet-id');
     $.ajax({
         type: 'GET',
         url: '/VolunteeringTimesheet/GetDataOnEdit',
         data: { TimeSheetId: TimeSheetId },
         success: function (result) {
             if (result.mission.title != null) {
-               
+
                 var start_date = new Date(result.mission.startDate);
                 var end_date = new Date(result.mission.endDate);
                 $('#GoalDate').prop('min', ChangeDateFormat(start_date));
@@ -1602,7 +1626,7 @@ $(document).on('click','.EditButtonDataFetch',function ()
                 $('#TimeDate').prop('min', ChangeDateFormat(start_date));
                 $('#TimeDate').prop('max', ChangeDateFormat(end_date));
 
-                $("#GoalAddSelection").prop('disabled',true);
+                $("#GoalAddSelection").prop('disabled', true);
                 $("#GoalAddSelection").val(result.missionId)
                 const date = new Date(result.dateVolunteered);
                 var formattedDate = ChangeDateFormat(date);
@@ -1614,7 +1638,7 @@ $(document).on('click','.EditButtonDataFetch',function ()
                 $("#TimeAddSelection").val(result.missionId)
                 $('#TimeDate').val(formattedDate);
                 $('#TimeMessageTextarea').text(result.notes);
-                
+
                 if (result.mission.missionType == "Goal") {
                     $("#GoalTimesheetId").val(result.timesheetId);
                 }
@@ -1628,7 +1652,7 @@ $(document).on('click','.EditButtonDataFetch',function ()
                 }
             }
             else {
-              
+
             }
         },
         error: function (error) {
@@ -1654,11 +1678,11 @@ $(document).on('click', '.ViewButtonDataFetch', function () {
                 $('#GoalDate').val(formattedDate);
                 $('#GoalActions').val(result.action)
                 $('#GoalMessageTextarea').text(result.notes)
-               
+
                 $("#TimeAddSelection").val(result.missionId)
                 $('#TimeDate').val(formattedDate);
                 $('#TimeMessageTextarea').text(result.notes);
-               
+
                 if (result.mission.missionType == "Time") {
                     const timeString = result.time;
                     const hours = timeString.split(':')[0];

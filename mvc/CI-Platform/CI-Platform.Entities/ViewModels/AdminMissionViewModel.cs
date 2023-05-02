@@ -40,7 +40,7 @@ namespace CI_Platform.Entities.ViewModels
 
         public DateTime? Deadline { get; set; }
 
-        public int GoalValue { get; set; } = 0;
+        public int GoalValue { get; set; }
 
         public string? GoalObjectiveText { get; set; } = string.Empty;
 
@@ -58,13 +58,13 @@ namespace CI_Platform.Entities.ViewModels
         [Required(ErrorMessage = "End Date is Required!!")]
         public DateTime? EndDate { get; set;}
 
-        public int ? TotalSeats { get; set; } = 0;
+        public int ? TotalSeats { get; set; }
 
         [Required(ErrorMessage = "Status is Required!!")]
         public bool? Status { get; set; }
 
         [Required(ErrorMessage = "Avaliablity is Required!!")]
-        public string? Avaliablity { get; set; } = string.Empty;
+        public string? Avaliablity { get; set; } 
 
         [RegularExpression(@"^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$", ErrorMessage = "Only Youtube Urls are allowed!!")]
         public string[]? YoutubeUrl { get; set; } = null!;

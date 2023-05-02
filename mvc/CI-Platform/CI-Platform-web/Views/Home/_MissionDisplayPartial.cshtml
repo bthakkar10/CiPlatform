@@ -11,7 +11,8 @@
     var customClaimForUser = User?.FindFirst("CustomClaimForUser")?.Value;
     var customClaimValue = JsonSerializer.Deserialize<User>(customClaimForUser);
      var Id = customClaimValue.UserId;
-
+    var CountryId = customClaimValue.CountryId;
+    var CityId  = customClaimValue.CityId;
     //var customClaim = User.FindFirst("CustomClaimForUser")?.Value;
     //var sessionUser = JsonSerializer.Deserialize<User>(customClaim);
     //var Id = sessionUser.UserId;
@@ -34,7 +35,8 @@
     }
 </script>
 
-
+<input id="UserCountry" value="@CountryId"/>
+<input id="UserCity" value="@CityId"/>
 <span id="missionCount" class="d-none"> @Model.TotalCount  </span>
 
 @*grid view*@
@@ -148,7 +150,7 @@
                                                 }
                                                 else
                                                 {*@
-                                                    <span style="margin-left : 6%;" mailto:class="invited-@coworker.UserId"><button class="btn btn-outline-primary model-button model-invite-btn" data-mission-id="@obj.MissionCard.MissionId" data-from-user-id="@ViewBag.UserId" data-to-user-id="@coworker.UserId">Invite</button></span>
+                                                    <span style="margin-left : 6%;" mailto:class="invited-@coworker.UserId"><button class="btn btn-outline-primary model-button model-invite-btn" data-mission-id="@obj.MissionCard.MissionId" data-from-user-id="@Id" data-to-user-id="@coworker.UserId">Invite</button></span>
 
                                               @*  }*@
 

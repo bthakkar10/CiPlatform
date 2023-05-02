@@ -405,7 +405,7 @@
                 <div id="Organization" class="container tab-pane fade">
                     <br>
                     <h3>Organization </h3>
-                    <p>@Model.MissionDetails.OrganizationDetail</p>
+                    <p>@Html.Raw(Model.MissionDetails.OrganizationDetail)</p>
                 </div>
                 <div id="Comments" class="container tab-pane fade">
                     <br>
@@ -413,33 +413,14 @@
                     <div>
                         <div class="">
                             <textarea class=" form-control my-2 newComment" placeholder="Leave a comment here..." rows="3"></textarea>
-                            @* <label for="floatingTextarea2">Enter your Comments here...</label>*@
+                           
                         </div>
                         <button class="btn card-btn commentButton" data-mission-Id="@mission_id">Post Comment</button>
                         <span id="CommentHelpBox" class="validate-text"></span>
+                        <input type="hidden" id="MissionId" value="@mission_id"/>
                     </div>
-                    <div class="container mt-2 bg-light overflow-scroll p-4" style="max-height:30rem">
-                        @foreach (var com in Model.ApprovedComments)
-                        {
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="d-flex">
-                                            <img class="rounded-circle comments-img d-none d-md-flex" src=~/images/Upload/User/@com.User.Avtar />
-                                            <div class="comments-details">
-                                                <h6>@com.User.FirstName @com.User.LastName</h6>
-                                                @if (com.CreatedAt is not null)
-                                                {
-                                                    <p> @com.CreatedAt.Value.ToString("dddd, MMMM dd, yyyy, h:mm tt")</p>
-                                                }
-                                                <p>@com.CommentText</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
+                    <div class="commentsContainer"></div>
+                   
 
                 </div>
             </div>

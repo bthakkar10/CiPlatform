@@ -3,30 +3,46 @@ using CI_Platform.Entities.ViewModels;
 using CI_Platform.Repository.Interface;
 using CI_Platform.Repository.Repository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Drawing.Printing;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text.Json;
 
 namespace CI_Platform_web.Controllers
 {
     [Authorize(Roles = "user")]
     public class StoryController : Controller
     {
-       
+        long UserId = 0;
         private readonly CiDbContext _db;
         private readonly IFilter _filterMission;
         private readonly IStoryListing _storyListing;
         private readonly IShareStory _shareStory;
         private readonly IStoryDetails _storyDetails;
-        public StoryController(CiDbContext db, IFilter filterMission, IStoryListing storyListing, IShareStory shareStory, IStoryDetails storyDetails)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public StoryController(CiDbContext db, IFilter filterMission, IStoryListing storyListing, IShareStory shareStory, IStoryDetails storyDetails, IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
             _filterMission = filterMission;
             _storyListing = storyListing;
             _shareStory = shareStory;
             _storyDetails = storyDetails;
+            _httpContextAccessor = httpContextAccessor;
+            string authorizationHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            string token = authorizationHeader?.Substring("Bearer ".Length).Trim();
+            if (token is not null)
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var decodedToken = tokenHandler.ReadJwtToken(token);
+                var claims = decodedToken.Claims;
+                var customClaimString = decodedToken.Claims.FirstOrDefault(c => c.Type == "CustomClaimForUser")?.Value;
+                var customClaimValue = JsonSerializer.Deserialize<User>(customClaimString);
+                UserId = customClaimValue.UserId;
+            }
         }
 
         //get method for story listing
@@ -186,12 +202,12 @@ namespace CI_Platform_web.Controllers
         {
             try
             {
-                if (HttpContext.Session.GetString("Id") == null)
+                if (HttpContext.Session.GetString("Id") == null )
                 {
-                    string returnUrl = Url.Action("StoryDetail", "Story", new { MissionId = MissionId, UserId = UserId })!;
-                    return RedirectToAction("Index", "Account", new { returnUrl });
+                    string returnUrl = Url.Action("StoryDetails", "Story", new { MissionId = MissionId, UserId = UserId })!;
+                    return RedirectToAction("Index", "Auth", new { returnUrl });
                 }
-               else
+                if (HttpContext.Session.GetString("Id") != null)
                 {
                     ViewBag.UserId = HttpContext.Session.GetString("Id");
                 }
@@ -231,6 +247,13 @@ namespace CI_Platform_web.Controllers
             await _storyDetails.SendInvitationToCoWorker(ToUserId, FromUserId, viewmodel);
 
             return Json(new { success = true });
+        }
+
+
+
+        public bool CheckSession()
+        {
+            return HttpContext.User.Identity.IsAuthenticated;
         }
 
     }
