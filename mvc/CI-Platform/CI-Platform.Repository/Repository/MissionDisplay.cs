@@ -27,7 +27,14 @@ namespace CI_Platform.Repository.Repository
         {
             var query = _db.Missions.Where(m => m.DeletedAt == null).AsQueryable();
             List<User> user = _db.Users.Where(user => user.DeletedAt == null && user.UserId != UserId).Include(m => m.MissionInviteFromUsers).Include(m => m.MissionInviteToUsers).ToList();
-
+             
+            //User DefaultUserFilter = _db.Users.FirstOrDefault(u => u.UserId == UserId)!;
+            
+            //if (DefaultUserFilter.CityId != null && DefaultUserFilter.CountryId != null)
+            //{
+            //    if (string.IsNullOrEmpty(queryParams.CountryId) && string.IsNullOrEmpty(queryParams.CityIds))
+            //        query = query.Where(mission => DefaultUserFilter.CityId.ToString().Contains(mission.CityId.ToString()));
+            //}
             var topThemes = _db.Missions
                             .Where(mission => mission.DeletedAt == null && mission.Status == true && mission.MissionTheme.Status == 1 && mission.MissionTheme.DeletedAt == null)
                             .GroupBy(mission => mission.MissionThemeId)

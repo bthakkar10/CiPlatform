@@ -5,22 +5,12 @@
 @model PageListViewModel.PageList<MissionListViewModel>
 
 @{
-    //var Id = ViewBag.Id;
-    //var email = ViewBag.email;
-    //var Username = ViewBag.Username;
+    
     var customClaimForUser = User?.FindFirst("CustomClaimForUser")?.Value;
     var customClaimValue = JsonSerializer.Deserialize<User>(customClaimForUser);
      var Id = customClaimValue.UserId;
     var CountryId = customClaimValue.CountryId;
     var CityId  = customClaimValue.CityId;
-    //var customClaim = User.FindFirst("CustomClaimForUser")?.Value;
-    //var sessionUser = JsonSerializer.Deserialize<User>(customClaim);
-    //var Id = sessionUser.UserId;
-    //var customClaim = User.FindFirst("CustomClaimForUser")?.Value;
-    //var sessionUser = JsonSerializer.Deserialize<User>(customClaim);
-    //var Id = sessionUser.UserId;
-    //var Id = ViewBag.UserId;
-    //var totalRecords = ViewBag.totalRecords;
 }
 
 
@@ -35,8 +25,6 @@
     }
 </script>
 
-<input id="UserCountry" value="@CountryId"/>
-<input id="UserCity" value="@CityId"/>
 <span id="missionCount" class="d-none"> @Model.TotalCount  </span>
 
 @*grid view*@

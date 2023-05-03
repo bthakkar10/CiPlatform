@@ -19,7 +19,7 @@ namespace CI_Platform.Entities.ViewModels
 
         [Required(ErrorMessage = "Skill Name is Required")]
         [MaxLength(120, ErrorMessage = "Maximum 120 characters are allowed!!")]
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Only alphabetical characters are allowed!!")]
+        [RegularExpression(@"^[a-zA-Z][a-zA-Z\s]*$", ErrorMessage = "Only alphabetical characters are allowed!!")]
         public string? SkillName { get; set; }
 
         [Required(ErrorMessage = "Status is Required")]

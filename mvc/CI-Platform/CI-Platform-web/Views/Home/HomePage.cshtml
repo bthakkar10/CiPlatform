@@ -1,11 +1,21 @@
-﻿@*@using System.Linq;*@
+﻿@using System.Text.Json;
+@using CI_Platform.Entities.DataModels;
+@*@using System.Linq;*@
 @{
 
-    var Id = Convert.ToInt64(ViewBag.UserId);
+    //var Id = Convert.ToInt64(ViewBag.UserId);
     Layout = "_Layout";
     ViewData["Title"] = "Homepage";
+    
 
     
+    var customClaimForUser = User?.FindFirst("CustomClaimForUser")?.Value;
+    var customClaimValue = JsonSerializer.Deserialize<User>(customClaimForUser);
+     var Id = customClaimValue.UserId;
+    var CountryId = customClaimValue.CountryId;
+    var CityId  = customClaimValue.CityId;
+<span class="d-none" id="UserCountryDefault"> @CountryId </span>
+    <span class="d-none" id="UserCityDefault"> @CityId </span>
 }
 @model CI_Platform.Entities.ViewModels.PageListViewModel
 

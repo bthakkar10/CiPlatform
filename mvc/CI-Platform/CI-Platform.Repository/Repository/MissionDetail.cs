@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CI_Platform.Entities.ViewModels;
 using CI_Platform.Repository.Generic;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CI_Platform.Repository.Repository
 {
@@ -48,7 +49,7 @@ namespace CI_Platform.Repository.Repository
 
         public List<Comment> GetApprovedComments(long MissionId)
         {
-            List<Comment> approvedComments = _db.Comments.Where(c => c.MissionId == MissionId && c.User.DeletedAt == null && c.Mission.DeletedAt == null && c.DeletedAt ==null && c.ApprovalStatus!=GenericEnum.CommentStatus.DECLINED.ToString())
+            List<Comment> approvedComments = _db.Comments.Where(c => c.MissionId == MissionId && c.User.DeletedAt == null && c.Mission.DeletedAt == null && c.DeletedAt == null && c.ApprovalStatus != GenericEnum.CommentStatus.DECLINED.ToString())
                 .Include(c => c.User).ToList();
             return approvedComments;
         }
@@ -62,54 +63,79 @@ namespace CI_Platform.Repository.Repository
 
         public List<Mission> GetRelatedMissions(long MissionId)
         {
-            Mission mission = _db.Missions.Where(m => m.MissionId == MissionId && m.DeletedAt == null).FirstOrDefault()!;
+            var query = _db.Missions.Where(m => m.MissionId == MissionId).FirstOrDefault()!;
+          
+            var relatedMissions = _db.Missions
+                                .Where(m => m.MissionId != MissionId && m.DeletedAt == null && m.Status == true && (m.CityId == query.CityId || m.CountryId == query.CountryId || m.MissionThemeId == query.MissionThemeId))
+                                .OrderBy(m => m.CityId == query.CityId ? 0 : 1)
+                                .ThenBy(m => m.CountryId == query.CountryId ? 0 : 1)
+                                .ThenBy(m => m.MissionThemeId == query.MissionThemeId ? 0 : 1)
+                                .Include(m => m.Country)
+                                .Include(m => m.City)
+                                .Include(m => m.MissionRatings)
+                                .Include(m => m.MissionTheme)
+                                .Include(m => m.MissionSkills).ThenInclude(m => m.Skill)
+                                .Include(m => m.MissionApplications)
+                                .Include(m => m.GoalMissions)
+                                .Include(m => m.FavouriteMissions)
+                                .Include(m => m.MissionMedia)
+                                .Take(3)
+                                .ToList();
 
-            List<Mission> relatedMissions = new();
-
-            relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.CityId == mission.CityId && m.DeletedAt == null)
-                .Where(mission => mission.Country.DeletedAt == null && mission.City.DeletedAt == null)
-                .Include(m => m.Country)
-                .Include(m => m.City)
-                .Include(m => m.MissionRatings)
-                .Include(m => m.MissionTheme)
-                .Include(m => m.MissionSkills).ThenInclude(m => m.Skill)
-                .Include(m => m.MissionApplications)
-                .Include(m => m.GoalMissions)
-                .Include(m => m.FavouriteMissions)
-                .Include(m => m.MissionMedia).Take(3));
-
-            if (relatedMissions.Count < 3)
-            {
-                relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.CountryId == mission.CountryId && m.DeletedAt == null)
-                .Where(mission => mission.Country.DeletedAt == null && mission.City.DeletedAt == null)
-                .Include(m => m.Country)
-                .Include(m => m.City)
-                .Include(m => m.MissionRatings)
-                .Include(m => m.MissionTheme)
-                .Include(m => m.MissionSkills).ThenInclude(m => m.Skill)
-                .Include(m => m.MissionApplications)
-                .Include(m => m.GoalMissions)
-                .Include(m => m.FavouriteMissions)
-                .Include(m => m.MissionMedia).Take(3 - relatedMissions.Count));
-            }
-
-            if (relatedMissions.Count < 3)
-            {
-                relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.MissionThemeId == mission.MissionThemeId && m.DeletedAt == null)
-                     .Where(mission => mission.Country.DeletedAt == null && mission.City.DeletedAt == null)
-                .Include(m => m.Country)
-                .Include(m => m.City)
-                .Include(m => m.MissionRatings)
-                .Include(m => m.MissionTheme)
-                .Include(m => m.MissionSkills).ThenInclude(m => m.Skill)
-                .Include(m => m.MissionApplications)
-                .Include(m => m.GoalMissions)
-                .Include(m => m.FavouriteMissions)
-                .Include(m => m.MissionMedia).Take(3 - relatedMissions.Count));
-            }
 
             return relatedMissions;
         }
+
+        //public List<Mission> GetRelatedMissions(long MissionId)
+        //{
+        //    Mission mission = _db.Missions.Where(m => m.MissionId == MissionId && m.DeletedAt == null).FirstOrDefault()!;
+
+        //    List<Mission> relatedMissions = new();
+
+        //    relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.CityId == mission.CityId && m.DeletedAt == null)
+        //        .Where(mission => mission.Country.DeletedAt == null && mission.City.DeletedAt == null)
+        //        .Include(m => m.Country)
+        //        .Include(m => m.City)
+        //        .Include(m => m.MissionRatings)
+        //        .Include(m => m.MissionTheme)
+        //        .Include(m => m.MissionSkills).ThenInclude(m => m.Skill)
+        //        .Include(m => m.MissionApplications)
+        //        .Include(m => m.GoalMissions)
+        //        .Include(m => m.FavouriteMissions)
+        //        .Include(m => m.MissionMedia).Take(3));
+
+        //    if (relatedMissions.Count < 3)
+        //    {
+        //        relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.CountryId == mission.CountryId && m.DeletedAt == null)
+        //        .Where(mission => mission.Country.DeletedAt == null && mission.City.DeletedAt == null)
+        //        .Include(m => m.Country)
+        //        .Include(m => m.City)
+        //        .Include(m => m.MissionRatings)
+        //        .Include(m => m.MissionTheme)
+        //        .Include(m => m.MissionSkills).ThenInclude(m => m.Skill)
+        //        .Include(m => m.MissionApplications)
+        //        .Include(m => m.GoalMissions)
+        //        .Include(m => m.FavouriteMissions)
+        //        .Include(m => m.MissionMedia).Take(3 - relatedMissions.Count));
+        //    }
+
+        //    if (relatedMissions.Count < 3)
+        //    {
+        //        relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.MissionThemeId == mission.MissionThemeId && m.DeletedAt == null)
+        //             .Where(mission => mission.Country.DeletedAt == null && mission.City.DeletedAt == null)
+        //        .Include(m => m.Country)
+        //        .Include(m => m.City)
+        //        .Include(m => m.MissionRatings)
+        //        .Include(m => m.MissionTheme)
+        //        .Include(m => m.MissionSkills).ThenInclude(m => m.Skill)
+        //        .Include(m => m.MissionApplications)
+        //        .Include(m => m.GoalMissions)
+        //        .Include(m => m.FavouriteMissions)
+        //        .Include(m => m.MissionMedia).Take(3 - relatedMissions.Count));
+        //    }
+
+        //    return relatedMissions;
+        //}
 
         public List<User> UserList(long UserId, long MissionId)
         {

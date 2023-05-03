@@ -134,7 +134,8 @@ namespace CI_Platform_web.Controllers
                     MissionDetails = _missionDetail.MissionDetails(MissionId),
                     ApprovedComments = _missionDetail.GetApprovedComments(MissionId),
                     RecentVolunteers = _missionDetail.GetRecentVolunteers(MissionId, userId),
-                    RelatedMissions = _missionDetail.GetRelatedMissions(MissionId),
+                    RelatedMissions = _missionDetail.GetRelatedMissions(MissionId), 
+                    //RelatedMissions = _missionDetail.GetRelatedMissions(MissionId),
                     UserList = _missionDetail.UserList(userId, MissionId),
                     totalVolunteers = _missionDetail.GetRecentVolunteers(MissionId, userId).Count()
                 };

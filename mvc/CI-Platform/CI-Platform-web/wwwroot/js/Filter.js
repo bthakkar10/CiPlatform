@@ -1,4 +1,19 @@
-﻿//global
+﻿var UserCountry = $('#UserCountryDefault').text()
+SelectedCountry = UserCountry;
+$(UserCountry).addClass('selected');
+var UserCity = $('#UserCityDefault').text()
+SelectedCity = UserCity;
+//let pill = $('<span></span>').addClass('pill');
+
+//// adding the text to pill
+//let pillText = $('<span></span>').text(SelectedCity);
+//pill.append(pillText);
+
+//// add the close icon (bootstrap)
+//let closeIcon = $('<span></span>').addClass('close').html(' x');
+//pill.append(closeIcon);
+
+//global
 var currentUrl = window.location.href;
 if (currentUrl.includes("HomePage")) {
     FilterSortPaginationSearch(1);
@@ -12,11 +27,14 @@ if (currentUrl.includes("HomePage")) {
     document.getElementById("ExploreMissionLink").style.display = "none";
 }
 showComments();
-var UserCountry = $('#UserCountry').val();
-var UserCity = $('#UserCity').val();
+
+
 var SelectedExploreOption = null;
 var SelectedsortCase = null;
-var SelectedCountry = UserCountry;
+var SelectedCountry = null;
+var SelectedCity = null;
+/*var CountryId = UserCountry;*/ // set default CountryId value here
+/*var CityId = @CityId;*/
 var userId = ($("#user-id").text());
 let allDropdowns = $('.dropdown ul');
 
@@ -51,11 +69,11 @@ allDropdowns.on('change', function () {
 
     }
 })
-
+console.log(SelectedCity)
 //for mission filters sorting stored procedure
 function FilterSortPaginationSearch(pageNo) {
     var CountryId = SelectedCountry;
-    var CityId = $('#CityList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
+    var CityId = SelectedCity;
     var ThemeId = $('#ThemeList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var SkillId = $('#SkillList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
     var ExploreCase = SelectedExploreOption;
@@ -80,7 +98,9 @@ function FilterSortPaginationSearch(pageNo) {
 
             if (document.getElementById('missionCount') != null) {
                 var totalRecords = document.getElementById('missionCount').innerText;
+              
             }
+
             let totalPages = Math.ceil(totalRecords / pagesize);
 
             if (totalPages <= 1) {
@@ -199,14 +219,22 @@ function FilterSortPaginationSearch(pageNo) {
 
 //to count no of total missions for explore -- missions count in mission page
 function totalMission() {
-    var count = document.getElementById('missionCount').innerText;
-    $('#exploreText').text("Explore " + count + " missions");
-    if (count == 0) {
-        $('.NoMissionFound').show();
+    if (document.getElementById('missionCount') != null) {
+        var count = document.getElementById('missionCount').innerText;
+        $('#exploreText').text("Explore " + count + " missions");
+        if (count == 0) {
+            $('.NoMissionFound').show();
+        }
+        else {
+            $('.NoMissionFound').hide();
+        }
     }
     else {
-        $('.NoMissionFound').hide();
+        $('#exploreText').text("Explore " + 0 + " missions");
+
     }
+    //var count = document.getElementById('missionCount').innerText;
+
 }
 
 //stories filters stored procedure
@@ -363,20 +391,24 @@ $(".CountryListMissionFilter li").click(function () {
     $(this).addClass('selected');
 
     var CountryId = $(this).val();
-    console.log(CountryId)
+
     SelectedCountry = CountryId;
 
     GetCitiesByCountry(CountryId);
 
     if (currentUrl.includes("HomePage")) {
         FilterSortPaginationSearch();
-        console.log("first")
+
     }
     else if (currentUrl.includes("StoryListing")) {
         StoryFilter();
-        console.log("second")
+
     }
 });
+$("#CityList").on('change', function () {
+    SelectedCity = $('#CityList input[type="checkbox"]:checked').map(function () { return $(this).val(); }).get().join();
+    FilterSortPaginationSearch();
+})
 
 //get cities based on countries for filters 
 function GetCitiesByCountry(CountryId) {
@@ -393,6 +425,7 @@ function GetCitiesByCountry(CountryId) {
                 items += `<li> <div class="dropdown-item mb-3 ms-3 form-check"> <input type="checkbox" class="form-check-input" id="exampleCheck1"  value=` + item.cityId + `><label class="form-check-label" for="exampleCheck1" value=` + item.cityId + `>` + item.cityName + `</label></div></li>`
             })
             dropdown.html(items);
+
         }
     });
 
@@ -465,14 +498,11 @@ allDropdowns.each(function () {
                 checkboxElement.prop('checked', false);
                 if (currentUrl.includes("HomePage")) {
                     FilterSortPaginationSearch();
-
                 }
                 else if (currentUrl.includes("StoryListing")) {
                     StoryFilter();
 
                 }
-
-
                 if (filterPills.children('.pill').length === 1) {
                     filterPills.children('.closeAll').remove();
                 }
@@ -486,6 +516,7 @@ allDropdowns.each(function () {
                     allDropdowns.find('input[type="checkbox"]').prop('checked', false);
                     filterPills.empty();
                     SelectedCountry = null;
+                    SelectedCity = null;
                     if (currentUrl.includes("HomePage")) {
                         FilterSortPaginationSearch();
 
@@ -607,15 +638,7 @@ $('.commentButton').click(function () {
     var comment = $('.newComment').val().trim();
     console.log(comment);
     var missionId = $(this).data('mission-id');
-    //if (comment.length == 0 || comment.length > 600) {
-    //    $('.valComment').show();
-    //    $('.newComment').on('input', function () {
-    //        if ($('.newComment').val().trim().length > 0 && $('.newComment').val().trim().length <= 600) {
-    //            $('.valComment').hide();
-    //        }
-    //    })
-    //    return;
-    //}
+
     if (comment != " ") {
         $.ajax({
             method: 'POST',
@@ -623,7 +646,7 @@ $('.commentButton').click(function () {
             data: { comment: comment, missionId: missionId },
             success: function (result) {
                 $('.newComment').val('');
-               
+
                 showComments();
             },
             error: function (error) {
