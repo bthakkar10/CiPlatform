@@ -1,4 +1,5 @@
-﻿@{
+﻿@using CI_Platform.Repository.Generic;
+@{
     ViewData["Title"] = "Story ";
     Layout = "_AdminLayout";
 }
@@ -41,14 +42,47 @@
                             <button class="btn formBtn" id="ViewStoryBtn" data-mission-id="@story.Mission.MissionId">
                                 View
                             </button>&nbsp;
-                            <button class="p-0 btn GetStoryIdBtn @(story.Status == "PUBLISHED" ? "disabled border-0" : "")" id="StoryApprovalBtn" data-bs-toggle="modal" data-bs-target="#StoryModal" data-story-id="@story.StoryId" data-status="1">
-                                <i class="fa-circle-check fa-xl @(story.Status == "PUBLISHED" ? "fa-solid" : "fa-regular")" style="color: #00ff00;"></i>
-                            </button>
+                            <span class="showStoryButtons-@story.StoryId">
+                                @if (story.Status == GenericEnum.StoryStatus.PUBLISHED.ToString())
+                                {
+                                    <button class="p-0 btn fa-xl disabled border-0" id="StoryApprovalBtn" data-bs-toggle="modal" data-bs-target="#StoryModal" data-story-id="@story.StoryId" data-status="1">
+                                        <i class="fa-circle-check fa-solid" style="color: #00ff00;"></i>
+                                    </button>
+
+                                    <button class="btn p-0 GetStoryIdBtn fa-xl" id="StoryDeclineBtn" data-bs-target="#StoryModal" data-bs-toggle="modal" data-story-id="@story.StoryId" data-stat us="0">
+                                        <i class="fa-circle-xmark fa-regular" style="color: #ff0000;"></i>
+                                    </button>
+                                }
+                                else if (story.Status == GenericEnum.StoryStatus.DECLINED.ToString())
+                                {
+                                    <button class="p-0 btn GetStoryIdBtn fa-xl " id="StoryApprovalBtn" data-bs-toggle="modal" data-bs-target="#StoryModal" data-story-id="@story.StoryId" data-status="1">
+                                        <i class="fa-circle-check fa-regular" style="color: #00ff00;"></i>
+                                    </button>
+
+                                    <button class="btn p-0 fa-xl disabled  border-0" id="StoryDeclineBtn" data-bs-target="#StoryModal" data-bs-toggle="modal" data-story-id="@story.StoryId" data-status="0">
+                                        <i class="fa-circle-xmark fa-solid" style="color: #ff0000;"></i>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="p-0 btn GetStoryIdBtn fa-xl " id="StoryApprovalBtn" data-bs-toggle="modal" data-bs-target="#StoryModal" data-story-id="@story.StoryId" data-status="1">
+                                        <i class="fa-circle-check fa-regular" style="color: #00ff00;"></i>
+                                    </button>
+
+                                    <button class="btn p-0 GetStoryIdBtn fa-xl" id="StoryDeclineBtn" data-bs-target="#StoryModal" data-bs-toggle="modal" data-story-id="@story.StoryId" data-status="0">
+                                        <i class="fa-circle-xmark fa-regular" style="color: #ff0000;"></i>
+                                    </button>
+                                }
+                            </span>
+                           @*     <button class="p-0 btn GetStoryIdBtn @(story.Status == "PUBLISHED" ? "disabled border-0" : "")" id="StoryApprovalBtn" data-bs-toggle="modal" data-bs-target="#StoryModal" data-story-id="@story.StoryId" data-status="1">
+                                    <i class="fa-circle-check fa-xl @(story.Status == "PUBLISHED" ? "fa-solid" : "fa-regular")" style="color: #00ff00;"></i>
+                                </button>
                             &nbsp;
-                            <button class="btn p-0 GetStoryIdBtn @(story.Status == "DECLINED" ? "disabled border-0" : "")" id="StoryDeclineBtn" data-bs-target="#StoryModal" data-bs-toggle="modal" data-story-id="@story.StoryId" data-status="0">
-                                <i class="fa-circle-xmark fa-xl @(story.Status == "DECLINED" ? "fa-solid" : "fa-regular")" style="color: #ff0000;"></i>
-                            </button>
-                            &nbsp;
+                                <button class="btn p-0 GetStoryIdBtn @(story.Status == "DECLINED" ? "disabled border-0" : "")" id="StoryDeclineBtn" data-bs-target="#StoryModal" data-bs-toggle="modal" data-story-id="@story.StoryId" data-status="0">
+                                    <i class="fa-circle-xmark fa-xl @(story.Status == "DECLINED" ? "fa-solid" : "fa-regular")" style="color: #ff0000;"></i>
+                                </button>
+                          
+                            &nbsp;*@
                             <button class="p-0 btn GetStoryIdBtn" data-bs-toggle="modal" data-bs-target="#StoryDeleteModal" data-story-id="@story.StoryId">
                                 <h4><i class="bi bi-trash "> </i></h4>
                             </button>
@@ -62,8 +96,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <input name="HiddenStoryId" class="HiddenStoryId" type="hidden" />
-                            <input name="HiddenStatus" id="HiddenStatus" type="hidden" />
+                            
                             <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
@@ -73,7 +106,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="me-3 btn rounded-pill btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" asp-controller="Admin" asp-action="ApproveOrDeclineStory" class="btn rounded-pill btn-outline-success">Yes</button>
+                            <button type="button"  id="StoryApproveOrDeclineBtn" class="btn rounded-pill btn-outline-success">Yes</button>
 
                         </div>
                     </div>

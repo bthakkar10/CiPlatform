@@ -709,6 +709,10 @@
       "PackagePath": "staticwebassets\\images\\down.png"
     },
     {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\drag-and-drop-doc.png",
+      "PackagePath": "staticwebassets\\images\\drag-and-drop-doc.png"
+    },
+    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\drag-and-drop.png",
       "PackagePath": "staticwebassets\\images\\drag-and-drop.png"
     },

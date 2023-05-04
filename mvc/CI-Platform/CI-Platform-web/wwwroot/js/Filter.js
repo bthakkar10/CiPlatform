@@ -2,7 +2,7 @@
 SelectedCountry = UserCountry;
 $(UserCountry).addClass('selected');
 var UserCity = $('#UserCityDefault').text()
-SelectedCity = UserCity;
+/*SelectedCity = UserCity;*/
 //let pill = $('<span></span>').addClass('pill');
 
 //// adding the text to pill
@@ -623,6 +623,30 @@ $('.rating-mission-detail').on('click', function () {
         success: function () {
             selectedIcon.removeClass('bi-star').addClass('bi-star-fill text-warning');
             unselectedIcon.removeClass('bi-star-fill text-warning').addClass('bi-star');
+
+            //to get the updated rating 
+            $.ajax({
+                method: 'GET',
+                url: '/Home/GetMissionRating',
+                data: { missionId: missionId },
+                success: function (data) {
+                    console.log(data)
+                    var avg_rating = data.item1;
+                    var volunteers = data.item2;
+                    $('#UpdatedRatings').empty();
+                    var html = ""
+                    for (var i = 0; i < avg_rating; i++) {
+                        html += '<img src="/images/selected-star.png" /> '
+                    }
+                    for (var i = 5; i > avg_rating; i--) {
+                        html += '<img src="/images/star.png" /> ';
+                    }
+
+                    html += '<span id="total-ratings">(by ' + volunteers + ' volunteers)</span>'
+                    $('#UpdatedRatings').append(html);
+                },
+
+            });
         },
         error: function (error) {
 

@@ -134,7 +134,7 @@ namespace CI_Platform_web.Controllers
                     MissionDetails = _missionDetail.MissionDetails(MissionId),
                     ApprovedComments = _missionDetail.GetApprovedComments(MissionId),
                     RecentVolunteers = _missionDetail.GetRecentVolunteers(MissionId, userId),
-                    RelatedMissions = _missionDetail.GetRelatedMissions(MissionId), 
+                    RelatedMissions = _missionDetail.GetRelatedMissions(MissionId, userId),
                     //RelatedMissions = _missionDetail.GetRelatedMissions(MissionId),
                     UserList = _missionDetail.UserList(userId, MissionId),
                     totalVolunteers = _missionDetail.GetRecentVolunteers(MissionId, userId).Count()
@@ -176,6 +176,15 @@ namespace CI_Platform_web.Controllers
 
             var Updatedrating =  _missionDisplay.Ratings(rating, missionId, UserId);
             return Json(Updatedrating);
+        }
+
+        //to get the updated ratings 
+        [HttpGet]
+        public IActionResult GetMissionRating(long missionId)
+        {
+            var data = _missionDisplay.GetMissionRating(missionId);
+
+            return Json(data);
         }
 
         //post comments in mission details

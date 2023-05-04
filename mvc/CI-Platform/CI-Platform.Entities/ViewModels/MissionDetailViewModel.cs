@@ -19,10 +19,12 @@ namespace CI_Platform.Entities.ViewModels
 
         public List<MissionApplication>? RecentVolunteers { get; set; }
 
-        public List<Mission>? RelatedMissions { get; set; }
+        public List<MissionListViewModel>? RelatedMissions { get; set; }
 
         public List<User> UserList { get; set; } = null!;
 
         public string? link { get; set; }
+
+
     }
 }

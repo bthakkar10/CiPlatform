@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using CI_Platform.Entities.ViewModels;
 using CI_Platform.Repository.Generic;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Reflection;
 
 namespace CI_Platform.Repository.Repository
 {
@@ -61,81 +62,49 @@ namespace CI_Platform.Repository.Repository
             return recentVolunteers;
         }
 
-        public List<Mission> GetRelatedMissions(long MissionId)
+        public List<MissionListViewModel> GetRelatedMissions(long MissionId, long UserId)
         {
             var query = _db.Missions.Where(m => m.MissionId == MissionId).FirstOrDefault()!;
-          
+            List<User> user = _db.Users.Where(user => user.DeletedAt == null && user.UserId != UserId).Include(m => m.MissionInviteFromUsers).Include(m => m.MissionInviteToUsers).ToList();
+
             var relatedMissions = _db.Missions
                                 .Where(m => m.MissionId != MissionId && m.DeletedAt == null && m.Status == true && (m.CityId == query.CityId || m.CountryId == query.CountryId || m.MissionThemeId == query.MissionThemeId))
                                 .OrderBy(m => m.CityId == query.CityId ? 0 : 1)
                                 .ThenBy(m => m.CountryId == query.CountryId ? 0 : 1)
                                 .ThenBy(m => m.MissionThemeId == query.MissionThemeId ? 0 : 1)
-                                .Include(m => m.Country)
-                                .Include(m => m.City)
-                                .Include(m => m.MissionRatings)
-                                .Include(m => m.MissionTheme)
-                                .Include(m => m.MissionSkills).ThenInclude(m => m.Skill)
-                                .Include(m => m.MissionApplications)
-                                .Include(m => m.GoalMissions)
-                                .Include(m => m.FavouriteMissions)
-                                .Include(m => m.MissionMedia)
-                                .Take(3)
-                                .ToList();
+                                .Take(3);
+                          
 
+            var list = relatedMissions.Select(mission => new MissionListViewModel()
+            {
+                MissionCard = mission,
+                CityName = mission.City.CityName,
+                ThemeTitle = mission.MissionTheme.Title,
+                Applied = mission.MissionApplications.Any(missionApp => missionApp.UserId == UserId && missionApp.User.DeletedAt == null && missionApp.Mission.DeletedAt == null && missionApp.DeletedAt == null && missionApp.ApprovalStatus == GenericEnum.ApplicationStatus.APPROVE.ToString()),
+                favMission = mission.FavouriteMissions.Any(favMission => favMission.UserId == UserId && favMission.DeletedAt == null && favMission.User.DeletedAt == null && favMission.Mission.DeletedAt == null),
+                avgRating = (float)mission.MissionRatings.Where(rate => rate.User.DeletedAt == null).Average(r => r.Rating),
+                seatsLeft = mission.TotalSeats - mission.MissionApplications.Where(missionApp => missionApp.User.DeletedAt == null).Count(m => m.ApprovalStatus.Contains(GenericEnum.ApplicationStatus.APPROVE.ToString())),
+                createdAt = mission.CreatedAt,
+                startDate = mission.StartDate,
+                deadline = mission.Deadline,
+                skillName = mission.MissionSkills.Select(ms => ms.Skill.SkillName).ToList()!,
+                missionMedia = mission.MissionMedia.Where(mm => mm.Defaultval == true).Select(mm => mm.MediaPath).ToList()!,
+                goalMission = mission.GoalMissions.ToList(),
+                missionInvites = mission.MissionInvites.Where(mi => mi.DeletedAt == null && mi.Mission.DeletedAt == null && mi.ToUser.DeletedAt == null && mi.FromUser.DeletedAt == null).ToList(),
+                IsOngoing = (mission.StartDate < DateTime.Now) && (mission.EndDate > DateTime.Now),
+                HasEndDatePassed = mission.EndDate < DateTime.Now,
+                HasMissionStarted = mission.StartDate < DateTime.Now,
+                HasDeadlinePassed = mission.Deadline < DateTime.Now,
+                IsApplicationPending = mission.MissionApplications.Any(missionApp => missionApp.UserId == UserId && missionApp.DeletedAt == null && missionApp.ApprovalStatus == GenericEnum.ApplicationStatus.PENDING.ToString() && missionApp.Mission.DeletedAt == null && missionApp.User.DeletedAt == null),
+                CoWorkersList = user.ToList(),
+                favouriteMission = mission.FavouriteMissions.Where(favMission => favMission.User.DeletedAt == null).ToList(),
+                updatedGoalValue = mission.Timesheets.Where(timesheet => timesheet.MissionId == mission.MissionId && timesheet.DeletedAt == null).Sum(timesheet => timesheet.Action),
+            }).ToList();
 
-            return relatedMissions;
+            return list;
         }
 
-        //public List<Mission> GetRelatedMissions(long MissionId)
-        //{
-        //    Mission mission = _db.Missions.Where(m => m.MissionId == MissionId && m.DeletedAt == null).FirstOrDefault()!;
 
-        //    List<Mission> relatedMissions = new();
-
-        //    relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.CityId == mission.CityId && m.DeletedAt == null)
-        //        .Where(mission => mission.Country.DeletedAt == null && mission.City.DeletedAt == null)
-        //        .Include(m => m.Country)
-        //        .Include(m => m.City)
-        //        .Include(m => m.MissionRatings)
-        //        .Include(m => m.MissionTheme)
-        //        .Include(m => m.MissionSkills).ThenInclude(m => m.Skill)
-        //        .Include(m => m.MissionApplications)
-        //        .Include(m => m.GoalMissions)
-        //        .Include(m => m.FavouriteMissions)
-        //        .Include(m => m.MissionMedia).Take(3));
-
-        //    if (relatedMissions.Count < 3)
-        //    {
-        //        relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.CountryId == mission.CountryId && m.DeletedAt == null)
-        //        .Where(mission => mission.Country.DeletedAt == null && mission.City.DeletedAt == null)
-        //        .Include(m => m.Country)
-        //        .Include(m => m.City)
-        //        .Include(m => m.MissionRatings)
-        //        .Include(m => m.MissionTheme)
-        //        .Include(m => m.MissionSkills).ThenInclude(m => m.Skill)
-        //        .Include(m => m.MissionApplications)
-        //        .Include(m => m.GoalMissions)
-        //        .Include(m => m.FavouriteMissions)
-        //        .Include(m => m.MissionMedia).Take(3 - relatedMissions.Count));
-        //    }
-
-        //    if (relatedMissions.Count < 3)
-        //    {
-        //        relatedMissions.AddRange(_db.Missions.Where(m => m.MissionId != MissionId && m.MissionThemeId == mission.MissionThemeId && m.DeletedAt == null)
-        //             .Where(mission => mission.Country.DeletedAt == null && mission.City.DeletedAt == null)
-        //        .Include(m => m.Country)
-        //        .Include(m => m.City)
-        //        .Include(m => m.MissionRatings)
-        //        .Include(m => m.MissionTheme)
-        //        .Include(m => m.MissionSkills).ThenInclude(m => m.Skill)
-        //        .Include(m => m.MissionApplications)
-        //        .Include(m => m.GoalMissions)
-        //        .Include(m => m.FavouriteMissions)
-        //        .Include(m => m.MissionMedia).Take(3 - relatedMissions.Count));
-        //    }
-
-        //    return relatedMissions;
-        //}
 
         public List<User> UserList(long UserId, long MissionId)
         {

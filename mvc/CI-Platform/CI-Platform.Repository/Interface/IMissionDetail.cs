@@ -16,7 +16,7 @@ namespace CI_Platform.Repository.Interface
 
         public List<MissionApplication> GetRecentVolunteers(long MissionId, long userId);
 
-        public List<Mission> GetRelatedMissions(long MissionId);
+        public List<MissionListViewModel> GetRelatedMissions(long MissionId, long userId);
 
         //public List<Mission> GetRelatedMissions(long MissionId);
 

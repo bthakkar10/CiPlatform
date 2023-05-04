@@ -437,26 +437,21 @@ namespace CI_Platform_web.Controllers
             return View(vm);
         }
 
-        public IActionResult ApproveOrDeclineApplication()
+        public IActionResult ApproveOrDeclineApplication(long MissionApplicationId, long ApplicationStatus)
         {
-            long MissionApplicationId = long.TryParse(Request.Form["HiddenApplicationId"], out long result) ? result : 0;
-            long Status = long.TryParse(Request.Form["HiddenStatus"], out long resultStatus) ? resultStatus : 0;
-            string returnvalue = _adminApproval.ApproveDeclineApplication(MissionApplicationId, Status);
+           
+            string returnvalue = _adminApproval.ApproveDeclineApplication(MissionApplicationId, ApplicationStatus);
             if (returnvalue == GenericEnum.ApplicationStatus.APPROVE.ToString())
             {
-                TempData["success"] = "Mission Application " + Messages.Approve;
-                return RedirectToAction("MissionApplication");
-
+                return Ok(new { icon = "success", message = "Mission Application " + Messages.Approve});
             }
-            else if(returnvalue == GenericEnum.ApplicationStatus.APPROVE.ToString())
+            else if(returnvalue == GenericEnum.ApplicationStatus.DECLINE.ToString())
             {
-                TempData["success"] = "Mission Application " + Messages.Decline; 
-                return RedirectToAction("MissionApplication");
+                return Ok(new { icon = "success", message = "Mission Application " + Messages.Decline });
             }
             else
             {
-                TempData["error"] = Messages.Decline;
-                return RedirectToAction("MissionApplication");
+                return Ok(new { icon = "error", message = Messages.Error });
             }
         }
         //------------------------------------------  Mission Application Section Ends ---------------------------------------------------------- 
@@ -468,26 +463,20 @@ namespace CI_Platform_web.Controllers
             vm.StoryList = _adminApproval.StoryList();
             return View(vm);
         }
-        public IActionResult ApproveOrDeclineStory()
+        public IActionResult ApproveOrDeclineStory(long StoryId, long StoryStatus)
         {
-            long StoryId = long.TryParse(Request.Form["HiddenStoryId"], out long result) ? result : 0;
-            long Status = long.TryParse(Request.Form["HiddenStatus"], out long resultStatus) ? resultStatus : 0;
-            string returnvalue = _adminApproval.ApproveDeclineStory(StoryId, Status);
+            string returnvalue = _adminApproval.ApproveDeclineStory(StoryId, StoryStatus);
             if (returnvalue == GenericEnum.StoryStatus.PUBLISHED.ToString())
             {
-                TempData["success"] = "Story Published Successfully";
-                return RedirectToAction("Story");
-
+                return Ok(new { icon = "success", message = "Story Published Successfully!!" });
             }
             else if (returnvalue == GenericEnum.StoryStatus.DECLINED.ToString())
             {
-                TempData["success"] = "Story " + Messages.Decline;
-                return RedirectToAction("Story");
+                return Ok(new { icon = "success", message = "Story Declined Successfully!!" });
             }
             else
             {
-                TempData["error"] = Messages.Error ;
-                return RedirectToAction("Story");
+                return Ok(new { icon = "error", message = Messages.Error });
             }
         }
 
@@ -504,7 +493,7 @@ namespace CI_Platform_web.Controllers
             bool returnvalue = _adminApproval.IsStoryDeleted(StoryId);
             if (returnvalue)
             {
-                TempData["succes"] = "Skill " + Messages.Delete;
+                TempData["succes"] = "Story " + Messages.Delete;
                 return RedirectToAction("Story");
             }
             else
@@ -579,7 +568,7 @@ namespace CI_Platform_web.Controllers
             }
         }
 
-        //fetching user data on edit 
+        //fetching mission data on edit 
         [HttpGet]
         public IActionResult GetMissionData(long MissionId)
         {

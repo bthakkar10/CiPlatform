@@ -148,7 +148,7 @@ function UserGetCitiesByCountry(CountryId) {
         success: function (result) {
             var selectList = $("#UserCitySelect");
             var items = "";
-            items = " <option selected>Enter your City</option>";
+            items = " <option value=''>Enter your City</option>";
             $(result).each(function (index, item) {
                 items += `<option value=` + item.cityId + `>` + item.cityName + `</option>`;
             })
@@ -308,27 +308,60 @@ $(document).on('click', '#DeleteSkillBtn', function () {
     $("#HiddenSkillId").val(SkillId);
 });
 
+var MissionApplicationId
+var ApplicationStatus
 //to get id of mission application to decline or approve it 
 $(document).on('click', '.ApproveOrDeclineApplication', function () {
-    var MissionApplicationId = $(this).data('application-id');
-    $("#HiddenApplicationId").val(MissionApplicationId);
+     MissionApplicationId = $(this).data('application-id');
+    ApplicationStatus = $(this).data('status');
+  
+    if (ApplicationStatus === 1) {
+        $('#ApplicationModalBody div').text('Are you sure you want to approve this mission application??');
+    }
+    else {
+        $('#ApplicationModalBody div').text('Are you sure you want to decline this mission application??');
+    } 
 });
-//to fetch data for approval of mission application
-$(document).on('click', '#ApprovalBtn', function () {
-    var Status = $(this).data('status');
-    $("#HiddenStatus").val(Status);
-    const isDeclineBtn = false; // or false
-    $('#ApplicationModalBody div').text(isDeclineBtn ? 'Are you sure you want to decline this mission application??' : 'Are you sure you want to approve this mission application??');
+//approve or decline method 
+$(document).on('click', '#ApplicationApproveOrDeclineBtn', function () {
+
+    $.ajax({
+        method: 'POST',
+        url: '/Admin/ApproveOrDeclineApplication',
+        data: { MissionApplicationId: MissionApplicationId, ApplicationStatus: ApplicationStatus },
+        success: function (result) {
+
+            console.log(result)
+            swal.fire({
+                position: 'top-end',
+                icon: result.icon,
+                title: result.message,
+                showConfirmButton: false,
+                timer: 4000
+            });
+            //debugger
+            var container = $('.showApplicationButtons-' + MissionApplicationId);
+            container.empty();
+            if (ApplicationStatus === 1) {
+                var html1 = "<button class='p-0 btn fa-xl disabled border-0' id='ApprovalBtn' data-bs-toggle='modal' data-bs-target='#ApproveOrDeclineModal' data-application-id='" + MissionApplicationId + "' data-status='1'><i class='fa-circle-check fa-solid' style='color: #00ff00;'></i></button>";
+                var html2 = "<button class='p-0 btn ApproveOrDeclineApplication fa-xl' id='DeclineBtn' data-bs-toggle='modal' data-bs-target='#ApproveOrDeclineModal' data-application-id='" + MissionApplicationId + "' data-status='0'><i class='fa-circle-xmark fa-regular' style='color: #ff0000;'></i></button>";
+                container.append(html1).append(html2);
+            }
+            else {
+                var html1 = "<button class='p-0 btn ApproveOrDeclineApplication fa-xl' id='ApprovalBtn' data-bs-toggle='modal' data-bs-target='#ApproveOrDeclineModal' data-application-id='" + MissionApplicationId + "' data-status='1'><i class='fa-circle-check fa-regular' style='color: #00ff00;'></i></button>";
+                var html2 = "<button class='p-0 btn fa-xl disabled border-0' id='DeclineBtn' data-bs-toggle='modal' data-bs-target='#ApproveOrDeclineModal' data-application-id='" + MissionApplicationId + "' data-status='0'><i class='fa-circle-xmark fa-solid' style='color: #ff0000;'></i></button>";
+                container.append(html1).append(html2);
+            }
+            $('#ApproveOrDeclineModal').modal('hide')
+        },
+        error: function (error) {
+            console.log(error);
+        },
+    });
 });
-//to fetch data for decline of mission application 
-$(document).on('click', '#DeclineBtn', function () {
-    var Status = $(this).data('status');
-    $("#HiddenStatus").val(Status);
-    const isDeclineBtn = true; // or false
-    $('#ApplicationModalBody div').text(isDeclineBtn ? 'Are you sure you want to decline this mission application??' : 'Are you sure you want to approve this mission application??');
-});
+
 //view story in story page of admin
-$(document).on('click', '#ViewStoryBtn',function () {
+$(document).on('click', '#ViewStoryBtn', function () {
     var MissionId = $(this).data('mission-id');
     $.ajax({
         method: 'GET',
@@ -344,7 +377,56 @@ $(document).on('click', '#ViewStoryBtn',function () {
 
     });
 });
-//to get story id to decline, approve or delete it 
+
+var StoryId
+var StoryStatus
+//to get id of mission application to decline or approve it 
+$(document).on('click', '.GetStoryIdBtn', function () {
+    StoryId = $(this).data('story-id');
+    StoryStatus = $(this).data('status');
+
+    if (StoryStatus === 1) {
+        $('#StoryModalBody div').text('Are you sure you want to approve this story??');
+    }
+    else {
+        $('#StoryModalBody div').text('Are you sure you want to decline this story??');
+    }
+});
+//approve or decline method 
+$(document).on('click', '#StoryApproveOrDeclineBtn', function () {
+    $.ajax({
+        method: 'POST',
+        url: '/Admin/ApproveOrDeclineStory',
+        data: { StoryId: StoryId, StoryStatus : StoryStatus },
+        success: function (result) {
+            swal.fire({
+                position: 'top-end',
+                icon: result.icon,
+                title: result.message,
+                showConfirmButton: false,
+                timer: 4000
+            });
+
+            var container = $('.showStoryButtons-' + StoryId);
+            container.empty();
+            if (StoryStatus === 1) {
+                var html1 = "<button class='p-0 btn fa-xl disabled border-0' id='StoryApprovalBtn' data-bs-toggle='modal' data-bs-target='#StoryModal' data-story-id='" + StoryId + "' data-status='1'><i class='fa-circle-check fa-solid' style='color: #00ff00;'></i></button>";
+                var html2 = "<button class='p-0 btn GetStoryIdBtn fa-xl' id='StoryDeclineBtn' data-bs-toggle='modal' data-bs-target='#StoryModal' data-story-id='" + StoryId + "' data-status='0'><i class='fa-circle-xmark fa-regular' style='color: #ff0000;'></i></button>";
+                container.append(html1).append(html2);
+            }
+            else {
+                var html1 = "<button class='p-0 btn GetStoryIdBtn fa-xl' id='StoryApprovalBtn' data-bs-toggle='modal' data-bs-target='#StoryModal' data-story-id='" + StoryId + "' data-status='1'><i class='fa-circle-check fa-regular' style='color: #00ff00;'></i></button>";
+                var html2 = "<button class='p-0 btn fa-xl disabled border-0' id='StoryDeclineBtn' data-bs-toggle='modal' data-bs-target='#StoryModal' data-story-id='" + StoryId + "' data-status='0'><i class='fa-circle-xmark fa-solid' style='color: #ff0000;'></i></button>";
+                container.append(html1).append(html2);
+            }
+            $('#StoryModal').modal('hide')
+        },
+        error: function (error) {
+            console.log(error);
+        },
+    });
+});
+////to get story id to decline, approve or delete it 
 $(document).on('click', '.GetStoryIdBtn', function () {
     var StoryId = $(this).data('story-id');
     console.log(StoryId)
@@ -352,20 +434,20 @@ $(document).on('click', '.GetStoryIdBtn', function () {
 });
 
 
-//to fetch data for approval of story
-$(document).on('click', '#StoryApprovalBtn', function () {
-    var Status = $(this).data('status');
-    $("#HiddenStatus").val(Status);
-    const isDeclineBtn = false; // or false
-    $('#StoryModalBody div').text(isDeclineBtn ? 'Are you sure you want to decline this story??' : 'Are you sure you want to approve this story??');
-});
-//to fetch data for decline of mission application 
-$(document).on('click', '#StoryDeclineBtn', function () {
-    var Status = $(this).data('status');
-    $("#HiddenStatus").val(Status);
-    const isDeclineBtn = true; // or false
-    $('#StoryModalBody div').text(isDeclineBtn ? 'Are you sure you want to decline this story??' : 'Are you sure you want to approve this story??');
-});
+////to fetch data for approval of story
+//$(document).on('click', '#StoryApprovalBtn', function () {
+//    var Status = $(this).data('status');
+//    $("#HiddenStatus").val(Status);
+//    const isDeclineBtn = false; // or false
+//    $('#StoryModalBody div').text(isDeclineBtn ? 'Are you sure you want to decline this story??' : 'Are you sure you want to approve this story??');
+//});
+////to fetch data for decline of mission application 
+//$(document).on('click', '#StoryDeclineBtn', function () {
+//    var Status = $(this).data('status');
+//    $("#HiddenStatus").val(Status);
+//    const isDeclineBtn = true; // or false
+//    $('#StoryModalBody div').text(isDeclineBtn ? 'Are you sure you want to decline this story??' : 'Are you sure you want to approve this story??');
+//});
 
 //APPEND PARTIAL VIEW FOR ADD OR EDIT Mission  
 $(document).on('click', '#AddOrUpdateMissionBtn', function () {
@@ -872,7 +954,7 @@ $(document).on('submit', '#MissionForm', function (e) {
     $("#MissionEndDate").prop('disabled', false);
     var isValidDes = validateMissionDes();
     var isValidDetails = validateOrganisationDetail();
-    if (validateGoalTime() == true && isValidDetails && isValidDes && $(this).valid())  {
+    if (validateGoalTime() == true && isValidDetails && isValidDes && $(this).valid()) {
         var myform = document.getElementById("MissionForm");
         var MissionFormData = new FormData(myform);
 
@@ -975,7 +1057,7 @@ $(document).on('click', '#EditBtnMissionDataFetch', function () {
                         // set it as DefaultImage variable
                         DefaultImage = files;
                     }
-                   
+
                 });
                 // Handle close icon click event
                 closebtn.on('click', function () {
@@ -991,7 +1073,7 @@ $(document).on('click', '#EditBtnMissionDataFetch', function () {
                 });
 
                 console.log("defaut " + DefaultImage);
-               
+
                 allfiles.push(files);
             });
             //for youtubeurls 

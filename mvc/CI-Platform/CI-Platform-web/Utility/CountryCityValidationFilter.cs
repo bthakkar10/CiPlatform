@@ -34,7 +34,7 @@ namespace CI_Platform_web.Utility
                     // Redirect to the user profile page if country and city are not set
                     if (controller != "User" || action != "UserProfile")
                     {
-                        //TempData["error"] = "Please enter your name, email, country and city first!!!";
+                       
                         context.Result = new RedirectToRouteResult(
                             new RouteValueDictionary(new { controller = "User", action = "UserProfile", UserId = userId })
                         );

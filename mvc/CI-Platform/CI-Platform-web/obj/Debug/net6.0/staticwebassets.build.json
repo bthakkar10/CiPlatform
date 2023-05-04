@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "uROLDheezo2INPBupd95f7ItsZw8bo6C5DdvJ/wcXww=",
+  "Hash": "2uIU8GzG2aPoF2WfLdiaDO1yNEsU32jKiTV1dl45Icc=",
   "Source": "CI-Platform-web",
   "BasePath": "_content/CI-Platform-web",
   "Mode": "Default",
@@ -1018,6 +1018,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\drag-and-drop.png"
+    },
+    {
+      "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\drag-and-drop-doc.png",
+      "SourceId": "CI-Platform-web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\",
+      "BasePath": "_content/CI-Platform-web",
+      "RelativePath": "images/drag-and-drop-doc.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\drag-and-drop-doc.png"
     },
     {
       "Identity": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\drop-down.png",

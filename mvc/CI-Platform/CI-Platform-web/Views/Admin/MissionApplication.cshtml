@@ -1,4 +1,5 @@
-﻿@{
+﻿@using CI_Platform.Repository.Generic;
+@{
     ViewData["Title"] = "Mission Application ";
     Layout = "_AdminLayout";
 }
@@ -40,26 +41,49 @@
                         <td>@mal.UserId</td>
                         <td>@mal.User.FirstName  @mal.User.LastName</td>
                         <td>@mal.AppliedAt</td>
-                       
-                        <td>
-                            <button class="p-0 btn ApproveOrDeclineApplication fa-xl @(mal.ApprovalStatus == "APPROVE" ? "border-0 disabled" : "")" id="ApprovalBtn" data-bs-toggle="modal" data-bs-target="#ApproveOrDeclineModal" data-application-id="@mal.MissionApplicationId" data-status="1">
-                                <i class="fa-circle-check @(mal.ApprovalStatus == "APPROVE" ? "fa-solid" : "fa-regular")" style="color: #00ff00;"></i>
-                            </button>
 
-                            <button class="btn p-0 ApproveOrDeclineApplication fa-xl @(mal.ApprovalStatus == "DECLINE" ? "border-0 disabled" : "")" id="DeclineBtn" data-bs-target="#ApproveOrDeclineModal" data-bs-toggle="modal" data-application-id="@mal.MissionApplicationId" data-status="0">
-                                <i class="fa-circle-xmark @(mal.ApprovalStatus == "DECLINE" ? "fa-solid" : "fa-regular")" style="color: #ff0000;"></i>
-                            </button>
+                        <td  class="showApplicationButtons-@mal.MissionApplicationId">
+                            @if (mal.ApprovalStatus == GenericEnum.ApplicationStatus.APPROVE.ToString())
+                            {
+                                <button class="p-0 btn fa-xl disabled border-0" id="ApprovalBtn" data-bs-toggle="modal" data-bs-target="#ApproveOrDeclineModal" data-application-id="@mal.MissionApplicationId" data-status="1">
+                                    <i class="fa-circle-check fa-solid" style="color: #00ff00;"></i>
+                                </button>
+
+                                <button class="btn p-0 ApproveOrDeclineApplication fa-xl" id="DeclineBtn" data-bs-target="#ApproveOrDeclineModal" data-bs-toggle="modal" data-application-id="@mal.MissionApplicationId" data-status="0">
+                                    <i class="fa-circle-xmark fa-regular" style="color: #ff0000;"></i>
+                                </button>
+                            }
+                            else if (mal.ApprovalStatus == GenericEnum.ApplicationStatus.DECLINE.ToString())
+                            {
+                                <button class="p-0 btn ApproveOrDeclineApplication fa-xl " id="ApprovalBtn" data-bs-toggle="modal" data-bs-target="#ApproveOrDeclineModal" data-application-id="@mal.MissionApplicationId" data-status="1">
+                                    <i class="fa-circle-check fa-regular" style="color: #00ff00;"></i>
+                                </button>
+
+                                <button class="btn p-0 fa-xl disabled  border-0" id="DeclineBtn" data-bs-target="#ApproveOrDeclineModal" data-bs-toggle="modal" data-application-id="@mal.MissionApplicationId" data-status="0">
+                                    <i class="fa-circle-xmark fa-solid" style="color: #ff0000;"></i>
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="p-0 btn ApproveOrDeclineApplication fa-xl " id="ApprovalBtn" data-bs-toggle="modal" data-bs-target="#ApproveOrDeclineModal" data-application-id="@mal.MissionApplicationId" data-status="1">
+                                    <i class="fa-circle-check fa-regular" style="color: #00ff00;"></i>
+                                </button>
+
+                                <button class="btn p-0 ApproveOrDeclineApplication fa-xl" id="DeclineBtn" data-bs-target="#ApproveOrDeclineModal" data-bs-toggle="modal" data-application-id="@mal.MissionApplicationId" data-status="0">
+                                    <i class="fa-circle-xmark fa-regular" style="color: #ff0000;"></i>
+                                </button>
+                            }
+                          
                         </td>
                     </tr>
                 }
         </table>
         <div class="modal fade" id="ApproveOrDeclineModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <form method="post">
+            <form >
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <input name="HiddenApplicationId" id="HiddenApplicationId" type="hidden" />
-                            <input name="HiddenStatus" id="HiddenStatus" type="hidden" />
+                         
                             <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
@@ -69,7 +93,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="me-3 btn rounded-pill btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" asp-controller="Admin" asp-action="ApproveOrDeclineApplication" class="btn rounded-pill btn-outline-success">Yes</button>
+                            <button type="button" id="ApplicationApproveOrDeclineBtn" class="btn rounded-pill btn-outline-success">Yes</button>
                         </div>
                     </div>
                 </div>
