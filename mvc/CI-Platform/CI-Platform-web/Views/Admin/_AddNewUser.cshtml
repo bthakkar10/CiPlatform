@@ -15,7 +15,6 @@
                     <label asp-for="Surname" class="form-label">Last Name</label>
                     <input asp-for="Surname" type="text" class="form-control" placeholder="Last name" aria-label="Last name">
                     <span asp-validation-for="Surname" class="validate-text text-danger"></span>
-
                 </div>
             </div>
             <div class="row g-3 p-3">
@@ -26,14 +25,9 @@
 
                 </div>
                 <div class="col-md-6">
-                    <label asp-for="Password" class="form-label">Password</label>
-                    <div class="position-relative">
-                        <input asp-for="Password" id="Password" type="password" placeholder="Enter Password" class="form-control">
-                        <i class="bi bi-eye-fill position-absolute translate-middle-x end-0 top-0 d-none"></i>
-                        <i class="bi bi-eye-slash position-absolute translate-middle-x end-0 top-0 "></i>
-                    </div>
-                    <span asp-validation-for="Password" class="validate-text text-danger"></span>
-
+                    <label asp-for="Department" class="form-label">Department</label>
+                    <input asp-for="Department" type="text" class="form-control" placeholder="Department">
+                    <span asp-validation-for="Department" class="validate-text text-danger"></span>
                 </div>
             </div>
             <div class="row g-3 p-3">
@@ -54,19 +48,23 @@
                 </div>
             </div>
 
-            <div class="row g-3 p-3">
-                <div class="col-md-6 ">
+            <div class="row g-3 p-3" id="UserHiddenField">
+                <div class="col-md-6">
                     <label asp-for="EmployeeId" class="form-label">Employee Id</label>
                     <input asp-for="EmployeeId" type="text" class="form-control" placeholder="Employee Id">
                     <span asp-validation-for="EmployeeId" class="validate-text text-danger"></span>
 
                 </div>
-                <div class="col-md-6">
-                    <label asp-for="Department" class="form-label">Department</label>
-                    <input asp-for="Department" type="text" class="form-control" placeholder="Department">
-                    <span asp-validation-for="Department" class="validate-text text-danger"></span>
-
+                <div class="col-md-6" >
+                    <label asp-for="Password" class="form-label">Password</label>
+                    <div class="position-relative">
+                        <input asp-for="Password" id="Password" type="password" placeholder="Enter Password" class="form-control">
+                        <i class="bi bi-eye-fill position-absolute translate-middle-x end-0 top-0 d-none"></i>
+                        <i class="bi bi-eye-slash position-absolute translate-middle-x end-0 top-0 "></i>
+                    </div>
+                    <span asp-validation-for="Password" class="validate-text text-danger"></span>
                 </div>
+                
             </div>
             <div class="row g-3 p-3">
                 <div class="col-md-6">

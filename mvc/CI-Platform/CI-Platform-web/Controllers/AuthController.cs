@@ -58,9 +58,14 @@ namespace CI_Platform_web.Controllers
                     TempData["error"] = "User does not exist.Please register first";
                     return View("Register");
                 }
-                else if(DoesUserExists.Status != true && DoesUserExists.DeletedAt == null)
+                else if(DoesUserExists.Status != true)
                 {
-                    TempData["error"] = "User is inactive or deleted!!";
+                    TempData["error"] = "User is blocked!!";
+                    return View();
+                }
+                else if( DoesUserExists.DeletedAt != null)
+                {
+                    TempData["error"] = "User is deleted!!";
                     return View();
                 }
                 else

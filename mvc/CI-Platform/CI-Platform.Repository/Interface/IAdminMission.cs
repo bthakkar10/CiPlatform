@@ -25,6 +25,8 @@ namespace CI_Platform.Repository.Interface
 
         public bool AddOrRemoveGoalMission(long MissionId, string GoalObjectiveText, int GoalValue);
 
+       
+
         public AdminMissionViewModel GetMission(long MissionId);
 
         public string MissionEdit(AdminMissionViewModel missionvm);

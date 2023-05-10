@@ -43,12 +43,20 @@ namespace CI_Platform.Repository.Repository
                         CreatedAt = DateTime.Now,
                         CountryId = vm.CountryId,
                         CityId = vm.CityId,
-                        Password = vm.Password,
+                        Password = BCrypt.Net.BCrypt.HashPassword(vm.Password),
                         Availability = vm.Availibility,
                         Status = vm.Status, 
                         Role = vm.Role,
                     };
-                    _db.Users.Add(user);    
+                    _db.Users.Add(user);
+                    UserSetting userSetting = new UserSetting();
+                    for (int i = 1; i <= 7; i++)
+                    {
+                        userSetting.SettingId = i;
+                        userSetting.UserId = user.UserId;
+                        userSetting.IsEnabled = true;
+                    }
+                    _db.Add(userSetting);
                     _db.SaveChanges();  
                     return "Added";
                 }
@@ -124,8 +132,7 @@ namespace CI_Platform.Repository.Repository
                     user.Department = vm.Department;
                     user.UpdatedAt = DateTime.Now;
                     user.CountryId = vm.CountryId;
-                    user.CityId = vm.CityId;
-                    user.Password = vm.Password;
+                    user.CityId = vm.CityId;   
                     user.Availability = vm.Availibility;
                     user.Status = vm.Status;
                     user.Role = vm.Role;

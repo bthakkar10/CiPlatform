@@ -1,5 +1,5 @@
 ﻿var UserCountry = $('#UserCountryDefault').text()
-SelectedCountry = UserCountry;
+/*SelectedCountry = UserCountry;*/
 $(UserCountry).addClass('selected');
 var UserCity = $('#UserCityDefault').text()
 /*SelectedCity = UserCity;*/
@@ -45,7 +45,103 @@ $("#ExploreMissionDropdown li").click(function () {
     console.log(ExploreCase);
     FilterSortPaginationSearch(1);
 });
+//let Count;
+//function ShowNotificationCount(Count)
+//{
+//    $('#NotificationCount').empty();
+//    $('#NotificationCount').append(Count + '<span class="visually-hidden">unread messages</span>');
+//}
+////to get count of new notifications
+//$(document).ready(function () {
+//    $.ajax({
+//        url: '/Home/CountNotification',
+//        type: 'GET',
+//        success: function (data) {
+//            console.log(data)
+//            ShowNotificationCount(data);
+//        },
+//        error: function (error) { console.log(error); },
+//    });
+//});
+//to get notification list 
+$(document).on('click', '#NotificationBell , #CancelBtnNotification', function () {
+    $.ajax({
+        url: '/Home/GetNotification',
+        type: 'GET',
+        success: function (data) {
+      
+            $('#UserNotificationList').show();
+            $('#UserNotificationSettingList').hide();
+            $('#NotificationContainer').empty();
+            $('#NotificationContainer').append(data);
+        },
+        error: function (error) { console.log(error); },
+    });
+});
 
+//to get notification settings list
+$(document).on('click', '#NotificationSettings', function () {
+    $('#UserNotificationSettingList').show();
+    $('#UserNotificationList').hide();
+});
+
+//for notifications clear all
+$(document).on('click', '#ClearAllNotification', function () {
+    $.ajax({
+        url: '/Home/ClearNotification',
+        type: 'POST',
+        success: function (result)
+        {
+            $('.notification-dropdown ul').empty();
+            $('.notification-dropdown ul').html('<li class="d-block"><img class="mx-auto d-block" src="/images/bell-big.png"/><span class="m-2 mt-4 fw-bold">You do not have any new Notifications</span></li>');
+        },
+        error: function (error) { console.log(error); },
+    });
+});
+
+//to change status of notifications
+$(document).on('click', '.notification-dropdown .NotificationList', function () {
+    var NotificationId = $(this).attr('id');
+    console.log(NotificationId);
+    $.ajax({
+        url: '/Home/ChangeNotificationStatus',
+        type: 'POST',
+        data: { NotificationId: NotificationId },
+        success: function ()
+        {
+            $('.notification-status-change-' + NotificationId).empty();
+            $('.notification-status-change-' + NotificationId).append('<i class="bi bi-check-circle-fill" style="color:grey;"></i>')
+        },
+        error: function (error) { console.log(error); },
+    });
+});
+
+//to save notification setting of a user
+$(document).on('click', '#SaveNotificationSetting', function () {
+    var checkedSettings = $('.setting-checkbox:checked');
+    var settingsArr = [];
+
+    checkedSettings.each(function () {
+        settingsArr.push(parseInt($(this).val()));
+    });
+
+    console.log(settingsArr);
+    $.ajax({
+        url: '/Home/NotificationSettings',
+        type: 'POST',
+        data: { settingsArr: settingsArr },
+        success: function (result) {
+            swal.fire({
+                position: 'top-end',
+                icon: result.icon,
+                title: result.message,
+                showConfirmButton: false,
+                timer: 4000
+            });
+        },
+        error: function (error) { console.log(error); },
+    });
+})
 
 //global search text selection
 $('#searchText').on('keyup', function () {
@@ -69,7 +165,6 @@ allDropdowns.on('change', function () {
 
     }
 })
-console.log(SelectedCity)
 //for mission filters sorting stored procedure
 function FilterSortPaginationSearch(pageNo) {
     var CountryId = SelectedCountry;
@@ -98,7 +193,7 @@ function FilterSortPaginationSearch(pageNo) {
 
             if (document.getElementById('missionCount') != null) {
                 var totalRecords = document.getElementById('missionCount').innerText;
-              
+
             }
 
             let totalPages = Math.ceil(totalRecords / pagesize);
@@ -620,34 +715,47 @@ $('.rating-mission-detail').on('click', function () {
         method: 'POST',
         url: '/Home/Rating',
         data: { rating: rating, missionId: missionId },
-        success: function () {
-            selectedIcon.removeClass('bi-star').addClass('bi-star-fill text-warning');
-            unselectedIcon.removeClass('bi-star-fill text-warning').addClass('bi-star');
+        success: function (result) {
+            if (result === 0) {
+                swal.fire({
+                    position: 'top-end',
+                    icon: "error",
+                    title: "Please apply first!!",
+                    showConfirmButton: false,
+                    timer: 4000
+                });
+            }
+            else {
+                selectedIcon.removeClass('bi-star').addClass('bi-star-fill text-warning');
+                unselectedIcon.removeClass('bi-star-fill text-warning').addClass('bi-star');
 
-            //to get the updated rating 
-            $.ajax({
-                method: 'GET',
-                url: '/Home/GetMissionRating',
-                data: { missionId: missionId },
-                success: function (data) {
-                    console.log(data)
-                    var avg_rating = data.item1;
-                    var volunteers = data.item2;
-                    $('#UpdatedRatings').empty();
-                    var html = ""
-                    for (var i = 0; i < avg_rating; i++) {
-                        html += '<img src="/images/selected-star.png" /> '
-                    }
-                    for (var i = 5; i > avg_rating; i--) {
-                        html += '<img src="/images/star.png" /> ';
-                    }
 
-                    html += '<span id="total-ratings">(by ' + volunteers + ' volunteers)</span>'
-                    $('#UpdatedRatings').append(html);
-                },
+                //to get the updated rating 
+                $.ajax({
+                    method: 'GET',
+                    url: '/Home/GetMissionRating',
+                    data: { missionId: missionId },
+                    success: function (data) {
+                        console.log(data)
+                        var avg_rating = data.item1;
+                        var volunteers = data.item2;
+                        $('#UpdatedRatings').empty();
+                        var html = ""
+                        for (var i = 0; i < avg_rating; i++) {
+                            html += '<img src="/images/selected-star.png" /> '
+                        }
+                        for (var i = 5; i > avg_rating; i--) {
+                            html += '<img src="/images/star.png" /> ';
+                        }
 
-            });
+                        html += '<span id="total-ratings">(by ' + volunteers + ' volunteers)</span>'
+                        $('#UpdatedRatings').append(html);
+                    },
+
+                });
+            }
         },
+
         error: function (error) {
 
             if (confirm("Please Login Again And Try Agaion")) {
@@ -670,7 +778,13 @@ $('.commentButton').click(function () {
             data: { comment: comment, missionId: missionId },
             success: function (result) {
                 $('.newComment').val('');
-
+                swal.fire({
+                    position: 'top-end',
+                    icon: result.icon,
+                    title: result.message,
+                    showConfirmButton: false,
+                    timer: 4000
+                });
                 showComments();
             },
             error: function (error) {
@@ -720,36 +834,6 @@ $(document).on('click', '.model-invite-btn', function () {
         }
     });
 });
-
-//recommend to co-worker invite for mission page through get function which will fetch user list here and go to above function again
-//$(document).on('click', '.add-on-img', function () {
-//    var MissionId = $(this).data('mission-id');
-//    var UserId = $(this).data('user-id');
-//    $.ajax({
-//        type: "GET",
-//        url: "/Home/UserList",
-//        data: { MissionId: MissionId },
-//        success: function (coworkers) {
-//            console.log(coworkers)
-//            var list = $('.grid-modal-body');
-//            list.empty();
-//            var items = " ";
-//            $(coworkers).each(function (index, coworker) {
-//                items +=
-//                    ` <div class="mt-2" style="display : flex; justify-content : space-between;">
-//                        <span class="mx-4 "> ` + coworker.firstName + ` ` + coworker.lastName + `</span>
-//                        <span  mailto:class="invited- `+ coworker.UserId + `"><button class="btn mx-3 btn-outline-primary model-button model-invite-btn" data-mission-id=" ` + MissionId + `" data-from-user-id=" ` + UserId + `" data-to-user-id=" ` + coworker.userId + `">Invite</button></span>
-
-//                    </div>`
-
-//            });
-//            list.html(items);
-//        },
-//        error: function (error) {
-//            console.log(error);
-//        }
-//    });
-//});
 
 //apply in mission button 
 $('#ApplyBtnMission').click(function () {
@@ -1066,6 +1150,11 @@ $('#missionTitle').change(function () {
                     showConfirmButton: false,
                     timer: 4000
                 });
+                $('#StoryTitle').val(' ');
+                $('#date').val(' ');
+                tinymce.get('storyEditor').setContent('');
+                $('#videoUrls').val(' ');
+                $('#img-output').empty();
                 $('#previewButton').addClass('disabled');
                 $('#submitButton').addClass('disabled');
             }
@@ -1534,18 +1623,6 @@ $('#ChangePasswordBtn').on('click', function () {
 
     }
 })
-
-//password show and hide in user profile 
-//$('.bi-eye-slash').on('click', function () {
-//    $(this).parent().find('input').attr('type', 'text');
-//    $(this).addClass('d-none');
-//    $(this).prev().removeClass('d-none');
-//})
-//$('.bi-eye-fill').on('click', function () {
-//    $(this).parent().find('input').attr('type', 'password');
-//    $(this).addClass('d-none');
-//    $(this).next().removeClass('d-none');
-//})
 
 //contact us form
 $("#ContactUsBtn").on('click', function () {

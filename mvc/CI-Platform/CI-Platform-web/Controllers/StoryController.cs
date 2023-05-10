@@ -1,5 +1,6 @@
 ﻿using CI_Platform.Entities.DataModels;
 using CI_Platform.Entities.ViewModels;
+using CI_Platform.Repository.Generic;
 using CI_Platform.Repository.Interface;
 using CI_Platform.Repository.Repository;
 using Microsoft.AspNetCore.Authorization;
@@ -238,6 +239,15 @@ namespace CI_Platform_web.Controllers
             };
 
             _db.StoryInvites.Add(storyInvite);
+            UserSetting? userSettingId = _db.UserSettings.Where(u => u.UserId == storyInvite.FromUserId && u.SettingId == (long)GenericEnum.notification.Recommended_Story).FirstOrDefault();
+            UserNotification userNotifications = new()
+            {
+                FromUserId = FromUserId,
+                ToUserId = ToUserId,
+                RecommendedStoryId = StoryId,
+                UserSettingId = userSettingId.UserSettingId
+            };
+            _db.UserNotifications.Add(userNotifications);
 
             var StoryInviteLink = Url.Action("StoryDetails", "Story", new { MissionId = MissionId, UserId = SPUserId }, Request.Scheme);
             viewmodel.InviteLink = StoryInviteLink;

@@ -43,17 +43,36 @@ namespace CI_Platform.Repository.Repository
                         missionApplication.ApprovalStatus = GenericEnum.ApplicationStatus.APPROVE.ToString();
                         missionApplication.UpdatedAt = DateTime.Now;
                         _db.MissionApplications.Update(missionApplication);
-                        _db.SaveChanges();
-                        return missionApplication.ApprovalStatus;
                     }
                     else
                     {
                         missionApplication.ApprovalStatus = GenericEnum.ApplicationStatus.DECLINE.ToString();
                         missionApplication.UpdatedAt = DateTime.Now;
-                        _db.MissionApplications.Update(missionApplication);
-                        _db.SaveChanges();
-                        return missionApplication.ApprovalStatus;
+                        _db.MissionApplications.Update(missionApplication);  
                     }
+
+                    UserSetting? userSettingId = _db.UserSettings.Where(u => u.UserId == missionApplication.UserId && u.SettingId == (long)GenericEnum.notification.Mission_Application_Approval).FirstOrDefault();
+
+                    if (_db.UserNotifications.Any(u => u.UserSettingId == userSettingId.UserSettingId && u.UpdatedAt == null && u.MissionApplicationId == MissionApplicationId))
+                    {
+                        UserNotification notification = _db.UserNotifications.FirstOrDefault(u => u.UserSettingId == userSettingId.UserSettingId && u.UpdatedAt == null && u.MissionApplicationId == MissionApplicationId);
+                        notification.Status = false;
+                        notification.CreatedAt = DateTime.Now;
+                    }
+                    else
+                    {
+                        UserNotification notification = new()
+                        {
+                            ToUserId = missionApplication.UserId,
+                            MissionApplicationId = MissionApplicationId,
+                            Status = false,
+                            CreatedAt = DateTime.Now,
+                            UserSettingId = userSettingId.UserSettingId
+                        };
+                        _db.UserNotifications.Add(notification);
+                    }
+                    _db.SaveChanges();
+                    return missionApplication.ApprovalStatus;
                 }
             }
             catch (Exception ex)
@@ -84,17 +103,37 @@ namespace CI_Platform.Repository.Repository
                         story.Status = GenericEnum.StoryStatus.PUBLISHED.ToString();
                         story.PublishedAt = DateTime.Now;
                         _db.Stories.Update(story);
-                        _db.SaveChanges();
-                        return story.Status;
                     }
                     else
                     {
                         story.Status = GenericEnum.StoryStatus.DECLINED.ToString();
                         story.UpdatedAt = DateTime.Now;
                         _db.Stories.Update(story);
-                        _db.SaveChanges();
-                        return story.Status;
                     }
+
+                    UserSetting? userSettingId = _db.UserSettings.Where(u => u.UserId == story.UserId && u.SettingId == (long)GenericEnum.notification.Story_Approval).FirstOrDefault()!;
+
+                    if (_db.UserNotifications.Any(u => u.UserSettingId == userSettingId.UserSettingId && u.UpdatedAt == null && u.StoryId == StoryId))
+                    {
+                        UserNotification notification = _db.UserNotifications.FirstOrDefault(u => u.UserSettingId == userSettingId.UserSettingId && u.UpdatedAt == null && u.StoryId == StoryId);
+                        notification.Status = false;
+                        notification.CreatedAt = DateTime.Now;
+                    }
+                    else
+                    {
+                        UserNotification notification = new()
+                        {
+                            ToUserId = story.UserId,
+                            StoryId = StoryId,
+                            Status = false,
+                            CreatedAt = DateTime.Now,
+                            UserSettingId = userSettingId.UserSettingId
+                        };
+                        _db.UserNotifications.Add(notification);
+                    }
+                    _db.SaveChanges();
+                    return story.Status;
+
                 }
             }
             catch (Exception ex)
@@ -155,17 +194,36 @@ namespace CI_Platform.Repository.Repository
                         comment.ApprovalStatus = GenericEnum.CommentStatus.PUBLISHED.ToString();
                         comment.UpdatedAt = DateTime.Now;
                         _db.Comments.Update(comment);
-                        _db.SaveChanges();
-                        return comment.ApprovalStatus;
                     }
                     else
                     {
                         comment.ApprovalStatus = GenericEnum.CommentStatus.DECLINED.ToString();
                         comment.UpdatedAt = DateTime.Now;
                         _db.Comments.Update(comment);
-                        _db.SaveChanges();
-                        return comment.ApprovalStatus;
                     }
+
+                    UserSetting? userSettingId = _db.UserSettings.Where(u => u.UserId == comment.UserId && u.SettingId == (long)GenericEnum.notification.Comment_Approval).FirstOrDefault();
+
+                    if (_db.UserNotifications.Any(u => u.UserSettingId == userSettingId.UserSettingId && u.UpdatedAt == null && u.CommentId == CommentId))
+                    {
+                        UserNotification notification = _db.UserNotifications.FirstOrDefault(u => u.UserSettingId == userSettingId.UserSettingId && u.UpdatedAt == null && u.CommentId == CommentId);
+                        notification.Status = false;
+                        notification.CreatedAt = DateTime.Now;
+                    }
+                    else
+                    {
+                        UserNotification notification = new()
+                        {
+                            ToUserId = comment.UserId,
+                            CommentId = CommentId,
+                            Status = false,
+                            CreatedAt = DateTime.Now,
+                            UserSettingId = userSettingId.UserSettingId
+                        };
+                        _db.UserNotifications.Add(notification);
+                    }
+                    _db.SaveChanges();
+                    return comment.ApprovalStatus;
                 }
             }
             catch (Exception ex)
@@ -195,17 +253,36 @@ namespace CI_Platform.Repository.Repository
                         timesheet.Status = GenericEnum.TimesheetStatus.APPROVED.ToString();
                         timesheet.UpdatedAt = DateTime.Now;
                         _db.Timesheets.Update(timesheet);
-                        _db.SaveChanges();
-                        return timesheet.Status;
                     }
                     else
                     {
                         timesheet.Status = GenericEnum.TimesheetStatus.DECLINED.ToString();
                         timesheet.UpdatedAt = DateTime.Now;
                         _db.Timesheets.Update(timesheet);
-                        _db.SaveChanges();
-                        return timesheet.Status;
                     }
+
+                    UserSetting? userSettingId = _db.UserSettings.Where(u => u.UserId == timesheet.UserId && u.SettingId == (long)GenericEnum.notification.Timesheet_Approval).FirstOrDefault();
+
+                    if (_db.UserNotifications.Any(u => u.UserSettingId == userSettingId.UserSettingId && u.UpdatedAt == null && u.TimesheetId == TimesheetId))
+                    {
+                        UserNotification notification = _db.UserNotifications.FirstOrDefault(u => u.UserSettingId == userSettingId.UserSettingId && u.UpdatedAt == null && u.TimesheetId == TimesheetId);
+                        notification.Status = false;
+                        notification.CreatedAt = DateTime.Now;
+                    }
+                    else
+                    {
+                        UserNotification notification = new()
+                        {
+                            ToUserId = timesheet.UserId,
+                            TimesheetId = TimesheetId,
+                            Status = false,
+                            CreatedAt = DateTime.Now,
+                            UserSettingId = userSettingId.UserSettingId
+                        };
+                        _db.UserNotifications.Add(notification);
+                    }
+                    _db.SaveChanges();
+                    return timesheet.Status;
                 }
             }
             catch (Exception ex)

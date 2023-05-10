@@ -653,10 +653,15 @@ namespace CI_Platform_web.Controllers
             // to Update 
             else
             {
-                bool returnvalue = _adminBanner.EditBanner(bannervm);
-                if (returnvalue)
+                string returnvalue = _adminBanner.EditBanner(bannervm);
+                if (returnvalue == "Updated")
                 {
                     TempData["success"] = "Banner " + Messages.Update;
+                    return RedirectToAction("Banner");
+                }
+                else if(returnvalue == "Exists")
+                {
+                    TempData["error"] = "Sort Order " + Messages.Exists;
                     return RedirectToAction("Banner");
                 }
                 else

@@ -70,4 +70,8 @@ public partial class Mission
     public virtual ICollection<Story> Stories { get; } = new List<Story>();
 
     public virtual ICollection<Timesheet> Timesheets { get; } = new List<Timesheet>();
+
+    public virtual ICollection<UserNotification> UserNotificationNewMissions { get; } = new List<UserNotification>();
+
+    public virtual ICollection<UserNotification> UserNotificationRecommendedMissions { get; } = new List<UserNotification>();
 }

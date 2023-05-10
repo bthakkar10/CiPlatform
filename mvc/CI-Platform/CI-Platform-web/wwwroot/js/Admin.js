@@ -116,6 +116,8 @@ $(document).on('click', '#EditBtnUserDataFetch', function () {
         success: function (result) {
             $('.table-responsive').empty();
             $('#AddNewUserForm').html(result);
+            $('#UserHiddenField#Password').attr('type', 'text');
+            $('#UserHiddenField').hide();
             const isEditMode = true; // or false
             $('#AddHeader .FormHeading span').text(isEditMode ? 'Edit' : 'Add');
         },

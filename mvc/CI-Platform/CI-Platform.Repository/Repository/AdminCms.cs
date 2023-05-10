@@ -20,7 +20,7 @@ namespace CI_Platform.Repository.Repository
 
         public List<CmsPage> CmsList()
         {
-            return _db.CmsPages.Where(cms => cms.DeletedAt == null).ToList();
+            return _db.CmsPages.Where(cms => cms.DeletedAt == null && cms.Status == true).ToList();
         }
 
         public bool CmsAdd(AdminCmsViewModel cmsvm)

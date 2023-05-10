@@ -45,6 +45,17 @@ namespace CI_Platform.Repository.Generic
             PENDING, 
             DECLINED
         }
+
+        public enum notification
+        {
+            Recommended_Mission = 1,
+            Recommended_Story = 2,
+            New_Mission = 3,
+            Story_Approval = 4,
+            Mission_Application_Approval = 5,
+            Comment_Approval = 6,
+            Timesheet_Approval = 7
+        }
        
     }
 }

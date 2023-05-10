@@ -71,7 +71,7 @@ a,li,button,h3 {
     display: none;
 }
 
-.dropdown-menu.show {
+.dropdown-menu-user.show {
     left: auto !important;
     top: 4rem;
 }
@@ -84,7 +84,10 @@ a,li,button,h3 {
 .dropdown-item{
     width:auto;
 }
-
+.notification-dropdown{
+    position:absolute!important;
+    left: 60% !important;
+}
 .main-navigation.active .sidebar {
     left: 0;
 }
@@ -395,10 +398,12 @@ a,li,button,h3 {
     .view {
         display: none !important;
     }
+   
 }
 .img-filter {
     display: none;
 }
+
 
 @media (max-width:767.98px) {
 
@@ -408,6 +413,10 @@ a,li,button,h3 {
 
     .filter-options {
         display: none;
+    }
+    .notification-dropdown {
+        position: absolute !important;
+        left: 30% !important;
     }
 }
 
@@ -789,54 +798,6 @@ a,li,button,h3 {
         }
 /* end drag drop css */
 
-/* ck editor */
-. /*options {
-    display: flex;
-    flex-wrap: wrap;
-     align-items: center; 
-    gap: 15px;
-}
-
-.buttons {
-    height: 28px;
-    width: 28px;
-    display: grid;
-    place-items: center;
-    border-radius: 3px;
-    border: none;
-    background-color: #f8f9fa;
-    outline: none;
-    color: #020929;
-}
-
-#text-input {
-    border: 1px solid #757575;
-    padding: 20px;
-    height: 30vh;
-}
-
-.end {
-    height: 20px;
-}
-
-.no-mission {
-    padding-top: 15px;
-    color: #757575;
-}
-
-    .no-mission li {
-        list-style: none;
-    }
-
-        .no-mission li a {
-            color: #333;
-            text-decoration: none;
-        }
-
-.dropdown-toggle::after {
-    margin-left: 9px !important;
-}*/
-/*share story page ends*/
 
 
 /*user profile page starts*/
@@ -986,6 +947,11 @@ tbody, td, tfoot, th, thead, tr {
         #grid-view {
             display: flex !important;
         }
+    /*.notification-dropdown {
+        position: absolute !important;
+        left: 50% !important;
+    }*/
+
     }
 
     @media (min-width: 992px) {
@@ -1004,6 +970,10 @@ tbody, td, tfoot, th, thead, tr {
         .navbar-expand-lg .navbar-nav {
             flex-direction: row;
             margin-right: 20rem;
+        }
+        .notification-dropdown {
+            position: absolute !important;
+            left: 60% !important;
         }
     }
 

@@ -18,6 +18,6 @@ namespace CI_Platform.Repository.Interface
 
         public AdminBannerViewModel GetBannerData(long BannerId);
 
-        public bool EditBanner(AdminBannerViewModel bannervm);
+        public string EditBanner(AdminBannerViewModel bannervm);
     }
 }

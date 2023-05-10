@@ -45,6 +45,7 @@ builder.Services.AddScoped<IAdminTheme, AdminTheme>();
 builder.Services.AddScoped<IAdminApproval, AdminApproval>();
 builder.Services.AddScoped<IAdminMission, AdminMission>();
 builder.Services.AddScoped<IAdminBanner, AdminBanner>();
+builder.Services.AddScoped<IUserNotifications, UserNotifications>();    
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
@@ -106,13 +107,13 @@ app.UseExceptionHandler(errorApp =>
 
         if (exceptionHandlerPathFeature?.Error is InvalidOperationException)
         {
-            if(context.Response.StatusCode == (int)HttpStatusCode.NotFound)
+            if (context.Response.StatusCode == (int)HttpStatusCode.NotFound)
             {
                 context.Response.Redirect("/Auth/PageNotFound");
             }
-            
+
         }
-      
+
     });
 });
 app.UseStatusCodePages(async context => {

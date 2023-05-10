@@ -1,5 +1,6 @@
 ﻿using CI_Platform.Entities.DataModels;
 using CI_Platform.Entities.ViewModels;
+using CI_Platform.Repository.Generic;
 using CI_Platform.Repository.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -72,15 +73,13 @@ namespace CI_Platform.Repository.Repository
                     };
                     _db.Missions.Add(missionAdd);
                     _db.SaveChanges();
-                    if(MissionType.Goal.ToString() == missionvm.MissionType)
+                    if (MissionType.Goal.ToString() == missionvm.MissionType)
                     {
                         AddOrRemoveGoalMission(missionAdd.MissionId, missionvm.GoalObjectiveText, missionvm.GoalValue);
                     }
-                    
                     if (missionvm.ImageList != null)
                     {
                         AddOrRemoveMissionImage(missionAdd.MissionId, missionvm.ImageList, missionvm.DefaultMissionImg);
-
                     }
                     if (missionvm.YoutubeUrl != null)
                     {
@@ -94,6 +93,23 @@ namespace CI_Platform.Repository.Repository
                     {
                         AddOrRemoveMissionSkills(missionAdd.MissionId, missionvm.UpdatedMissionSKills);
                     }
+                    List<long> userIds = _db.Users.Where(u => u.DeletedAt == null && u.Role == GenericEnum.Role.user.ToString()).Select(u => u.UserId).ToList();
+                    
+                    foreach (long userId in userIds)
+                    {
+                        UserSetting? userSettingId = _db.UserSettings.Where(u => u.UserId == userId && u.SettingId == (long)GenericEnum.notification.New_Mission).FirstOrDefault()!;
+                        UserNotification notification = new()
+                        {
+                            ToUserId = userId,
+                            NewMissionId = missionAdd.MissionId,
+                            Status = false,
+                            CreatedAt = DateTime.Now,
+                            UserSettingId = userSettingId.UserSettingId
+                        };
+                        _db.UserNotifications.Add(notification);
+                        _db.SaveChanges();
+                    }
+                   
                     return "Added";
                 }
                 else
@@ -310,6 +326,8 @@ namespace CI_Platform.Repository.Repository
             }
             catch (Exception) { return false; }
         }
+
+       
 
         public AdminMissionViewModel GetMission(long MissionId)
         {

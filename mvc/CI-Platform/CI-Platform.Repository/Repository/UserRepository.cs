@@ -39,7 +39,6 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                //string? passwordHash = "";
                 if (obj != null) 
                 {
                     User user = new()
@@ -53,6 +52,15 @@ namespace CI_Platform.Repository.Repository
                         Status = true,
                     };
                     _db.Users.Add(user);
+
+                    UserSetting userSetting = new UserSetting();
+                    for(int i = 1; i <= 7; i++)
+                    {
+                        userSetting.SettingId = i;
+                        userSetting.UserId = user.UserId;
+                        userSetting.IsEnabled= true;
+                    }
+                    _db.Add(userSetting);
                     _db.SaveChanges();  
                 }
                 return true;    

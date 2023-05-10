@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using CI_Platform.Repository.Generic;
+using System.Web.Mvc;
 
 namespace CI_Platform.Repository.Repository
 {
@@ -25,10 +26,10 @@ namespace CI_Platform.Repository.Repository
 
         public PageListViewModel.PageList<MissionListViewModel> FilterOnMission(MissionFilterQueryParams queryParams, long UserId)
         {
-            var query = _db.Missions.Where(m => m.DeletedAt == null).AsQueryable();
+            var query = _db.Missions.Where(m => m.DeletedAt == null && m.Status==true).AsQueryable();
             List<User> user = _db.Users.Where(user => user.DeletedAt == null && user.UserId != UserId).Include(m => m.MissionInviteFromUsers).Include(m => m.MissionInviteToUsers).ToList();
-             
-            
+
+
             var topThemes = _db.Missions
                             .Where(mission => mission.DeletedAt == null && mission.Status == true && mission.MissionTheme.Status == 1 && mission.MissionTheme.DeletedAt == null)
                             .GroupBy(mission => mission.MissionThemeId)
@@ -130,6 +131,22 @@ namespace CI_Platform.Repository.Repository
                         break;
                     case 4: // random missions
                         MissionCardQuery = MissionCardQuery.Take(5);
+                        //var rand = new Random();
+                        //var numMissions = 5; // the number of random missions to generate
+                        //var availableMissions = MissionCardQuery().SelectMany(mcq => mcq.Chunk).ToList();
+                        //var randomMissions = new List<Mission>();
+
+                        //for (int i = 0; i < numMissions && availableMissions.Count > 0; i++)
+                        //{
+                        //    var index = rand.Next(availableMissions.Count);
+                        //    var mission = availableMissions[index];
+                        //    randomMissions.Add(mission);
+                        //    availableMissions.RemoveAt(index);
+                        //}
+                        //MissionCardQuery = randomMissions;
+                        //var rand = new Random();
+                        //var user = users[rand.Next(users.Count)];
+                        //MissionCardQuery = MissionCardQuery[rand.Next(MissionCardQuery.Chunk)].Take(5);
                         break;
                 }
             };
@@ -142,6 +159,8 @@ namespace CI_Platform.Repository.Repository
             return new PageListViewModel.PageList<MissionListViewModel>(records, totalRecords, queryParams.pageNo);
 
         }
+
+        
 
         public string AddToFavourites(long UserId, long MissionId)
         {
@@ -171,45 +190,56 @@ namespace CI_Platform.Repository.Repository
 
         public byte Ratings(byte rating, long MissionId, long UserId)
         {
-
-            var alreadyRated = _db.MissionRatings.SingleOrDefault(mr => mr.MissionId == MissionId && mr.UserId == UserId && mr.DeletedAt == null && mr.User.DeletedAt == null && mr.Mission.DeletedAt == null);
-
-            if (alreadyRated != null)
+            bool IsAlreadyApplied = _db.MissionApplications.Any(ma => ma.UserId == UserId && ma.MissionId == MissionId && ma.User.DeletedAt == null && ma.User.Status == true && ma.ApprovalStatus == GenericEnum.ApplicationStatus.APPROVE.ToString());
+            if (IsAlreadyApplied)
             {
-                alreadyRated.Rating = rating;
-                _db.SaveChanges();
+                var alreadyRated = _db.MissionRatings.SingleOrDefault(mr => mr.MissionId == MissionId && mr.UserId == UserId && mr.DeletedAt == null && mr.User.DeletedAt == null && mr.Mission.DeletedAt == null);
+
+                if (alreadyRated != null)
+                {
+                    alreadyRated.Rating = rating;
+                    _db.SaveChanges();
+                }
+                else
+                {
+
+                    MissionRating newRating = new()
+                    {
+                        UserId = UserId,
+                        MissionId = MissionId,
+                        Rating = rating
+                    };
+                    _db.MissionRatings.Add(newRating);
+                    _db.SaveChanges();
+                }
+
+                return rating;
             }
             else
             {
-
-                MissionRating newRating = new()
-                {
-                    UserId = UserId,
-                    MissionId = MissionId,
-                    Rating = rating
-                };
-                _db.MissionRatings.Add(newRating);
-                _db.SaveChanges();
+                return 0;
             }
 
-            return rating;
         }
         public (int rating, int VolunteersRated) GetMissionRating(long missionId)
         {
-            int rating = (int)_db.MissionRatings.Where(rate => rate.MissionId == missionId).Average(rate=>rate.Rating);
+            int rating = (int)_db.MissionRatings.Where(rate => rate.MissionId == missionId).Average(rate => rate.Rating);
             int VolunteersRated = (int)_db.MissionRatings.Where(rate => rate.MissionId == missionId).Count();
             return (rating, VolunteersRated);
         }
 
         public bool AddComment(string comment, long MissionId, long UserId)
         {
-            try
+            bool isAlreadyApplied = _db.MissionApplications.Any(ma => ma.MissionId == MissionId && ma.UserId == UserId && ma.User.DeletedAt == null && ma.User.Status == true&&ma.ApprovalStatus==GenericEnum.ApplicationStatus.APPROVE.ToString());
+            if (isAlreadyApplied)
             {
                 if (comment != null)
                 {
                     Comment newComment = new() { UserId = UserId, MissionId = MissionId, CommentText = comment };
                     _db.Comments.Add(newComment);
                     _db.SaveChanges();
+
+                    
                     return true;
                 }
                 else
@@ -217,7 +247,7 @@ namespace CI_Platform.Repository.Repository
                     return false;
                 }
             }
-            catch (Exception)
+            else
             {
                 return false;
             }

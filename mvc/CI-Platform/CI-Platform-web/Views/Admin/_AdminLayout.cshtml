@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.bootstrap5.min.css">
 
     @*swiper*@
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
 
 </head>
 
@@ -111,15 +111,15 @@
                     <span class="link hide">Banner Management</span>
                 </a>
             </li>
-            <li class="tooltip-element" data-tooltip="8">
+            @*<li class="tooltip-element" data-tooltip="8">
                 <a asp-controller="Admin" asp-action="MissionComments" data-active="8" class="nav-link">
                     <div class="icon">
                         <i class="fa-solid fa-comment"></i>
                     </div>
                     <span class="link hide">Mission Comments</span>
                 </a>
-            </li>
-            <li class="tooltip-element" data-tooltip="9">
+            </li>*@
+            <li class="tooltip-element" data-tooltip="8">
                 <a asp-controller="Admin" asp-action="Timesheet" data-active="9" class="nav-link">
                     <div class="icon">
                         <i class="fa-thin fa-file-lines"></i>
@@ -137,7 +137,7 @@
                 <span> Applications</span>
                 <span>Story</span>
                 <span>Banner</span>
-                <span>Comments</span>
+                @*<span>Comments</span>*@
                 <span>Timesheet</span>
             </div>
         </ul>

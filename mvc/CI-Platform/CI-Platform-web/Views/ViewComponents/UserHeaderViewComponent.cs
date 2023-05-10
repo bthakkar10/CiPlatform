@@ -40,7 +40,7 @@ namespace CI_Platform_web.Views.ViewComponents
                     Username = UserModel.FirstName + " " + UserModel.LastName;
                     Avtar = UserModel.Avtar!;
                     Role = UserModel.Role!;
-                    //Status = UserModel.Status;
+                   
                 }
             }
             HeaderViewModel vm = new()
@@ -49,8 +49,7 @@ namespace CI_Platform_web.Views.ViewComponents
                 UserId = UserId,
                 Avtar = Avtar,
                 Email = Email,
-                Role = Role!,
-                //Status = Status,
+                Role = Role!, 
             };
             return View(viewName, vm);  
         }

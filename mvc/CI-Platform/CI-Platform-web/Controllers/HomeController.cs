@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
 using PublicResXFileCodeGenerator;
+using CI_Platform.Repository.Generic;
 //using System.Web.Mvc;
 
 namespace CI_Platform_web.Controllers
@@ -30,8 +31,9 @@ namespace CI_Platform_web.Controllers
         private readonly IMissionDetail _missionDetail;
         private readonly CiDbContext _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IUserNotifications _userNotifications;
  
-        public HomeController(ILogger<HomeController> logger,  IMissionDisplay missionDisplay, CiDbContext db, IFilter filterMission, IMissionDetail missionDetail, IHttpContextAccessor httpContextAccessor)
+        public HomeController(ILogger<HomeController> logger,  IMissionDisplay missionDisplay, CiDbContext db, IFilter filterMission, IMissionDetail missionDetail, IHttpContextAccessor httpContextAccessor, IUserNotifications userNotifications)
         {
             
             _logger = logger;
@@ -39,6 +41,7 @@ namespace CI_Platform_web.Controllers
             _missionDisplay = missionDisplay;
             _missionDetail = missionDetail;
             _db = db;
+            _userNotifications = userNotifications; 
             _httpContextAccessor = httpContextAccessor;
             string authorizationHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
             string token = authorizationHeader?.Substring("Bearer ".Length).Trim();
@@ -51,12 +54,11 @@ namespace CI_Platform_web.Controllers
                 var customClaimValue = JsonSerializer.Deserialize<User>(customClaimString);
                  UserId = customClaimValue.UserId;
             }
-           
         }
 
 
         //get method for homepage
-        [CountryCityValidationFilter]
+       
         public IActionResult HomePage()
         {
             var vm = new PageListViewModel();
@@ -109,6 +111,50 @@ namespace CI_Platform_web.Controllers
             return Json(vm.City);
         }
 
+        //get all the notifications of a user 
+        public IActionResult GetNotification()
+        {
+            NotificationViewModel vm = new()
+            {
+                userNotifications = _userNotifications.GetNotificationList(UserId),
+                UserNotificationSetting = _userNotifications.userSettings(UserId),
+                count = _userNotifications.GetNotificationList(UserId).Count(),
+            };
+            return PartialView("_NotificationSection", vm);
+        }
+
+        public int CountNotification()
+        {
+           int count = _userNotifications.GetNotificationList(UserId).Count();
+           return count;
+        }
+
+        //notification clear all
+        public IActionResult ClearNotification()
+        {
+            _userNotifications.ClearNotification(UserId);
+            return Ok();
+        }
+
+        public IActionResult ChangeNotificationStatus(long NotificationId)
+        {
+            _userNotifications.ChangeNotificationStatus(NotificationId);
+            return Ok();
+        }
+
+        public IActionResult NotificationSettings(long[] settingsArr)
+        {
+            if(_userNotifications.NotificationSettings(settingsArr, UserId))
+            {
+                return Ok(new { icon = "success", message = "Notification Settings " + Messages.Update });
+            }
+            else
+            {
+                return Ok(new { icon = "success", message = Messages.Error });
+            }
+
+        }
+
         //get method for mission details page
         [AllowAnonymous]
         public IActionResult MissionDetail(int MissionId)
@@ -135,7 +181,6 @@ namespace CI_Platform_web.Controllers
                     ApprovedComments = _missionDetail.GetApprovedComments(MissionId),
                     RecentVolunteers = _missionDetail.GetRecentVolunteers(MissionId, userId),
                     RelatedMissions = _missionDetail.GetRelatedMissions(MissionId, userId),
-                    //RelatedMissions = _missionDetail.GetRelatedMissions(MissionId),
                     UserList = _missionDetail.UserList(userId, MissionId),
                     totalVolunteers = _missionDetail.GetRecentVolunteers(MissionId, userId).Count()
                 };
@@ -196,11 +241,11 @@ namespace CI_Platform_web.Controllers
 
             if(_missionDisplay.AddComment(comment, missionId, userId))
             {
-                return Ok(new { icon = "success", message = "Comment added successfully and will be displayed after approval!!" });
+                return Ok(new { icon = "success", message = "Comment  " + Messages.Add});
             }
             else
             {
-                return Ok(new { icon = "error", message = Messages.Error });
+                return Ok(new { icon = "error", message = "Please Apply First!!" });
             }
         }
 
@@ -219,7 +264,7 @@ namespace CI_Platform_web.Controllers
         {
             string Id = HttpContext.Session.GetString("Id");
             long userId = long.Parse(Id);
-            var coworkers= _db.Users.Where(u => u.UserId != userId && u.DeletedAt==null && u.Status==true && !u.MissionApplications.Any(m => m.MissionId == MissionId && m.ApprovalStatus == "APPROVE")).ToList();
+            var coworkers= _db.Users.Where(u => u.UserId != userId && u.DeletedAt==null && u.Status==true && u.Role==GenericEnum.Role.user.ToString() && !u.MissionApplications.Any(m => m.MissionId == MissionId && m.ApprovalStatus == "APPROVE")).ToList();
             return Json(coworkers);  
         }
 
@@ -235,7 +280,15 @@ namespace CI_Platform_web.Controllers
             };
 
             _db.MissionInvites.Add(missionInvite);
-
+            UserSetting? userSettingId = _db.UserSettings.Where(u => u.UserId == missionInvite.FromUserId && u.SettingId == (long)GenericEnum.notification.Recommended_Mission).FirstOrDefault();
+            UserNotification userNotification = new()
+            {
+                FromUserId = FromUserId,
+                ToUserId = ToUserId,
+                RecommendedMissionId = MissionId,
+                UserSettingId = userSettingId.UserSettingId
+            };
+            _db.UserNotifications.Add(userNotification);
             var MissionLink = Url.Action("MissionDetail", "Home", new { MissionId = MissionId }, Request.Scheme);
             viewmodel.link = MissionLink;
 

@@ -10,9 +10,6 @@ namespace CI_Platform.Repository.Interface
 {
     public interface IMissionDisplay
     {
-       
-        //public IEnumerable<Mission> DisplayMissionCardsDemo(List<long> MissionIds);
-
         public PageListViewModel.PageList<MissionListViewModel> FilterOnMission(MissionFilterQueryParams queryParams, long UserId);
 
         public string AddToFavourites(long MissionId, long UserId);

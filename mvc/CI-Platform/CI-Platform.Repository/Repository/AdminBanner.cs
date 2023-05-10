@@ -51,7 +51,6 @@ namespace CI_Platform.Repository.Repository
                         using var stream = new FileStream(filePath, FileMode.Create);
                         bannervm.UpdatedImg.CopyTo(stream);
                     }
-
                     _db.Banners.Add(banner);
                     _db.SaveChanges();
                     return "Added";
@@ -98,8 +97,12 @@ namespace CI_Platform.Repository.Repository
             return bannervm;
         }
 
-        public bool EditBanner(AdminBannerViewModel bannervm)
+        public string EditBanner(AdminBannerViewModel bannervm)
         {
+            if (_db.Banners.FirstOrDefault(banner => banner.SortOrder == bannervm.sortOrder) != null)
+            {
+                return "Exists";
+            }
             Banner banner = _db.Banners.Find(bannervm.BannerId)!;
             if (banner != null)
             {
@@ -124,11 +127,11 @@ namespace CI_Platform.Repository.Repository
 
                 _db.Banners.Update(banner);
                 _db.SaveChanges();
-                return true;
+                return "Updated";
             }
             else
             {
-                return false;
+                return "Error";
             }
 
         }
