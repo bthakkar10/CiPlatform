@@ -1,9 +1,12 @@
-﻿@{
-    //var Id = ViewBag.Id;
-    var email = ViewBag.email;
-    var Username = ViewBag.Username;
-    var Avtar = ViewBag.Avtar;
-    var Id = Convert.ToInt64(ViewBag.UserId);
+﻿@using System.Text.Json;
+@using CI_Platform.Entities.DataModels;
+@{
+    var customClaimForUser = User?.FindFirst("CustomClaimForUser")?.Value;
+    var customClaimValue = JsonSerializer.Deserialize<User>(customClaimForUser);
+    var Id = customClaimValue.UserId;
+    var email = customClaimValue.Email;
+    var Username = customClaimValue.FirstName + " " + customClaimValue.LastName;
+    //var Id = Convert.ToInt64(ViewBag.UserId);
 }
 
 <!DOCTYPE html>
@@ -30,7 +33,7 @@
 </head>
 
 <body style="display:flex; flex-direction:column; min-height:100vh;">
-
+  
 
     <header>
 
@@ -170,6 +173,9 @@
 
     <main role="main" style="flex:auto;">
         <partial name="_Notification" />
+        <div class="ajax-loader">
+            <img src="~/images/loader-img.gif" class="img-responsive" />
+        </div>
         @RenderBody()
     </main>
 

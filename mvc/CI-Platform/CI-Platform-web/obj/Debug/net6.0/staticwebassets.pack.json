@@ -29,12 +29,12 @@
       "PackagePath": "staticwebassets\\documents\\31793c1c_26f15f81_SQL cheat sheet.pdf"
     },
     {
-      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\documents\\33dc65d1_CI-Good to have.pdf",
-      "PackagePath": "staticwebassets\\documents\\33dc65d1_CI-Good to have.pdf"
-    },
-    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\documents\\4bf5d9a1_89905e57_.Net Coding Standards.pdf",
       "PackagePath": "staticwebassets\\documents\\4bf5d9a1_89905e57_.Net Coding Standards.pdf"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\documents\\5720f2e7_33dc65d1_CI-Good to have.pdf",
+      "PackagePath": "staticwebassets\\documents\\5720f2e7_33dc65d1_CI-Good to have.pdf"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\documents\\64cc8d70_CI-Good to have.pdf",
@@ -245,10 +245,6 @@
       "PackagePath": "staticwebassets\\images\\Upload\\Mission\\177d9fde_animal-welfare-4.jpg"
     },
     {
-      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\25734d27_animal-rescue.jpg",
-      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\25734d27_animal-rescue.jpg"
-    },
-    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\4dbdaaee_Plantation-and-Afforestation-programme-1.png",
       "PackagePath": "staticwebassets\\images\\Upload\\Mission\\4dbdaaee_Plantation-and-Afforestation-programme-1.png"
     },
@@ -259,10 +255,6 @@
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\5a609803_930aa3c1_01c11b87_7ef1569c_88d081b3_Feed-the-homeless1.jpg",
       "PackagePath": "staticwebassets\\images\\Upload\\Mission\\5a609803_930aa3c1_01c11b87_7ef1569c_88d081b3_Feed-the-homeless1.jpg"
-    },
-    {
-      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\61348514_animal-welfare-2.jpg",
-      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\61348514_animal-welfare-2.jpg"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\6222fc47_Feed-the-homeless.jpg",
@@ -289,8 +281,16 @@
       "PackagePath": "staticwebassets\\images\\Upload\\Mission\\80eb97d5_animal-welfare-6.jpg"
     },
     {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\82193176_25734d27_animal-rescue.jpg",
+      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\82193176_25734d27_animal-rescue.jpg"
+    },
+    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\830f477c_7475f7fa_Women-Empowerment.jpg",
       "PackagePath": "staticwebassets\\images\\Upload\\Mission\\830f477c_7475f7fa_Women-Empowerment.jpg"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\8ad1911e_61348514_animal-welfare-2.jpg",
+      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\8ad1911e_61348514_animal-welfare-2.jpg"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\90a0f3aa_Nourish-the-Children-in--African-country.png",
@@ -357,10 +357,6 @@
       "PackagePath": "staticwebassets\\images\\Upload\\Mission\\community-cleanup2.jpg"
     },
     {
-      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\d4b8dea6_assist-with-disaster-relief.jpeg",
-      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\d4b8dea6_assist-with-disaster-relief.jpeg"
-    },
-    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\e20d4702_200ec6c6_entrepreneurship.jpg",
       "PackagePath": "staticwebassets\\images\\Upload\\Mission\\e20d4702_200ec6c6_entrepreneurship.jpg"
     },
@@ -373,12 +369,16 @@
       "PackagePath": "staticwebassets\\images\\Upload\\Mission\\e879f25e_c8e1ebcb_womenempowerment.png"
     },
     {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\ea66715a_d4b8dea6_assist-with-disaster-relief.jpeg",
+      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\ea66715a_d4b8dea6_assist-with-disaster-relief.jpeg"
+    },
+    {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\f4be8bf1_animal-rescue.jpg",
       "PackagePath": "staticwebassets\\images\\Upload\\Mission\\f4be8bf1_animal-rescue.jpg"
     },
     {
-      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\f8c39018_Animal-welfare-&-save-birds-campaign-1.png",
-      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\f8c39018_Animal-welfare-&-save-birds-campaign-1.png"
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\f4df9043_f8c39018_Animal-welfare-&-save-birds-campaign-1.png",
+      "PackagePath": "staticwebassets\\images\\Upload\\Mission\\f4df9043_f8c39018_Animal-welfare-&-save-birds-campaign-1.png"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\Upload\\Mission\\home-for-homeless.jpg",
@@ -831,6 +831,10 @@
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\list.png",
       "PackagePath": "staticwebassets\\images\\list.png"
+    },
+    {
+      "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\loader-img.gif",
+      "PackagePath": "staticwebassets\\images\\loader-img.gif"
     },
     {
       "Id": "C:\\Users\\pct127\\Desktop\\CI-Platform-perfect\\CI-Platform-master\\mvc\\CI-Platform\\CI-Platform-web\\wwwroot\\images\\logo.png",

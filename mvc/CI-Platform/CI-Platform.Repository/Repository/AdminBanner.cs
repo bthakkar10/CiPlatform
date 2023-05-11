@@ -57,7 +57,18 @@ namespace CI_Platform.Repository.Repository
                 }
                 else
                 {
-                    return "Exists";
+                    if (DoesSortOrderExist != null && DoesSortOrderExist.DeletedAt == null)
+                    {
+                        return "Exists";
+                    }
+                    else
+                    {
+                        DoesSortOrderExist.DeletedAt = null!;
+                        DoesSortOrderExist.UpdatedAt = DateTime.Now;
+                        _db.Update(DoesSortOrderExist);
+                        _db.SaveChanges();
+                        return "Added";
+                    }
                 }
             }
                 
@@ -99,7 +110,7 @@ namespace CI_Platform.Repository.Repository
 
         public string EditBanner(AdminBannerViewModel bannervm)
         {
-            if (_db.Banners.FirstOrDefault(banner => banner.SortOrder == bannervm.sortOrder) != null)
+            if (_db.Banners.FirstOrDefault(banner => banner.SortOrder == bannervm.sortOrder && banner.BannerId != bannervm.BannerId) != null)
             {
                 return "Exists";
             }

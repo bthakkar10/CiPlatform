@@ -12,13 +12,15 @@ namespace CI_Platform.Repository.Interface
     {
         public List<CmsPage> CmsList();
 
-        public bool CmsAdd(AdminCmsViewModel cmsvm);
+        public List<CmsPage> CmsListUser();
+
+        public string CmsAdd(AdminCmsViewModel cmsvm);
 
         public bool CmsDelete(long CmsId);
 
         public AdminCmsViewModel GetCmsData(long CmsId);
 
-        public bool EditCms(AdminCmsViewModel cmsvm);
+        public string EditCms(AdminCmsViewModel cmsvm);
 
 
     }

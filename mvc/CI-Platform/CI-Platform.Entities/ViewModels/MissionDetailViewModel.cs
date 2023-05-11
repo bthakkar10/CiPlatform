@@ -9,7 +9,7 @@ namespace CI_Platform.Entities.ViewModels
 {
     public class MissionDetailViewModel
     {
-        public Mission MissionDetails { get; set; } = null!;
+        public Mission MissionDetails { get; set; } = new Mission();
 
         public List<Comment> ApprovedComments { get; set; } = null!;
 

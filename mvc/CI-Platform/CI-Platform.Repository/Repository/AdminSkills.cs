@@ -27,7 +27,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                Skill DoesSkillExist = _db.Skills.FirstOrDefault(skill => skill.SkillName!.ToLower() == skillvm.SkillName.ToLower())!;
+                Skill? DoesSkillExist = _db.Skills.FirstOrDefault(skill => skill.SkillName!.Trim().ToLower() == skillvm.SkillName.Trim().ToLower());
                 if (DoesSkillExist == null)
                 {
                     Skill skill = new()
@@ -102,7 +102,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                if (_db.Skills.FirstOrDefault(skill => skill.SkillName!.ToLower() == skillvm.SkillName!.ToLower() && skill.SkillId != skillvm.SkillId) != null)
+                if (_db.Skills.FirstOrDefault(skill => skill.SkillName!.Trim().ToLower() == skillvm.SkillName!.Trim().ToLower() && skill.SkillId != skillvm.SkillId) != null)
                 {
                     return "Exists";
                 }

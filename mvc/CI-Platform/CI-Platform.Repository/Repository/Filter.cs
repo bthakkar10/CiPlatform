@@ -27,12 +27,12 @@ namespace CI_Platform.Repository.Repository
         }
         public List<Skill> SkillList()
         {
-            return _db.Skills.Where(skills => skills.DeletedAt == null).ToList();
+            return _db.Skills.Where(skills => skills.DeletedAt == null && skills.Status == 1).ToList();
         }
 
         public List<MissionTheme> ThemeList()
         {
-            return _db.MissionThemes.Where(theme => theme.DeletedAt == null).ToList();
+            return _db.MissionThemes.Where(theme => theme.DeletedAt == null && theme.Status == 1).ToList();
         }
         
         public List<City> AllCityList()

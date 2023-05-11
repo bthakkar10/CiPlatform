@@ -56,6 +56,21 @@ namespace CI_Platform.Repository.Generic
             Comment_Approval = 6,
             Timesheet_Approval = 7
         }
-       
+
+        public enum MissionMediaType
+        {
+            img,
+            vid
+        }
+        public enum MissionMediaName
+        {
+            Mission_images,
+            Mission_video,
+        }
+        public enum MissionType
+        {
+            Time,
+            Goal
+        }
     }
 }

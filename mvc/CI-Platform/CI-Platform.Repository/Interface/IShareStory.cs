@@ -17,7 +17,7 @@ namespace CI_Platform.Repository.Interface
 
         public void EditDraftedStory(ShareStoryViewModel vm, long userId);
 
-        public void AddNewStory(ShareStoryViewModel vm, long userId);
+        public bool AddNewStory(ShareStoryViewModel vm, long userId);
 
         public void AddOrRemoveStoryUrls(long storyId, string[] url);
 

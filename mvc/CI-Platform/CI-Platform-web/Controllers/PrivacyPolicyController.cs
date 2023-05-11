@@ -21,8 +21,8 @@ namespace CI_Platform_web.Controllers
         {
             try
             {
-                PrivacyPolicyViewModel policyvm = new PrivacyPolicyViewModel();
-                policyvm.GetCmsPages = _adminCms.CmsList();
+                PrivacyPolicyViewModel policyvm = new();
+                policyvm.GetCmsPages = _adminCms.CmsListUser();
                 return View(policyvm);
 
             }

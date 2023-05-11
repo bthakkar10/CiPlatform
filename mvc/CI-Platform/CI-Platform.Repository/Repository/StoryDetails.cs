@@ -30,7 +30,8 @@ namespace CI_Platform.Repository.Repository
 
         public Story GetStoryDetails(long MissionId,long UserId)
         {
-            Story story =  _db.Stories.Where(s=>s.DeletedAt == null && s.User.DeletedAt == null && s.Mission.DeletedAt == null).
+      
+            Story story =  _db.Stories.Where(s=>s.DeletedAt == null && s.User.DeletedAt == null && s.Mission.DeletedAt == null && s.Mission.Status == true).
             Include(s => s.StoryMedia).
             Include(s => s.StoryInvites).
             Include(s => s.User).
@@ -38,7 +39,11 @@ namespace CI_Platform.Repository.Repository
             ThenInclude(su => su.Country).
             Where(s => s.MissionId == MissionId && s.UserId == UserId).
             FirstOrDefault()!;
-            return story;
+            if(story != null)
+            {
+                return story;
+            }
+            return new Story();
         }
 
         public List<User> UserList(long UserId)

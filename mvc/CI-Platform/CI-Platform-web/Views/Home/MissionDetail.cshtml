@@ -19,6 +19,8 @@
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
 
+@if(Model.MissionDetails.MissionId != 0)
+{
 <div class="container py-5">
     <div class="row volunteer-card">
         <div class="col-lg-6">
@@ -790,9 +792,14 @@
         </div>
     </div>
 
-</div>
+    </div>
+}
 
-
+else
+{
+    <partial name="PageNotFound"></partial>
+   
+}
 
 
 <script>

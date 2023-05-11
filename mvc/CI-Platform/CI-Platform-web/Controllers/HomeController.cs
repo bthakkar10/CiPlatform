@@ -172,7 +172,7 @@ namespace CI_Platform_web.Controllers
                   
                     ViewBag.Username = HttpContext.Session.GetString("Username");
                 }
-                ViewBag.MissionId = MissionId;
+
                 long userId = Convert.ToInt64(HttpContext.Session.GetString("Id"));
                   
                 MissionDetailViewModel vm = new()

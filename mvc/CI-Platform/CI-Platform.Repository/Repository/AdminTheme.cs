@@ -27,10 +27,10 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                MissionTheme DoesThemeExists = _db.MissionThemes.FirstOrDefault(theme => theme.Title!.ToLower() == themevm.ThemeName!.ToLower())!;
+                MissionTheme DoesThemeExists = _db.MissionThemes.FirstOrDefault(theme => theme.Title!.Trim().ToLower() == themevm.ThemeName!.Trim().ToLower())!;
                 if (DoesThemeExists == null)
                 {
-                    MissionTheme theme = new MissionTheme()
+                    MissionTheme theme = new()
                     {
                         Title = themevm.ThemeName,
                         Status = themevm.Status,
@@ -102,7 +102,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                if (_db.MissionThemes.FirstOrDefault(missiontheme => missiontheme.Title!.ToLower() == themevm.ThemeName!.ToLower() && missiontheme.MissionThemeId != themevm.ThemeId) != null)
+                if (_db.MissionThemes.FirstOrDefault(missiontheme => missiontheme.Title!.Trim().ToLower() == themevm.ThemeName!.Trim().ToLower() && missiontheme.MissionThemeId != themevm.ThemeId) != null)
                 {
                     return "Exists";
                 }

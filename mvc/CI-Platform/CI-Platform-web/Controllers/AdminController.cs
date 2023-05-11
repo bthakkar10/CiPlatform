@@ -178,10 +178,15 @@ namespace CI_Platform_web.Controllers
             //to add
             if (cmsvm.CmsId == 0)
             {
-                bool returnvalue = _adminCms.CmsAdd(cmsvm);
-                if (returnvalue)
+                string returnvalue = _adminCms.CmsAdd(cmsvm);
+                if (returnvalue == "Added")
                 {
                     TempData["success"] = "Privacy Page " + Messages.Add;
+                    return RedirectToAction("CmsPage");
+                }
+                else if(returnvalue == "Exists")
+                {
+                    TempData["error"] = "Privacy Page " + Messages.Exists;
                     return RedirectToAction("CmsPage");
                 }
                 else
@@ -193,10 +198,15 @@ namespace CI_Platform_web.Controllers
             // to Update 
             else
             {
-                bool returnvalue = _adminCms.EditCms(cmsvm);
-                if (returnvalue)
+                string returnvalue = _adminCms.EditCms(cmsvm);
+                if (returnvalue == "Updated")
                 {
                     TempData["success"] = "Privacy Policy " + Messages.Update;
+                    return RedirectToAction("CmsPage");
+                }
+                else if (returnvalue == "Exists")
+                {
+                    TempData["error"] = "Privacy Page " + Messages.Exists;
                     return RedirectToAction("CmsPage");
                 }
                 else
@@ -518,7 +528,7 @@ namespace CI_Platform_web.Controllers
         [HttpGet]
         public IActionResult AddOrUpdateMission()
         {
-            AdminMissionViewModel missionvm = new AdminMissionViewModel();
+            AdminMissionViewModel missionvm = new();
             missionvm.CityList = _filter.AllCityList().ToList();
             missionvm.CountryList = _filter.CountryList().ToList();
             missionvm.ThemeList = _filter.ThemeList().ToList();

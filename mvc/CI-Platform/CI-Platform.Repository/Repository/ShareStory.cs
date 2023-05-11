@@ -16,24 +16,24 @@ namespace CI_Platform.Repository.Repository
     public class ShareStory : IShareStory
     {
         private readonly CiDbContext _db;
-       
+
 
         public ShareStory(CiDbContext db)
         {
             _db = db;
 
         }
-     
+
         //get mission titles where user has applied
         public List<MissionApplication> GetMissionListofUser(long userId)
         {
-            return _db.MissionApplications.Where(m => m.UserId == userId && m.ApprovalStatus == GenericEnum.ApplicationStatus.APPROVE.ToString() && m.Mission.DeletedAt == null && m.Mission.StartDate < DateTime.Now).Include(m => m.Mission).ToList();
+            return _db.MissionApplications.Where(m => m.UserId == userId && m.ApprovalStatus == GenericEnum.ApplicationStatus.APPROVE.ToString() && m.Mission.DeletedAt == null && m.Mission.StartDate < DateTime.Now && m.Mission.Status == true && m.User.Status==true).Include(m => m.Mission).ToList();
         }
 
         //get the drafted story if there is any
         public Story GetDraftedStory(long userId, long missionId)
         {
-            Story? story =  _db.Stories.Where(s => s.MissionId == missionId && s.UserId == userId && s.Status == GenericEnum.StoryStatus.DRAFT.ToString() && s.DeletedAt == null && s.Mission.DeletedAt==null).Include(s => s.StoryMedia).Include(m=>m.Mission).FirstOrDefault();
+            Story? story = _db.Stories.Where(s => s.MissionId == missionId && s.UserId == userId && s.Status == GenericEnum.StoryStatus.DRAFT.ToString() && s.DeletedAt == null && s.Mission.DeletedAt == null && s.Mission.Status == true).Include(s => s.StoryMedia).Include(m => m.Mission).FirstOrDefault();
             return story!;
         }
 
@@ -64,30 +64,37 @@ namespace CI_Platform.Repository.Repository
         }
 
         //to add new story(user is adding a new story)
-        public void AddNewStory(ShareStoryViewModel vm, long userId)
+        public bool AddNewStory(ShareStoryViewModel vm, long userId)
         {
-            Story newStory = new()
+            if (vm.GetMissionListofUser != null)
             {
-                MissionId = vm.MissionId,
-                UserId = userId,
-                Title = vm.StoryTitle,
-                Description = vm.StoryDescription,
-                Status = GenericEnum.StoryStatus.DRAFT.ToString(),
-                PublishedAt = DateTime.Now,
-            };
-            _db.Add(newStory);
-            _db.SaveChanges();
 
-            Story story = GetDraftedStory(userId, vm.MissionId);
-            if (vm.VideoUrls != null)
-            {
-                AddOrRemoveStoryUrls(story.StoryId, vm.VideoUrls);
-            }
+                Story newStory = new()
+                {
+                    MissionId = vm.MissionId,
+                    UserId = userId,
+                    Title = vm.StoryTitle,
+                    Description = vm.StoryDescription,
+                    Status = GenericEnum.StoryStatus.DRAFT.ToString(),
+                    PublishedAt = DateTime.Now,
+                };
+                _db.Add(newStory);
+                _db.SaveChanges();
 
-            if (vm.Images != null)
-            {
-                AddOrRemoveStoryImages(story.StoryId, vm.Images);
+                Story story = GetDraftedStory(userId, vm.MissionId);
+                if (vm.VideoUrls != null)
+                {
+                    AddOrRemoveStoryUrls(story.StoryId, vm.VideoUrls);
+                }
+
+                if (vm.Images != null)
+                {
+                    AddOrRemoveStoryImages(story.StoryId, vm.Images);
+                }
+                return true;
             }
+            return false;
+
         }
 
         //for story urls updation
@@ -131,9 +138,9 @@ namespace CI_Platform.Repository.Repository
                 }
             }
             //to add 
-            foreach(var img in Images)
+            foreach (var img in Images)
             {
-                if( img != null)
+                if (img != null)
                 {
                     var ImgName = img.FileName;
                     var guid = Guid.NewGuid().ToString().Substring(0, 8);
@@ -141,7 +148,7 @@ namespace CI_Platform.Repository.Repository
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Upload/Story", fileName);
 
                     var newImage = new StoryMedium()
-                    { 
+                    {
                         StoryId = storyId,
                         Type = GenericEnum.StoryMediaType.images.ToString(),
                         Path = fileName,
@@ -198,13 +205,13 @@ namespace CI_Platform.Repository.Repository
         {
             List<DateTime> result = new List<DateTime>();
 
-            var mission = _db.Missions.Where(m=>m.MissionId == MissionId && m.DeletedAt == null).Select(m=> new {m.StartDate, m.EndDate}).FirstOrDefault()!;
+            var mission = _db.Missions.Where(m => m.MissionId == MissionId && m.DeletedAt == null).Select(m => new { m.StartDate, m.EndDate }).FirstOrDefault()!;
 
-            if(mission.StartDate != null )
+            if (mission.StartDate != null)
             {
                 result.Add(mission.StartDate.Value);
             }
-            if(mission.EndDate != null )
+            if (mission.EndDate != null)
             {
                 result.Add(mission.EndDate.Value);
             }

@@ -14,6 +14,12 @@ var UserCity = $('#UserCityDefault').text()
 //pill.append(closeIcon);
 
 //global
+
+//$('.ajax-loader').bind('ajaxStart', function () {
+//    $(this).css("visibility", "visible");
+//}).bind('ajaxStop', function () {
+//    $(this).css("visibility", "hidden");
+//});
 var currentUrl = window.location.href;
 if (currentUrl.includes("HomePage")) {
     FilterSortPaginationSearch(1);
@@ -179,9 +185,12 @@ function FilterSortPaginationSearch(pageNo) {
     let queryData = {
         CountryId: CountryId, CityIds: CityId, ThemeIds: ThemeId, SkillIds: SkillId, SearchText: SearchText, sortCase: sortCase, pageNo: pageNo, pagesize: pagesize, ExploreCase: ExploreCase
     }
-
+    
     $.ajax({
         type: 'POST',
+        beforeSend: function () {
+            $('.ajax-loader').css("visibility", "visible");
+        },
         url: '/Home/HomePage',
         data: queryData,
         success: function (data) {
@@ -305,6 +314,9 @@ function FilterSortPaginationSearch(pageNo) {
                 }
                 FilterSortPaginationSearch(pageNo);
             }));
+        },
+        complete: function () {
+            $('.ajax-loader').css("visibility", "hidden");
         },
         error: function (error) {
             console.log(error)

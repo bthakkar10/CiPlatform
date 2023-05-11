@@ -166,7 +166,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                if (_db.FavouriteMissions.Any(fm => fm.MissionId == MissionId && fm.UserId == UserId && fm.User!.DeletedAt == null && fm.Mission!.DeletedAt == null))
+                if (_db.FavouriteMissions.Any(fm => fm.MissionId == MissionId && fm.UserId == UserId && fm.User!.DeletedAt == null &&fm.User.Status == true && fm.Mission!.DeletedAt == null && fm.Mission.Status==true))
                 {
                     // Mission is already in favorites, return an error message or redirect back to the mission page
                     var FavouriteMissionId = _db.FavouriteMissions.Where(fm => fm.MissionId == MissionId && fm.UserId == UserId).FirstOrDefault()!;
@@ -193,7 +193,7 @@ namespace CI_Platform.Repository.Repository
             bool IsAlreadyApplied = _db.MissionApplications.Any(ma => ma.UserId == UserId && ma.MissionId == MissionId && ma.User.DeletedAt == null && ma.User.Status == true && ma.ApprovalStatus == GenericEnum.ApplicationStatus.APPROVE.ToString());
             if (IsAlreadyApplied)
             {
-                var alreadyRated = _db.MissionRatings.SingleOrDefault(mr => mr.MissionId == MissionId && mr.UserId == UserId && mr.DeletedAt == null && mr.User.DeletedAt == null && mr.Mission.DeletedAt == null);
+                var alreadyRated = _db.MissionRatings.SingleOrDefault(mr => mr.MissionId == MissionId && mr.UserId == UserId && mr.DeletedAt == null && mr.User.DeletedAt == null && mr.Mission.DeletedAt == null && mr.Mission.Status == true && mr.User.Status == true );
 
                 if (alreadyRated != null)
                 {
@@ -257,7 +257,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                MissionApplication AlreadyApplied = _db.MissionApplications.FirstOrDefault(m => m.MissionId == MissionId && m.UserId == UserId && m.DeletedAt == null)!;
+                MissionApplication AlreadyApplied = _db.MissionApplications.FirstOrDefault(m => m.MissionId == MissionId && m.UserId == UserId &&m.User.Status == true && m.DeletedAt == null)!;
                 if (AlreadyApplied == null)
                 {
                     MissionApplication missionApplication = new()
@@ -266,7 +266,7 @@ namespace CI_Platform.Repository.Repository
                         UserId = UserId,
                         AppliedAt = DateTime.Now,
                         CreatedAt = DateTime.Now,
-                        ApprovalStatus = "PENDING"
+                        ApprovalStatus = GenericEnum.ApplicationStatus.PENDING.ToString(),  
                     };
                     _db.Add(missionApplication);
                     _db.SaveChanges();
@@ -275,7 +275,7 @@ namespace CI_Platform.Repository.Repository
                 else
                 {
                     //if status is declined and user applies again it should be changed to pending again
-                    AlreadyApplied.ApprovalStatus = "PENDING";
+                    AlreadyApplied.ApprovalStatus = GenericEnum.ApplicationStatus.PENDING.ToString();
                     AlreadyApplied.UpdatedAt = DateTime.Now;
                     _db.MissionApplications.Update(AlreadyApplied);
                     _db.SaveChanges();

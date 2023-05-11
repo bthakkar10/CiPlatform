@@ -20,21 +20,7 @@ namespace CI_Platform.Repository.Repository
     {
         private readonly CiDbContext _db;
 
-        enum MediaType
-        {
-            img,
-            vid
-        }
-        enum MediaName
-        {
-            Mission_images,
-            Mission_video,
-        }
-        enum MissionType
-        {
-            Time,
-            Goal
-        }
+       
 
         public AdminMission(CiDbContext db)
         {
@@ -49,7 +35,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                Mission DoesMissionExist = _db.Missions.Where(mission => mission.Title == missionvm.MissionTitle).FirstOrDefault()!;
+                Mission DoesMissionExist = _db.Missions.Where(mission => mission.Title.Trim().ToLower() == missionvm.MissionTitle.Trim().ToLower()).FirstOrDefault()!;
                 if (DoesMissionExist == null)
                 {
                     Mission missionAdd = new()
@@ -66,14 +52,14 @@ namespace CI_Platform.Repository.Repository
                         OrganizationName = missionvm.OrganizationName,
                         OrganizationDetail = missionvm.OrganizationDetail,
                         Availability = missionvm.Avaliablity,
-                        TotalSeats = (missionvm.MissionType == MissionType.Time.ToString()) ? missionvm.TotalSeats : null,
+                        TotalSeats = (missionvm.MissionType == GenericEnum.MissionType.Time.ToString()) ? missionvm.TotalSeats : null,
                         Status =  missionvm.Status,
-                        Deadline = (missionvm.MissionType == MissionType.Time.ToString()) ? missionvm.Deadline : null,
+                        Deadline = (missionvm.MissionType == GenericEnum.MissionType.Time.ToString()) ? missionvm.Deadline : null,
                         CreatedAt = DateTime.Now,
                     };
                     _db.Missions.Add(missionAdd);
                     _db.SaveChanges();
-                    if (MissionType.Goal.ToString() == missionvm.MissionType)
+                    if (GenericEnum.MissionType.Goal.ToString() == missionvm.MissionType)
                     {
                         AddOrRemoveGoalMission(missionAdd.MissionId, missionvm.GoalObjectiveText, missionvm.GoalValue);
                     }
@@ -93,21 +79,29 @@ namespace CI_Platform.Repository.Repository
                     {
                         AddOrRemoveMissionSkills(missionAdd.MissionId, missionvm.UpdatedMissionSKills);
                     }
+                    //to add users in user_notification also to send notification about the newly added mission
                     List<long> userIds = _db.Users.Where(u => u.DeletedAt == null && u.Role == GenericEnum.Role.user.ToString()).Select(u => u.UserId).ToList();
                     
                     foreach (long userId in userIds)
                     {
                         UserSetting? userSettingId = _db.UserSettings.Where(u => u.UserId == userId && u.SettingId == (long)GenericEnum.notification.New_Mission).FirstOrDefault()!;
-                        UserNotification notification = new()
+                  
+                        UserSkill[] userskills = _db.UserSkills.Where(u=>u.UserId == userId && u.DeletedAt == null).ToArray();
+                        MissionSkill[] missionSkills = _db.MissionSkills.Where(ms=>ms.MissionId == missionAdd.MissionId).ToArray();
+                        if (userSettingId != null && (userSettingId.User?.Availability ==  missionAdd.Availability || missionSkills.Any(ms => userskills.Any(us => us.SkillId == ms.SkillId))))
                         {
-                            ToUserId = userId,
-                            NewMissionId = missionAdd.MissionId,
-                            Status = false,
-                            CreatedAt = DateTime.Now,
-                            UserSettingId = userSettingId.UserSettingId
-                        };
-                        _db.UserNotifications.Add(notification);
-                        _db.SaveChanges();
+                            UserNotification notification = new()
+                            {
+                                ToUserId = userId,
+                                NewMissionId = missionAdd.MissionId,
+                                Status = false,
+                                CreatedAt = DateTime.Now,
+                                UserSettingId = userSettingId.UserSettingId
+                            };
+                            _db.UserNotifications.Add(notification);
+                            _db.SaveChanges();
+                        }
+                        
                     }
                    
                     return "Added";
@@ -167,7 +161,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                var media = _db.MissionMedia.Where(missionmedia => missionmedia.MissionId == MissionId && missionmedia.MediaType != "vid");
+                var media = _db.MissionMedia.Where(missionmedia => missionmedia.MissionId == MissionId && missionmedia.MediaType != GenericEnum.MissionMediaType.vid.ToString());
 
                 //to remove images if any 
                 foreach (var img in media)
@@ -194,8 +188,8 @@ namespace CI_Platform.Repository.Repository
                         {
                             MissionId = MissionId,
                             MediaPath = fileName,
-                            MediaType = MediaType.img.ToString(),
-                            MediaName = MediaName.Mission_images.ToString(),
+                            MediaType = GenericEnum.MissionMediaType.img.ToString(),
+                            MediaName = GenericEnum.MissionMediaName.Mission_images.ToString(),
                             CreatedAt = DateTime.Now,
                             Defaultval = (DefaultMissionImg != null && DefaultMissionImg.FileName == img.FileName),
                             
@@ -219,7 +213,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                var media = _db.MissionMedia.Where(missionmedia => missionmedia.MissionId == MissionId && missionmedia.MediaType == "vid");
+                var media = _db.MissionMedia.Where(missionmedia => missionmedia.MissionId == MissionId && missionmedia.MediaType == GenericEnum.MissionMediaType.vid.ToString());
                 if (media.Any())
                 {
                     _db.RemoveRange(media);
@@ -231,10 +225,10 @@ namespace CI_Platform.Repository.Repository
                         MissionMedium newMedia = new()
                         {
                             MissionId = MissionId,
-                            MediaType = MediaType.vid.ToString(),
+                            MediaType = GenericEnum.MissionMediaType.vid.ToString(),
                             MediaPath = url,
                             CreatedAt = DateTime.Now,
-                            MediaName = MediaName.Mission_video.ToString(),
+                            MediaName = GenericEnum.MissionMediaName.Mission_video.ToString(),
                             Defaultval = false
                         };
                         _db.MissionMedia.Add(newMedia);
@@ -335,8 +329,8 @@ namespace CI_Platform.Repository.Repository
             GoalMission goalMission = _db.GoalMissions.FirstOrDefault(m => m.MissionId == MissionId && m.DeletedAt == null)!;
             AdminMissionViewModel missionvm = new(mission, goalMission)
             {
-                MissionUrlLinks = _db.MissionMedia.Where(missionMedia => missionMedia.MediaType == "vid" && missionMedia.MissionId == MissionId).Select(m => m.MediaPath).ToArray()!,
-                MissionImagesList = _db.MissionMedia.Where(missionMedia => missionMedia.MediaType != "vid" && missionMedia.MissionId == MissionId).Select(m => m.MediaPath).ToArray()!,
+                MissionUrlLinks = _db.MissionMedia.Where(missionMedia => missionMedia.MediaType == GenericEnum.MissionMediaType.vid.ToString() && missionMedia.MissionId == MissionId).Select(m => m.MediaPath).ToArray()!,
+                MissionImagesList = _db.MissionMedia.Where(missionMedia => missionMedia.MediaType != GenericEnum.MissionMediaType.vid.ToString() && missionMedia.MissionId == MissionId).Select(m => m.MediaPath).ToArray()!,
                 MissionDefaultImage = _db.MissionMedia.FirstOrDefault(missionMedia => missionMedia.MissionId == MissionId && missionMedia.Defaultval == true)?.MediaPath,
                 MissionDocumentsList = _db.MissionDocuments.Where(missionDocuments => missionDocuments.MissionId == MissionId).Select(m => m.DocumentPath).ToArray()!
             };
@@ -347,7 +341,7 @@ namespace CI_Platform.Repository.Repository
         {
             try
             {
-                if(_db.Missions.FirstOrDefault(mission => mission.Title!.ToLower() == missionvm.MissionTitle && mission.MissionId != missionvm.MissionId) != null)
+                if(_db.Missions.FirstOrDefault(mission => mission.Title!.Trim().ToLower() == missionvm.MissionTitle.Trim().ToLower() && mission.MissionId != missionvm.MissionId) != null)
                 {
                     return "Exists";
                 }
@@ -368,14 +362,14 @@ namespace CI_Platform.Repository.Repository
                         mission.OrganizationName = missionvm.OrganizationName;
                         mission.OrganizationDetail = missionvm.OrganizationDetail;
                         mission.Availability = missionvm.Avaliablity;
-                        mission.TotalSeats = (missionvm.MissionType == MissionType.Time.ToString()) ? missionvm.TotalSeats : null;
+                        mission.TotalSeats = (missionvm.MissionType == GenericEnum.MissionType.Time.ToString()) ? missionvm.TotalSeats : null;
                         mission.Status = missionvm.Status;
-                        mission.Deadline = (missionvm.MissionType == MissionType.Time.ToString()) ? missionvm.Deadline : null;
+                        mission.Deadline = (missionvm.MissionType == GenericEnum.MissionType.Time.ToString()) ? missionvm.Deadline : null;
                         mission.UpdatedAt = DateTime.Now;
                         _db.Missions.Update(mission);
                         _db.SaveChanges();
 
-                        if (MissionType.Goal.ToString() == missionvm.MissionType)
+                        if (GenericEnum.MissionType.Goal.ToString() == missionvm.MissionType)
                         {
                             AddOrRemoveGoalMission(mission.MissionId, missionvm.GoalObjectiveText, missionvm.GoalValue);
                         }

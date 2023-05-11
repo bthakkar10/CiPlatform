@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using PublicResXFileCodeGenerator;
 using System.Data;
 using System.Drawing.Printing;
 using System.IdentityModel.Tokens.Jwt;
@@ -109,9 +110,11 @@ namespace CI_Platform_web.Controllers
                 ViewBag.UserId = HttpContext.Session.GetString("Id");
                 ViewBag.Username = HttpContext.Session.GetString("Username");
             }
-            //long UserId = Convert.ToInt64(ViewBag.UserId);
-            ShareStoryViewModel vm = new();
-            vm.GetMissionListofUser = _shareStory.GetMissionListofUser(userId);
+      
+            ShareStoryViewModel vm = new()
+            {
+                GetMissionListofUser = _shareStory.GetMissionListofUser(userId)
+            };
             return View(vm);
         }
 
@@ -170,8 +173,15 @@ namespace CI_Platform_web.Controllers
                 }
                 else
                 {
-                    _shareStory.AddNewStory(viewmodel, userId);
-                    return Ok(new { icon = "success", message = "New Story is added successfully in draft mode!!" });
+                    if(_shareStory.AddNewStory(viewmodel, userId))
+                    {
+                        return Ok(new { icon = "success", message = "New Story is added successfully in draft mode!!" });
+                    }
+                    else
+                    {
+                        return Ok(new { icon = "error", message = Messages.Error });
+                    }
+                   
                 }
             }
             else

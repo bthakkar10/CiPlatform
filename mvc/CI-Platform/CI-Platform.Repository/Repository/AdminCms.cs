@@ -17,32 +17,58 @@ namespace CI_Platform.Repository.Repository
         {
             _db = db;
         }
-
+        //for admin side page
         public List<CmsPage> CmsList()
+        {
+            return _db.CmsPages.Where(cms => cms.DeletedAt == null).ToList();
+        }
+
+        //to display on user side 
+        public List<CmsPage> CmsListUser()
         {
             return _db.CmsPages.Where(cms => cms.DeletedAt == null && cms.Status == true).ToList();
         }
 
-        public bool CmsAdd(AdminCmsViewModel cmsvm)
+        public string CmsAdd(AdminCmsViewModel cmsvm)
         {
             try
             {
-                CmsPage cms = new CmsPage()
+                CmsPage? DoesCmsExist = _db.CmsPages.FirstOrDefault(cms => cms.Title!.Trim().ToLower() == cmsvm.Title.Trim().ToLower());
+                if(DoesCmsExist== null)
                 {
-                    Title= cmsvm.Title,    
-                    Description = cmsvm.CmsDescription,
-                    Slug = cmsvm.Slug, 
-                    Status= cmsvm.Status,  
-                    CreatedAt = DateTime.Now,   
-                };
+                    CmsPage cms = new()
+                    {
+                        Title = cmsvm.Title,
+                        Description = cmsvm.CmsDescription,
+                        Slug = cmsvm.Slug,
+                        Status = cmsvm.Status,
+                        CreatedAt = DateTime.Now,
+                    };
 
-                _db.CmsPages.Add(cms);
-                _db.SaveChanges();
-                return true;
+                    _db.CmsPages.Add(cms);
+                    _db.SaveChanges();
+                    return "Added";
+                }
+                else
+                {
+                    if (DoesCmsExist != null && DoesCmsExist.DeletedAt == null)
+                    {
+                        return "Exists";
+                    }
+                    else
+                    {
+                        DoesCmsExist.DeletedAt = null!;
+                        DoesCmsExist.UpdatedAt = DateTime.Now;
+                        _db.Update(DoesCmsExist);
+                        _db.SaveChanges();
+                        return "Added";
+                    }
+                }
+               
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                return ex.Message;
             }
         }
 
@@ -76,8 +102,12 @@ namespace CI_Platform.Repository.Repository
             return cmsvm;
         }
 
-        public bool EditCms(AdminCmsViewModel cmsvm)
+        public string EditCms(AdminCmsViewModel cmsvm)
         {
+            if(_db.CmsPages.FirstOrDefault(cms => cms.Title!.Trim().ToLower() == cmsvm.Title!.Trim().ToLower() && cms.CmsPageId != cmsvm.CmsId) != null)
+            {
+                return "Exists";
+            }
             CmsPage cms = _db.CmsPages.Find(cmsvm.CmsId)!;
             if (cms != null)
             {
@@ -88,11 +118,11 @@ namespace CI_Platform.Repository.Repository
                 cms.UpdatedAt= DateTime.Now;
                _db.CmsPages.Update(cms);
                 _db.SaveChanges();
-                return true;
+                return "Updated";
             }
             else
             {
-                return false;
+                return "Error";
             }
 
         }

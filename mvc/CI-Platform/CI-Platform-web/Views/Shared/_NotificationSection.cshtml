@@ -1,4 +1,8 @@
-﻿@using CI_Platform.Repository.Generic;
+﻿@{
+    Layout = "";
+}
+
+@using CI_Platform.Repository.Generic;
 @model CI_Platform.Entities.ViewModels.NotificationViewModel
 
 <div id="UserNotificationList">
@@ -29,6 +33,7 @@
                                 <i class="bi bi-check-circle-fill" style="color:grey;"></i>
                             }
                         </a>
+                        <hr />
 
                     }
                     else if (notification.RecommendedStoryId != 0)
@@ -45,22 +50,25 @@
                                 <i class="bi bi-check-circle-fill" style="color:grey;"></i>
                             }
                         </a>
-
+                        <hr />
                     }
                     else if (notification.NewMissionId != 0)
                     {
                         <a class="text-decoration-none d-flex" href="@Url.Action("MissionDetail","Home", new{MissionId = notification.NewMissionId })">
-                            <i class="bi bi-plus-circle"></i>
+                            <span><i class="bi bi-plus-circle"></i></span>
                             <span> New Mission Added -  @notification.NewMissionTitle</span>
-                            @if (notification.Status == false)
-                            {
-                                <i class="bi bi-circle-fill" style="color:#F88634;"></i>
-                            }
-                            else
-                            {
-                                <i class="bi bi-check-circle-fill" style="color:grey;"></i>
-                            }
+                            <span>
+                                @if (notification.Status == false)
+                                {
+                                    <i class="bi bi-circle-fill" style="color:#F88634;"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-check-circle-fill" style="color:grey;"></i>
+                                }
+                            </span>
                         </a>
+                        <hr />
                     }
                     else if (notification.CommentId != 0)
                     {
@@ -78,6 +86,7 @@
                                 }
                             </span>
                         </a>
+                        <hr />
                     }
                     else if (notification.TimesheetId != 0)
                     {
@@ -104,6 +113,7 @@
                                 }
                             </span>
                         </a>
+                        <hr />
                     }
                     else if (notification.StoryId != 0)
                     {
@@ -129,6 +139,7 @@
                                 }
                             </span>
                         </a>
+                        <hr />
                     }
                     else if (notification.MissionApplicationId != 0)
                     {
@@ -154,9 +165,10 @@
                                 }
                             </span>
                         </a>
+                        <hr />
                     }
-                    <hr />
                 </li>
+
             }
         </ul>
     }
@@ -173,11 +185,13 @@
 <div id="UserNotificationSettingList" style="display:none">
     <h4 class="text-center">NOTIFICATION SETTINGS</h4>
     <h5 class="bg-light">Get a Notification for</h5>
-    
+
     @foreach (var setting in Model.UserNotificationSetting)
     {
         <div class="form-check">
-            <input class="form-check-input setting-checkbox" type="checkbox" value="@setting.SettingId" id="SettingCheckBox-@setting.SettingId" @if(setting.IsEnabled){<text>checked</text>} />
+            <input class="form-check-input setting-checkbox" type="checkbox" value="@setting.SettingId" id="SettingCheckBox-@setting.SettingId" @if(setting.IsEnabled){
+        <text>checked</text>
+} />
             <label class="form-check-label" for="SettingCheckBox-@setting.SettingId">
                 @setting.Setting.SettingName
             </label>
@@ -188,5 +202,5 @@
         <button type="button" class="btn rounded-pill card-btn me-2" id="SaveNotificationSetting">Save</button>
         <a class="btn btn-outline-secondary me-3 rounded-pill" id="CancelBtnNotification">Cancel</a>
     </div>
- 
+
 </div>
