@@ -18,7 +18,7 @@
             <div class="col-md-4 col-sm-12">
                 <label for="" class="form-label ms-1">Select Mission</label>
                 <select required class="form-select" id="missionTitle" aria-label="Default select example">
-                    <option asp-for="MissionTitle" disabled >Select your mission</option>
+                    <option asp-for="MissionTitle" selected disabled >Select your mission</option>
                     @if (Model.GetMissionListofUser is not null)
                     {
 

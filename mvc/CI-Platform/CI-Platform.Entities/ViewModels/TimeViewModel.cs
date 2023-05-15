@@ -47,7 +47,7 @@ namespace CI_Platform.Entities.ViewModels
             }
             else
             {
-                TimeMessage = "";
+                TimeErrorMessage = "";
                 return true;
             }
         }

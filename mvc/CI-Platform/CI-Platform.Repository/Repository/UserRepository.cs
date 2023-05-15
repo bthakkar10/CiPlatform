@@ -52,16 +52,21 @@ namespace CI_Platform.Repository.Repository
                         Status = true,
                     };
                     _db.Users.Add(user);
+                    _db.SaveChanges();
 
-                    UserSetting userSetting = new UserSetting();
-                    for(int i = 1; i <= 7; i++)
+                    for (int i = 1; i <= 7; i++)
                     {
-                        userSetting.SettingId = i;
-                        userSetting.UserId = user.UserId;
-                        userSetting.IsEnabled= true;
+                        UserSetting userSetting = new UserSetting()
+                        {
+                            SettingId = i,
+                            UserId = user.UserId,
+                            IsEnabled = true,
+                        };
+                        _db.Add(userSetting);
+
                     }
-                    _db.Add(userSetting);
-                    _db.SaveChanges();  
+                    _db.SaveChanges();
+
                 }
                 return true;    
             }

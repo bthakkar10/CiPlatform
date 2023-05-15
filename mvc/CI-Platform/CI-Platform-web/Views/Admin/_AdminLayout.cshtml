@@ -42,7 +42,6 @@
     </div>
 
 
-
     <div class="sidebar-links">
         <ul>
 
@@ -157,14 +156,18 @@
                     @await Component.InvokeAsync("UserHeader", "_ProfileSection")
 
                 </div>
-
-
+                
 
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
             </div>
 
         </header>
         <partial name="_Notification" />
+       
+        
+    <div class="ajax-loader">
+        <img src="~/images/loader-img.gif" class="img-responsive" />
+    </div>
         @RenderBody()
         <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

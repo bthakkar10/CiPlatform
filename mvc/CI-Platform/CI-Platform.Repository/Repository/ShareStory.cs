@@ -66,9 +66,8 @@ namespace CI_Platform.Repository.Repository
         //to add new story(user is adding a new story)
         public bool AddNewStory(ShareStoryViewModel vm, long userId)
         {
-            if (vm.GetMissionListofUser != null)
+            if (vm.GetMissionListofUser == null)
             {
-
                 Story newStory = new()
                 {
                     MissionId = vm.MissionId,

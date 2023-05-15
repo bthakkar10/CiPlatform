@@ -61,7 +61,7 @@ namespace CI_Platform.Repository.Repository
                     _db.SaveChanges();
                     if (GenericEnum.MissionType.Goal.ToString() == missionvm.MissionType)
                     {
-                        AddOrRemoveGoalMission(missionAdd.MissionId, missionvm.GoalObjectiveText, missionvm.GoalValue);
+                        AddOrRemoveGoalMission(missionAdd.MissionId, missionvm.GoalObjectiveText, missionvm.GoalValue, missionAdd.MissionType);
                     }
                     if (missionvm.ImageList != null)
                     {
@@ -128,25 +128,35 @@ namespace CI_Platform.Repository.Repository
             }
         }
 
-        public bool AddOrRemoveGoalMission(long MissionId, string GoalObjectiveText, int GoalValue)
+        public bool AddOrRemoveGoalMission(long MissionId, string GoalObjectiveText, int GoalValue, string MissionType)
         {
             try
             {
                 GoalMission goalMission = _db.GoalMissions.Where(goalmission=> goalmission.MissionId == MissionId).FirstOrDefault()!; 
-                if (goalMission != null)
+                if (goalMission != null && MissionType == GenericEnum.MissionType.Time.ToString())
                 {
                     _db.Remove(goalMission);
                     _db.SaveChanges();
                 }
                 else
                 {
-                    GoalMission AddGoalMission = new()
+                    if(goalMission.MissionId == MissionId)
                     {
-                        MissionId = MissionId,  
-                        GoalValue = GoalValue,
-                        GoalObjectiveText = GoalObjectiveText,
-                    };
-                    _db.GoalMissions.Add(AddGoalMission);
+                        goalMission.GoalValue = GoalValue;
+                        goalMission.GoalObjectiveText = GoalObjectiveText;
+                        _db.Update(goalMission);
+                    }
+                    else
+                    {
+                        GoalMission AddGoalMission = new()
+                        {
+                            MissionId = MissionId,
+                            GoalValue = GoalValue,
+                            GoalObjectiveText = GoalObjectiveText,
+                        };
+                        _db.GoalMissions.Add(AddGoalMission);
+                    }
+                    
                     _db.SaveChanges();
                 }
                 return true;
@@ -371,7 +381,7 @@ namespace CI_Platform.Repository.Repository
 
                         if (GenericEnum.MissionType.Goal.ToString() == missionvm.MissionType)
                         {
-                            AddOrRemoveGoalMission(mission.MissionId, missionvm.GoalObjectiveText, missionvm.GoalValue);
+                            AddOrRemoveGoalMission(mission.MissionId, missionvm.GoalObjectiveText, missionvm.GoalValue, mission.MissionType);
                         }
 
                         if (missionvm.ImageList != null)

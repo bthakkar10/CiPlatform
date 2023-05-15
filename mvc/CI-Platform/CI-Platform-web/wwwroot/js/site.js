@@ -1,4 +1,20 @@
-﻿//password show and hide 
+﻿//window.onload = function () {
+//    setTimeout(function () {
+//        $('.ajax-loader').css("visibility", "hidden");
+//    }, 0);
+//}
+
+//global ajax call to show and hide loader 
+$.ajaxSetup({
+    beforeSend: function () {
+        $('.ajax-loader').css("visibility", "visible");
+    },
+    complete: function () {
+        $('.ajax-loader').css("visibility", "hidden");
+    },
+});
+
+//password show and hide 
 $(document).on('click', '.bi-eye-slash', function () {
     $(this).parent().find('input').attr('type', 'text');
     $(this).addClass('d-none');

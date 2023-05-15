@@ -20,6 +20,7 @@ namespace CI_Platform.Repository.Repository
             _db = db;
             
         }
+
         public UserProfileViewModel GetUserDetails(long UserId)
         {
             User user = _db.Users.Where(u => u.UserId == UserId && u.DeletedAt == null).Include(u => u.UserSkills).ThenInclude(us => us.Skill).FirstOrDefault()!;
@@ -35,6 +36,7 @@ namespace CI_Platform.Repository.Repository
                 Avatar = user.Avtar,
                 CountryId = user.CountryId,
                 CityId = user.CityId,
+                Availibility = user.Availability,
                 UserSkills = user.UserSkills.ToList(),
                 Skills = _db.Skills.Where(s=>s.DeletedAt == null && s.Status == 1).ToList(),
                 Countries = _db.Countries.Where(c=>c.DeletedAt == null).ToList(),
@@ -46,10 +48,10 @@ namespace CI_Platform.Repository.Repository
 
         public bool ChangePassword(long UserId, string oldPassword, string newPassword)
         {
-            oldPassword = BCrypt.Net.BCrypt.HashPassword(oldPassword);
+            
             User user = _db.Users.FirstOrDefault(u => u.UserId == UserId)!;
             
-            if (user.Password != oldPassword)
+            if (!BCrypt.Net.BCrypt.Verify(oldPassword, user.Password))
             {
                 return false;
             }

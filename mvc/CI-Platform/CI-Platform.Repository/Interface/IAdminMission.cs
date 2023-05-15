@@ -23,7 +23,7 @@ namespace CI_Platform.Repository.Interface
 
         public bool AddOrRemoveMissionSkills(long MissionId, string UpdatedMissionSKills);
 
-        public bool AddOrRemoveGoalMission(long MissionId, string GoalObjectiveText, int GoalValue);
+        public bool AddOrRemoveGoalMission(long MissionId, string GoalObjectiveText, int GoalValue, string MissionType);
 
        
 

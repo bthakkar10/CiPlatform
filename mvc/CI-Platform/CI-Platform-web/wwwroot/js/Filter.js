@@ -15,11 +15,6 @@ var UserCity = $('#UserCityDefault').text()
 
 //global
 
-//$('.ajax-loader').bind('ajaxStart', function () {
-//    $(this).css("visibility", "visible");
-//}).bind('ajaxStop', function () {
-//    $(this).css("visibility", "hidden");
-//});
 var currentUrl = window.location.href;
 if (currentUrl.includes("HomePage")) {
     FilterSortPaginationSearch(1);
@@ -188,9 +183,9 @@ function FilterSortPaginationSearch(pageNo) {
     
     $.ajax({
         type: 'POST',
-        beforeSend: function () {
-            $('.ajax-loader').css("visibility", "visible");
-        },
+        //beforeSend: function () {
+        //    $('.ajax-loader').css("visibility", "visible");
+        //},
         url: '/Home/HomePage',
         data: queryData,
         success: function (data) {
@@ -315,9 +310,9 @@ function FilterSortPaginationSearch(pageNo) {
                 FilterSortPaginationSearch(pageNo);
             }));
         },
-        complete: function () {
-            $('.ajax-loader').css("visibility", "hidden");
-        },
+        //complete: function () {
+        //    $('.ajax-loader').css("visibility", "hidden");
+        //},
         error: function (error) {
             console.log(error)
         }
@@ -657,22 +652,16 @@ allDropdowns.each(function () {
                 $('.closeAll').remove();
             }
         }
-
         if (currentUrl.includes("HomePage")) {
             FilterSortPaginationSearch();
-
         }
         else if (currentUrl.includes("StoryListing")) {
             StoryFilter();
-
         }
-
     });
-
 })
 
 //to add or remove favourites
-
 $(document).on('click', '.favourite-button', function () {
 
     var missionId = $(this).data('mission-id');

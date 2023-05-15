@@ -18,7 +18,7 @@ namespace CI_Platform.Repository.Repository
         {
             _db = db;
         }
-
+        readonly String default_avtar = "profile-user.png";
         public List<User> users()
         {
             return _db.Users.Where(U => U.DeletedAt == null).ToList();
@@ -47,17 +47,24 @@ namespace CI_Platform.Repository.Repository
                         Availability = vm.Availibility,
                         Status = vm.Status, 
                         Role = vm.Role,
+                        Avtar = default_avtar,
                     };
                     _db.Users.Add(user);
-                    UserSetting userSetting = new UserSetting();
+                    _db.SaveChanges();
+                   
                     for (int i = 1; i <= 7; i++)
                     {
-                        userSetting.SettingId = i;
-                        userSetting.UserId = user.UserId;
-                        userSetting.IsEnabled = true;
+                        UserSetting userSetting = new UserSetting()
+                        {
+                            SettingId = i,
+                            UserId = user.UserId,
+                            IsEnabled = true,
+                        };
+                        _db.Add(userSetting);
+                        
                     }
-                    _db.Add(userSetting);
-                    _db.SaveChanges();  
+                    _db.SaveChanges();
+
                     return "Added";
                 }
                 else
